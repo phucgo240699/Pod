@@ -1,5 +1,8 @@
 #pragma once
 #include <d3d9.h>
+#include <string>
+
+using namespace std;
 
 enum EnumColor {
 	red, orange, yellow, green, blue, pink, purple, black, gray, white
@@ -22,5 +25,4 @@ public:
 
 	// Converter
 	D3DCOLOR toD3DColor();
-
 };
