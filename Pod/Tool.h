@@ -10,13 +10,13 @@ using namespace std;
 // Singleton
 class Tool {
 public:
-	static LPCWSTR getLPCWSTRFrom(const char* charArray) {
+	static LPCWSTR getLPCWSTRFromCharArray(const char* charArray) {
 		wchar_t* wString = new wchar_t[4096];
 		MultiByteToWideChar(CP_ACP, 0, charArray, -1, wString, 4096);
 		return wString;
 	}
 
-	static LPCWSTR getLPCWSTRFrom(string& s)
+	static LPCWSTR getLPCWSTRFromString(string& s)
 	{
 		vector<wchar_t> buf(MultiByteToWideChar(CP_ACP, 0, s.c_str(), s.size() + 1, 0, 0));
 

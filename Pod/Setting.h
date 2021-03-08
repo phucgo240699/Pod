@@ -1,7 +1,6 @@
 #pragma once
 #include "Size.h"
 #include "Tool.h"
-#include "Color.h"
 #include "FileManager.h"
 
 enum ScreenMode {
@@ -17,9 +16,9 @@ private:
 
 	// Properties
 	int fps = 30;
-	LPCWSTR appTitle = Tool::getLPCWSTRFrom("Pod");
-	Size* screenSize = new Size(480, 640);
+	string appTitle = "Pod";
 	ScreenMode screenMode = window;
+	Size* screenSize = new Size(480, 640);
 	Color* backBufferColor = new Color(black);
 
 public:
@@ -28,18 +27,18 @@ public:
 
 	// Getter
 	int getFPS();
-	LPCWSTR getAppTitle();
-	Size* getScreenSize();
+	string getAppTitle();
+	LPCWSTR getAppTitleAsLPCWSTR();
 	ScreenMode getScreenMode();
+	Size* getScreenSize();
 	Color* getBackBufferColor();
 
 
 	// Setter
 	void setFPS(int _fps);
 	void setAppTitle(string _appTitle);
-	void setAppTitle(LPCWSTR _appTitle);
-	void setScreenSize(Size* _screenSize);
 	void setScreenMode(ScreenMode _screenMode);
+	void setScreenSize(Size* _screenSize);
 	void setBackBufferColor(Color* _backBufferColor);
 
 

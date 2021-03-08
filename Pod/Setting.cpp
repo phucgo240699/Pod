@@ -15,19 +15,24 @@ int Setting::getFPS()
 	return this->fps;
 }
 
-LPCWSTR Setting::getAppTitle()
+string Setting::getAppTitle()
 {
 	return this->appTitle;
 }
 
-Size* Setting::getScreenSize()
+LPCWSTR Setting::getAppTitleAsLPCWSTR()
 {
-	return this->screenSize;
+	return Tool::getLPCWSTRFromString(this->appTitle);
 }
 
 ScreenMode Setting::getScreenMode()
 {
 	return this->screenMode;
+}
+
+Size* Setting::getScreenSize()
+{
+	return this->screenSize;
 }
 
 Color* Setting::getBackBufferColor()
@@ -44,22 +49,17 @@ void Setting::setFPS(int _fps)
 
 void Setting::setAppTitle(string _appTitle)
 {
-	this->appTitle = Tool::getLPCWSTRFrom(_appTitle);
-}
-
-void Setting::setAppTitle(LPCWSTR _appTitle)
-{
 	this->appTitle = _appTitle;
-}
-
-void Setting::setScreenSize(Size* _screenSize)
-{
-	this->screenSize = _screenSize;
 }
 
 void Setting::setScreenMode(ScreenMode _screenMode)
 {
 	this->screenMode = _screenMode;
+}
+
+void Setting::setScreenSize(Size* _screenSize)
+{
+	this->screenSize = _screenSize;
 }
 
 void Setting::setBackBufferColor(Color* _backBufferColor)
@@ -71,17 +71,21 @@ void Setting::load()
 {
 	string settingsStr = FileManager::getInstance()->getStringFromTextFile("settings.txt");
 	vector<string> v = Tool::splitToVectorStringFrom(settingsStr, ',');
-	for (int i = 0; i < v.size(); ++i) {
-		cout << v[i] << endl;
-	}
+	
+	this->fps = stoi(v[0]);
+	this->appTitle = v[1];
+	this->screenMode = v[2] == "0" ? window : fullScreen;
+	this->screenSize = new Size(stoi(v[3]), stoi(v[4]));
+	this->backBufferColor = new Color(Tool::getColorFromString(v[5]));
 }
 
 void Setting::save()
 {
 	string settingsStr = "";
 	settingsStr += to_string(this->fps);
-	settingsStr += (',' + Tool::getStringFrom(appTitle));
+	settingsStr += (',' + this->appTitle);
 	settingsStr += (',' + string((this->screenMode == window) ? "0" : "1")); // 0: window		1: fullscreen
+	settingsStr += (',' + to_string(this->screenSize->getWidth()) + ',' + to_string(this->screenSize->getHeight()));
 	settingsStr += (',' + Tool::getStringFromColor(this->backBufferColor->getValue()));
 
 	FileManager::getInstance()->writeStringToTextFile("settings.txt", settingsStr);
