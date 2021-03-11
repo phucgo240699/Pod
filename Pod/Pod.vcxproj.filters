@@ -31,6 +31,21 @@
     <Filter Include="Source Files\Utilities">
       <UniqueIdentifier>{24cce7f2-36f6-440e-aae5-4081afd7bea9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{5f884fe1-7520-4c66-a62f-a7f48bf2c9f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{63899b07-cabb-4800-a2ce-22f79da52888}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\System">
+      <UniqueIdentifier>{3a4e3e0a-38bc-4236-b8f9-7af9a340fad6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\System\Graphics">
+      <UniqueIdentifier>{6f481976-b231-491d-a195-ed1342e55476}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\System\Graphics">
+      <UniqueIdentifier>{fbfafa53-8203-4705-9d17-b51c1b4f3879}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -54,6 +69,15 @@
     <ClCompile Include="FileManager.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing.cpp">
+      <Filter>Source Files\System\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="dxgraphics.cpp">
+      <Filter>Source Files\System\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Point.h">
@@ -76,6 +100,15 @@
     </ClInclude>
     <ClInclude Include="FileManager.h">
       <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing.h">
+      <Filter>Header Files\System\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="dxgraphics.h">
+      <Filter>Header Files\System\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -128,3 +128,13 @@ RECT Rect::toRECTForD3D()
 	rect.right = this->getRightAnchor();
 	return rect;
 }
+
+RECT* Rect::toPointerRECTForD3D()
+{
+	RECT* rect = new RECT();
+	rect->top = this->getTopAnchor();
+	rect->bottom = this->getBottomAnchor();
+	rect->left = this->getLeftAnchor();
+	rect->right = this->getRightAnchor();
+	return rect;
+}

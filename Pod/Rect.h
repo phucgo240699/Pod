@@ -38,6 +38,7 @@ public:
 
 
 	RECT toRECTForD3D();
+	RECT* toPointerRECTForD3D();
 
 
 	// Overload operators
