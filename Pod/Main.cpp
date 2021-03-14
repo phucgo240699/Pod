@@ -1,12 +1,12 @@
 // source code Windows
 
 #include"AppConfig.h"
-#include <iostream>
 
 AppConfig* appConfig = new AppConfig();
 AppController* appController = appConfig->appController;
 Setting* setting = appConfig->setting;
 
+LPCWSTR APP_TITLE = L"Pod";
 
 // window event callback function
 LRESULT WINAPI WinProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -47,7 +47,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance) {
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
 	wc.lpszMenuName = NULL;
-	wc.lpszClassName = setting->getAppTitleAsLPCWSTR();
+	wc.lpszClassName = APP_TITLE;
 	wc.hIconSm = NULL;
 
 	// set up the window with the class info
@@ -72,13 +72,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	// create a new window
 	hWnd = CreateWindow(
-		setting->getAppTitleAsLPCWSTR(),
-		setting->getAppTitleAsLPCWSTR(),
+		APP_TITLE,
+		APP_TITLE,
 		style,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
-		setting->getScreenSize()->getWidth(),
-		setting->getScreenSize()->getHeight(),
+		setting->getScreenWidth(),
+		setting->getScreenHeight(),
 		NULL,
 		NULL,
 		hInstance,
@@ -92,7 +92,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
-	if (!Init_Direct3D(hWnd, setting->getScreenSize()->getWidth(), setting->getScreenSize()->getHeight(), setting->getScreenMode() == fullScreen))
+	if (!Init_Direct3D(hWnd, setting->getScreenWidth(), setting->getScreenHeight(), setting->getScreenMode() == fullScreen))
 		return 0;
 
 	// initialize the game

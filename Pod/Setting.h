@@ -1,5 +1,4 @@
 #pragma once
-#include "Size.h"
 #include "Tool.h"
 #include "FileManager.h"
 
@@ -16,11 +15,13 @@ private:
 
 	// Properties
 	int fps = 30;
-	string appTitle = "Pod";
+	int screenWidth = 640;
+	int screenHeight = 480;
 	ScreenMode screenMode = window;
-	Size* screenSize = new Size(480, 640);
-	Color* backBufferColor = new Color(black);
 	Color* defaultBackgroundColorViewController = new Color(black);
+	string rootImagesFolder = "./Assets/Images";
+	string rootSoundsFolder = "./Assets/Sounds";
+	string rootTextFileFolder = "./Assets/TextFiles";
 
 public:
 	Setting(const Setting&) = delete; // 3. delete copy constructor
@@ -28,21 +29,24 @@ public:
 
 	// Getter
 	int getFPS();
-	string getAppTitle();
-	LPCWSTR getAppTitleAsLPCWSTR();
+	int getScreenWidth();
+	int getScreenHeight();
 	ScreenMode getScreenMode();
-	Size* getScreenSize();
-	Color* getBackBufferColor();
 	Color* getDefaultBackgroundColorViewController();
+	string getRootImagesFolder();
+	string getRootSoundsFolder();
+	string getRootTextFilesFolder();
 
 
 	// Setter
 	void setFPS(int _fps);
-	void setAppTitle(string _appTitle);
+	void setScreenWidth(int _width);
+	void setScreenHeight(int _height);
 	void setScreenMode(ScreenMode _screenMode);
-	void setScreenSize(Size* _screenSize);
-	void setBackBufferColor(Color* _backBufferColor);
 	void setDefaultBackgroundColorViewController(Color* _color);
+	void setRootImagesFolder(string _path);
+	void setRootSoundsFolder(string _path);
+	void setRootTextFilesFolder(string _path);
 
 	// Others
 	void save();

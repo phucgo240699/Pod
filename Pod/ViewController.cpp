@@ -12,7 +12,10 @@ void ViewController::setBackground(Component* _background)
 
 void ViewController::viewDidLoad()
 {
-	this->background = new Component(new Rect(new Point(0, 0), Setting::getInstance()->getScreenSize()), Setting::getInstance()->getDefaultBackgroundColorViewController());
+	RECT* r = new RECT();
+	r->bottom = Setting::getInstance()->getScreenHeight();
+	r->right = Setting::getInstance()->getScreenWidth();
+	this->background = new Component(r, Setting::getInstance()->getDefaultBackgroundColorViewController());
 }
 
 void ViewController::viewWillUpdate()

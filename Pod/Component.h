@@ -1,22 +1,22 @@
 #pragma once
-#include "Rect.h"
 #include "Color.h"
 #include "Drawing.h"
 
 class Component {
 protected:
-	Rect* bounds;
+	RECT* bounds;
 	Color* color;
+	LPDIRECT3DSURFACE9 surface;
 public:
-	Component(Rect* _bounds, Color* _color);
+	Component(RECT* _bounds, Color* _color);
 	~Component();
 
 	// Getter
-	Rect* getBounds();
+	RECT* getBounds();
 	Color* getColor();
 
 	// Setter
-	void setBounds(Rect* _bounds);
+	void setBounds(RECT* _bounds);
 	void setColor(Color* _color);
 
 	virtual void update();

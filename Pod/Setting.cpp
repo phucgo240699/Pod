@@ -15,29 +15,19 @@ int Setting::getFPS()
 	return this->fps;
 }
 
-string Setting::getAppTitle()
-{
-	return this->appTitle;
-}
-
-LPCWSTR Setting::getAppTitleAsLPCWSTR()
-{
-	return Tool::getLPCWSTRFromString(this->appTitle);
-}
-
 ScreenMode Setting::getScreenMode()
 {
 	return this->screenMode;
 }
 
-Size* Setting::getScreenSize()
+int Setting::getScreenWidth()
 {
-	return this->screenSize;
+	return this->screenWidth;
 }
 
-Color* Setting::getBackBufferColor()
+int Setting::getScreenHeight()
 {
-	return this->backBufferColor;
+	return this->screenHeight;
 }
 
 void Setting::setFPS(int _fps)
@@ -47,14 +37,19 @@ void Setting::setFPS(int _fps)
 	}
 }
 
-void Setting::setAppTitle(string _appTitle)
-{
-	this->appTitle = _appTitle;
-}
-
 Color* Setting::getDefaultBackgroundColorViewController()
 {
 	return this->defaultBackgroundColorViewController;
+}
+
+string Setting::getRootImagesFolder()
+{
+	return this->rootImagesFolder;
+}
+
+string Setting::getRootSoundsFolder()
+{
+	return this->rootSoundsFolder;
 }
 
 void Setting::setScreenMode(ScreenMode _screenMode)
@@ -62,14 +57,19 @@ void Setting::setScreenMode(ScreenMode _screenMode)
 	this->screenMode = _screenMode;
 }
 
-void Setting::setScreenSize(Size* _screenSize)
+string Setting::getRootTextFilesFolder()
 {
-	this->screenSize = _screenSize;
+	return this->rootTextFileFolder;
 }
 
-void Setting::setBackBufferColor(Color* _backBufferColor)
+void Setting::setScreenWidth(int _width)
 {
-	this->backBufferColor = _backBufferColor;
+	this->screenWidth = _width;
+}
+
+void Setting::setScreenHeight(int _height)
+{
+	this->screenHeight = _height;
 }
 
 void Setting::setDefaultBackgroundColorViewController(Color* _color)
@@ -83,22 +83,35 @@ void Setting::load()
 	vector<string> v = Tool::splitToVectorStringFrom(settingsStr, ',');
 	
 	this->fps = stoi(v[0]);
-	this->appTitle = v[1];
-	this->screenMode = v[2] == "0" ? window : fullScreen;
-	this->screenSize = new Size(stoi(v[3]), stoi(v[4]));
-	this->backBufferColor = new Color(Tool::getColorFromString(v[5]));
-	this->defaultBackgroundColorViewController = new Color(Tool::getColorFromString(v[6]));
+	this->screenWidth = stoi(v[1]);
+	this->screenHeight = stoi(v[2]);
+	this->screenMode = v[3] == "0" ? window : fullScreen;
+	this->defaultBackgroundColorViewController = new Color(Tool::getColorFromString(v[4]));
 }
 
 void Setting::save()
 {
 	string settingsStr = "";
 	settingsStr += to_string(this->fps);
-	settingsStr += (',' + this->appTitle);
+	settingsStr += to_string(this->screenWidth);
+	settingsStr += to_string(this->screenHeight);
 	settingsStr += (',' + string((this->screenMode == window) ? "0" : "1")); // 0: window		1: fullscreen
-	settingsStr += (',' + to_string(this->screenSize->getWidth()) + ',' + to_string(this->screenSize->getHeight()));
-	settingsStr += (',' + Tool::getStringFromColor(this->backBufferColor->getValue()));
 	settingsStr += (',' + Tool::getStringFromColor(this->defaultBackgroundColorViewController->getValue()));
 
 	FileManager::getInstance()->writeStringToTextFile("settings.txt", settingsStr);
+}
+
+void Setting::setRootImagesFolder(string _path)
+{
+	this->rootImagesFolder = _path;
+}
+
+void Setting::setRootSoundsFolder(string _path)
+{
+	this->rootSoundsFolder = _path;
+}
+
+void Setting::setRootTextFilesFolder(string _path)
+{
+	this->rootTextFileFolder = _path;
 }

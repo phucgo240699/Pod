@@ -1,9 +1,10 @@
 #include "Component.h"
 
-Component::Component(Rect* _bounds, Color* _color)
+Component::Component(RECT* _bounds, Color* _color)
 {
 	this->bounds = _bounds;
 	this->color = _color;
+	surface = LoadBlankSurface(this->bounds->right, this->bounds->bottom);
 }
 
 Component::~Component()
@@ -11,12 +12,12 @@ Component::~Component()
 	delete bounds;
 }
 
-Rect* Component::getBounds()
+RECT* Component::getBounds()
 {
 	return this->bounds;
 }
 
-void Component::setBounds(Rect* _bounds)
+void Component::setBounds(RECT* _bounds)
 {
 	this->bounds = _bounds;
 }
@@ -38,5 +39,5 @@ void Component::update()
 
 void Component::draw()
 {
-	Drawing::getInstance()->draw(this->bounds->getSize(), new Rect(new Point(10, 10), new Size(50, 50)), new D3DXVECTOR3(0,0,0), new D3DXVECTOR3(0, 0, 0), this->color);
+	Drawing::getInstance()->draw(surface, this->bounds, this->color->toD3DColor());
 }

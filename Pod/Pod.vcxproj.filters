@@ -57,15 +57,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Point.cpp">
-      <Filter>Source Files\Dimension</Filter>
-    </ClCompile>
-    <ClCompile Include="Size.cpp">
-      <Filter>Source Files\Dimension</Filter>
-    </ClCompile>
-    <ClCompile Include="Rect.cpp">
-      <Filter>Source Files\Dimension</Filter>
-    </ClCompile>
     <ClCompile Include="Setting.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
@@ -101,15 +92,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Point.h">
-      <Filter>Header Files\Dimension</Filter>
-    </ClInclude>
-    <ClInclude Include="Size.h">
-      <Filter>Header Files\Dimension</Filter>
-    </ClInclude>
-    <ClInclude Include="Rect.h">
-      <Filter>Header Files\Dimension</Filter>
-    </ClInclude>
     <ClInclude Include="Tool.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>

@@ -154,10 +154,7 @@
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Man1.cpp" />
-    <ClCompile Include="Point.cpp" />
-    <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Setting.cpp" />
-    <ClCompile Include="Size.cpp" />
     <ClCompile Include="ViewController.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -169,10 +166,7 @@
     <ClInclude Include="dxgraphics.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="Man1.h" />
-    <ClInclude Include="Point.h" />
-    <ClInclude Include="Rect.h" />
     <ClInclude Include="Setting.h" />
-    <ClInclude Include="Size.h" />
     <ClInclude Include="Tool.h" />
     <ClInclude Include="ViewController.h" />
   </ItemGroup>

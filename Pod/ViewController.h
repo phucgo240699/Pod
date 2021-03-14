@@ -1,7 +1,6 @@
 #pragma once
 #include "Color.h"
 #include <vector>
-#include "Rect.h"
 #include "Setting.h"
 #include "Component.h"
 
