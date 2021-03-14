@@ -20,6 +20,7 @@ private:
 	ScreenMode screenMode = window;
 	Size* screenSize = new Size(480, 640);
 	Color* backBufferColor = new Color(black);
+	Color* defaultBackgroundColorViewController = new Color(black);
 
 public:
 	Setting(const Setting&) = delete; // 3. delete copy constructor
@@ -32,6 +33,7 @@ public:
 	ScreenMode getScreenMode();
 	Size* getScreenSize();
 	Color* getBackBufferColor();
+	Color* getDefaultBackgroundColorViewController();
 
 
 	// Setter
@@ -40,7 +42,7 @@ public:
 	void setScreenMode(ScreenMode _screenMode);
 	void setScreenSize(Size* _screenSize);
 	void setBackBufferColor(Color* _backBufferColor);
-
+	void setDefaultBackgroundColorViewController(Color* _color);
 
 	// Others
 	void save();

@@ -16,9 +16,6 @@
     <Filter Include="Source Files\System">
       <UniqueIdentifier>{4fdbeadb-5e92-4d48-a53f-762167a49591}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\System\Micro Architecture">
-      <UniqueIdentifier>{c059a44f-b9cf-4020-a335-b3947730f7ed}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Dimension">
       <UniqueIdentifier>{97c1b3e0-735d-413d-8dde-27d4c1e2473a}</UniqueIdentifier>
     </Filter>
@@ -40,17 +37,26 @@
     <Filter Include="Header Files\System">
       <UniqueIdentifier>{3a4e3e0a-38bc-4236-b8f9-7af9a340fad6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\System\Graphics">
-      <UniqueIdentifier>{6f481976-b231-491d-a195-ed1342e55476}</UniqueIdentifier>
+    <Filter Include="Header Files\ViewController">
+      <UniqueIdentifier>{683a6db0-40cb-422c-928e-a380052074fc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\System\Graphics">
-      <UniqueIdentifier>{fbfafa53-8203-4705-9d17-b51c1b4f3879}</UniqueIdentifier>
+    <Filter Include="Source Files\ViewController">
+      <UniqueIdentifier>{1f60af6a-12e1-4323-92dc-ce03d014021c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AppController">
+      <UniqueIdentifier>{90f5133a-947b-425c-bbfe-b8af63c34774}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AppController">
+      <UniqueIdentifier>{511f73ab-25cf-4e77-b725-094f5684a254}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ViewController\Man1">
+      <UniqueIdentifier>{346d8bc1-f166-4768-8119-d058cb1eb303}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ViewController\Man1">
+      <UniqueIdentifier>{1546b113-08b5-4d29-aadb-cbe632cb5e5f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files\System\Micro Architecture</Filter>
-    </ClCompile>
     <ClCompile Include="Point.cpp">
       <Filter>Source Files\Dimension</Filter>
     </ClCompile>
@@ -73,10 +79,25 @@
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="Drawing.cpp">
-      <Filter>Source Files\System\Graphics</Filter>
+      <Filter>Source Files\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="dxgraphics.cpp">
-      <Filter>Source Files\System\Graphics</Filter>
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewController.cpp">
+      <Filter>Source Files\ViewController</Filter>
+    </ClCompile>
+    <ClCompile Include="AppController.cpp">
+      <Filter>Source Files\AppController</Filter>
+    </ClCompile>
+    <ClCompile Include="Man1.cpp">
+      <Filter>Source Files\ViewController\Man1</Filter>
+    </ClCompile>
+    <ClCompile Include="AppConfig.cpp">
+      <Filter>Source Files\AppController</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -105,10 +126,22 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="Drawing.h">
-      <Filter>Header Files\System\Graphics</Filter>
+      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="dxgraphics.h">
-      <Filter>Header Files\System\Graphics</Filter>
+      <Filter>Header Files\System</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewController.h">
+      <Filter>Header Files\ViewController</Filter>
+    </ClInclude>
+    <ClInclude Include="AppController.h">
+      <Filter>Header Files\AppController</Filter>
+    </ClInclude>
+    <ClInclude Include="AppConfig.h">
+      <Filter>Header Files\AppController</Filter>
+    </ClInclude>
+    <ClInclude Include="Man1.h">
+      <Filter>Header Files\ViewController\Man1</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

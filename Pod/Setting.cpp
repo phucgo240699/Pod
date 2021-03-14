@@ -52,6 +52,11 @@ void Setting::setAppTitle(string _appTitle)
 	this->appTitle = _appTitle;
 }
 
+Color* Setting::getDefaultBackgroundColorViewController()
+{
+	return this->defaultBackgroundColorViewController;
+}
+
 void Setting::setScreenMode(ScreenMode _screenMode)
 {
 	this->screenMode = _screenMode;
@@ -67,6 +72,11 @@ void Setting::setBackBufferColor(Color* _backBufferColor)
 	this->backBufferColor = _backBufferColor;
 }
 
+void Setting::setDefaultBackgroundColorViewController(Color* _color)
+{
+	this->defaultBackgroundColorViewController = _color;
+}
+
 void Setting::load()
 {
 	string settingsStr = FileManager::getInstance()->getStringFromTextFile("settings.txt");
@@ -77,6 +87,7 @@ void Setting::load()
 	this->screenMode = v[2] == "0" ? window : fullScreen;
 	this->screenSize = new Size(stoi(v[3]), stoi(v[4]));
 	this->backBufferColor = new Color(Tool::getColorFromString(v[5]));
+	this->defaultBackgroundColorViewController = new Color(Tool::getColorFromString(v[6]));
 }
 
 void Setting::save()
@@ -87,6 +98,7 @@ void Setting::save()
 	settingsStr += (',' + string((this->screenMode == window) ? "0" : "1")); // 0: window		1: fullscreen
 	settingsStr += (',' + to_string(this->screenSize->getWidth()) + ',' + to_string(this->screenSize->getHeight()));
 	settingsStr += (',' + Tool::getStringFromColor(this->backBufferColor->getValue()));
+	settingsStr += (',' + Tool::getStringFromColor(this->defaultBackgroundColorViewController->getValue()));
 
 	FileManager::getInstance()->writeStringToTextFile("settings.txt", settingsStr);
 }

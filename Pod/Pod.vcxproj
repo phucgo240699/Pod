@@ -92,9 +92,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <CallingConvention>StdCall</CallingConvention>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxguid.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -144,28 +145,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AppConfig.cpp" />
+    <ClCompile Include="AppController.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Drawing.cpp" />
     <ClCompile Include="dxgraphics.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Man1.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Setting.cpp" />
     <ClCompile Include="Size.cpp" />
+    <ClCompile Include="ViewController.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AppConfig.h" />
+    <ClInclude Include="AppController.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Drawing.h" />
     <ClInclude Include="dxgraphics.h" />
     <ClInclude Include="FileManager.h" />
+    <ClInclude Include="Man1.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Setting.h" />
     <ClInclude Include="Size.h" />
     <ClInclude Include="Tool.h" />
+    <ClInclude Include="ViewController.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
