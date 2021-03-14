@@ -31,7 +31,7 @@ public:
 	void setRootViewController(ViewController* _rootViewController);
 
 	// Prototypes function
-	int Game_Init(HWND);
-	void Game_Run(HWND);
-	void Game_End(HWND);
+	int Game_Init(HWND hwnd);
+	void Game_Run(HWND hwnd);
+	void Game_End(HWND hwnd);
 };

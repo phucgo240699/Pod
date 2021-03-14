@@ -9,6 +9,7 @@ protected:
 	LPDIRECT3DSURFACE9 surface;
 public:
 	Component(RECT* _bounds, Color* _color);
+	Component(int x, int y, int width, int height, Color* _color);
 	~Component();
 
 	// Getter

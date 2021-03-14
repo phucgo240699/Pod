@@ -7,6 +7,16 @@ Component::Component(RECT* _bounds, Color* _color)
 	surface = LoadBlankSurface(this->bounds->right, this->bounds->bottom);
 }
 
+Component::Component(int x, int y, int width, int height, Color* _color)
+{
+	this->bounds = new RECT();
+	this->bounds->top = y;
+	this->bounds->bottom = y + height;
+	this->bounds->left = x;
+	this->bounds->right = x + width;
+	this->color = _color;
+}
+
 Component::~Component()
 {
 	delete bounds;
