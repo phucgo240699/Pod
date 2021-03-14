@@ -10,7 +10,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include"dxgraphics.h"
-#include"ViewController.h"
+#include"Man1.h"
 
 
 // Read keyboard command
@@ -20,11 +20,9 @@
 class AppController {
 	// Name of program
 private:
-	ViewController* rootViewController;
+	ViewController* rootViewController = new Man1();
 
 public:
-	// Init
-	AppController(ViewController* viewController);
 
 	// Getter
 	ViewController* getRootViewController();

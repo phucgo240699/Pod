@@ -6,6 +6,5 @@ class AppConfig {
 public:
 	AppConfig();
 	Setting* setting;
-	ViewController* man1 = new Man1;
 	AppController* appController;
 };

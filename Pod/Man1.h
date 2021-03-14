@@ -3,6 +3,7 @@
 
 class Man1 : public ViewController
 {
-
+public:
+	Man1();
 };
 

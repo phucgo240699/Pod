@@ -1,9 +1,5 @@
 #include"AppController.h"
 
-AppController::AppController(ViewController* viewController)
-{
-	this->rootViewController = viewController;
-}
 
 ViewController* AppController::getRootViewController()
 {

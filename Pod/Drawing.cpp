@@ -29,7 +29,7 @@ void Drawing::draw(LPDIRECT3DSURFACE9 surface, RECT* _srcRect, D3DCOLOR _color)
 {
 	if (d3ddev->BeginScene()) {
 
-		d3ddev->ColorFill(surface, _srcRect, _color);
+		d3ddev->ColorFill(surface, NULL, _color);
 		d3ddev->StretchRect(surface, NULL, backbuffer, _srcRect, D3DTEXF_NONE);
 
 		d3ddev->EndScene();
