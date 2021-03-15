@@ -1,6 +1,5 @@
 #pragma once
 #include"AppController.h"
-#include"Man1.h"
 
 class AppConfig {
 public:

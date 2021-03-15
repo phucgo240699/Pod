@@ -1,12 +1,11 @@
 #pragma once
 #include "ViewController.h"
+#include "Image.h"
 
 class Man1 : public ViewController
 {
 private:
-	Component* c1;
-	Component* c2;
-	Component* c3;
+	View* c1;
 public:
 	void viewDidLoad();
 	void viewReceiveKeyDown(KeyType _keyType);

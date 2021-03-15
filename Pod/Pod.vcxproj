@@ -152,9 +152,11 @@
     <ClCompile Include="Drawing.cpp" />
     <ClCompile Include="dxgraphics.cpp" />
     <ClCompile Include="FileManager.cpp" />
+    <ClCompile Include="Image.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Man1.cpp" />
     <ClCompile Include="Setting.cpp" />
+    <ClCompile Include="View.cpp" />
     <ClCompile Include="ViewController.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -165,10 +167,12 @@
     <ClInclude Include="Drawing.h" />
     <ClInclude Include="dxgraphics.h" />
     <ClInclude Include="FileManager.h" />
+    <ClInclude Include="Image.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Man1.h" />
     <ClInclude Include="Setting.h" />
     <ClInclude Include="Tool.h" />
+    <ClInclude Include="View.h" />
     <ClInclude Include="ViewController.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

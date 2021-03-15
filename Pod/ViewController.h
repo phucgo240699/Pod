@@ -1,8 +1,7 @@
 #pragma once
-#include "Color.h"
 #include <vector>
 #include "Setting.h"
-#include "Component.h"
+#include "View.h"
 #include "Keyboard.h"
 
 class ViewController
@@ -18,11 +17,8 @@ public:
 	// De Init
 	~ViewController();
 
-	// Getter
-	Component* getBackground();
-
 	// Setter
-	void setBackground(Component* _background);
+	void setBackgroundColor(D3DCOLOR _color);
 
 	// Life cycle
 	virtual void viewDidLoad();

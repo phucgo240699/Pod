@@ -11,7 +11,6 @@
 #include<stdlib.h>
 #include"dxgraphics.h"
 #include"Man1.h"
-#include"Keyboard.h"
 
 
 // Read keyboard command

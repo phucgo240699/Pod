@@ -5,7 +5,7 @@ ViewController::ViewController()
 	RECT* r = new RECT();
 	r->bottom = Setting::getInstance()->getScreenHeight();
 	r->right = Setting::getInstance()->getScreenWidth();
-	this->background = new Component(r, Setting::getInstance()->getDefaultBackgroundColorViewController());
+	this->background = new View(r, Setting::getInstance()->getDefaultBackgroundColorViewController()->toD3DColor());
 }
 
 ViewController::~ViewController()
@@ -17,14 +17,9 @@ ViewController::~ViewController()
 	delete &components;
 }
 
-Component* ViewController::getBackground()
+void ViewController::setBackgroundColor(D3DCOLOR _color)
 {
-	return this->background;
-}
-
-void ViewController::setBackground(Component* _background)
-{
-	this->background = _background;
+	this->background->setColor(_color);
 }
 
 void ViewController::viewDidLoad()
