@@ -107,6 +107,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	// main message loop
 	int done = 0;
+	DWORD startTime = GetTickCount();
 	while (!done) {
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 			// look for quit messgae
@@ -117,7 +118,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		else appController->Game_Run(hWnd);
+		else {
+			if (GetTickCount() - startTime > (1000 / setting->getFPS())) {
+				appController->Game_Run(hWnd);
+				startTime = GetTickCount();
+			}
+		}
 	}
 	return msg.wParam;
 }

@@ -15,16 +15,17 @@ void Man1::viewDidLoad()
 
 void Man1::viewReceiveKeyDown(KeyType _keyType)
 {
+	int space = 3;
 	if (_keyType == KeyType::up) {
-		c1->jumpTo(c1->getBounds()->left, c1->getBounds()->top - 1);
+		c1->jumpTo(c1->getBounds()->left, c1->getBounds()->top - space);
 	}
 	if (_keyType == KeyType::down) {
-		c1->jumpTo(c1->getBounds()->left, c1->getBounds()->top + 1);
+		c1->jumpTo(c1->getBounds()->left, c1->getBounds()->top + space);
 	}
 	if (_keyType == KeyType::left) {
-		c1->jumpTo(c1->getBounds()->left - 1, c1->getBounds()->top);
+		c1->jumpTo(c1->getBounds()->left - space, c1->getBounds()->top);
 	}
 	if (_keyType == KeyType::right) {
-		c1->jumpTo(c1->getBounds()->left + 1, c1->getBounds()->top);
+		c1->jumpTo(c1->getBounds()->left + space, c1->getBounds()->top);
 	}
 }
