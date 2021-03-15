@@ -1,6 +1,11 @@
 #include"AppController.h"
 
 
+AppController::~AppController()
+{
+	delete rootViewController;
+}
+
 ViewController* AppController::getRootViewController()
 {
 	return this->rootViewController;

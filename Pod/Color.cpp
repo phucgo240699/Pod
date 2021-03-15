@@ -5,6 +5,11 @@ Color::Color(EnumColor _enumColor)
 	this->value = _enumColor;
 }
 
+Color::~Color()
+{
+	delete& value;
+}
+
 EnumColor Color::getValue()
 {
 	return this->value;

@@ -11,6 +11,8 @@ protected:
 	vector<Component*> components;
 
 public:
+	// De Init
+	~ViewController();
 
 	// Getter
 	Component* getBackground();

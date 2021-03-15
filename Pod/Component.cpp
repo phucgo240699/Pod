@@ -20,6 +20,8 @@ Component::Component(int x, int y, int width, int height, Color* _color)
 Component::~Component()
 {
 	delete bounds;
+	delete color;
+	delete& surface;
 }
 
 RECT* Component::getBounds()

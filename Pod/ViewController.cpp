@@ -1,5 +1,14 @@
 #include "ViewController.h"
 
+ViewController::~ViewController()
+{
+	delete background;
+	for (int i = 0; i < components.size(); ++i) {
+		delete components[i];
+	}
+	delete &components;
+}
+
 Component* ViewController::getBackground()
 {
 	return this->background;
@@ -36,10 +45,15 @@ void ViewController::viewWillRender()
 
 void ViewController::viewDidRender()
 {
-	background->draw();
-	for (int i = 0; i < this->components.size(); ++i) {
-		components[i]->draw();
+	if (d3ddev->BeginScene()) {
+		background->draw();
+		for (int i = 0; i < this->components.size(); ++i) {
+			components[i]->draw();
+		}
+		d3ddev->EndScene();
 	}
+
+	d3ddev->Present(NULL, NULL, NULL, NULL);
 }
 
 void ViewController::viewWillRelease()

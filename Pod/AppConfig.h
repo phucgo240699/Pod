@@ -4,7 +4,13 @@
 
 class AppConfig {
 public:
-	AppConfig();
+	// Properties
 	Setting* setting;
 	AppController* appController;
+
+	// Init
+	AppConfig();
+
+	// De Init
+	~AppConfig();
 };

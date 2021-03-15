@@ -14,6 +14,9 @@ public:
 	// Init
 	Color(EnumColor _enumColor);
 
+	// De Init
+	~Color();
+
 	// Getter
 	EnumColor getValue();
 
