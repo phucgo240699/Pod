@@ -11,6 +11,7 @@
 #include<stdlib.h>
 #include"dxgraphics.h"
 #include"Man1.h"
+#include"Keyboard.h"
 
 
 // Read keyboard command
@@ -37,4 +38,5 @@ public:
 	int Game_Init(HWND hwnd);
 	void Game_Run(HWND hwnd);
 	void Game_End(HWND hwnd);
+	void Handler_Keyboard(HWND hwnd);
 };

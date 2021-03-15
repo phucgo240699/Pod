@@ -27,6 +27,14 @@ void ViewController::viewDidLoad()
 	this->background = new Component(r, Setting::getInstance()->getDefaultBackgroundColorViewController());
 }
 
+void ViewController::viewReceiveKeyDown(KeyType _keyType)
+{
+}
+
+void ViewController::viewReceiveKeyUp(KeyType _keyType)
+{
+}
+
 void ViewController::viewWillUpdate()
 {
 }

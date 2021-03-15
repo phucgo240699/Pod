@@ -165,6 +165,7 @@
     <ClInclude Include="Drawing.h" />
     <ClInclude Include="dxgraphics.h" />
     <ClInclude Include="FileManager.h" />
+    <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Man1.h" />
     <ClInclude Include="Setting.h" />
     <ClInclude Include="Tool.h" />

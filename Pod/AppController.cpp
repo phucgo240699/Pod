@@ -26,9 +26,7 @@ int AppController::Game_Init(HWND hwnd)
 
 void AppController::Game_Run(HWND hwnd)
 {
-	if (KEY_DOWN(VK_ESCAPE)) {
-		PostMessage(hwnd, WM_DESTROY, 0, 0);
-	}
+	Handler_Keyboard(hwnd);
 
 	this->rootViewController->viewWillUpdate();
 	this->rootViewController->viewDidUpdate();
@@ -39,4 +37,44 @@ void AppController::Game_Run(HWND hwnd)
 void AppController::Game_End(HWND hwnd)
 {
 	this->rootViewController->viewWillRelease();
+}
+
+void AppController::Handler_Keyboard(HWND hwnd)
+{
+	// Escape
+	if (KEY_DOWN(VK_ESCAPE)) {
+		PostMessage(hwnd, WM_DESTROY, 0, 0);
+	}
+
+	// Up
+	if (KEY_DOWN(VK_UP)) {
+		this->rootViewController->viewReceiveKeyDown(KeyType::up);
+	}
+	if (KEY_UP(VK_UP)) {
+		this->rootViewController->viewReceiveKeyUp(KeyType::up);
+	}
+
+	// Down
+	if (KEY_DOWN(VK_DOWN)) {
+		this->rootViewController->viewReceiveKeyDown(KeyType::down);
+	}
+	if (KEY_UP(VK_DOWN)) {
+		this->rootViewController->viewReceiveKeyUp(KeyType::down);
+	}
+
+	// Left
+	if (KEY_DOWN(VK_LEFT)) {
+		this->rootViewController->viewReceiveKeyDown(KeyType::left);
+	}
+	if (KEY_UP(VK_LEFT)) {
+		this->rootViewController->viewReceiveKeyUp(KeyType::left);
+	}
+
+	// Right
+	if (KEY_DOWN(VK_RIGHT)) {
+		this->rootViewController->viewReceiveKeyDown(KeyType::right);
+	}
+	if (KEY_UP(VK_RIGHT)) {
+		this->rootViewController->viewReceiveKeyUp(KeyType::right);
+	}
 }
