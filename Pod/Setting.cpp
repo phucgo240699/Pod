@@ -42,24 +42,24 @@ Color* Setting::getDefaultBackgroundColorViewController()
 	return this->defaultBackgroundColorViewController;
 }
 
-string Setting::getRootImagesFolder()
-{
-	return this->rootImagesFolder;
-}
-
-string Setting::getRootSoundsFolder()
-{
-	return this->rootSoundsFolder;
-}
+//string Setting::getRootImagesFolder()
+//{
+//	return this->rootImagesFolder;
+//}
+//
+//string Setting::getRootSoundsFolder()
+//{
+//	return this->rootSoundsFolder;
+//}
+//
+//string Setting::getRootTextFilesFolder()
+//{
+//	return this->rootTextFileFolder;
+//}
 
 void Setting::setScreenMode(ScreenMode _screenMode)
 {
 	this->screenMode = _screenMode;
-}
-
-string Setting::getRootTextFilesFolder()
-{
-	return this->rootTextFileFolder;
 }
 
 void Setting::setScreenWidth(int _width)
@@ -101,17 +101,17 @@ void Setting::save()
 	FileManager::getInstance()->writeStringToTextFile("settings.txt", settingsStr);
 }
 
-void Setting::setRootImagesFolder(string _path)
-{
-	this->rootImagesFolder = _path;
-}
-
-void Setting::setRootSoundsFolder(string _path)
-{
-	this->rootSoundsFolder = _path;
-}
-
-void Setting::setRootTextFilesFolder(string _path)
-{
-	this->rootTextFileFolder = _path;
-}
+//void Setting::setRootImagesFolder(string _path)
+//{
+//	this->rootImagesFolder = _path;
+//}
+//
+//void Setting::setRootSoundsFolder(string _path)
+//{
+//	this->rootSoundsFolder = _path;
+//}
+//
+//void Setting::setRootTextFilesFolder(string _path)
+//{
+//	this->rootTextFileFolder = _path;
+//}

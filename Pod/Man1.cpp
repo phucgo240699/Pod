@@ -2,12 +2,11 @@
 
 void Man1::viewDidLoad()
 {
-	background->setColor(new Color(yellow));
 	c1 = new Component(0, 0, 500, 100, new Color(red));
 	c2 = new Component(200, 300, 500, 100, new Color(yellow));
 	//char* path = new char[20];
 	//path = "./Assets/Images/AladdinSpriteSheet.png";
-	c1 = new Component(100, 100, L"./Assets/Images/panda.png", new Color(pinkFF00FF));
+	c3 = new Component(100, 100, L"./Assets/Images/panda.png", new Color(pinkFF00FF));
 
 	//this->addComponent(c1);
 	//this->addComponent(c2);
