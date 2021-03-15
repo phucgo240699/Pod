@@ -19,9 +19,9 @@ private:
 	int screenHeight = 480;
 	ScreenMode screenMode = window;
 	Color* defaultBackgroundColorViewController = new Color(black);
-	string rootImagesFolder = "./Assets/Images";
-	string rootSoundsFolder = "./Assets/Sounds";
-	string rootTextFileFolder = "./Assets/TextFiles";
+	string rootImagesFolder = "./Assets/Images/";
+	string rootSoundsFolder = "./Assets/Sounds/";
+	string rootTextFileFolder = "./Assets/TextFiles/";
 
 public:
 	Setting(const Setting&) = delete; // 3. delete copy constructor

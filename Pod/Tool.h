@@ -25,6 +25,14 @@ public:
 		return wstring(&buf[0]).c_str();
 	}
 
+	static wstring widen(string& s) {
+		vector<wchar_t> buf(MultiByteToWideChar(CP_ACP, 0, s.c_str(), s.size() + 1, 0, 0));
+
+		MultiByteToWideChar(CP_ACP, 0, s.c_str(), s.size() + 1, &buf[0], buf.size());
+
+		return wstring(&buf[0]);
+	}
+
 	static string getStringFrom(LPCWSTR wString)
 	{
 		wstring ws(wString);
@@ -54,7 +62,7 @@ public:
 		if (str == "yellow") return yellow;
 		if (str == "green") return green;
 		if (str == "blue") return blue;
-		if (str == "pink") return pink;
+		if (str == "pinkFF00FF") return pinkFF00FF;
 		if (str == "purple") return purple;
 		if (str == "black") return black;
 		if (str == "gray") return gray;
@@ -74,8 +82,8 @@ public:
 			return "green";
 		case blue:
 			return "blue";
-		case pink:
-			return "pink";
+		case pinkFF00FF:
+			return "pinkFF00FF";
 		case purple:
 			return "purple";
 		case black:

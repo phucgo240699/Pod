@@ -12,6 +12,9 @@ protected:
 	vector<Component*> components;
 
 public:
+	// Init
+	ViewController();
+
 	// De Init
 	~ViewController();
 

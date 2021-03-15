@@ -6,8 +6,9 @@ class Man1 : public ViewController
 private:
 	Component* c1;
 	Component* c2;
+	Component* c3;
 public:
-	Man1();
+	void viewDidLoad();
 	void viewReceiveKeyDown(KeyType _keyType);
 };
 

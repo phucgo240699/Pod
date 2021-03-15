@@ -11,7 +11,7 @@
 int Init_Direct3D(HWND hwnd, int width, int height, bool isFullScreen);
 LPDIRECT3DSURFACE9 LoadBlankSurface(int width, int height);
 //LPDIRECT3DSURFACE9 LoadSurfaceFromFile(char* fileName, D3DCOLOR transcolor);
-LPDIRECT3DTEXTURE9 LoadTextureFromImage(string imageName, D3DCOLOR transcolor);
+LPDIRECT3DTEXTURE9 LoadTextureFromImage(LPCWSTR imagePath, D3DCOLOR transcolor);
 
 // variable declarations
 extern LPDIRECT3D9 d3d;

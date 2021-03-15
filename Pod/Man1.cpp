@@ -1,23 +1,17 @@
 #include "Man1.h"
 
-Man1::Man1()
+void Man1::viewDidLoad()
 {
-	RECT* r1 = new RECT();
-	RECT* r2 = new RECT();
-	r1->top = 0;
-	r1->bottom = r1->top + 100;
-	r1->left = 0;
-	r1->right = r1->left + 500;
+	background->setColor(new Color(yellow));
+	c1 = new Component(0, 0, 500, 100, new Color(red));
+	c2 = new Component(200, 300, 500, 100, new Color(yellow));
+	//char* path = new char[20];
+	//path = "./Assets/Images/AladdinSpriteSheet.png";
+	c1 = new Component(100, 100, L"./Assets/Images/panda.png", new Color(pinkFF00FF));
 
-	r2->top = 300;
-	r2->bottom = r2->top + 100;
-	r2->left = 200;
-	r2->right = r2->left + 500;
-	c1 = new Component(r1, new Color(red));
-	c2 = new Component(r2, new Color(yellow));
-
+	//this->addComponent(c1);
+	//this->addComponent(c2);
 	this->addComponent(c1);
-	this->addComponent(c2);
 }
 
 void Man1::viewReceiveKeyDown(KeyType _keyType)

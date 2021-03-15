@@ -3,7 +3,7 @@
 #include <string>
 
 enum EnumColor {
-	red, orange, yellow, green, blue, pink, purple, black, gray, white
+	red, orange, yellow, green, blue, pinkFF00FF, purple, black, gray, white
 };
 
 class Color {

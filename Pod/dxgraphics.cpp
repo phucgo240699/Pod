@@ -75,6 +75,7 @@ LPDIRECT3DSURFACE9 LoadBlankSurface(int width, int height)
 	);
 
 	if (result != D3D_OK) {
+		throw "Create surface failed";
 		return NULL;
 	}
 
@@ -127,13 +128,10 @@ LPDIRECT3DSURFACE9 LoadBlankSurface(int width, int height)
 //	return surface;
 //}
 
-LPDIRECT3DTEXTURE9 LoadTextureFromImage(string imageName, D3DCOLOR transcolor)
+LPDIRECT3DTEXTURE9 LoadTextureFromImage(LPCWSTR imagePath, D3DCOLOR transcolor)
 {
 	// texture pointer
 	LPDIRECT3DTEXTURE9 texture = NULL;
-	
-	// Path
-	string path = Setting::getInstance()->getRootImagesFolder() + imageName;
 
 	// Structure for read information from bitmap file
 	D3DXIMAGE_INFO info;
@@ -142,17 +140,18 @@ LPDIRECT3DTEXTURE9 LoadTextureFromImage(string imageName, D3DCOLOR transcolor)
 	HRESULT result;
 
 	// Get info width & height from bitmap file
-	result = D3DXGetImageInfoFromFile(Tool::getLPCWSTRFromString(path), &info);
+	result = D3DXGetImageInfoFromFile(imagePath, &info);
 
 	// Check if get info failed
 	if (result != D3D_OK) {
+		throw "Get image info failed. Please check your path";
 		return NULL;
 	}
 
 	// Create new texture from bitmap
 	result = D3DXCreateTextureFromFileEx(
 		d3ddev,
-		Tool::getLPCWSTRFromString(path),
+		imagePath,
 		info.Width,
 		info.Height,
 		1,
@@ -169,6 +168,7 @@ LPDIRECT3DTEXTURE9 LoadTextureFromImage(string imageName, D3DCOLOR transcolor)
 
 	// Make sure create texture successful
 	if (result != D3D_OK) {
+		throw "Create texture from file failed";
 		return NULL;
 	}
 

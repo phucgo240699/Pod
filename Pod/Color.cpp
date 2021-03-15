@@ -34,8 +34,8 @@ D3DCOLOR Color::toD3DColor()
 		return D3DCOLOR_XRGB(0, 255, 0);
 	case blue:
 		return D3DCOLOR_XRGB(0, 0, 255);
-	case pink:
-		return D3DCOLOR_XRGB(255, 192, 203);
+	case pinkFF00FF:
+		return D3DCOLOR_XRGB(255, 0, 255);
 	case purple:
 		return D3DCOLOR_XRGB(128, 0, 128);
 	case black:

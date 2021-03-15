@@ -1,5 +1,13 @@
 #include "ViewController.h"
 
+ViewController::ViewController()
+{
+	RECT* r = new RECT();
+	r->bottom = Setting::getInstance()->getScreenHeight();
+	r->right = Setting::getInstance()->getScreenWidth();
+	this->background = new Component(r, Setting::getInstance()->getDefaultBackgroundColorViewController());
+}
+
 ViewController::~ViewController()
 {
 	delete background;
@@ -21,10 +29,6 @@ void ViewController::setBackground(Component* _background)
 
 void ViewController::viewDidLoad()
 {
-	RECT* r = new RECT();
-	r->bottom = Setting::getInstance()->getScreenHeight();
-	r->right = Setting::getInstance()->getScreenWidth();
-	this->background = new Component(r, Setting::getInstance()->getDefaultBackgroundColorViewController());
 }
 
 void ViewController::viewReceiveKeyDown(KeyType _keyType)
