@@ -44,12 +44,21 @@ void Component::setColor(Color* _color)
 	this->color = _color;
 }
 
-void Component::update()
+void Component::Update()
 {
 
 }
 
-void Component::draw()
+void Component::Draw()
 {
 	Drawing::getInstance()->draw(surface, this->bounds, this->color->toD3DColor());
+}
+
+void Component::jumpTo(int x, int y)
+{
+	int width = this->bounds->right - this->bounds->left, height = this->bounds->bottom - this->bounds->top;
+	this->bounds->top = y;
+	this->bounds->bottom = y + height;
+	this->bounds->left = x;
+	this->bounds->right = x + width;
 }

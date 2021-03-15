@@ -8,5 +8,6 @@ private:
 	Component* c2;
 public:
 	Man1();
+	void viewWillUpdate();
 };
 

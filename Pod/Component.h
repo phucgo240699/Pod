@@ -23,6 +23,8 @@ public:
 	void setBounds(RECT* _bounds);
 	void setColor(Color* _color);
 
-	virtual void update();
-	virtual void draw();
+	virtual void Update();
+	virtual void Draw();
+
+	void jumpTo(int x, int y);
 };

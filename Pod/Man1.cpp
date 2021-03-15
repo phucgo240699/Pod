@@ -3,18 +3,24 @@
 Man1::Man1()
 {
 	RECT* r1 = new RECT();
-	r1->top = 300;
-	r1->bottom = r1->top + 100;
-	r1->left = 200;
-	r1->right = r1->left + 500;
 	RECT* r2 = new RECT();
-	r2->top = 0;
+	r1->top = 0;
+	r1->bottom = r1->top + 100;
+	r1->left = 0;
+	r1->right = r1->left + 500;
+
+	r2->top = 300;
 	r2->bottom = r2->top + 100;
-	r2->left = 0;
+	r2->left = 200;
 	r2->right = r2->left + 500;
-	c1 = new Component(r1, new Color(yellow));
+	c1 = new Component(r1, new Color(red));
 	c2 = new Component(r2, new Color(yellow));
 
 	this->addComponent(c1);
 	this->addComponent(c2);
+}
+
+void Man1::viewWillUpdate()
+{
+	c1->jumpTo(c1->getBounds()->left + 1, c1->getBounds()->top + 1);
 }

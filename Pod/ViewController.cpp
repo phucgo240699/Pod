@@ -33,9 +33,9 @@ void ViewController::viewWillUpdate()
 
 void ViewController::viewDidUpdate()
 {
-	background->update();
+	background->Update();
 	for (int i = 0; i < this->components.size(); ++i) {
-		components[i]->update();
+		components[i]->Update();
 	}
 }
 
@@ -46,9 +46,9 @@ void ViewController::viewWillRender()
 void ViewController::viewDidRender()
 {
 	if (d3ddev->BeginScene()) {
-		background->draw();
+		background->Draw();
 		for (int i = 0; i < this->components.size(); ++i) {
-			components[i]->draw();
+			components[i]->Draw();
 		}
 		d3ddev->EndScene();
 	}
