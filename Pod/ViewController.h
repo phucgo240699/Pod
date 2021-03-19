@@ -1,13 +1,12 @@
 #pragma once
 #include <vector>
 #include "Setting.h"
-#include "View.h"
+#include "Component.h"
 #include "Keyboard.h"
 
 class ViewController
 {
 protected:
-	Component* background;
 	vector<Component*> components;
 
 public:
@@ -16,9 +15,6 @@ public:
 
 	// De Init
 	~ViewController();
-
-	// Setter
-	void setBackgroundColor(D3DCOLOR _color);
 
 	// Life cycle
 	virtual void viewDidLoad();

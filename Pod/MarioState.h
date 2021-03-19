@@ -1,0 +1,5 @@
+#pragma once
+
+enum MarioState {
+	DROPPING, STANDING, JUMPING, WALKING_RIGHT, WALKING_LEFT
+};

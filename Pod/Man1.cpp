@@ -2,13 +2,30 @@
 
 void Man1::viewDidLoad()
 {
-
-	c1 = new View(50, 50, 100, 100, D3DCOLOR_XRGB(255, 0, 0));
-
-	this->addComponent(c1);
+	mainCharacter = new Mario(100, 100, L"./Assets/Images/mario.png", NULL, STANDING);
+	this->addComponent(mainCharacter);
 }
 
 void Man1::viewReceiveKeyDown(KeyType _keyType)
 {
+	/*switch (_keyType)
+	{
+	case KeyType::left:
+		mainCharacter->setState(WALKING_LEFT);
+	case KeyType::right:
+		mainCharacter->setState(WALKING_RIGHT);
+	}*/
+}
 
+void Man1::viewReceiveKeyUp(KeyType _keyType)
+{
+	/*switch (_keyType)
+	{
+	case KeyType::left:
+		mainCharacter->setState(STANDING);
+		break;
+	case KeyType::right:
+		mainCharacter->setState(STANDING);
+		break;
+	}*/
 }

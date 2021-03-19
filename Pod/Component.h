@@ -3,8 +3,26 @@
 #include "Drawing.h"
 
 class Component {
-public:
-	virtual void Update() = 0;
-	virtual void Draw() = 0;
-	virtual void setColor(D3DCOLOR _color) = 0;
+protected:
+	D3DXVECTOR3* position;
+public:	
+	// Init
+	Component(int _x, int _y);
+	Component(D3DXVECTOR3* _position);
+
+	// De Init
+	~Component();
+
+	// Getter
+	D3DXVECTOR3* getPosition();
+	int getX();
+	int getY();
+
+	// Settter
+	void setPosition(D3DXVECTOR3* _position);
+	void setX(int _x);
+	void setY(int _y);
+
+	virtual void Update();
+	virtual void Draw();
 };

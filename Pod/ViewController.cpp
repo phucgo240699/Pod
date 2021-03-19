@@ -5,21 +5,14 @@ ViewController::ViewController()
 	RECT* r = new RECT();
 	r->bottom = Setting::getInstance()->getScreenHeight();
 	r->right = Setting::getInstance()->getScreenWidth();
-	this->background = new View(r, Setting::getInstance()->getDefaultBackgroundColorViewController()->toD3DColor());
 }
 
 ViewController::~ViewController()
 {
-	delete background;
 	for (int i = 0; i < components.size(); ++i) {
 		delete components[i];
 	}
 	delete &components;
-}
-
-void ViewController::setBackgroundColor(D3DCOLOR _color)
-{
-	this->background->setColor(_color);
 }
 
 void ViewController::viewDidLoad()
@@ -40,7 +33,6 @@ void ViewController::viewWillUpdate()
 
 void ViewController::viewDidUpdate()
 {
-	background->Update();
 	for (int i = 0; i < this->components.size(); ++i) {
 		components[i]->Update();
 	}
@@ -53,7 +45,9 @@ void ViewController::viewWillRender()
 void ViewController::viewDidRender()
 {
 	if (d3ddev->BeginScene()) {
-		background->Draw();
+		// Clear backbuffer
+		d3ddev->Clear(0, NULL, D3DCLEAR_TARGET, Setting::getInstance()->getDefaultBackgroundColorViewController()->toD3DColor(), 1.0f, 0);
+
 		for (int i = 0; i < this->components.size(); ++i) {
 			components[i]->Draw();
 		}

@@ -1,13 +1,14 @@
 #pragma once
 #include "ViewController.h"
-#include "Image.h"
+#include "Mario.h"
 
 class Man1 : public ViewController
 {
 private:
-	View* c1;
+	Mario* mainCharacter;
 public:
 	void viewDidLoad();
 	void viewReceiveKeyDown(KeyType _keyType);
+	void viewReceiveKeyUp(KeyType _keyType);
 };
 

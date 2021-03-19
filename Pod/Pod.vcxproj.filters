@@ -58,6 +58,12 @@
     <Filter Include="Header Files\Enums">
       <UniqueIdentifier>{93e37a0e-bd31-4cac-ade1-5805788bd5f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\Mario">
+      <UniqueIdentifier>{da33f3d3-edeb-4b09-80b3-190e597ec3e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Mario">
+      <UniqueIdentifier>{4fd47f73-2077-454e-ad0e-402db5b4d8ee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -93,11 +99,8 @@
     <ClCompile Include="AppConfig.cpp">
       <Filter>Source Files\AppController</Filter>
     </ClCompile>
-    <ClCompile Include="View.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Image.cpp">
-      <Filter>Source Files\Components</Filter>
+    <ClCompile Include="Mario.cpp">
+      <Filter>Source Files\Components\Mario</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -137,11 +140,11 @@
     <ClInclude Include="Keyboard.h">
       <Filter>Header Files\Enums</Filter>
     </ClInclude>
-    <ClInclude Include="View.h">
-      <Filter>Header Files\Components</Filter>
+    <ClInclude Include="Mario.h">
+      <Filter>Header Files\Components\Mario</Filter>
     </ClInclude>
-    <ClInclude Include="Image.h">
-      <Filter>Header Files\Components</Filter>
+    <ClInclude Include="MarioState.h">
+      <Filter>Header Files\Components\Mario</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
