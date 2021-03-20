@@ -55,14 +55,20 @@
     <Filter Include="Source Files\ViewController\Man1">
       <UniqueIdentifier>{1546b113-08b5-4d29-aadb-cbe632cb5e5f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Enums">
-      <UniqueIdentifier>{93e37a0e-bd31-4cac-ade1-5805788bd5f0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Components\Mario">
       <UniqueIdentifier>{da33f3d3-edeb-4b09-80b3-190e597ec3e0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Components\Mario">
       <UniqueIdentifier>{4fd47f73-2077-454e-ad0e-402db5b4d8ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Enums">
+      <UniqueIdentifier>{93e37a0e-bd31-4cac-ade1-5805788bd5f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Animations">
+      <UniqueIdentifier>{e5d672f3-41fa-416d-a9e6-9a8ed86221f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Animations">
+      <UniqueIdentifier>{5aa077f5-4ead-4eb5-a616-6cc94ebc2a6c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

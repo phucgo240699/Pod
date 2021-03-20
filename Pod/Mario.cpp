@@ -32,28 +32,7 @@ void Mario::setState(MarioState _state)
 
 void Mario::Update()
 {
-	switch (this->state)
-	{
-	case MarioState::JUMPING:
-		vY = -2;
-		break;
-	case MarioState::DROPPING:
-		vY = 2;
-		break;
-	case MarioState::WALKING_RIGHT:
-		vX = 2;
-		break;
-	case MarioState::WALKING_LEFT:
-		vX = -2;
-		break;
-	default:
-		vX = 0;
-		vY = 0;
-		break;
-	}
-
-	this->setX(this->getX() + vX);
-	this->setY(this->getY() + vY);
+	
 }
 
 void Mario::Draw()
