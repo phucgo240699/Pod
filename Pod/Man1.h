@@ -9,6 +9,6 @@ private:
 public:
 	void viewDidLoad();
 	void viewReceiveKeyDown(KeyType _keyType);
-	void viewReceiveKeyUp(KeyType _keyType);
+	void viewReceiveKeyUp();
 };
 

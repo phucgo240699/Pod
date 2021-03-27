@@ -23,7 +23,7 @@ void ViewController::viewReceiveKeyDown(KeyType _keyType)
 {
 }
 
-void ViewController::viewReceiveKeyUp(KeyType _keyType)
+void ViewController::viewReceiveKeyUp()
 {
 }
 

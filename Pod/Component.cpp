@@ -45,6 +45,16 @@ void Component::setY(int _y)
 	this->position->y = _y;
 }
 
+void Component::plusX(int _x)
+{
+	this->position->x += _x;
+}
+
+void Component::plusY(int _y)
+{
+	this->position->y += _y;
+}
+
 void Component::Update()
 {
 }

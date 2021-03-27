@@ -8,10 +8,10 @@ void Man1::viewDidLoad()
 
 void Man1::viewReceiveKeyDown(KeyType _keyType)
 {
-
+	mainCharacter->onKeyDown(_keyType);
 }
 
-void Man1::viewReceiveKeyUp(KeyType _keyType)
+void Man1::viewReceiveKeyUp()
 {
-
+	mainCharacter->onKeyUp();
 }

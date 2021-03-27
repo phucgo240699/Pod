@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "MarioState.h"
+#include "Keyboard.h"
 
 class Mario : public Component
 {
@@ -27,5 +28,9 @@ public:
 	// Inherit
 	void Update();
 	void Draw();
+
+	// Keyboard
+	void onKeyUp();
+	void onKeyDown(KeyType _keyType);
 };
 

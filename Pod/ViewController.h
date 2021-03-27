@@ -19,7 +19,7 @@ public:
 	// Life cycle
 	virtual void viewDidLoad();
 	virtual void viewReceiveKeyDown(KeyType _keyType);
-	virtual void viewReceiveKeyUp(KeyType _keyType);
+	virtual void viewReceiveKeyUp();
 	virtual void viewWillUpdate();
 	virtual void viewDidUpdate();
 	virtual void viewWillRender();

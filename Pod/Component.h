@@ -23,6 +23,9 @@ public:
 	void setX(int _x);
 	void setY(int _y);
 
+	void plusX(int _x);
+	void plusY(int _y);
+
 	virtual void Update();
 	virtual void Draw();
 };

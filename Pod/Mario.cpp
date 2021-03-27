@@ -32,10 +32,36 @@ void Mario::setState(MarioState _state)
 
 void Mario::Update()
 {
-	
+	this->plusX(vX);
+	this->plusY(vY);
 }
 
 void Mario::Draw()
 {
 	Drawing::getInstance()->draw(this->texture, NULL, NULL, this->position, D3DCOLOR_XRGB(255, 255, 255));
+}
+
+void Mario::onKeyUp()
+{
+	vX = 0;
+	vY = 0;
+}
+
+void Mario::onKeyDown(KeyType _keyType)
+{
+	switch (_keyType)
+	{
+	case KeyType::up:
+		vY = -1;
+		break;
+	case KeyType::down:
+		vY = 1;
+		break;
+	case KeyType::left:
+		vX = -1;
+		break;
+	case KeyType::right:
+		vX = 1;
+		break;
+	}
 }
