@@ -56,6 +56,23 @@ public:
 		return vector;
 	}
 
+	static vector<int> splitToVectorIntegerFrom(string s, char character) {
+		vector<int> vector;
+		istringstream stm(s);
+
+		int fromIndex = 0;
+		for (int i = 0; i < s.length(); ++i) {
+			if (s[i] == character) {
+				vector.push_back(stoi(s.substr(fromIndex, i - fromIndex)));
+				fromIndex = i + 1;
+			}
+		}
+
+		vector.push_back(stoi(s.substr(fromIndex, s.length() - fromIndex)));
+
+		return vector;
+	}
+
 	static EnumColor getColorFromString(string str) {
 		if (str == "red") return red;
 		if (str == "orange") return orange;

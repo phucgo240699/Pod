@@ -34,3 +34,19 @@ string FileManager::getStringFromTextFile(string fileName)
 
     return data;
 }
+
+vector<vector<int>> FileManager::getIntegerMatrixFromTextFile(string fileName, char _seperator)
+{
+    fstream f;
+    vector<vector<int>> matrix;
+
+    f.open(fileName);
+    string line;
+    while (!f.eof()) { // eof: End Of File
+        getline(f, line);
+        matrix.push_back(Tool::splitToVectorIntegerFrom(line, _seperator));
+    }
+
+    f.close();
+    return matrix;
+}

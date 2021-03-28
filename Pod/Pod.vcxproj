@@ -155,6 +155,7 @@
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Man1.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="Setting.cpp" />
     <ClCompile Include="ViewController.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Man1.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="MarioState.h" />
     <ClInclude Include="Setting.h" />

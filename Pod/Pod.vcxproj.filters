@@ -76,6 +76,12 @@
     <Filter Include="Source Files\Components\Camera">
       <UniqueIdentifier>{8c52f937-e989-494c-90a7-a991d9043ee4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Components\Map">
+      <UniqueIdentifier>{f484fb32-0a21-43e5-8be0-d398de73917f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Map">
+      <UniqueIdentifier>{89a6b3c7-97d6-4f77-893c-23cf373dd2f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -116,6 +122,9 @@
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Components\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Source Files\Components\Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Header Files\Components\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Header Files\Components\Map</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
