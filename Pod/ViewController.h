@@ -7,7 +7,7 @@
 class ViewController
 {
 protected:
-	vector<Component*> components;
+	Component* mainCharacter;
 
 public:
 	// Init
@@ -25,7 +25,5 @@ public:
 	virtual void viewWillRender();
 	virtual void viewDidRender();
 	virtual void viewWillRelease();
-
-	virtual void addComponent(Component* _component);
 };
 

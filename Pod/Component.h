@@ -1,6 +1,7 @@
 #pragma once
 #include "Color.h"
 #include "Drawing.h"
+#include "Keyboard.h"
 
 class Component {
 protected:
@@ -28,4 +29,8 @@ public:
 
 	virtual void Update();
 	virtual void Draw();
+
+	// Keyboard
+	virtual void onKeyUp();
+	virtual void onKeyDown(KeyType _keyType);
 };

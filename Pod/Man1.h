@@ -5,7 +5,6 @@
 class Man1 : public ViewController
 {
 private:
-	Mario* mainCharacter;
 public:
 	void viewDidLoad();
 	void viewReceiveKeyDown(KeyType _keyType);

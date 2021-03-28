@@ -62,3 +62,11 @@ void Component::Update()
 void Component::Draw()
 {
 }
+
+void Component::onKeyUp()
+{
+}
+
+void Component::onKeyDown(KeyType _keyType)
+{
+}

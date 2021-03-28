@@ -9,10 +9,7 @@ ViewController::ViewController()
 
 ViewController::~ViewController()
 {
-	for (int i = 0; i < components.size(); ++i) {
-		delete components[i];
-	}
-	delete &components;
+	delete& mainCharacter;
 }
 
 void ViewController::viewDidLoad()
@@ -33,9 +30,7 @@ void ViewController::viewWillUpdate()
 
 void ViewController::viewDidUpdate()
 {
-	for (int i = 0; i < this->components.size(); ++i) {
-		components[i]->Update();
-	}
+	mainCharacter->Update();
 }
 
 void ViewController::viewWillRender()
@@ -48,9 +43,8 @@ void ViewController::viewDidRender()
 		// Clear backbuffer
 		d3ddev->Clear(0, NULL, D3DCLEAR_TARGET, Setting::getInstance()->getDefaultBackgroundColorViewController()->toD3DColor(), 1.0f, 0);
 
-		for (int i = 0; i < this->components.size(); ++i) {
-			components[i]->Draw();
-		}
+		mainCharacter->Draw();
+
 		d3ddev->EndScene();
 	}
 
@@ -59,9 +53,4 @@ void ViewController::viewDidRender()
 
 void ViewController::viewWillRelease()
 {
-}
-
-void ViewController::addComponent(Component* _component)
-{
-	this->components.push_back(_component);
 }
