@@ -1,6 +1,6 @@
 #include "Mario.h"
 
-Mario::Mario(int _x, int _y, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state = STANDING) : Component(_x, _y)
+Mario::Mario(float _x, float _y, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state = STANDING) : Component(_x, _y)
 {
 	Component::Component(_x, _y);
 	this->texture = LoadTextureFromImage(_imagePath, _transcolor);
@@ -62,6 +62,8 @@ void Mario::onKeyDown(KeyType _keyType)
 		break;
 	case KeyType::right:
 		vX = 1;
+		break;
+	default:
 		break;
 	}
 }

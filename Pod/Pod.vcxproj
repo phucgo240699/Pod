@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="AppConfig.cpp" />
     <ClCompile Include="AppController.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Drawing.cpp" />
@@ -161,6 +162,7 @@
   <ItemGroup>
     <ClInclude Include="AppConfig.h" />
     <ClInclude Include="AppController.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Drawing.h" />

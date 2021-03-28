@@ -1,26 +1,24 @@
 #pragma once
-class Camera
+#include "Component.h"
+#include <d3d9.h>
+
+
+class Camera : public Component
 {
 private:
-	int x, y, width, height;
-
+	float width, height;
 public:
 	// Init
-	Camera(int _x, int _y, int _width, int _height);
-
-	// De Init
-	~Camera();
+	Camera(float _x, float _y, float _width, float _height);
+	Camera(D3DXVECTOR3* _position, float _width, float _height);
+	Camera(RECT r);
 
 	// Getter
-	int getX();
-	int getY();
-	int getWidth();
-	int getHeight();
+	float getWidth();
+	float getHeight();
 
 	// Setter
-	void setX(int _x);
-	void setY(int _y);
-	void setWidth(int _width);
-	void setHeight(int _height);
+	void setWidth(float _width);
+	void setHeight(float _height);
 };
 

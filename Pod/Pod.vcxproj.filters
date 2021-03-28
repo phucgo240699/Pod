@@ -70,6 +70,12 @@
     <Filter Include="Source Files\Animations">
       <UniqueIdentifier>{5aa077f5-4ead-4eb5-a616-6cc94ebc2a6c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\Camera">
+      <UniqueIdentifier>{ed122505-83c6-480a-9a4a-bcb81f1db664}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Camera">
+      <UniqueIdentifier>{8c52f937-e989-494c-90a7-a991d9043ee4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -107,6 +113,9 @@
     </ClCompile>
     <ClCompile Include="Mario.cpp">
       <Filter>Source Files\Components\Mario</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\Components\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +160,9 @@
     </ClInclude>
     <ClInclude Include="MarioState.h">
       <Filter>Header Files\Components\Mario</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\Components\Camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,7 +8,7 @@ protected:
 	D3DXVECTOR3* position;
 public:	
 	// Init
-	Component(int _x, int _y);
+	Component(float _x, float _y);
 	Component(D3DXVECTOR3* _position);
 
 	// De Init
@@ -16,16 +16,16 @@ public:
 
 	// Getter
 	D3DXVECTOR3* getPosition();
-	int getX();
-	int getY();
+	float getX();
+	float getY();
 
 	// Settter
 	void setPosition(D3DXVECTOR3* _position);
-	void setX(int _x);
-	void setY(int _y);
+	void setX(float _x);
+	void setY(float _y);
 
-	void plusX(int _x);
-	void plusY(int _y);
+	void plusX(float _x);
+	void plusY(float _y);
 
 	virtual void Update();
 	virtual void Draw();
