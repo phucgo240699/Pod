@@ -8,7 +8,7 @@ class Mario : public Component
 private:
 	LPDIRECT3DTEXTURE9 texture;
 	MarioState state;
-	float groundY = 500;
+
 	float vX = 0;
 	float vY = 0;
 public:

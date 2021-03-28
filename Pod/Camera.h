@@ -1,17 +1,18 @@
 #pragma once
 #include "Component.h"
-#include <d3d9.h>
+#include "FileManager.h"
 
-
+// Singleton
 class Camera : public Component
 {
 private:
+	static Camera* instance; // . static private instance
+
 	float width, height;
+
 public:
-	// Init
-	Camera(float _x, float _y, float _width, float _height);
-	Camera(D3DXVECTOR3* _position, float _width, float _height);
-	Camera(RECT r);
+	Camera(float _x, float _y);
+	static Camera* getInstance();	  // . public function for client code usage
 
 	// Getter
 	float getWidth();
@@ -20,5 +21,8 @@ public:
 	// Setter
 	void setWidth(float _width);
 	void setHeight(float _height);
+
+	void load();
+	void save();
 };
 

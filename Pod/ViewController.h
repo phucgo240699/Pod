@@ -3,6 +3,7 @@
 #include "Setting.h"
 #include "Component.h"
 #include "Keyboard.h"
+#include "Camera.h"
 
 class ViewController
 {

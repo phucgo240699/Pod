@@ -93,7 +93,9 @@ void Setting::save()
 {
 	string settingsStr = "";
 	settingsStr += to_string(this->fps);
+	settingsStr += ",";
 	settingsStr += to_string(this->screenWidth);
+	settingsStr += ",";
 	settingsStr += to_string(this->screenHeight);
 	settingsStr += (',' + string((this->screenMode == window) ? "0" : "1")); // 0: window		1: fullscreen
 	settingsStr += (',' + Tool::getStringFromColor(this->defaultBackgroundColorViewController->getValue()));

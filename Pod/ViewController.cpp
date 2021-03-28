@@ -2,9 +2,7 @@
 
 ViewController::ViewController()
 {
-	RECT* r = new RECT();
-	r->bottom = Setting::getInstance()->getScreenHeight();
-	r->right = Setting::getInstance()->getScreenWidth();
+	Camera::getInstance()->load();
 }
 
 ViewController::~ViewController()
