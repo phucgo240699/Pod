@@ -1,13 +1,23 @@
 #include "Component.h"
 
-Component::Component(float _x, float _y)
+Component::Component(float _x, float _y, float _vx, float _vy, float _dt, float _limitX, float _limitY)
 {
 	this->position = new D3DXVECTOR3(_x, _y, 0);
+	this->vx = _vx;
+	this->vy = _vy;
+	this->dt = _dt;
+	this->limitX = _limitX;
+	this->limitY = _limitY;
 }
 
-Component::Component(D3DXVECTOR3* _position)
+Component::Component(D3DXVECTOR3* _position, float _vx, float _vy, float _dt, float _limitX, float _limitY)
 {
 	this->position = _position;
+	this->vx = _vx;
+	this->vy = _vy;
+	this->dt = _dt;
+	this->limitX = _limitX;
+	this->limitY = _limitY;
 }
 
 Component::~Component()
@@ -30,6 +40,31 @@ float Component::getY()
 	return this->position->y;
 }
 
+float Component::getVx()
+{
+	return this->vx;
+}
+
+float Component::getVy()
+{
+	return this->vy;
+}
+
+float Component::getDt()
+{
+	return this->dt;
+}
+
+float Component::getLimitX()
+{
+	return this->limitX;
+}
+
+float Component::getLimitY()
+{
+	return this->limitY;
+}
+
 void Component::setPosition(D3DXVECTOR3* _position)
 {
 	this->position = _position;
@@ -43,6 +78,31 @@ void Component::setX(float _x)
 void Component::setY(float _y)
 {
 	this->position->y = _y;
+}
+
+void Component::setVx(float _vx)
+{
+	this->vx = _vx;
+}
+
+void Component::setVy(float _vy)
+{
+	this->vy = _vy;
+}
+
+void Component::setDt(float _dt)
+{
+	this->dt = _dt;
+}
+
+void Component::setLimitX(float _limitX)
+{
+	this->limitX = _limitX;
+}
+
+void Component::setLimitY(float _limitY)
+{
+	this->limitY = _limitY;
 }
 
 void Component::plusX(float _x)
@@ -61,6 +121,11 @@ void Component::Update()
 
 void Component::Draw()
 {
+}
+
+RECT* Component::getBounds()
+{
+	return nullptr;
 }
 
 void Component::onKeyUp()

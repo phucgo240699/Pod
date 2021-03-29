@@ -9,18 +9,18 @@ private:
 	LPDIRECT3DTEXTURE9 texture;
 	MarioState state;
 
-	float vX = 0;
-	float vY = 0;
+	float width, height;
 public:
 	// Init
-	Mario(float _x, float _y, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state);
-	Mario(D3DXVECTOR3* _position, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state);
+	Mario(float _x, float _y, float _vx, float _vy, float _dt, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state);
+	Mario(D3DXVECTOR3* _position, float _vx, float _vy, float _dt, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state);
 
 	// De Init
 	~Mario();
 
 	// Getter
 	MarioState getState();
+	RECT* getBounds();
 
 	// Setter
 	void setState(MarioState _state);

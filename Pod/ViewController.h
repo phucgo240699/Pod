@@ -4,11 +4,13 @@
 #include "Component.h"
 #include "Keyboard.h"
 #include "Camera.h"
+#include "Map.h"
 
 class ViewController
 {
 protected:
 	Component* mainCharacter;
+	Map* map;
 
 public:
 	// Init

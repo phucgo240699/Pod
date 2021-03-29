@@ -13,7 +13,7 @@ FileManager* FileManager::getInstance()
 void FileManager::writeStringToTextFile(string fileName, string value)
 {
 	fstream f;
-	f.open("./Assets/TextFiles/" + fileName, ios::out);
+	f.open(this->rootFolderTextFile + fileName, ios::out);
 	f << value;
 	f.close();
 }
@@ -21,7 +21,8 @@ void FileManager::writeStringToTextFile(string fileName, string value)
 string FileManager::getStringFromTextFile(string fileName)
 {
     fstream f;
-    f.open("./Assets/TextFiles/" + fileName, ios::in);
+    f.open(this->rootFolderTextFile + fileName, ios::in);
+
     string data, line;
 
     while (!f.eof()) // eof: End Of File
@@ -38,10 +39,11 @@ string FileManager::getStringFromTextFile(string fileName)
 vector<vector<int>> FileManager::getIntegerMatrixFromTextFile(string fileName, char _seperator)
 {
     fstream f;
-    vector<vector<int>> matrix;
+    f.open(this->rootFolderTextFile + fileName);
 
-    f.open(fileName);
+    vector<vector<int>> matrix;
     string line;
+
     while (!f.eof()) { // eof: End Of File
         getline(f, line);
         matrix.push_back(Tool::splitToVectorIntegerFrom(line, _seperator));

@@ -12,6 +12,7 @@ class FileManager
 private:
 	FileManager() = default; // 1.Don't public constructor function
 	static FileManager* instance; // 2. static private instance
+	string rootFolderTextFile = "./Assets/TextFiles/";
 
 public:
 	FileManager(const FileManager&) = delete; // 3. delete copy constructor

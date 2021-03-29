@@ -67,8 +67,10 @@ public:
 				fromIndex = i + 1;
 			}
 		}
-
-		vector.push_back(stoi(s.substr(fromIndex, s.length() - fromIndex)));
+		string a = s.substr(fromIndex, s.length() - fromIndex);
+		if (a != "") {
+			vector.push_back(stoi(a));
+		}
 
 		return vector;
 	}

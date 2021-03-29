@@ -12,6 +12,7 @@ ViewController::~ViewController()
 
 void ViewController::viewDidLoad()
 {
+	int a = 0;
 }
 
 void ViewController::viewReceiveKeyDown(KeyType _keyType)
@@ -28,7 +29,7 @@ void ViewController::viewWillUpdate()
 
 void ViewController::viewDidUpdate()
 {
-	mainCharacter->Update();
+	map->Update();
 }
 
 void ViewController::viewWillRender()
@@ -41,7 +42,7 @@ void ViewController::viewDidRender()
 		// Clear backbuffer
 		d3ddev->Clear(0, NULL, D3DCLEAR_TARGET, Setting::getInstance()->getDefaultBackgroundColorViewController()->toD3DColor(), 1.0f, 0);
 
-		mainCharacter->Draw();
+		map->Draw();
 
 		d3ddev->EndScene();
 	}
