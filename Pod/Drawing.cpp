@@ -11,9 +11,9 @@ Drawing* Drawing::getInstance()
 
 void Drawing::draw(LPDIRECT3DTEXTURE9 texture, RECT* _srcRect, D3DXVECTOR3* _center, D3DXVECTOR3* _position, D3DCOLOR _color)
 {
-	spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
+	//spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 	spriteHandler->Draw(texture, _srcRect, _center, _position, _color);
-	spriteHandler->End();
+	//spriteHandler->End();
 }
 
 void Drawing::draw(LPDIRECT3DSURFACE9 surface, RECT* _srcRect, D3DCOLOR _color)

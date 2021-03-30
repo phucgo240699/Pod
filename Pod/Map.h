@@ -10,7 +10,7 @@ class Map
 private:
 	LPDIRECT3DTEXTURE9 tileSetTexture;
 	vector<vector<int>> matrixIds;
-	int tileSize;
+	int tileSize, spaceBetweenTiles, tilesPerRowInTileSet, tilesPerColumnInTileSet;
 	float width, height;
 public:
 	Map(LPCWSTR _tileSetPath, string _matrixIdsPath, string _mapInfoPath, char _seperatorOfMatrixIds, D3DCOLOR _transcolor);

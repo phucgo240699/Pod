@@ -41,8 +41,12 @@ void ViewController::viewDidRender()
 	if (d3ddev->BeginScene()) {
 		// Clear backbuffer
 		d3ddev->Clear(0, NULL, D3DCLEAR_TARGET, Setting::getInstance()->getDefaultBackgroundColorViewController()->toD3DColor(), 1.0f, 0);
+		
+		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 
 		map->Draw();
+
+		spriteHandler->End();
 
 		d3ddev->EndScene();
 	}

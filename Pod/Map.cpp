@@ -13,8 +13,11 @@ Map::Map(LPCWSTR _tileSetPath, string _matrixIdsPath, string _mapInfoPath, char 
 	vector<int> v = Tool::splitToVectorIntegerFrom(FileManager::getInstance()->getStringFromTextFile(_mapInfoPath), ',');
 
 	this->tileSize = v[0];
-	this->width = v[1];
-	this->height = v[2];
+	this->spaceBetweenTiles = v[1];
+	this->tilesPerRowInTileSet = v[2];
+	this->tilesPerColumnInTileSet = v[3];
+	this->width = v[4];
+	this->height = v[5];
 }
 
 Map::~Map()
@@ -48,45 +51,55 @@ void Map::Draw()
 	D3DXVECTOR3 position; // know where to draw a tile in matrix indexes
 
 	// begin ---> end: from left ro right
-	Camera* a = Camera::getInstance();
-	int cellIndexBeginX = Camera::getInstance()->getX() / tileSize;
-	int cellIndexEndX = (Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / tileSize;
-	int numberOfTilesPerRow = cellIndexEndX - cellIndexBeginX;
+	Camera* camera = Camera::getInstance();
+	Drawing* drawing = Drawing::getInstance();
+	int cellIndexBeginX = camera->getX() / tileSize;
+	int cellIndexEndX = (camera->getX() + camera->getWidth()) / tileSize;
 	//	begin
 	//	  |
 	//	  |
 	//	  v
 	//	 end
 	// from up to down
-	int cellIndexBeginY = Camera::getInstance()->getY() / tileSize;
-	int cellIndexEndY = (Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / tileSize;
-	//int numberOfTilesPerColumn = cellIndexEndY - cellIndexBeginY;
-	int tileId;
-	for (int j = cellIndexBeginY; j <= cellIndexEndY; ++j) {
-		int rowIndex = j;
-		if (j == cellIndexEndY) {
-			rowIndex = j - 1;
+	int cellIndexBeginY = camera->getY() / tileSize;
+	int cellIndexEndY = (camera->getY() + camera->getHeight()) / tileSize;
+
+	int tileId; // from index 0
+	int r, c; // from index 0. These are row, column in tileset
+	int rowIndex, columnIndex; // from index 0. These are row, column in matrix indexes
+	for (int i = cellIndexBeginY; i <= cellIndexEndY; ++i) {
+		
+		if (i == cellIndexEndY) {
+			rowIndex = i - 1;
 		}
-		for (int i = cellIndexBeginX; i <= cellIndexEndX; ++i) {
-			int columnIndex = i;
-			if (i == cellIndexEndX) {
-				columnIndex = i - 1;
+		else {
+			rowIndex = i;
+		}
+		for (int j = cellIndexBeginX; j <= cellIndexEndX; ++j) {
+			
+			if (j == cellIndexEndX) {
+				columnIndex = j - 1;
 			}
+			else {
+				columnIndex = j;
+			}
+
 			tileId = this->matrixIds[rowIndex][columnIndex];
 
-
-			rect.top = (tileId / numberOfTilesPerRow) * tileSize;
+			r = tileId / tilesPerRowInTileSet;
+			c = tileId % tilesPerRowInTileSet;
+			rect.top = r * tileSize + r * spaceBetweenTiles;
 			rect.bottom = rect.top + tileSize;
-			rect.left = (tileId % numberOfTilesPerRow) * tileSize;
+			rect.left = c * tileSize + c * spaceBetweenTiles;
 			rect.right = rect.left + tileSize;
 
 			//// Postion of a tile compare to position of camera.
 			//// (top-left)
 
-			position = D3DXVECTOR3(i * tileSize - Camera::getInstance()->getX(), j * tileSize - Camera::getInstance()->getY(), 0);
+			position = D3DXVECTOR3(j * tileSize - camera->getX(), i * tileSize - camera->getY(), 0);
 			
 
-			Drawing::getInstance()->draw(tileSetTexture, &rect, NULL, &position);
+			drawing->draw(tileSetTexture, &rect, NULL, &position);
 		}
 	}
 }
