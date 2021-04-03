@@ -23,8 +23,8 @@ public:
 	virtual void viewDidLoad();
 	virtual void viewReceiveKeyDown(KeyType _keyType);
 	virtual void viewReceiveKeyUp();
-	virtual void viewWillUpdate();
-	virtual void viewDidUpdate();
+	virtual void viewWillUpdate(int _dt);
+	virtual void viewDidUpdate(int _dt);
 	virtual void viewWillRender();
 	virtual void viewDidRender();
 	virtual void viewWillRelease();

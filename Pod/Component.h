@@ -6,12 +6,12 @@
 class Component {
 protected:
 	D3DXVECTOR3* position;
-	float vx, vy, dt;
+	float vx, vy;
 	float limitX, limitY;
 public:	
 	// Init
-	Component(float _x, float _y, float _vx, float _vy, float _dt, float _limitX, float _limitY);
-	Component(D3DXVECTOR3* _position, float _vx, float _vy, float _dt, float _limitX, float _limitY);
+	Component(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY);
+	Component(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY);
 
 	// De Init
 	~Component();
@@ -22,7 +22,6 @@ public:
 	float getY();
 	float getVx();
 	float getVy();
-	float getDt();
 	float getLimitX();
 	float getLimitY();
 
@@ -32,14 +31,13 @@ public:
 	void setY(float _y);
 	void setVx(float _vx);
 	void setVy(float _vy);
-	void setDt(float _dt);
 	void setLimitX(float _limitX);
 	void setLimitY(float _limitY);
 
 	void plusX(float _x);
 	void plusY(float _y);
 
-	virtual void Update();
+	virtual void Update(int _dt);
 	virtual void Draw();
 	virtual RECT* getBounds();
 

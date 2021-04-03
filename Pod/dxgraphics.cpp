@@ -155,7 +155,7 @@ LPDIRECT3DTEXTURE9 LoadTextureFromImage(LPCWSTR imagePath, D3DCOLOR transcolor)
 		info.Width,
 		info.Height,
 		1,
-		D3DPOOL_DEFAULT,
+		D3DUSAGE_DYNAMIC,
 		D3DFMT_UNKNOWN,
 		D3DPOOL_DEFAULT,
 		D3DX_DEFAULT,

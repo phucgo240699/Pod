@@ -23,13 +23,13 @@ void ViewController::viewReceiveKeyUp()
 {
 }
 
-void ViewController::viewWillUpdate()
+void ViewController::viewWillUpdate(int _dt)
 {
 }
 
-void ViewController::viewDidUpdate()
+void ViewController::viewDidUpdate(int _dt)
 {
-	map->Update();
+	map->Update(_dt);
 }
 
 void ViewController::viewWillRender()

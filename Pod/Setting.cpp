@@ -30,6 +30,11 @@ int Setting::getScreenHeight()
 	return this->screenHeight;
 }
 
+int Setting::getDt()
+{
+	return this->dt;
+}
+
 void Setting::setFPS(int _fps)
 {
 	if (_fps > 0) {
@@ -72,6 +77,11 @@ void Setting::setScreenHeight(int _height)
 	this->screenHeight = _height;
 }
 
+void Setting::setDt(int _dt)
+{
+	this->dt = _dt;
+}
+
 void Setting::setDefaultBackgroundColorViewController(Color* _color)
 {
 	this->defaultBackgroundColorViewController = _color;
@@ -82,16 +92,19 @@ void Setting::load()
 	string settingsStr = FileManager::getInstance()->getStringFromTextFile("settings.txt");
 	vector<string> v = Tool::splitToVectorStringFrom(settingsStr, ',');
 	
-	this->fps = stoi(v[0]);
-	this->screenWidth = stoi(v[1]);
-	this->screenHeight = stoi(v[2]);
-	this->screenMode = v[3] == "0" ? window : fullScreen;
-	this->defaultBackgroundColorViewController = new Color(Tool::getColorFromString(v[4]));
+	this->dt = stoi(v[0]);
+	this->fps = stoi(v[1]);
+	this->screenWidth = stoi(v[2]);
+	this->screenHeight = stoi(v[3]);
+	this->screenMode = v[4] == "0" ? window : fullScreen;
+	this->defaultBackgroundColorViewController = new Color(Tool::getColorFromString(v[5]));
 }
 
 void Setting::save()
 {
 	string settingsStr = "";
+	settingsStr += to_string(this->dt);
+	settingsStr += ',';
 	settingsStr += to_string(this->fps);
 	settingsStr += ",";
 	settingsStr += to_string(this->screenWidth);

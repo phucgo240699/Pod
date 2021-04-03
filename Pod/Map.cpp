@@ -41,7 +41,7 @@ float Map::getHeight()
 	return this->height;
 }
 
-void Map::Update()
+void Map::Update(int _dt)
 {
 }
 

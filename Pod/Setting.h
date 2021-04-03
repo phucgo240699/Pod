@@ -14,6 +14,7 @@ private:
 	static Setting* instance; // 2. static private instance
 
 	// Properties
+	int dt = 1;
 	int fps = 30;
 	int screenWidth = 640;
 	int screenHeight = 480;
@@ -28,6 +29,7 @@ public:
 	static Setting* getInstance();	  // 4. public function for client code usage
 
 	// Getter
+	int getDt();
 	int getFPS();
 	int getScreenWidth();
 	int getScreenHeight();
@@ -39,6 +41,7 @@ public:
 
 
 	// Setter
+	void setDt(int _dt);
 	void setFPS(int _fps);
 	void setScreenWidth(int _width);
 	void setScreenHeight(int _height);

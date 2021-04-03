@@ -1,8 +1,8 @@
 #include "Mario.h"
 
-Mario::Mario(float _x, float _y, float _vx, float _vy, float _dt, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state = STANDING) : Component(_x, _y, _vx, _vy, _dt, _limitX, _limitY)
+Mario::Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state = STANDING) : Component(_x, _y, _vx, _vy, _limitX, _limitY)
 {
-	Component::Component(_x, _y, _vx, _vy, _dt, _limitX, _limitY);
+	Component::Component(_x, _y, _vx, _vy, _limitX, _limitY);
 	this->texture = LoadTextureFromImage(_imagePath, _transcolor);
 
 	D3DXIMAGE_INFO info;
@@ -13,9 +13,9 @@ Mario::Mario(float _x, float _y, float _vx, float _vy, float _dt, float _limitX,
 	this->state = _state;
 }
 
-Mario::Mario(D3DXVECTOR3* _position, float _vx, float _vy, float _dt, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state = STANDING) : Component(_position, _vx, _vy, _dt, _limitX, _limitY)
+Mario::Mario(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state = STANDING) : Component(_position, _vx, _vy, _limitX, _limitY)
 {
-	Component::Component(_position, _vx, _vy, _dt, _limitX, _limitY);
+	Component::Component(_position, _vx, _vy, _limitX, _limitY);
 	this->texture = LoadTextureFromImage(_imagePath, _transcolor);
 
 	D3DXIMAGE_INFO info;
@@ -54,13 +54,13 @@ void Mario::setState(MarioState _state)
 	this->state = _state;
 }
 
-void Mario::Update()
+void Mario::Update(int _dt)
 {
-	float dx = this->vx * this->dt;
+	float dx = this->vx * _dt;
 	if (this->getX() + dx >= 0 && this->getX() + this->width + dx <= limitX) {
 		this->plusX(dx);
 	}
-	float dy = this->vy * this->dt;
+	float dy = this->vy * _dt;
 	if (this->getY() + dy >= 0 && this->getY() + this->height + dy <= limitY) {
 		this->plusY(dy);
 	}

@@ -24,12 +24,12 @@ int AppController::Game_Init(HWND hwnd)
 	return 1;
 }
 
-void AppController::Game_Run(HWND hwnd)
+void AppController::Game_Run(HWND hwnd, int _dt)
 {
 	Handler_Keyboard(hwnd);
 
-	this->rootViewController->viewWillUpdate();
-	this->rootViewController->viewDidUpdate();
+	this->rootViewController->viewWillUpdate(_dt);
+	this->rootViewController->viewDidUpdate(_dt);
 	this->rootViewController->viewWillRender();
 	this->rootViewController->viewDidRender();
 }

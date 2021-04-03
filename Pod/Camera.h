@@ -11,7 +11,7 @@ private:
 	float width, height;
 
 public:
-	Camera(float _x, float _y, float _vx, float _vy, float _dt, float _limitX, float _limitY);
+	Camera(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY);
 	static Camera* getInstance();	  // . public function for client code usage
 
 	// Getter
@@ -22,7 +22,7 @@ public:
 	void setWidth(float _width);
 	void setHeight(float _height);
 
-	void followRECT(RECT* _targetRect, float _vx, float _vy, float _dt);
+	//void followRECT(RECT* _targetRect, float _vx, float _vy, float _dt);
 
 	void load();
 	void save();

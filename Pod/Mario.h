@@ -12,8 +12,8 @@ private:
 	float width, height;
 public:
 	// Init
-	Mario(float _x, float _y, float _vx, float _vy, float _dt, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state);
-	Mario(D3DXVECTOR3* _position, float _vx, float _vy, float _dt, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state);
+	Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state);
+	Mario(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state);
 
 	// De Init
 	~Mario();
@@ -26,7 +26,7 @@ public:
 	void setState(MarioState _state);
 
 	// Inherit
-	void Update();
+	void Update(int _dt);
 	void Draw();
 
 	// Keyboard
