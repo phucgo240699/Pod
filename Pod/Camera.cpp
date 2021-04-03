@@ -71,14 +71,13 @@ void Camera::load()
 	string data = FileManager::getInstance()->getStringFromTextFile("camera.txt");
 	vector<string> v = Tool::splitToVectorStringFrom(data, ',');
 
-	if (v.size() == 7) {
-		this->setX(stoi(v[0]));
-		this->setY(stoi(v[1]));
-		this->vx = stoi(v[2]);
-		this->vy = stoi(v[3]);
-		this->limitX = stoi(v[4]);
-		this->limitY = stoi(v[5]);
-	}
+	this->setX(stoi(v[0]));
+	this->setY(stoi(v[1]));
+	this->vx = stoi(v[2]);
+	this->vy = stoi(v[3]);
+	this->limitX = stoi(v[4]);
+	this->limitY = stoi(v[5]);
+	
 }
 
 void Camera::save()

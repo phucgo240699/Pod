@@ -69,7 +69,7 @@ void Map::Draw()
 	int rowIndex, columnIndex; // from index 0. These are row, column in matrix indexes
 	for (int i = cellIndexBeginY; i <= cellIndexEndY; ++i) {
 		
-		if (i == cellIndexEndY) {
+		if (i == matrixIds.size()) {
 			rowIndex = i - 1;
 		}
 		else {
@@ -77,7 +77,7 @@ void Map::Draw()
 		}
 		for (int j = cellIndexBeginX; j <= cellIndexEndX; ++j) {
 			
-			if (j == cellIndexEndX) {
+			if (j == matrixIds[rowIndex].size()) {
 				columnIndex = j - 1;
 			}
 			else {
