@@ -119,9 +119,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			DispatchMessage(&msg);
 		}
 		else {
-			float dt = GetTickCount() - startTime;
-			if (dt > (1000 / setting->getFPS())) {
-				appController->Game_Run(hWnd, dt);
+			if (GetTickCount() - startTime > (1000 / setting->getFPS())) {
+				appController->Game_Run(hWnd, Setting::getInstance()->getDt());
 				startTime = GetTickCount();
 			}
 		}
