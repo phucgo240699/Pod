@@ -67,17 +67,20 @@ void Camera::setHeight(float _height)
 
 void Camera::load()
 {
-	// Read data from file
+	// Read data from camera file
 	string data = FileManager::getInstance()->getStringFromTextFile("camera.txt");
-	vector<string> v = Tool::splitToVectorStringFrom(data, ',');
+	vector<int> v = Tool::splitToVectorIntegerFrom(data, ',');
 
-	this->setX(stoi(v[0]));
-	this->setY(stoi(v[1]));
-	this->vx = stoi(v[2]);
-	this->vy = stoi(v[3]);
-	this->limitX = stoi(v[4]);
-	this->limitY = stoi(v[5]);
-	
+	this->setX(v[0]);
+	this->setY(v[1]);
+	this->setVx(v[2]);
+	this->setVy(v[3]);
+
+	// Read data from map file
+	data = FileManager::getInstance()->getStringFromTextFile("map_info_man1.txt");
+	v = Tool::splitToVectorIntegerFrom(data, ',');
+	this->setLimitX(v[4]);
+	this->setLimitY(v[5]);
 }
 
 void Camera::save()
