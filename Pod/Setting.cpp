@@ -30,7 +30,7 @@ int Setting::getScreenHeight()
 	return this->screenHeight;
 }
 
-int Setting::getDt()
+float Setting::getDt()
 {
 	return this->dt;
 }
@@ -77,7 +77,7 @@ void Setting::setScreenHeight(int _height)
 	this->screenHeight = _height;
 }
 
-void Setting::setDt(int _dt)
+void Setting::setDt(float _dt)
 {
 	this->dt = _dt;
 }
@@ -92,7 +92,7 @@ void Setting::load()
 	string settingsStr = FileManager::getInstance()->getStringFromTextFile("settings.txt");
 	vector<string> v = Tool::splitToVectorStringFrom(settingsStr, ',');
 	
-	this->dt = stoi(v[0]);
+	this->dt = stof(v[0]);
 	this->fps = stoi(v[1]);
 	this->screenWidth = stoi(v[2]);
 	this->screenHeight = stoi(v[3]);
