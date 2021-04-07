@@ -2,7 +2,7 @@
 
 Map::Map(LPCWSTR _tileSetPath, string _matrixIdsPath, string _mapInfoPath, char _seperatorOfMatrixIds, D3DCOLOR _transcolor)
 {
-	this->tileSetTexture = LoadTextureFromImage(_tileSetPath, _transcolor);
+	this->texture = LoadTextureFromImage(_tileSetPath, _transcolor);
 
 	D3DXIMAGE_INFO info;
 	D3DXGetImageInfoFromFile(_tileSetPath, &info);
@@ -22,7 +22,7 @@ Map::Map(LPCWSTR _tileSetPath, string _matrixIdsPath, string _mapInfoPath, char 
 
 Map::~Map()
 {
-	delete& tileSetTexture;
+	delete& texture;
 	delete& matrixIds;
 }
 
@@ -99,7 +99,7 @@ void Map::Draw()
 			position = D3DXVECTOR3(j * tileSize - camera->getX(), i * tileSize - camera->getY(), 0);
 			
 
-			drawing->draw(tileSetTexture, &rect, NULL, &position);
+			drawing->draw(texture, &rect, NULL, &position);
 		}
 	}
 }

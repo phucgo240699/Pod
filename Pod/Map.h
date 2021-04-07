@@ -8,7 +8,7 @@ using namespace std;
 class Map
 {
 private:
-	LPDIRECT3DTEXTURE9 tileSetTexture;
+	LPDIRECT3DTEXTURE9 texture;
 	vector<vector<int>> matrixIds;
 	int tileSize, spaceBetweenTiles, tilesPerRowInTileSet, tilesPerColumnInTileSet;
 	float width, height;

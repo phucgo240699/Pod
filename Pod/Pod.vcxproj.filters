@@ -16,18 +16,6 @@
     <Filter Include="Source Files\System">
       <UniqueIdentifier>{4fdbeadb-5e92-4d48-a53f-762167a49591}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Dimension">
-      <UniqueIdentifier>{97c1b3e0-735d-413d-8dde-27d4c1e2473a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Dimension">
-      <UniqueIdentifier>{6366792f-aca0-4468-ae07-17aa561e929a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Utilities">
-      <UniqueIdentifier>{63692477-f95a-41bb-9648-595766bf6d5f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utilities">
-      <UniqueIdentifier>{24cce7f2-36f6-440e-aae5-4081afd7bea9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Components">
       <UniqueIdentifier>{5f884fe1-7520-4c66-a62f-a7f48bf2c9f7}</UniqueIdentifier>
     </Filter>
@@ -43,12 +31,6 @@
     <Filter Include="Source Files\ViewController">
       <UniqueIdentifier>{1f60af6a-12e1-4323-92dc-ce03d014021c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\AppController">
-      <UniqueIdentifier>{90f5133a-947b-425c-bbfe-b8af63c34774}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\AppController">
-      <UniqueIdentifier>{511f73ab-25cf-4e77-b725-094f5684a254}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\ViewController\Man1">
       <UniqueIdentifier>{346d8bc1-f166-4768-8119-d058cb1eb303}</UniqueIdentifier>
     </Filter>
@@ -60,15 +42,6 @@
     </Filter>
     <Filter Include="Source Files\Components\Mario">
       <UniqueIdentifier>{4fd47f73-2077-454e-ad0e-402db5b4d8ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Enums">
-      <UniqueIdentifier>{93e37a0e-bd31-4cac-ade1-5805788bd5f0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Animations">
-      <UniqueIdentifier>{e5d672f3-41fa-416d-a9e6-9a8ed86221f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Animations">
-      <UniqueIdentifier>{5aa077f5-4ead-4eb5-a616-6cc94ebc2a6c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Components\Camera">
       <UniqueIdentifier>{ed122505-83c6-480a-9a4a-bcb81f1db664}</UniqueIdentifier>
@@ -82,25 +55,52 @@
     <Filter Include="Header Files\Components\Map">
       <UniqueIdentifier>{89a6b3c7-97d6-4f77-893c-23cf373dd2f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\System\Enums">
+      <UniqueIdentifier>{93e37a0e-bd31-4cac-ade1-5805788bd5f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\System\Utilities">
+      <UniqueIdentifier>{63692477-f95a-41bb-9648-595766bf6d5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\System\AppController">
+      <UniqueIdentifier>{90f5133a-947b-425c-bbfe-b8af63c34774}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\System\AppController">
+      <UniqueIdentifier>{511f73ab-25cf-4e77-b725-094f5684a254}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\System\Utilities">
+      <UniqueIdentifier>{24cce7f2-36f6-440e-aae5-4081afd7bea9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\System\AnimationBundle">
+      <UniqueIdentifier>{e5d672f3-41fa-416d-a9e6-9a8ed86221f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\System\AnimationBundle\Animations">
+      <UniqueIdentifier>{071a7cfe-2959-434c-a327-f7ea8e48f3b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\System\AnimationBundle">
+      <UniqueIdentifier>{5aa077f5-4ead-4eb5-a616-6cc94ebc2a6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\System\AnimationBundle\Animations">
+      <UniqueIdentifier>{8ecae71c-866d-4926-b505-a0822bf26a1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\System\Graphics">
+      <UniqueIdentifier>{e3d49512-64fe-4e1e-a406-52d32576ebad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\System\Graphics">
+      <UniqueIdentifier>{80e059ee-1eaf-4052-8831-ba68930f0e76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
-      <Filter>Source Files\Utilities</Filter>
+      <Filter>Source Files\System\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="Color.cpp">
-      <Filter>Source Files\Utilities</Filter>
+      <Filter>Source Files\System\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="FileManager.cpp">
-      <Filter>Source Files\Utilities</Filter>
+      <Filter>Source Files\System\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="Component.cpp">
       <Filter>Source Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Drawing.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="dxgraphics.cpp">
-      <Filter>Source Files\System</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files\System</Filter>
@@ -109,13 +109,13 @@
       <Filter>Source Files\ViewController</Filter>
     </ClCompile>
     <ClCompile Include="AppController.cpp">
-      <Filter>Source Files\AppController</Filter>
+      <Filter>Source Files\System\AppController</Filter>
     </ClCompile>
     <ClCompile Include="Man1.cpp">
       <Filter>Source Files\ViewController\Man1</Filter>
     </ClCompile>
     <ClCompile Include="AppConfig.cpp">
-      <Filter>Source Files\AppController</Filter>
+      <Filter>Source Files\System\AppController</Filter>
     </ClCompile>
     <ClCompile Include="Mario.cpp">
       <Filter>Source Files\Components\Mario</Filter>
@@ -126,43 +126,49 @@
     <ClCompile Include="Map.cpp">
       <Filter>Source Files\Components\Map</Filter>
     </ClCompile>
+    <ClCompile Include="AnimationBundle.cpp">
+      <Filter>Source Files\System\AnimationBundle</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Source Files\System\AnimationBundle\Animations</Filter>
+    </ClCompile>
+    <ClCompile Include="dxgraphics.cpp">
+      <Filter>Source Files\System\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing.cpp">
+      <Filter>Source Files\System\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tool.h">
-      <Filter>Header Files\Utilities</Filter>
+      <Filter>Header Files\System\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Setting.h">
-      <Filter>Header Files\Utilities</Filter>
+      <Filter>Header Files\System\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Color.h">
-      <Filter>Header Files\Utilities</Filter>
+      <Filter>Header Files\System\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="FileManager.h">
-      <Filter>Header Files\Utilities</Filter>
+      <Filter>Header Files\System\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Component.h">
       <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Drawing.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="dxgraphics.h">
-      <Filter>Header Files\System</Filter>
     </ClInclude>
     <ClInclude Include="ViewController.h">
       <Filter>Header Files\ViewController</Filter>
     </ClInclude>
     <ClInclude Include="AppController.h">
-      <Filter>Header Files\AppController</Filter>
+      <Filter>Header Files\System\AppController</Filter>
     </ClInclude>
     <ClInclude Include="AppConfig.h">
-      <Filter>Header Files\AppController</Filter>
+      <Filter>Header Files\System\AppController</Filter>
     </ClInclude>
     <ClInclude Include="Man1.h">
       <Filter>Header Files\ViewController\Man1</Filter>
     </ClInclude>
     <ClInclude Include="Keyboard.h">
-      <Filter>Header Files\Enums</Filter>
+      <Filter>Header Files\System\Enums</Filter>
     </ClInclude>
     <ClInclude Include="Mario.h">
       <Filter>Header Files\Components\Mario</Filter>
@@ -175,6 +181,18 @@
     </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>Header Files\Components\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationBundle.h">
+      <Filter>Header Files\System\AnimationBundle</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Header Files\System\AnimationBundle\Animations</Filter>
+    </ClInclude>
+    <ClInclude Include="dxgraphics.h">
+      <Filter>Header Files\System\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing.h">
+      <Filter>Header Files\System\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
