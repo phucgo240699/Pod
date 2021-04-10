@@ -57,7 +57,8 @@ void Mario::setState(MarioState _state)
 void Mario::Update(int _dt)
 {
 	Camera* camera = Camera::getInstance();
-
+	this->setX(camera->getWidth() / 2 - this->width / 2);
+	this->setY(camera->getHeight() / 2 - this->height / 2);
 }
 
 void Mario::Draw()

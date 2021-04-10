@@ -29,7 +29,12 @@ void ViewController::viewWillUpdate(int _dt)
 
 void ViewController::viewDidUpdate(int _dt)
 {
-	
+	if (map != NULL) {
+		map->Update(_dt);
+	}
+	if (mainCharacter != NULL) {
+		mainCharacter->Update(_dt);
+	}
 }
 
 void ViewController::viewWillRender()
