@@ -81,6 +81,14 @@ void Camera::load()
 	v = Tool::splitToVectorIntegerFrom(data, ',');
 	this->setLimitX(v[4]);
 	this->setLimitY(v[5]);
+
+	// Validate data
+	if (this->getX() + this->width > this->limitX) {
+		throw("Camera is out side of map by X-axis.");
+	}
+	if (this->getY() + this->height > this->limitY) {
+		throw("Camera is out side of map by Y-axis.");
+	}
 }
 
 void Camera::save()

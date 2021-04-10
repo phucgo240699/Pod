@@ -56,20 +56,13 @@ void Mario::setState(MarioState _state)
 
 void Mario::Update(int _dt)
 {
-	float dx = this->vx * _dt;
-	if (this->getX() + dx >= 0 && this->getX() + this->width + dx <= limitX) {
-		this->plusX(dx);
-	}
-	float dy = this->vy * _dt;
-	if (this->getY() + dy >= 0 && this->getY() + this->height + dy <= limitY) {
-		this->plusY(dy);
-	}
+	Camera* camera = Camera::getInstance();
 
 }
 
 void Mario::Draw()
 {
-	Drawing::getInstance()->draw(this->texture, NULL, NULL, this->position, D3DCOLOR_XRGB(0,255,0));
+	Drawing::getInstance()->draw(this->texture, NULL, NULL, this->position, D3DCOLOR_XRGB(255,255,255));
 }
 
 void Mario::onKeyUp()

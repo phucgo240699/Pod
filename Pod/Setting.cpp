@@ -98,6 +98,19 @@ void Setting::load()
 	this->screenHeight = stoi(v[3]);
 	this->screenMode = v[4] == "0" ? window : fullScreen;
 	this->defaultBackgroundColorViewController = new Color(Tool::getColorFromString(v[5]));
+
+	// Read data from map file
+	string dataMap = FileManager::getInstance()->getStringFromTextFile("map_info_man1.txt");
+	vector<int> vectorMap = Tool::splitToVectorIntegerFrom(dataMap, ',');
+
+
+	// Validate data
+	if (this->screenWidth > vectorMap[4]) {
+		throw("Screen width must be less than or equal to map width.");
+	}
+	if (this->screenHeight > vectorMap[5]) {
+		throw("Screen height must be less than or equal to map height.");
+	}
 }
 
 void Setting::save()

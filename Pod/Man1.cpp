@@ -4,12 +4,14 @@ void Man1::viewDidLoad()
 {
 	ViewController::viewDidLoad();
 
-	//// Read data from file
-	//string data = FileManager::getInstance()->getStringFromTextFile("mario.txt");
-	//vector<string> v = Tool::splitToVectorStringFrom(data, ',');
+	// Read data from file
+	string dataMario = FileManager::getInstance()->getStringFromTextFile("mario.txt");
+	vector<string> vectorMario = Tool::splitToVectorStringFrom(dataMario, ',');
+	string dataMap = FileManager::getInstance()->getStringFromTextFile("map_info_man1.txt");
+	vector<string> vectorMap = Tool::splitToVectorStringFrom(dataMap, ',');
 
 	map = new Map(L"./Assets/Images/tile_set_man1.png", "map_indexes_man1.txt", "map_info_man1.txt", ' ', NULL);
-	//mainCharacter = new Mario(stoi(v[0]), stoi(v[1]), stoi(v[2]), stoi(v[3]), stoi(v[4]), stoi(v[5]), stoi(v[6]), L"./Assets/Images/mario.png", NULL, STANDING);
+	mainCharacter = new Mario(stoi(vectorMario[0]), stoi(vectorMario[1]), stoi(vectorMario[2]), stoi(vectorMario[3]), stoi(vectorMap[4]), stoi(vectorMap[5]), L"./Assets/Images/mario.png", NULL, STANDING);
 }
 
 void Man1::viewReceiveKeyDown(KeyType _keyType)

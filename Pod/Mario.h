@@ -1,7 +1,7 @@
 #pragma once
-#include "Component.h"
 #include "MarioState.h"
 #include "Keyboard.h"
+#include "Camera.h"
 
 class Mario : public Component
 {

@@ -29,7 +29,7 @@ void ViewController::viewWillUpdate(int _dt)
 
 void ViewController::viewDidUpdate(int _dt)
 {
-	map->Update(_dt);
+	
 }
 
 void ViewController::viewWillRender()
@@ -44,7 +44,12 @@ void ViewController::viewDidRender()
 		
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 
-		map->Draw();
+		if (map != NULL) {
+			map->Draw();
+		}
+		if (mainCharacter != NULL) {
+			mainCharacter->Draw();
+		}
 
 		spriteHandler->End();
 
