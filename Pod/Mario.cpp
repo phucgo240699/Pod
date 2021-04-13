@@ -56,14 +56,38 @@ void Mario::setState(MarioState _state)
 
 void Mario::Update(int _dt)
 {
-	Camera* camera = Camera::getInstance();
-	this->setX(camera->getWidth() / 2 - this->width / 2);
-	this->setY(camera->getHeight() / 2 - this->height / 2);
+	if (0 <= this->getX() + this->width + this->vx && this->getX() + this->width + this->vx < this->limitX) {
+		this->plusX(this->vx);
+	}
+	if (0 <= this->getY() + this->height + this->vy && this->getY() + this->height + this->vy < this->limitY) {
+		this->plusY(this->vy);
+	}
 }
 
 void Mario::Draw()
 {
-	Drawing::getInstance()->draw(this->texture, NULL, NULL, this->position, D3DCOLOR_XRGB(255,255,255));
+	Camera* camera = Camera::getInstance();
+	D3DXVECTOR3* validPosition = new D3DXVECTOR3(*(this->position));
+	if (camera->getOnTopSafeArea()) {
+
+	}
+	else if (camera->getOnBottomSafeArea()) {
+		validPosition->y -= camera->getY();
+	}
+	if (camera->getOnLeftSafeArea()) {
+
+	}
+	else if (camera->getOnRightSafeArea()) {
+		validPosition->x -= camera->getX();
+	}
+	
+	if (!camera->getOnTopSafeArea() && !camera->getOnBottomSafeArea()){
+		validPosition->y = camera->getHeight() / 2 - this->height / 2;
+	}
+	if (!camera->getOnLeftSafeArea() && !camera->getOnRightSafeArea()) {
+		validPosition->x = camera->getWidth() / 2 - this->width / 2;
+	}
+	Drawing::getInstance()->draw(this->texture, NULL, NULL, validPosition, D3DCOLOR_XRGB(255,255,255));
 }
 
 void Mario::onKeyUp()

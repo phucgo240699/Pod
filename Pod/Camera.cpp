@@ -27,6 +27,26 @@ float Camera::getHeight()
 	return this->height;
 }
 
+bool Camera::getOnTopSafeArea()
+{
+	return this->onTopSafeArea;
+}
+
+bool Camera::getOnBottomSafeArea()
+{
+	return this->onBottomSafeArea;
+}
+
+bool Camera::getOnLeftSafeArea()
+{
+	return this->onLeftSafeArea;
+}
+
+bool Camera::getOnRightSafeArea()
+{
+	return this->onRightSafeArea;
+}
+
 void Camera::setWidth(float _width)
 {
 	this->width = _width;
@@ -37,33 +57,67 @@ void Camera::setHeight(float _height)
 	this->height = _height;
 }
 
-//void Camera::followRECT(RECT* _targetRect, float _vx, float _vy, float _dt)
-//{
-//	// Target rect is RECT object that camera need to follow
-//	if (_targetRect->right < _targetRect->left) {
-//		throw "Right anchor must be greater than or equal left anchor";
-//	}
-//	if (_targetRect->bottom < _targetRect->top) {
-//		throw "Bottom anchor must be greater than or equal top anchor";
-//	}
-//
-//	float targetWidth = _targetRect->right - _targetRect->left;
-//	float targetHeight = _targetRect->bottom - _targetRect->top;
-//	bool isTargetInHorizontalSafeArea = false;
-//	bool isTargetInVertialSafeArea = false;
-//	this->vx = _vx;
-//	this->vy = _vy;	
-//	this->dt = _dt;
-//	float dx = this->vx * this->dt;
-//	float dy = this->vy * this->dt;
-//
-//	if (this->getX() + dx >= 0 && this->getX() + this->width + dx <= this->limitX) {
-//		this->plusX(this->vx * this->dt);
-//	}
-//	if (this->getY() + dy >= 0 && this->getY() + this->height + dy <= this->limitY) {
-//		this->plusY(this->vy * this->dt);
-//	}
-//}
+void Camera::followRECT(RECT* _targetRect, float _vx, float _vy, float _dt)
+{
+	// Target rect is RECT object that camera need to follow
+	if (_targetRect->right < _targetRect->left) {
+		throw "Right anchor must be greater than or equal left anchor";
+	}
+	if (_targetRect->bottom < _targetRect->top) {
+		throw "Bottom anchor must be greater than or equal top anchor";
+	}
+	
+	float targetWidth = _targetRect->right - _targetRect->left;
+	float targetHeight = _targetRect->bottom - _targetRect->top;
+
+	if (_targetRect->left + (targetWidth / 2) <= this->width / 2) {
+		this->setX(0);
+		this->onLeftSafeArea = true;
+		this->onRightSafeArea = false;
+	}
+	else if (_targetRect->left + (targetWidth / 2) >= this->limitX - (this->width / 2)) {
+		this->setX(this->limitX - this->width);
+		this->onLeftSafeArea = false;
+		this->onRightSafeArea = true;
+	}
+	else {
+		this->setX(_targetRect->left - ((this->width / 2) - (targetWidth / 2)));
+		this->onLeftSafeArea = false;
+		this->onRightSafeArea = false;
+	}
+
+	if (_targetRect->top + (targetHeight / 2) <= this->height / 2) {
+		this->setY(0);
+		this->onTopSafeArea = true;
+		this->onBottomSafeArea = false;
+	}
+	else if (_targetRect->top + (targetHeight / 2) >= this->limitY - (this->height / 2)) {
+		this->setY(this->limitY - this->height);
+		this->onTopSafeArea = false;
+		this->onBottomSafeArea = true;
+	}
+	else {
+		this->setY(_targetRect->top - ((this->height / 2) - (targetHeight / 2)));
+		this->onTopSafeArea = false;
+		this->onBottomSafeArea = false;
+	}
+	/*float targetWidth = _targetRect->right - _targetRect->left;
+	float targetHeight = _targetRect->bottom - _targetRect->top;
+	bool isTargetInHorizontalSafeArea = false;
+	bool isTargetInVertialSafeArea = false;
+	this->vx = _vx;
+	this->vy = _vy;	
+	this->dt = _dt;
+	float dx = this->vx * this->dt;
+	float dy = this->vy * this->dt;
+
+	if (this->getX() + dx >= 0 && this->getX() + this->width + dx <= this->limitX) {
+		this->plusX(this->vx * this->dt);
+	}
+	if (this->getY() + dy >= 0 && this->getY() + this->height + dy <= this->limitY) {
+		this->plusY(this->vy * this->dt);
+	}*/
+}
 
 void Camera::load()
 {

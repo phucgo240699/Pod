@@ -34,6 +34,7 @@ void ViewController::viewDidUpdate(int _dt)
 	}
 	if (mainCharacter != NULL) {
 		mainCharacter->Update(_dt);
+		Camera::getInstance()->followRECT(mainCharacter->getBounds(), mainCharacter->getVx(), mainCharacter->getVy(), _dt);
 	}
 }
 

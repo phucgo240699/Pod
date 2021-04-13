@@ -9,7 +9,7 @@ private:
 	static Camera* instance; // . static private instance
 
 	float width, height;
-
+	bool onTopSafeArea, onBottomSafeArea, onLeftSafeArea, onRightSafeArea = false;
 public:
 	Camera(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY);
 	static Camera* getInstance();	  // . public function for client code usage
@@ -17,12 +17,16 @@ public:
 	// Getter
 	float getWidth();
 	float getHeight();
+	bool getOnTopSafeArea();
+	bool getOnBottomSafeArea();
+	bool getOnLeftSafeArea();
+	bool getOnRightSafeArea();
 
 	// Setter
 	void setWidth(float _width);
 	void setHeight(float _height);
 
-	//void followRECT(RECT* _targetRect, float _vx, float _vy, float _dt);
+	void followRECT(RECT* _targetRect, float _vx, float _vy, float _dt);
 
 	void load();
 	void save();
