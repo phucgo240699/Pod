@@ -26,7 +26,7 @@ public:
 	void setState(MarioState _state);
 
 	// Inherit
-	void Update(int _dt);
+	void Update(float _dt);
 	void Draw();
 
 	// Keyboard

@@ -103,7 +103,7 @@ void Component::plusY(float _y)
 	this->position->y += _y;
 }
 
-void Component::Update(int _dt)
+void Component::Update(float _dt)
 {
 }
 

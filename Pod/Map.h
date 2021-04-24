@@ -21,6 +21,6 @@ public:
 	float getWidth();
 	float getHeight();
 
-	void Update(int _dt);
+	void Update(float _dt);
 	void Draw();
 };

@@ -35,7 +35,7 @@ public:
 
 	// Prototypes function
 	int Game_Init(HWND hwnd);
-	void Game_Run(HWND hwnd, int _dt);
+	void Game_Run(HWND hwnd, float _dt);
 	void Game_End(HWND hwnd);
 	void Handler_Keyboard(HWND hwnd);
 };

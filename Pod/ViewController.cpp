@@ -23,11 +23,11 @@ void ViewController::viewReceiveKeyUp()
 {
 }
 
-void ViewController::viewWillUpdate(int _dt)
+void ViewController::viewWillUpdate(float _dt)
 {
 }
 
-void ViewController::viewDidUpdate(int _dt)
+void ViewController::viewDidUpdate(float _dt)
 {
 	if (map != NULL) {
 		map->Update(_dt);

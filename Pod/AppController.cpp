@@ -24,7 +24,7 @@ int AppController::Game_Init(HWND hwnd)
 	return 1;
 }
 
-void AppController::Game_Run(HWND hwnd, int _dt)
+void AppController::Game_Run(HWND hwnd, float _dt)
 {
 	Handler_Keyboard(hwnd);
 

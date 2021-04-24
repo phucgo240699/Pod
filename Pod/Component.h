@@ -37,7 +37,7 @@ public:
 	void plusX(float _x);
 	void plusY(float _y);
 
-	virtual void Update(int _dt);
+	virtual void Update(float _dt);
 	virtual void Draw();
 	virtual RECT* getBounds();
 

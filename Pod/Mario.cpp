@@ -54,13 +54,13 @@ void Mario::setState(MarioState _state)
 	this->state = _state;
 }
 
-void Mario::Update(int _dt)
+void Mario::Update(float _dt)
 {
 	if (0 <= this->getX() + this->width + this->vx && this->getX() + this->width + this->vx < this->limitX) {
-		this->plusX(this->vx);
+		this->plusX(this->vx * _dt);
 	}
 	if (0 <= this->getY() + this->height + this->vy && this->getY() + this->height + this->vy < this->limitY) {
-		this->plusY(this->vy);
+		this->plusY(this->vy * _dt);
 	}
 }
 
