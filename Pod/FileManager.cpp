@@ -36,7 +36,7 @@ string FileManager::getStringFromTextFile(string fileName)
     return data;
 }
 
-vector<vector<int>> FileManager::getIntegerMatrixFromTextFile(string fileName, char _seperator)
+vector<vector<int>> FileManager::getIntegerMatrixFromTextFile(string fileName, char seperator)
 {
     fstream f;
     f.open(this->rootFolderTextFile + fileName);
@@ -46,9 +46,33 @@ vector<vector<int>> FileManager::getIntegerMatrixFromTextFile(string fileName, c
 
     while (!f.eof()) { // eof: End Of File
         getline(f, line);
-        matrix.push_back(Tool::splitToVectorIntegerFrom(line, _seperator));
+        matrix.push_back(Tool::splitToVectorIntegerFrom(line, seperator));
     }
 
     f.close();
     return matrix;
+}
+
+vector<RECT*>* FileManager::getFramesFrom(string fileName, char seperator)
+{
+    fstream f;
+    f.open(this->rootFolderTextFile + fileName);
+
+    vector<RECT*>* frames = new vector<RECT*>();
+    string line;
+    vector<int> frame;
+    RECT* r;
+
+    while (!f.eof()) {
+        getline(f, line);
+        frame = Tool::splitToVectorIntegerFrom(line, seperator);
+        r = new RECT();
+        r->left = frame[0];
+        r->top = frame[1];
+        r->right = r->left + frame[2];
+        r->bottom = r->top + frame[3];
+        frames->push_back(r);
+    }
+
+    return frames;
 }

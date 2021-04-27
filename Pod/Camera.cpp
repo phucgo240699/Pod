@@ -59,6 +59,9 @@ void Camera::setHeight(float _height)
 
 void Camera::followRECT(RECT* _targetRect, float _vx, float _vy, float _dt)
 {
+	if (_targetRect == NULL) {
+		return;
+	}
 	// Target rect is RECT object that camera need to follow
 	if (_targetRect->right < _targetRect->left) {
 		throw "Right anchor must be greater than or equal left anchor";
@@ -70,6 +73,7 @@ void Camera::followRECT(RECT* _targetRect, float _vx, float _vy, float _dt)
 	float targetWidth = _targetRect->right - _targetRect->left;
 	float targetHeight = _targetRect->bottom - _targetRect->top;
 
+	// Vertical SafeArea
 	if (_targetRect->left + (targetWidth / 2) <= this->width / 2) {
 		this->setX(0);
 		this->onLeftSafeArea = true;
@@ -86,6 +90,7 @@ void Camera::followRECT(RECT* _targetRect, float _vx, float _vy, float _dt)
 		this->onRightSafeArea = false;
 	}
 
+	// Horizontal SafeArea
 	if (_targetRect->top + (targetHeight / 2) <= this->height / 2) {
 		this->setY(0);
 		this->onTopSafeArea = true;

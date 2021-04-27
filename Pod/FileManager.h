@@ -1,7 +1,5 @@
 #pragma once
-#include <string>
 #include <fstream>
-#include <vector>
 #include "Tool.h"
 
 using namespace std;
@@ -20,6 +18,10 @@ public:
 
 	void writeStringToTextFile(string fileName, string value);
 	string getStringFromTextFile(string fileName);
-	vector<vector<int>> getIntegerMatrixFromTextFile(string fileName, char _seperator);
+	vector<vector<int>> getIntegerMatrixFromTextFile(string fileName, char seperator);
+
+
+	// Animations
+	vector<RECT*>* getFramesFrom(string fileName, char seperator);
 };
 

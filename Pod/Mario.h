@@ -2,14 +2,18 @@
 #include "MarioState.h"
 #include "Keyboard.h"
 #include "Camera.h"
+#include "MarioStandingLeft.h"
+#include <unordered_map>
 
 class Mario : public Component
 {
 private:
 	LPDIRECT3DTEXTURE9 texture;
 	MarioState state;
+	
+	vector<Animation*>* animations;
+	Animation* currentAnimation;
 
-	float width, height;
 public:
 	// Init
 	Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state);

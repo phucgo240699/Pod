@@ -70,23 +70,23 @@
     <Filter Include="Source Files\System\Utilities">
       <UniqueIdentifier>{24cce7f2-36f6-440e-aae5-4081afd7bea9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\System\AnimationBundle">
-      <UniqueIdentifier>{e5d672f3-41fa-416d-a9e6-9a8ed86221f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\System\AnimationBundle\Animations">
-      <UniqueIdentifier>{071a7cfe-2959-434c-a327-f7ea8e48f3b3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\System\AnimationBundle">
-      <UniqueIdentifier>{5aa077f5-4ead-4eb5-a616-6cc94ebc2a6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\System\AnimationBundle\Animations">
-      <UniqueIdentifier>{8ecae71c-866d-4926-b505-a0822bf26a1c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\System\Graphics">
       <UniqueIdentifier>{e3d49512-64fe-4e1e-a406-52d32576ebad}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\System\Graphics">
       <UniqueIdentifier>{80e059ee-1eaf-4052-8831-ba68930f0e76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\System\Animation">
+      <UniqueIdentifier>{071a7cfe-2959-434c-a327-f7ea8e48f3b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\System\Animation">
+      <UniqueIdentifier>{8ecae71c-866d-4926-b505-a0822bf26a1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Mario\Animations">
+      <UniqueIdentifier>{09006c1a-a67a-427e-a9d7-e9b731c9e100}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Mario\Animations">
+      <UniqueIdentifier>{f80155f7-21db-404a-bed1-b8d95e956349}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -126,17 +126,17 @@
     <ClCompile Include="Map.cpp">
       <Filter>Source Files\Components\Map</Filter>
     </ClCompile>
-    <ClCompile Include="AnimationBundle.cpp">
-      <Filter>Source Files\System\AnimationBundle</Filter>
-    </ClCompile>
     <ClCompile Include="Animation.cpp">
-      <Filter>Source Files\System\AnimationBundle\Animations</Filter>
+      <Filter>Source Files\System\Animation</Filter>
     </ClCompile>
     <ClCompile Include="dxgraphics.cpp">
       <Filter>Source Files\System\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Drawing.cpp">
       <Filter>Source Files\System\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="MarioStandingLeft.cpp">
+      <Filter>Source Files\Components\Mario\Animations</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -182,17 +182,17 @@
     <ClInclude Include="Map.h">
       <Filter>Header Files\Components\Map</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationBundle.h">
-      <Filter>Header Files\System\AnimationBundle</Filter>
-    </ClInclude>
     <ClInclude Include="Animation.h">
-      <Filter>Header Files\System\AnimationBundle\Animations</Filter>
+      <Filter>Header Files\System\Animation</Filter>
     </ClInclude>
     <ClInclude Include="dxgraphics.h">
       <Filter>Header Files\System\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Drawing.h">
       <Filter>Header Files\System\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="MarioStandingLeft.h">
+      <Filter>Header Files\Components\Mario\Animations</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
