@@ -106,22 +106,6 @@ void Camera::followRECT(RECT* _targetRect, float _vx, float _vy, float _dt)
 		this->onTopSafeArea = false;
 		this->onBottomSafeArea = false;
 	}
-	/*float targetWidth = _targetRect->right - _targetRect->left;
-	float targetHeight = _targetRect->bottom - _targetRect->top;
-	bool isTargetInHorizontalSafeArea = false;
-	bool isTargetInVertialSafeArea = false;
-	this->vx = _vx;
-	this->vy = _vy;	
-	this->dt = _dt;
-	float dx = this->vx * this->dt;
-	float dy = this->vy * this->dt;
-
-	if (this->getX() + dx >= 0 && this->getX() + this->width + dx <= this->limitX) {
-		this->plusX(this->vx * this->dt);
-	}
-	if (this->getY() + dy >= 0 && this->getY() + this->height + dy <= this->limitY) {
-		this->plusY(this->vy * this->dt);
-	}*/
 }
 
 void Camera::load()

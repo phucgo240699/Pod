@@ -1,34 +1,29 @@
 #include "Mario.h"
 
+void Mario::setUpAnimations()
+{
+	this->animations = new vector<Animation*>();
+
+	this->animations->push_back(new Animation(0, 0, 2, "Mario/standing_left.txt"));
+	this->animations->push_back(new Animation(0, 0, 2, "Mario/standing_right.txt"));
+
+	this->currentAnimation = this->animations->at(1);
+}
+
 Mario::Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state) : Component(_x, _y, _vx, _vy, _limitX, _limitY)
 {
 	Component::Component(_x, _y, _vx, _vy, _limitX, _limitY);
 	this->texture = LoadTextureFromImage(_imagePath, _transcolor);
-
-	/*D3DXIMAGE_INFO info;
-	D3DXGetImageInfoFromFile(_imagePath, &info);
-	this->width = info.Width;
-	this->height = info.Height;*/
-
 	this->state = _state;
-
-	// Animations
-	//this->animations->push_back(new MarioStandingLeft(0, 0, 2, "Mario/standing_left.txt"));
-
-	this->currentAnimation = new MarioStandingLeft(0, 0, 2, "Mario/standing_left.txt"); // this->animations->at(0);
+	setUpAnimations();
 }
 
 Mario::Mario(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state) : Component(_position, _vx, _vy, _limitX, _limitY)
 {
 	Component::Component(_position, _vx, _vy, _limitX, _limitY);
 	this->texture = LoadTextureFromImage(_imagePath, _transcolor);
-
-	/*D3DXIMAGE_INFO info;
-	D3DXGetImageInfoFromFile(_imagePath, &info);
-	this->width = info.Width;
-	this->height = info.Height;*/
-
 	this->state = _state;
+	setUpAnimations();
 }
 
 Mario::~Mario()
@@ -69,12 +64,6 @@ void Mario::setState(MarioState _state)
 
 void Mario::Update(float _dt)
 {
-	/*if (0 <= this->getX() + this->width + this->vx && this->getX() + this->width + this->vx < this->limitX) {
-		this->plusX(this->vx * _dt);
-	}
-	if (0 <= this->getY() + this->height + this->vy && this->getY() + this->height + this->vy < this->limitY) {
-		this->plusY(this->vy * _dt);
-	}*/
 	if (currentAnimation == NULL) {
 		return;
 	}
@@ -110,33 +99,26 @@ void Mario::Draw()
 	if (!camera->getOnLeftSafeArea() && !camera->getOnRightSafeArea()) {
 		validPosition->x = camera->getWidth() / 2 - marioWidth / 2;
 	}
-	//Drawing::getInstance()->draw(this->texture, NULL, NULL, validPosition, D3DCOLOR_XRGB(255,255,255));
+
 	this->currentAnimation->Draw(this->texture, validPosition, D3DCOLOR_XRGB(255, 255, 255));
 }
 
 void Mario::onKeyUp()
 {
-	//this->vx = 0;
-	//this->vy = 0;
+
 }
 
 void Mario::onKeyDown(KeyType _keyType)
 {
-	//switch (_keyType)
-	//{
-	//case KeyType::up:
-	//	this->vy = -2;
-	//	break;
-	//case KeyType::down:
-	//	this->vy = 2;
-	//	break;
-	//case KeyType::left:
-	//	this->vx = -2;
-	//	break;
-	//case KeyType::right:
-	//	this->vx = 2;
-	//	break;
-	//default:
-	//	break;
-	//}
+	switch (_keyType)
+	{
+	case KeyType::right:
+		this->currentAnimation = this->animations->at(1);
+		break;
+	case KeyType::left:
+		this->currentAnimation = this->animations->at(0);
+		break;
+	default:
+		break;
+	}
 }

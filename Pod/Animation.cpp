@@ -88,8 +88,26 @@ void Animation::setAnimCount(int _animCount)
 
 void Animation::Update(float _dt)
 {
+	if (this->getAnimCount() == this->getAnimDelay()) {
+		this->setAnimCount(0);
+		int currentIndexFrame = this->getIndexFrame();
+		int lastIndexFrame = this->getTotalFrames() - 1;
+		if (lastIndexFrame == 0) {
+			return;
+		}
+		if (currentIndexFrame > lastIndexFrame) {
+			this->setIndexFrame(0);
+		}
+		else {
+			this->setIndexFrame(currentIndexFrame + 1);
+		}
+	}
+	else {
+		this->setAnimCount(this->getAnimCount() + 1);
+	}
 }
 
 void Animation::Draw(LPDIRECT3DTEXTURE9 _texture, D3DXVECTOR3* _position, D3DCOLOR _color)
 {
+	Drawing::getInstance()->draw(_texture, this->getCurrentFrame(), NULL, _position, _color);
 }

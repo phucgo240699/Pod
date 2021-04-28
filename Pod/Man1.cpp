@@ -17,34 +17,9 @@ void Man1::viewDidLoad()
 void Man1::viewReceiveKeyDown(KeyType _keyType)
 {
 	ViewController::viewReceiveKeyDown(_keyType);
-	//mainCharacter->onKeyDown(_keyType);
-
-
-	Camera* camera = Camera::getInstance();
-	if (_keyType == KeyType::up) {
-		if (camera->getY() >= 1) {
-			camera->plusY(-1);
-		}
-	}
-	if (_keyType == KeyType::down) {
-		if (camera->getY() + camera->getHeight() <= camera->getLimitY() - 1) {
-			camera->plusY(1);
-		}
-	}
-	if (_keyType == KeyType::left) {
-		if (camera->getX() >= 1) {
-			camera->plusX(-1);
-		}
-	}
-	if (_keyType == KeyType::right) {
-		if (camera->getX() + camera->getWidth() <= camera->getLimitX() - 1) {
-			camera->plusX(1);
-		}
-	}
 }
 
 void Man1::viewReceiveKeyUp()
 {
 	ViewController::viewReceiveKeyUp();
-	//mainCharacter->onKeyUp();
 }

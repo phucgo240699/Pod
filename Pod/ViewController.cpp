@@ -17,10 +17,12 @@ void ViewController::viewDidLoad()
 
 void ViewController::viewReceiveKeyDown(KeyType _keyType)
 {
+	mainCharacter->onKeyDown(_keyType);
 }
 
 void ViewController::viewReceiveKeyUp()
 {
+	mainCharacter->onKeyUp();
 }
 
 void ViewController::viewWillUpdate(float _dt)

@@ -23,14 +23,8 @@ int Init_Direct3D(HWND hwnd, int width, int height, bool isFullScreen)
 	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
 	d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
 	d3dpp.BackBufferCount = 1;
-	//d3dpp.BackBufferWidth = Setting::getInstance()->getScreenWidth();
-	//d3dpp.BackBufferHeight = Setting::getInstance()->getScreenHeight();
-
-	RECT r;
-	GetClientRect(hwnd, &r);
-	d3dpp.BackBufferWidth = r.right;
-	d3dpp.BackBufferHeight = r.bottom;
-
+	d3dpp.BackBufferWidth = Setting::getInstance()->getScreenWidth();
+	d3dpp.BackBufferHeight = Setting::getInstance()->getScreenHeight();
 	d3dpp.hDeviceWindow = hwnd;
 
 

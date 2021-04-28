@@ -35,8 +35,7 @@ public:
 	void setAnimCount(int _animCount);
 
 
-	// Inherit
-	virtual void Update(float _dt);
-	virtual void Draw(LPDIRECT3DTEXTURE9 _texture, D3DXVECTOR3* _position, D3DCOLOR _color);
+	void Update(float _dt);
+	void Draw(LPDIRECT3DTEXTURE9 _texture, D3DXVECTOR3* _position, D3DCOLOR _color);
 };
 
