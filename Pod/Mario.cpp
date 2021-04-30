@@ -80,16 +80,10 @@ void Mario::Draw()
 	float marioWidth = this->currentAnimation->getCurrentFrame()->right - this->currentAnimation->getCurrentFrame()->left;
 	float marioHeight = this->currentAnimation->getCurrentFrame()->bottom - this->currentAnimation->getCurrentFrame()->top;
 	
-	if (camera->getOnTopSafeArea()) {
-
-	}
-	else if (camera->getOnBottomSafeArea()) {
+	if (camera->getOnBottomSafeArea()) {
 		validPosition->y -= camera->getY();
 	}
-	if (camera->getOnLeftSafeArea()) {
-
-	}
-	else if (camera->getOnRightSafeArea()) {
+	if (camera->getOnRightSafeArea()) {
 		validPosition->x -= camera->getX();
 	}
 	
@@ -99,8 +93,8 @@ void Mario::Draw()
 	if (!camera->getOnLeftSafeArea() && !camera->getOnRightSafeArea()) {
 		validPosition->x = camera->getWidth() / 2 - marioWidth / 2;
 	}
-
-	this->currentAnimation->Draw(this->texture, validPosition, D3DCOLOR_XRGB(255, 255, 255));
+	
+	this->currentAnimation->Draw(this->texture, validPosition);
 }
 
 void Mario::onKeyUp()
