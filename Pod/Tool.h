@@ -16,7 +16,7 @@ public:
 		return wString;
 	}
 
-	static LPCWSTR getLPCWSTRFromString(string& s)
+	/*static LPCWSTR getLPCWSTRFromString(string& s)
 	{
 		vector<wchar_t> buf(MultiByteToWideChar(CP_ACP, 0, s.c_str(), s.size() + 1, 0, 0));
 
@@ -31,7 +31,7 @@ public:
 		MultiByteToWideChar(CP_ACP, 0, s.c_str(), s.size() + 1, &buf[0], buf.size());
 
 		return wstring(&buf[0]);
-	}
+	}*/
 
 	static string getStringFrom(LPCWSTR wString)
 	{
