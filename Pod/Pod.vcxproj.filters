@@ -82,12 +82,6 @@
     <Filter Include="Source Files\System\Animation">
       <UniqueIdentifier>{8ecae71c-866d-4926-b505-a0822bf26a1c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Components\Mario\Animations">
-      <UniqueIdentifier>{09006c1a-a67a-427e-a9d7-e9b731c9e100}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Components\Mario\Animations">
-      <UniqueIdentifier>{f80155f7-21db-404a-bed1-b8d95e956349}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -134,9 +128,6 @@
     </ClCompile>
     <ClCompile Include="Drawing.cpp">
       <Filter>Source Files\System\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="MarioStandingLeft.cpp">
-      <Filter>Source Files\Components\Mario\Animations</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -190,9 +181,6 @@
     </ClInclude>
     <ClInclude Include="Drawing.h">
       <Filter>Header Files\System\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="MarioStandingLeft.h">
-      <Filter>Header Files\Components\Mario\Animations</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

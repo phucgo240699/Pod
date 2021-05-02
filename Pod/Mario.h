@@ -2,7 +2,7 @@
 #include "MarioState.h"
 #include "Keyboard.h"
 #include "Camera.h"
-#include "MarioStandingLeft.h"
+#include "Animation.h"
 #include <unordered_map>
 
 class Mario : public Component
@@ -10,6 +10,7 @@ class Mario : public Component
 private:
 	LPDIRECT3DTEXTURE9 texture;
 	MarioState state;
+	bool isFlip; // false: Left side - true: Right side. Default is false
 	
 	vector<Animation*>* animations;
 	Animation* currentAnimation;
@@ -30,6 +31,7 @@ public:
 
 	// Setter
 	void setState(MarioState _state);
+	void updateCurrentAnimation(MarioState _state);
 
 	// Inherit
 	void Update(float _dt);

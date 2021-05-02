@@ -163,7 +163,6 @@
     <ClCompile Include="Man1.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Mario.cpp" />
-    <ClCompile Include="MarioStandingLeft.cpp" />
     <ClCompile Include="Setting.cpp" />
     <ClCompile Include="ViewController.cpp" />
   </ItemGroup>
@@ -181,7 +180,6 @@
     <ClInclude Include="Man1.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Mario.h" />
-    <ClInclude Include="MarioStandingLeft.h" />
     <ClInclude Include="MarioState.h" />
     <ClInclude Include="Setting.h" />
     <ClInclude Include="Tool.h" />
