@@ -64,10 +64,10 @@ void Mario::setState(MarioState _state)
 {
 	this->state = _state;
 	if (_state == MarioState::STANDING_RIGHT) {
-		this->isFlip = true;
+		this->isFlip = false;
 	}
 	else {
-		this->isFlip = false;
+		this->isFlip = true;
 	}
 }
 
