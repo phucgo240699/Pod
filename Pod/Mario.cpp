@@ -5,8 +5,7 @@ void Mario::setUpAnimations()
 	this->animations = new vector<Animation*>();
 
 	this->animations->push_back(new Animation(0, 0, 2, "Mario/standing.txt"));
-
-	this->currentAnimation = this->animations->at(0);
+	this->animations->push_back(new Animation(0, 0, 2, "Mario/running.txt"));
 }
 
 Mario::Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state) : Component(_x, _y, _vx, _vy, _limitX, _limitY)
@@ -16,6 +15,7 @@ Mario::Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _lim
 	this->state = _state;
 	this->setState(_state);
 	setUpAnimations();
+	updateCurrentAnimation(this->getState());
 }
 
 Mario::Mario(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state) : Component(_position, _vx, _vy, _limitX, _limitY)
@@ -25,6 +25,7 @@ Mario::Mario(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float 
 	this->state = _state;
 	this->setState(_state);
 	setUpAnimations();
+	updateCurrentAnimation(this->getState());
 }
 
 Mario::~Mario()
@@ -60,44 +61,6 @@ RECT* Mario::getBounds()
 	return r;
 }
 
-void Mario::setState(MarioState _state)
-{
-	this->state = _state;
-	if (_state == MarioState::STANDING_RIGHT) {
-		this->isFlip = false;
-	}
-	else {
-		this->isFlip = true;
-	}
-}
-
-void Mario::updateCurrentAnimation(MarioState _state)
-{
-	switch (_state)
-	{
-	case DROPPING:
-		break;
-	case STANDING_LEFT:
-		if (_state != STANDING_RIGHT && _state != STANDING_LEFT) { // increase performance 2.
-			currentAnimation = this->animations->at(0);
-		}
-		break;
-	case STANDING_RIGHT:
-		if (_state != STANDING_LEFT && _state != STANDING_RIGHT) {
-			currentAnimation = this->animations->at(0);
-		}
-		break;
-	case JUMPING:
-		break;
-	case WALKING_RIGHT:
-		break;
-	case WALKING_LEFT:
-		break;
-	default:
-		break;
-	}
-}
-
 void Mario::Update(float _dt)
 {
 	if (currentAnimation == NULL) {
@@ -117,42 +80,94 @@ void Mario::Draw()
 	D3DXVECTOR3* validPosition = new D3DXVECTOR3(*(this->position));
 	float marioWidth = this->currentAnimation->getCurrentFrame()->right - this->currentAnimation->getCurrentFrame()->left;
 	float marioHeight = this->currentAnimation->getCurrentFrame()->bottom - this->currentAnimation->getCurrentFrame()->top;
-	
-	if (camera->getOnBottomSafeArea()) {
+	if (camera->getY() == 0) {
+
+	}
+	else if (camera->getY() + camera->getHeight() == camera->getLimitY()) {
 		validPosition->y -= camera->getY();
 	}
-	if (camera->getOnRightSafeArea()) {
+	else {
+		validPosition->y = camera->getHeight() / 2;
+	}
+	if (camera->getX() == 0) {
+
+	}
+	else if (camera->getX() + camera->getWidth() == camera->getLimitX()) {
 		validPosition->x -= camera->getX();
 	}
-	
-	if (!camera->getOnTopSafeArea() && !camera->getOnBottomSafeArea()){
-		validPosition->y = camera->getHeight() / 2 - marioHeight / 2;
+	else {
+		validPosition->x = camera->getWidth() / 2;
 	}
-	if (!camera->getOnLeftSafeArea() && !camera->getOnRightSafeArea()) {
-		validPosition->x = camera->getWidth() / 2 - marioWidth / 2;
-	}
-	
+
 	this->currentAnimation->Draw(this->texture, validPosition, D3DCOLOR_XRGB(255, 255, 255), this->isFlip);
+}
+
+void Mario::setState(MarioState _state)
+{
+	this->state = _state;
+	if (_state == STANDING_RIGHT || _state == WALKING_RIGHT) {
+		this->isFlip = false;
+	}
+	else {
+		this->isFlip = true;
+	}
+}
+
+void Mario::updateCurrentAnimation(MarioState _state)
+{
+	switch (_state)
+	{
+	case DROPPING:
+		break;
+	case STANDING_LEFT:
+		currentAnimation = this->animations->at(0);
+		break;
+	case STANDING_RIGHT:
+		currentAnimation = this->animations->at(0);
+		break;
+	case JUMPING:
+		break;
+	case WALKING_LEFT:
+		currentAnimation = this->animations->at(1);
+		break;
+	case WALKING_RIGHT:
+		currentAnimation = this->animations->at(1);
+		break;
+	default:
+		break;
+	}
 }
 
 void Mario::onKeyUp()
 {
-
+	switch (this->getState())
+	{
+	case WALKING_LEFT:
+		this->setState(MarioState::STANDING_LEFT);
+		break;
+	case WALKING_RIGHT:
+		this->setState(MarioState::STANDING_RIGHT);
+		break;
+	default:
+		break;
+	}
 }
 
 void Mario::onKeyDown(KeyType _keyType)
 {
 	switch (_keyType)
 	{
-	case KeyType::right:
-		if (this->state != STANDING_RIGHT) { // increase performance 1
-			this->setState(MarioState::STANDING_RIGHT);
-		}
-		break;
 	case KeyType::left:
-		if (this->state != STANDING_LEFT) {
-			this->setState(MarioState::STANDING_LEFT);
+		if (this->state != WALKING_LEFT) { // increase performance 1
+			this->setState(MarioState::WALKING_LEFT);
 		}
+		this->plusX(-1);
+		break;
+	case KeyType::right:
+		if (this->state != WALKING_RIGHT) {
+			this->setState(MarioState::WALKING_RIGHT);
+		}
+		this->plusX(1);
 		break;
 	default:
 		break;

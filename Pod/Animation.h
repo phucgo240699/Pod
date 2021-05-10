@@ -7,7 +7,7 @@ using namespace std;
 class Animation
 {
 private:
-	int id, indexFrame, animDelay, animCount;
+	int id, currentIndexFrame, animDelay, animCount;
 	vector<RECT*>* frames;
 
 public:
@@ -21,7 +21,7 @@ public:
 
 	// Getter
 	int getId();
-	int getIndexFrame();
+	int getCurrentIndexFrame();
 	int getAnimDelay();
 	int getAnimCount();
 	RECT* getCurrentFrame();
@@ -31,7 +31,7 @@ public:
 
 
 	// Setter
-	void setIndexFrame(int _indexFrame);
+	void setCurrentIndexFrame(int _indexFrame);
 	void setAnimCount(int _animCount);
 
 

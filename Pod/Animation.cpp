@@ -3,7 +3,7 @@
 Animation::Animation(int _id, int _indexFrame, int _animDelay)
 {
 	this->id = _id;
-	this->indexFrame = _indexFrame;
+	this->currentIndexFrame = _indexFrame;
 	this->animDelay = _animDelay;
 	this->animCount = 0;
 	this->frames = new vector<RECT*>();
@@ -12,7 +12,7 @@ Animation::Animation(int _id, int _indexFrame, int _animDelay)
 Animation::Animation(int _id, int _indexFrame, int _animDelay, vector<RECT*>* _frames)
 {
 	this->id = _id;
-	this->indexFrame = _indexFrame;
+	this->currentIndexFrame = _indexFrame;
 	this->animDelay = _animDelay;
 	this->animCount = 0;
 	this->frames = _frames;
@@ -21,7 +21,7 @@ Animation::Animation(int _id, int _indexFrame, int _animDelay, vector<RECT*>* _f
 Animation::Animation(int _id, int _indexFrame, int _animDelay, string filePath)
 {
 	this->id = _id;
-	this->indexFrame = _indexFrame;
+	this->currentIndexFrame = _indexFrame;
 	this->animDelay = _animDelay;
 	this->animCount = 0;
 	this->frames = FileManager::getInstance()->getFramesFrom(filePath, ',');
@@ -41,9 +41,9 @@ int Animation::getId()
 	return this->id;
 }
 
-int Animation::getIndexFrame()
+int Animation::getCurrentIndexFrame()
 {
-	return this->indexFrame;
+	return this->currentIndexFrame;
 }
 
 int Animation::getAnimDelay()
@@ -58,7 +58,7 @@ int Animation::getAnimCount()
 
 RECT* Animation::getCurrentFrame()
 {
-	return this->frames->at(indexFrame);
+	return this->frames->at(currentIndexFrame);
 }
 
 int Animation::getTotalFrames()
@@ -76,9 +76,9 @@ float Animation::getCurrentFrameHeight()
 	return this->getCurrentFrame()->bottom - this->getCurrentFrame()->top;
 }
 
-void Animation::setIndexFrame(int _indexFrame)
+void Animation::setCurrentIndexFrame(int _indexFrame)
 {
-	this->indexFrame = _indexFrame;
+	this->currentIndexFrame = _indexFrame;
 }
 
 void Animation::setAnimCount(int _animCount)
@@ -90,16 +90,14 @@ void Animation::Update(float _dt)
 {
 	if (this->getAnimCount() == this->getAnimDelay()) {
 		this->setAnimCount(0);
-		int currentIndexFrame = this->getIndexFrame();
-		int lastIndexFrame = this->getTotalFrames() - 1;
-		if (lastIndexFrame == 0) {
+		if (this->getTotalFrames() - 1 == 0) {
 			return;
 		}
-		if (currentIndexFrame > lastIndexFrame) {
-			this->setIndexFrame(0);
-		}
-		else {
-			this->setIndexFrame(currentIndexFrame + 1);
+		
+		this->setCurrentIndexFrame(this->getCurrentIndexFrame() + 1);
+
+		if (this->getCurrentIndexFrame() > this->getTotalFrames() - 1) {
+			this->setCurrentIndexFrame(0);
 		}
 	}
 	else {
@@ -109,5 +107,5 @@ void Animation::Update(float _dt)
 
 void Animation::Draw(LPDIRECT3DTEXTURE9 _texture, D3DXVECTOR3* _position, D3DCOLOR _color, bool _isFlip)
 {
-	Drawing::getInstance()->draw(_texture, this->getCurrentFrame(), NULL, _position, _color, _isFlip);
+	Drawing::getInstance()->draw(_texture, this->getCurrentFrame(), NULL, _position, _color, _isFlip, new D3DXVECTOR2(0, -this->getCurrentFrameHeight()));
 }

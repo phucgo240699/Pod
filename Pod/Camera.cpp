@@ -57,55 +57,26 @@ void Camera::setHeight(float _height)
 	this->height = _height;
 }
 
-void Camera::followRECT(RECT* _targetRect, float _vx, float _vy, float _dt)
+void Camera::follow(Component* _target, float _dt)
 {
-	if (_targetRect == NULL) {
-		return;
+	float newX = _target->getX() - (this->getWidth() / 2);
+	float newY = newY = _target->getY() - (this->getHeight() / 2);;
+	if (newX < 0) {
+		newX = 0;
 	}
-	// Target rect is RECT object that camera need to follow
-	if (_targetRect->right < _targetRect->left) {
-		throw "Right anchor must be greater than or equal left anchor";
-	}
-	if (_targetRect->bottom < _targetRect->top) {
-		throw "Bottom anchor must be greater than or equal top anchor";
-	}
-	
-	float targetWidth = _targetRect->right - _targetRect->left;
-	float targetHeight = _targetRect->bottom - _targetRect->top;
-
-	// Vertical SafeArea
-	if (_targetRect->left + (targetWidth / 2) <= this->width / 2) {
-		this->setX(0);
-		this->onLeftSafeArea = true;
-		this->onRightSafeArea = false;
-	}
-	else if (_targetRect->left + (targetWidth / 2) >= this->limitX - (this->width / 2)) {
-		this->setX(this->limitX - this->width);
-		this->onLeftSafeArea = false;
-		this->onRightSafeArea = true;
-	}
-	else {
-		this->setX(_targetRect->left - ((this->width / 2) - (targetWidth / 2)));
-		this->onLeftSafeArea = false;
-		this->onRightSafeArea = false;
+	else if (newX + this->getWidth() > this->getLimitX()) {
+		newX = this->getLimitX() - this->getWidth();
 	}
 
-	// Horizontal SafeArea
-	if (_targetRect->top + (targetHeight / 2) <= this->height / 2) {
-		this->setY(0);
-		this->onTopSafeArea = true;
-		this->onBottomSafeArea = false;
+	if (newY < 0) {
+		newY = 0;
 	}
-	else if (_targetRect->top + (targetHeight / 2) >= this->limitY - (this->height / 2)) {
-		this->setY(this->limitY - this->height);
-		this->onTopSafeArea = false;
-		this->onBottomSafeArea = true;
+	else if (newY + this->getHeight() > this->getLimitY()) {
+		newY = this->getLimitY() - this->getHeight();
 	}
-	else {
-		this->setY(_targetRect->top - ((this->height / 2) - (targetHeight / 2)));
-		this->onTopSafeArea = false;
-		this->onBottomSafeArea = false;
-	}
+
+	this->setX(newX);
+	this->setY(newY);
 }
 
 void Camera::load()

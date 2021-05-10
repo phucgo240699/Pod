@@ -26,7 +26,7 @@ public:
 	void setWidth(float _width);
 	void setHeight(float _height);
 
-	void followRECT(RECT* _targetRect, float _vx, float _vy, float _dt);
+	void follow(Component* _target, float _dt);
 
 	void load();
 	void save();
