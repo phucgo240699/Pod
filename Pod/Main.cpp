@@ -104,7 +104,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return 0;
 	}
 
-	SetWindowPos(hWnd, 0, 0, 0, setting->getScreenWidth() * 2, setting->getScreenHeight() * 2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+	SetWindowPos(hWnd, 0, 0, 0, setting->getScreenWidth() * 4, setting->getScreenHeight() * 4, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
 
 	// main message loop
