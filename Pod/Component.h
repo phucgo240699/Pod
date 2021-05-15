@@ -7,6 +7,7 @@ class Component {
 protected:
 	D3DXVECTOR3* position;
 	float vx, vy;
+	float currentVx, currentVy;
 	float limitX, limitY;
 public:	
 	// Init
@@ -22,6 +23,8 @@ public:
 	float getY();
 	float getVx();
 	float getVy();
+	float getCurrentVx();
+	float getCurrentVy();
 	float getLimitX();
 	float getLimitY();
 
@@ -31,6 +34,8 @@ public:
 	void setY(float _y);
 	void setVx(float _vx);
 	void setVy(float _vy);
+	void setCurrentVx(float _currentVx);
+	void setCurrentVy(float _currentVy);
 	void setLimitX(float _limitX);
 	void setLimitY(float _limitY);
 

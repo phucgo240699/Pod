@@ -12,6 +12,7 @@ void Man1::viewDidLoad()
 
 	map = new Map(L"./Assets/Images/tile_set_man1.png", "map_indexes_man1.txt", "map_info_man1.txt", ' ', NULL);
 	mainCharacter = new Mario(stoi(vectorMario[0]), stoi(vectorMario[1]), stoi(vectorMario[2]), stoi(vectorMario[3]), stoi(vectorMap[4]), stoi(vectorMap[5]), L"./Assets/Images/Mario/tileset.png", D3DCOLOR_XRGB(255, 0, 255), STANDING_RIGHT);
+	Camera::getInstance()->setPositionBy(mainCharacter);
 }
 
 void Man1::viewReceiveKeyDown(KeyType _keyType)

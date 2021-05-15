@@ -5,6 +5,8 @@ Component::Component(float _x, float _y, float _vx, float _vy, float _limitX, fl
 	this->position = new D3DXVECTOR3(_x, _y, 0);
 	this->vx = _vx;
 	this->vy = _vy;
+	this->currentVx = _vx;
+	this->currentVy = _vy;
 	this->limitX = _limitX;
 	this->limitY = _limitY;
 }
@@ -14,6 +16,8 @@ Component::Component(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX
 	this->position = _position;
 	this->vx = _vx;
 	this->vy = _vy;
+	this->currentVx = _vx;
+	this->currentVy = _vy;
 	this->limitX = _limitX;
 	this->limitY = _limitY;
 }
@@ -46,6 +50,16 @@ float Component::getVx()
 float Component::getVy()
 {
 	return this->vy;
+}
+
+float Component::getCurrentVx()
+{
+	return this->currentVx;
+}
+
+float Component::getCurrentVy()
+{
+	return this->currentVy;
 }
 
 float Component::getLimitX()
@@ -81,6 +95,16 @@ void Component::setVx(float _vx)
 void Component::setVy(float _vy)
 {
 	this->vy = _vy;
+}
+
+void Component::setCurrentVx(float _currentVx)
+{
+	this->currentVx = _currentVx;
+}
+
+void Component::setCurrentVy(float _currentVy)
+{
+	this->currentVy = _currentVy;
 }
 
 void Component::setLimitX(float _limitX)

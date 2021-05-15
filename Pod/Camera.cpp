@@ -57,9 +57,9 @@ void Camera::setHeight(float _height)
 	this->height = _height;
 }
 
-void Camera::follow(Component* _target, float _dt)
+void Camera::setPositionBy(Component* _target)
 {
-	float newX = _target->getX() - (this->getWidth() / 2);
+	/*float newX = _target->getX() - (this->getWidth() / 2);
 	float newY = newY = _target->getY() - (this->getHeight() / 2);;
 	if (newX < 0) {
 		newX = 0;
@@ -76,7 +76,46 @@ void Camera::follow(Component* _target, float _dt)
 	}
 
 	this->setX(newX);
-	this->setY(newY);
+	this->setY(newY);*/
+
+	if (_target->getX() <= this->getWidth() / 2) {
+		this->setX(0);
+	}
+	else if (_target->getX() > this->getLimitX() - (this->getWidth() / 2)) {
+		this->setX(this->getLimitX() - this->getWidth());
+	}
+	else {
+		this->setX(_target->getX() - (this->getWidth() / 2));
+	}
+
+	if (_target->getY() <= this->getHeight() / 2) {
+		this->setY(0);
+	}
+	else if (_target->getY() > this->getLimitY() - (this->getHeight() / 2)) {
+		this->setY(this->getLimitY() - this->getHeight());
+	}
+	else {
+		this->setY(_target->getY() - (this->getHeight() / 2));
+	}
+}
+
+void Camera::follow(Component* _target, float _dt)
+{
+	// If target not in safe area, and new location of camera not outside of map
+	if (_target->getX() > this->getWidth() / 2 &&
+		_target->getX() < this->getLimitX() - (this->getWidth() / 2) &&
+		0 < this->getX() + _target->getCurrentVx() &&
+		this->getX() + this->getWidth() + _target->getCurrentVx() < this->getLimitX()) {
+		this->plusX(_target->getCurrentVx());
+	}
+
+	// If target run through half of camera's height, and new location of camera not outside of map
+	if (_target->getY() > this->getHeight() / 2 &&
+		_target->getY() < this->getLimitY() - (this->getHeight() / 2) &&
+		0 < this->getY() + _target->getCurrentVy() &&
+		this->getY() + this->getHeight() + _target->getCurrentVy() < this->getLimitY()) {
+		this->plusY(_target->getCurrentVy());
+	}
 }
 
 void Camera::load()

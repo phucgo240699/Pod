@@ -69,6 +69,8 @@ void Mario::Update(float _dt)
 
 	this->updateCurrentAnimation(this->state);
 	this->currentAnimation->Update(_dt);
+	this->plusX(this->getCurrentVx() * _dt);
+	this->plusY(this->getCurrentVy() * _dt);
 }
 
 void Mario::Draw()
@@ -77,29 +79,16 @@ void Mario::Draw()
 		return;
 	}
 	Camera* camera = Camera::getInstance();
-	D3DXVECTOR3* validPosition = new D3DXVECTOR3(*(this->position));
-	float marioWidth = this->currentAnimation->getCurrentFrame()->right - this->currentAnimation->getCurrentFrame()->left;
-	float marioHeight = this->currentAnimation->getCurrentFrame()->bottom - this->currentAnimation->getCurrentFrame()->top;
-	if (camera->getY() == 0) {
-
-	}
-	else if (camera->getY() + camera->getHeight() == camera->getLimitY()) {
-		validPosition->y -= camera->getY();
-	}
-	else {
-		validPosition->y = camera->getHeight() / 2;
-	}
-	if (camera->getX() == 0) {
-
-	}
-	else if (camera->getX() + camera->getWidth() == camera->getLimitX()) {
-		validPosition->x -= camera->getX();
-	}
-	else {
-		validPosition->x = camera->getWidth() / 2;
+	float translateX = 0;
+	if (this->getX() > camera->getWidth() / 2) {
+		translateX = -camera->getX();
 	}
 
-	this->currentAnimation->Draw(this->texture, validPosition, D3DCOLOR_XRGB(255, 255, 255), this->isFlip);
+	float translateY = -this->currentAnimation->getCurrentFrameHeight();
+	if (this->getY() > camera->getHeight() / 2) {
+		translateY = -(camera->getY() + this->currentAnimation->getCurrentFrameHeight());
+	}
+	this->currentAnimation->Draw(this->texture, this->getPosition(), D3DXVECTOR2(translateX, translateY), D3DCOLOR_XRGB(255, 255, 255), this->isFlip);
 }
 
 void Mario::setState(MarioState _state)
@@ -151,23 +140,31 @@ void Mario::onKeyUp()
 	default:
 		break;
 	}
+	this->setCurrentVx(0);
+	this->setCurrentVy(0);
 }
 
 void Mario::onKeyDown(KeyType _keyType)
 {
 	switch (_keyType)
 	{
+	case KeyType::up:
+		this->setCurrentVy(-this->getVy());
+		break;
+	case KeyType::down:
+		this->setCurrentVy(this->getVy());
+		break;
 	case KeyType::left:
 		if (this->state != WALKING_LEFT) { // increase performance 1
 			this->setState(MarioState::WALKING_LEFT);
 		}
-		this->plusX(-1);
+		this->setCurrentVx(-this->getVx());
 		break;
 	case KeyType::right:
 		if (this->state != WALKING_RIGHT) {
 			this->setState(MarioState::WALKING_RIGHT);
 		}
-		this->plusX(1);
+		this->setCurrentVx(this->getVx());
 		break;
 	default:
 		break;

@@ -26,6 +26,7 @@ public:
 	void setWidth(float _width);
 	void setHeight(float _height);
 
+	void setPositionBy(Component* _target);
 	void follow(Component* _target, float _dt);
 
 	void load();
