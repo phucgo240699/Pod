@@ -2,7 +2,7 @@
 #include <vector>
 #include "Setting.h"
 #include "Component.h"
-#include "Keyboard.h"
+#include "KeyType.h"
 #include "Camera.h"
 #include "Map.h"
 

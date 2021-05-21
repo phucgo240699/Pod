@@ -158,9 +158,6 @@
     <ClInclude Include="Man1.h">
       <Filter>Header Files\ViewController\Man1</Filter>
     </ClInclude>
-    <ClInclude Include="Keyboard.h">
-      <Filter>Header Files\System\Enums</Filter>
-    </ClInclude>
     <ClInclude Include="Mario.h">
       <Filter>Header Files\Components\Mario</Filter>
     </ClInclude>
@@ -181,6 +178,12 @@
     </ClInclude>
     <ClInclude Include="Drawing.h">
       <Filter>Header Files\System\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionEdge.h">
+      <Filter>Header Files\System\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyType.h">
+      <Filter>Header Files\System\Enums</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

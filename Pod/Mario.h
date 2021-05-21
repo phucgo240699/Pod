@@ -1,6 +1,6 @@
 #pragma once
 #include "MarioState.h"
-#include "Keyboard.h"
+#include "KeyType.h"
 #include "Camera.h"
 #include "Animation.h"
 #include <unordered_map>

@@ -147,3 +147,118 @@ void Component::onKeyUp()
 void Component::onKeyDown(KeyType _keyType)
 {
 }
+
+bool Component::isColliding(RECT* other)
+{
+	float left = other->left - this->getBounds()->right;
+	float top = other->bottom - this->getBounds()->top;
+	float right = other->right - this->getBounds()->left;
+	float bottom = other->top - this->getBounds()->bottom;
+
+	return !(left > 0 || right < 0 || top < 0 || bottom > 0);
+}
+
+RECT Component::getSweptBroadphaseRect()
+{
+	RECT r;
+	r.left = this->getCurrentVx() > 0 ? this->getX() : this->getX() + this->getCurrentVx();
+	r.top = this->getCurrentVy() > 0 ? this->getY() : this->getY() + this->getCurrentVy();
+	r.right = this->getCurrentVx() > 0 ? this->getBounds()->right + this->getCurrentVx() : this->getBounds()->right;
+	r.bottom = this->getCurrentVy() > 0 ? this->getBounds()->bottom + this->getCurrentVy() : this->getBounds()->bottom;
+
+	return r;
+}
+
+tuple<bool, float, vector<CollisionEdge>> Component::sweptAABB(Component* other, float _dt)
+{
+	tuple<bool, float, vector<CollisionEdge>> result = tuple<bool, float, vector<CollisionEdge>>();
+	float dxEntry, dxExit;
+	float dyEntry, dyExit;
+	float txEntry, txExit;
+	float tyEntry, tyExit;
+
+	// Distance
+	if (this->getCurrentVx() > 0.0f)
+	{
+		dxEntry = other->getX() - this->getBounds()->right;
+		dxExit = other->getBounds()->right - this->getX();
+	}
+	else
+	{
+		dxEntry = other->getBounds()->right - this->getX();
+		dxExit = other->getX() - this->getBounds()->right;
+	}
+	if (this->getCurrentVy() > 0.0f)
+	{
+		dyEntry = other->getY() - this->getBounds()->bottom;
+		dyExit = other->getBounds()->bottom - this->getY();
+	}
+	else
+	{
+		dyEntry = other->getBounds()->bottom - this->getY();
+		dyExit = other->getY() - this->getBounds()->bottom;
+	}
+
+
+	// Time
+	if (this->getCurrentVx() == 0.0f)
+	{
+		txEntry = -std::numeric_limits<float>::infinity();
+		txExit = std::numeric_limits<float>::infinity();
+	}
+	else
+	{
+		txEntry = dxEntry / this->getCurrentVx();
+		txExit = dxExit / this->getCurrentVx();
+	}
+	if (this->getCurrentVy() == 0.0f)
+	{
+		tyEntry = -std::numeric_limits<float>::infinity();
+		tyExit = std::numeric_limits<float>::infinity();
+	}
+	else
+	{
+		tyEntry = dyEntry / this->getCurrentVy();
+		tyExit = dyExit / this->getCurrentVy();
+	}
+	float entryTime = max(txEntry, tyEntry);
+	float exitTime = min(txExit, tyExit);
+
+
+	// Result
+	if (entryTime > exitTime || (txEntry < 0.0f && tyEntry < 0.0f) || txEntry > _dt || tyEntry > _dt)
+	{
+		get<0>(result) = false;
+	}
+	else // if there was a collision 
+	{
+		get<0>(result) = true;
+		get<1>(result) = entryTime;
+
+		// calculate collided surface
+		if (txEntry > tyEntry)
+		{
+			if (dxEntry > 0.0f)
+			{
+				get<2>(result).push_back(CollisionEdge::rightEdge);
+			}
+			else
+			{
+				get<2>(result).push_back(CollisionEdge::leftEdge);
+			}
+		}
+		else
+		{
+			if (dyEntry > 0.0f)
+			{
+				get<2>(result).push_back(CollisionEdge::topEdge);
+			}
+			else
+			{
+				get<2>(result).push_back(CollisionEdge::bottomEdge);
+			}
+		} // return the time of collisionreturn entryTime; 
+	}
+
+	return result;
+}

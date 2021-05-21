@@ -1,7 +1,12 @@
 #pragma once
 #include "Color.h"
 #include "Drawing.h"
-#include "Keyboard.h"
+#include "KeyType.h"
+#include "CollisionEdge.h"
+#include <tuple>
+#include <vector>
+
+using namespace std;
 
 class Component {
 protected:
@@ -49,4 +54,10 @@ public:
 	// Keyboard
 	virtual void onKeyUp();
 	virtual void onKeyDown(KeyType _keyType);
+
+
+	// Collision
+	bool isColliding(RECT* other);
+	RECT getSweptBroadphaseRect();
+	tuple<bool, float, vector<CollisionEdge>> sweptAABB(Component* other, float _dt);
 };

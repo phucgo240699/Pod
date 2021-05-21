@@ -171,12 +171,13 @@
     <ClInclude Include="AppConfig.h" />
     <ClInclude Include="AppController.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CollisionEdge.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Drawing.h" />
     <ClInclude Include="dxgraphics.h" />
     <ClInclude Include="FileManager.h" />
-    <ClInclude Include="Keyboard.h" />
+    <ClInclude Include="KeyType.h" />
     <ClInclude Include="Man1.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Mario.h" />
