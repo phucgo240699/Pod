@@ -121,7 +121,7 @@ void Camera::follow(Component* _target, float _dt)
 void Camera::load()
 {
 	// Read data from camera file
-	string data = FileManager::getInstance()->getStringFromTextFile("camera.txt");
+	string data = FileManager::getInstance()->getStringFromTextFile(FilePath::getInstance()->camera);
 	vector<int> v = Tool::splitToVectorIntegerFrom(data, ',');
 
 	this->setX(v[0]);
@@ -130,7 +130,7 @@ void Camera::load()
 	this->setVy(v[3]);
 
 	// Read data from map file
-	data = FileManager::getInstance()->getStringFromTextFile("map_info_man1.txt");
+	data = FileManager::getInstance()->getStringFromTextFile(FilePath::getInstance()->map_info_man1);
 	v = Tool::splitToVectorIntegerFrom(data, ',');
 	this->setLimitX(v[4]);
 	this->setLimitY(v[5]);
@@ -158,6 +158,6 @@ void Camera::save()
 	data += to_string(this->limitX);
 	data += ",";
 	data += to_string(this->limitY);
-	FileManager::getInstance()->writeStringToTextFile("camera.txt", data);
+	FileManager::getInstance()->writeStringToTextFile(FilePath::getInstance()->camera, data);
 }
 

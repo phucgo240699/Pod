@@ -159,6 +159,9 @@
     <ClCompile Include="Drawing.cpp" />
     <ClCompile Include="dxgraphics.cpp" />
     <ClCompile Include="FileManager.cpp" />
+    <ClCompile Include="FilePath.cpp" />
+    <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="ImagePath.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Man1.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -177,6 +180,9 @@
     <ClInclude Include="Drawing.h" />
     <ClInclude Include="dxgraphics.h" />
     <ClInclude Include="FileManager.h" />
+    <ClInclude Include="FilePath.h" />
+    <ClInclude Include="Ground.h" />
+    <ClInclude Include="ImagePath.h" />
     <ClInclude Include="KeyType.h" />
     <ClInclude Include="Man1.h" />
     <ClInclude Include="Map.h" />

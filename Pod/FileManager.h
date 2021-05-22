@@ -1,6 +1,8 @@
 #pragma once
 #include <fstream>
 #include "Tool.h"
+#include "ImagePath.h"
+#include "FilePath.h"
 
 using namespace std;
 
@@ -10,7 +12,7 @@ class FileManager
 private:
 	FileManager() = default; // 1.Don't public constructor function
 	static FileManager* instance; // 2. static private instance
-	string rootFolderTextFile = "./Assets/TextFiles/";
+	string rootFolderTextFile = "";
 
 public:
 	FileManager(const FileManager&) = delete; // 3. delete copy constructor

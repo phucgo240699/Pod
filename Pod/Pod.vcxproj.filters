@@ -129,6 +129,15 @@
     <ClCompile Include="Drawing.cpp">
       <Filter>Source Files\System\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Ground.cpp">
+      <Filter>Source Files\Components\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="FilePath.cpp">
+      <Filter>Source Files\System\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="ImagePath.cpp">
+      <Filter>Source Files\System\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tool.h">
@@ -184,6 +193,15 @@
     </ClInclude>
     <ClInclude Include="KeyType.h">
       <Filter>Header Files\System\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Ground.h">
+      <Filter>Header Files\Components\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="FilePath.h">
+      <Filter>Header Files\System\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="ImagePath.h">
+      <Filter>Header Files\System\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

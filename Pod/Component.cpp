@@ -158,13 +158,23 @@ bool Component::isColliding(RECT* other)
 	return !(left > 0 || right < 0 || top < 0 || bottom > 0);
 }
 
-RECT Component::getSweptBroadphaseRect()
+bool Component::isColliding(RECT* object, RECT* other)
 {
-	RECT r;
-	r.left = this->getCurrentVx() > 0 ? this->getX() : this->getX() + this->getCurrentVx();
-	r.top = this->getCurrentVy() > 0 ? this->getY() : this->getY() + this->getCurrentVy();
-	r.right = this->getCurrentVx() > 0 ? this->getBounds()->right + this->getCurrentVx() : this->getBounds()->right;
-	r.bottom = this->getCurrentVy() > 0 ? this->getBounds()->bottom + this->getCurrentVy() : this->getBounds()->bottom;
+	float left = other->left - object->right;
+	float top = other->bottom - object->top;
+	float right = other->right - object->left;
+	float bottom = other->top - object->bottom;
+
+	return !(left > 0 || right < 0 || top < 0 || bottom > 0);
+}
+
+RECT* Component::getSweptBroadphaseRect()
+{
+	RECT* r = new RECT();
+	r->left = this->getCurrentVx() > 0 ? this->getX() : this->getX() + this->getCurrentVx();
+	r->top = this->getCurrentVy() > 0 ? this->getY() : this->getY() + this->getCurrentVy();
+	r->right = this->getCurrentVx() > 0 ? this->getBounds()->right + this->getCurrentVx() : this->getBounds()->right;
+	r->bottom = this->getCurrentVy() > 0 ? this->getBounds()->bottom + this->getCurrentVy() : this->getBounds()->bottom;
 
 	return r;
 }
@@ -176,6 +186,11 @@ tuple<bool, float, vector<CollisionEdge>> Component::sweptAABB(Component* other,
 	float dyEntry, dyExit;
 	float txEntry, txExit;
 	float tyEntry, tyExit;
+
+	if (this->isColliding(this->getSweptBroadphaseRect(), other->getBounds()) == false) {
+		get<0>(result) = false;
+		return result;
+	}
 
 	// Distance
 	if (this->getCurrentVx() > 0.0f)

@@ -5,14 +5,17 @@ void Man1::viewDidLoad()
 	ViewController::viewDidLoad();
 
 	// Read data from file
-	string dataMario = FileManager::getInstance()->getStringFromTextFile("Mario/mario_info.txt");
+	string dataMario = FileManager::getInstance()->getStringFromTextFile(FilePath::getInstance()->mario_info);
 	vector<string> vectorMario = Tool::splitToVectorStringFrom(dataMario, ',');
-	string dataMap = FileManager::getInstance()->getStringFromTextFile("map_info_man1.txt");
+	string dataMap = FileManager::getInstance()->getStringFromTextFile(FilePath::getInstance()->map_info_man1);
 	vector<string> vectorMap = Tool::splitToVectorStringFrom(dataMap, ',');
+	string dataGround = FileManager::getInstance()->getStringFromTextFile(FilePath::getInstance()->ground_man1);
+	vector<string> vectorGround = Tool::splitToVectorStringFrom(dataGround, ',');
 
-	map = new Map(L"./Assets/Images/tile_set_man1.png", "map_indexes_man1.txt", "map_info_man1.txt", ' ', NULL);
-	mainCharacter = new Mario(stoi(vectorMario[0]), stoi(vectorMario[1]), stoi(vectorMario[2]), stoi(vectorMario[3]), stoi(vectorMap[4]), stoi(vectorMap[5]), L"./Assets/Images/Mario/tileset.png", D3DCOLOR_XRGB(255, 0, 255), STANDING_RIGHT);
+	map = new Map(ImagePath::getInstance()->tile_set_man1, FilePath::getInstance()->map_indexes_man1, FilePath::getInstance()->map_info_man1, ' ', NULL);
+	mainCharacter = new Mario(stof(vectorMario[0]), stof(vectorMario[1]), stof(vectorMario[2]), stof(vectorMario[3]), stof(vectorMap[4]), stof(vectorMap[5]), ImagePath::getInstance()->mario, D3DCOLOR_XRGB(255, 0, 255), STANDING_RIGHT);
 	Camera::getInstance()->setPositionBy(mainCharacter);
+	Ground* ground = new Ground(stof(vectorGround[0]), stof(vectorGround[1]), stof(vectorGround[2]), stof(vectorGround[3]), stof(vectorGround[4]), stof(vectorGround[5]), stof(vectorGround[6]), stof(vectorGround[7]));
 }
 
 void Man1::viewReceiveKeyDown(KeyType _keyType)

@@ -4,8 +4,8 @@ void Mario::setUpAnimations()
 {
 	this->animations = new vector<Animation*>();
 
-	this->animations->push_back(new Animation(0, 0, 2, "Mario/standing.txt"));
-	this->animations->push_back(new Animation(0, 0, 2, "Mario/running.txt"));
+	this->animations->push_back(new Animation(0, 0, 2, FilePath::getInstance()->mario_standing));
+	this->animations->push_back(new Animation(0, 0, 2, FilePath::getInstance()->mario_running));
 }
 
 Mario::Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state) : Component(_x, _y, _vx, _vy, _limitX, _limitY)

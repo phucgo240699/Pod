@@ -89,7 +89,7 @@ void Setting::setDefaultBackgroundColorViewController(Color* _color)
 
 void Setting::load()
 {
-	string settingsStr = FileManager::getInstance()->getStringFromTextFile("settings.txt");
+	string settingsStr = FileManager::getInstance()->getStringFromTextFile(FilePath::getInstance()->setting);
 	vector<string> v = Tool::splitToVectorStringFrom(settingsStr, ',');
 	
 	this->dt = stof(v[0]);
@@ -100,7 +100,7 @@ void Setting::load()
 	this->defaultBackgroundColorViewController = new Color(Tool::getColorFromString(v[5]));
 
 	// Read data from map file
-	string dataMap = FileManager::getInstance()->getStringFromTextFile("map_info_man1.txt");
+	string dataMap = FileManager::getInstance()->getStringFromTextFile(FilePath::getInstance()->map_info_man1);
 	vector<int> vectorMap = Tool::splitToVectorIntegerFrom(dataMap, ',');
 
 
@@ -126,7 +126,7 @@ void Setting::save()
 	settingsStr += (',' + string((this->screenMode == window) ? "0" : "1")); // 0: window		1: fullscreen
 	settingsStr += (',' + Tool::getStringFromColor(this->defaultBackgroundColorViewController->getValue()));
 
-	FileManager::getInstance()->writeStringToTextFile("settings.txt", settingsStr);
+	FileManager::getInstance()->writeStringToTextFile(FilePath::getInstance()->setting, settingsStr);
 }
 
 //void Setting::setRootImagesFolder(string _path)

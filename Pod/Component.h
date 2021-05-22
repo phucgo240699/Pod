@@ -58,6 +58,7 @@ public:
 
 	// Collision
 	bool isColliding(RECT* other);
-	RECT getSweptBroadphaseRect();
+	bool isColliding(RECT* object, RECT* other);
+	RECT* getSweptBroadphaseRect();
 	tuple<bool, float, vector<CollisionEdge>> sweptAABB(Component* other, float _dt);
 };
