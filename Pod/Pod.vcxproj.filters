@@ -138,6 +138,9 @@
     <ClCompile Include="ImagePath.cpp">
       <Filter>Source Files\System\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="MainCharacter.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tool.h">
@@ -202,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="ImagePath.h">
       <Filter>Header Files\System\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="MainCharacter.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

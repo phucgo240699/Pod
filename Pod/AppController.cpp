@@ -53,11 +53,17 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		this->rootViewController->viewReceiveKeyDown(KeyType::up);
 		hasKeyDown = true;
 	}
+	else if (KEY_DOWN(VK_UP) != 1) {
+		this->rootViewController->viewReceiveKeyUp(KeyType::up);
+	}
 
 	// Down
 	if (KEY_DOWN(VK_DOWN) == 1) {
 		this->rootViewController->viewReceiveKeyDown(KeyType::down);
 		hasKeyDown = true;
+	}
+	else if (KEY_DOWN(VK_DOWN) != 1) {
+		this->rootViewController->viewReceiveKeyUp(KeyType::down);
 	}
 
 	// Left
@@ -65,17 +71,26 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		this->rootViewController->viewReceiveKeyDown(KeyType::left);
 		hasKeyDown = true;
 	}
+	else if (KEY_DOWN(VK_LEFT) != 1) {
+		this->rootViewController->viewReceiveKeyUp(KeyType::left);
+	}
 
 	// Right
 	if (KEY_DOWN(VK_RIGHT) == 1) {
 		this->rootViewController->viewReceiveKeyDown(KeyType::right);
 		hasKeyDown = true;
 	}
+	else if (KEY_DOWN(VK_RIGHT) != 1) {
+		this->rootViewController->viewReceiveKeyUp(KeyType::right);
+	}
 
 	// SPACE
 	if (KEY_DOWN(VK_SPACE) == 1) {
 		this->rootViewController->viewReceiveKeyDown(KeyType::space);
 		hasKeyDown = true;
+	}
+	else if (KEY_DOWN(VK_SPACE) != 1) {
+		this->rootViewController->viewReceiveKeyUp(KeyType::space);
 	}
 
 	if (!hasKeyDown) {

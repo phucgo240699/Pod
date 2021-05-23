@@ -20,6 +20,7 @@ public:
 	string mario_info = "./Assets/TextFiles/Mario/mario_info.txt";
 	string mario_running = "./Assets/TextFiles/Mario/running.txt";
 	string mario_standing = "./Assets/TextFiles/Mario/standing.txt";
+	string mario_jumping_dropping = "./Assets/TextFiles/Mario/jumping_dropping.txt";
 
 	// Camera
 	string camera = "./Assets/TextFiles/Camera/camera.txt";

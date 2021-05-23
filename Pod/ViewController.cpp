@@ -25,6 +25,11 @@ void ViewController::viewReceiveKeyUp()
 	mainCharacter->onKeyUp();
 }
 
+void ViewController::viewReceiveKeyUp(KeyType _keyType)
+{
+	mainCharacter->onKeyUp(_keyType);
+}
+
 void ViewController::viewWillUpdate(float _dt)
 {
 }

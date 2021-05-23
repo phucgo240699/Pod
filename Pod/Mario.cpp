@@ -6,31 +6,30 @@ void Mario::setUpAnimations()
 
 	this->animations->push_back(new Animation(0, 0, 2, FilePath::getInstance()->mario_standing));
 	this->animations->push_back(new Animation(0, 0, 2, FilePath::getInstance()->mario_running));
+	this->animations->push_back(new Animation(0, 0, 2, FilePath::getInstance()->mario_jumping_dropping));
 }
 
-Mario::Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state) : Component(_x, _y, _vx, _vy, _limitX, _limitY)
+Mario::Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state) : MainCharacter(_x, _y, _vx, _vy, _limitX, _limitY)
 {
-	Component::Component(_x, _y, _vx, _vy, _limitX, _limitY);
+	MainCharacter::MainCharacter(_x, _y, _vx, _vy, _limitX, _limitY);
+	setUpAnimations();
 	this->texture = LoadTextureFromImage(_imagePath, _transcolor);
 	this->state = _state;
 	this->setState(_state);
-	setUpAnimations();
-	updateCurrentAnimation(this->getState());
 }
 
-Mario::Mario(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state) : Component(_position, _vx, _vy, _limitX, _limitY)
+Mario::Mario(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state) : MainCharacter(_position, _vx, _vy, _limitX, _limitY)
 {
-	Component::Component(_position, _vx, _vy, _limitX, _limitY);
+	MainCharacter::MainCharacter(_position, _vx, _vy, _limitX, _limitY);
+	setUpAnimations();
 	this->texture = LoadTextureFromImage(_imagePath, _transcolor);
 	this->state = _state;
 	this->setState(_state);
-	setUpAnimations();
-	updateCurrentAnimation(this->getState());
 }
 
 Mario::~Mario()
 {
-	Component::~Component();
+	MainCharacter::~MainCharacter();
 	delete& texture;
 	delete& state;
 	delete& isFlip;
@@ -39,6 +38,11 @@ Mario::~Mario()
 		delete this->animations->at(i);
 	}
 	delete currentAnimation;
+}
+
+Animation* Mario::getCurrentAnimation()
+{
+	return this->currentAnimation;
 }
 
 MarioState Mario::getState()
@@ -61,16 +65,20 @@ RECT* Mario::getBounds()
 	return r;
 }
 
+bool Mario::getIsFlip()
+{
+	return this->isFlip;
+}
+
 void Mario::Update(float _dt)
 {
 	if (currentAnimation == NULL) {
 		return;
 	}
-
-	this->updateCurrentAnimation(this->state);
 	this->currentAnimation->Update(_dt);
-	this->plusX(this->getCurrentVx() * _dt);
-	this->plusY(this->getCurrentVy() * _dt);
+	this->updateVelocity();
+	this->plusX(round(this->getVx() * _dt));
+	this->plusY(round(this->getVy() * _dt));
 }
 
 void Mario::Draw()
@@ -86,41 +94,82 @@ void Mario::Draw()
 
 	float translateY = -this->currentAnimation->getCurrentFrameHeight();
 	if (this->getY() > camera->getHeight() / 2) {
-		translateY = -(camera->getY() + this->currentAnimation->getCurrentFrameHeight());
+		translateY = -(camera->getY());
 	}
 	this->currentAnimation->Draw(this->texture, this->getPosition(), D3DXVECTOR2(translateX, translateY), D3DCOLOR_XRGB(255, 255, 255), this->isFlip);
 }
 
-void Mario::setState(MarioState _state)
+void Mario::setIsFlip(bool _isFlip)
 {
-	this->state = _state;
-	if (_state == STANDING_RIGHT || _state == WALKING_RIGHT) {
-		this->isFlip = false;
-	}
-	else {
-		this->isFlip = true;
-	}
+	this->isFlip = _isFlip;
 }
 
-void Mario::updateCurrentAnimation(MarioState _state)
+void Mario::setState(MarioState _state)
 {
+
 	switch (_state)
 	{
+	case STANDING:
+		this->currentAnimation = this->animations->at(0);
+		break;
+	case WALKING:
+		if (this->getState() != WALKING) {
+			this->currentAnimation = this->animations->at(1);
+		}
+		break;
 	case DROPPING:
+		this->currentAnimation = this->animations->at(2);
 		break;
-	case STANDING_LEFT:
-		currentAnimation = this->animations->at(0);
+	default:
 		break;
-	case STANDING_RIGHT:
-		currentAnimation = this->animations->at(0);
+	}
+
+	this->state = _state;
+}
+
+//void Mario::updateCurrentAnimationByState()
+//{
+//	switch (this->getState())
+//	{
+//	case STANDING:
+//		currentAnimation = this->animations->at(0);
+//		break;
+//	case WALKING:
+//		if (this->getState() != WALKING) {
+//			currentAnimation = this->animations->at(1);
+//		}
+//		break;
+//	case DROPPING:
+//		currentAnimation = this->animations->at(2);
+//		break;
+//	default:
+//		break;
+//	}
+//}
+
+void Mario::updateVelocity()
+{
+	switch (this->state)
+	{
+	case STANDING:
+		this->plusCurrentVy(0);
 		break;
-	case JUMPING:
+	case WALKING:
+		if (isFlip == false) { // Right sight
+			if (abs(this->getVx()) + this->gravity <= this->maxVx) {
+				this->plusCurrentVx(this->gravity);
+			}
+		}
+		else { // Left sight
+			if (abs(this->getVx()) - this->gravity <= this->maxVx) {
+				this->plusCurrentVx(-this->gravity);
+			}
+		}
 		break;
-	case WALKING_LEFT:
-		currentAnimation = this->animations->at(1);
-		break;
-	case WALKING_RIGHT:
-		currentAnimation = this->animations->at(1);
+	case DROPPING:
+		if (abs(this->getVy()) + this->gravity <= this->maxVy) {
+			this->plusCurrentVy(this->gravity);
+		}
 		break;
 	default:
 		break;
@@ -129,42 +178,52 @@ void Mario::updateCurrentAnimation(MarioState _state)
 
 void Mario::onKeyUp()
 {
-	switch (this->getState())
+	switch (this->state)
 	{
-	case WALKING_LEFT:
-		this->setState(MarioState::STANDING_LEFT);
+	case STANDING:
+		this->setVy(0);
 		break;
-	case WALKING_RIGHT:
-		this->setState(MarioState::STANDING_RIGHT);
+	case DROPPING:
+		this->setVx(0);
 		break;
 	default:
 		break;
 	}
-	this->setCurrentVx(0);
-	this->setCurrentVy(0);
+}
+
+void Mario::onKeyUp(KeyType _keyType)
+{
+	switch (_keyType)
+	{
+	case KeyType::left:
+	case KeyType::right:
+		this->setVx(0);
+		if (this->getState() == WALKING) {
+			this->setState(MarioState::STANDING);
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void Mario::onKeyDown(KeyType _keyType)
 {
 	switch (_keyType)
 	{
-	case KeyType::up:
-		this->setCurrentVy(-this->getVy());
+	case space:
 		break;
-	case KeyType::down:
-		this->setCurrentVy(this->getVy());
+	case up:
+		break;
+	case down:
 		break;
 	case KeyType::left:
-		if (this->state != WALKING_LEFT) { // increase performance 1
-			this->setState(MarioState::WALKING_LEFT);
-		}
-		this->setCurrentVx(-this->getVx());
 		break;
 	case KeyType::right:
-		if (this->state != WALKING_RIGHT) {
-			this->setState(MarioState::WALKING_RIGHT);
+		this->setIsFlip(false);
+		if (this->getState() == STANDING) {
+			this->setState(MarioState::WALKING);
 		}
-		this->setCurrentVx(this->getVx());
 		break;
 	default:
 		break;

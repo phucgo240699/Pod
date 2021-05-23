@@ -5,8 +5,8 @@ Component::Component(float _x, float _y, float _vx, float _vy, float _limitX, fl
 	this->position = new D3DXVECTOR3(_x, _y, 0);
 	this->vx = _vx;
 	this->vy = _vy;
-	this->currentVx = _vx;
-	this->currentVy = _vy;
+	/*this->currentVx = _vx;
+	this->currentVy = _vy;*/
 	this->limitX = _limitX;
 	this->limitY = _limitY;
 }
@@ -16,16 +16,16 @@ Component::Component(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX
 	this->position = _position;
 	this->vx = _vx;
 	this->vy = _vy;
-	this->currentVx = _vx;
-	this->currentVy = _vy;
+	/*this->currentVx = _vx;
+	this->currentVy = _vy;*/
 	this->limitX = _limitX;
 	this->limitY = _limitY;
 }
 
-Component::~Component()
-{
-	delete position;
-}
+//Component::~Component()
+//{
+//	delete position;
+//}
 
 D3DXVECTOR3* Component::getPosition()
 {
@@ -42,6 +42,16 @@ float Component::getY()
 	return this->position->y;
 }
 
+//float Component::getVx()
+//{
+//	return this->vx;
+//}
+//
+//float Component::getVy()
+//{
+//	return this->vy;
+//}
+
 float Component::getVx()
 {
 	return this->vx;
@@ -50,16 +60,6 @@ float Component::getVx()
 float Component::getVy()
 {
 	return this->vy;
-}
-
-float Component::getCurrentVx()
-{
-	return this->currentVx;
-}
-
-float Component::getCurrentVy()
-{
-	return this->currentVy;
 }
 
 float Component::getLimitX()
@@ -87,6 +87,16 @@ void Component::setY(float _y)
 	this->position->y = _y;
 }
 
+//void Component::setVx(float _vx)
+//{
+//	this->vx = _vx;
+//}
+//
+//void Component::setVy(float _vy)
+//{
+//	this->vy = _vy;
+//}
+
 void Component::setVx(float _vx)
 {
 	this->vx = _vx;
@@ -95,16 +105,6 @@ void Component::setVx(float _vx)
 void Component::setVy(float _vy)
 {
 	this->vy = _vy;
-}
-
-void Component::setCurrentVx(float _currentVx)
-{
-	this->currentVx = _currentVx;
-}
-
-void Component::setCurrentVy(float _currentVy)
-{
-	this->currentVy = _currentVy;
 }
 
 void Component::setLimitX(float _limitX)
@@ -127,6 +127,16 @@ void Component::plusY(float _y)
 	this->position->y += _y;
 }
 
+void Component::plusCurrentVx(float _currentVx)
+{
+	this->vx += _currentVx;
+}
+
+void Component::plusCurrentVy(float _currentVy)
+{
+	this->vy += _currentVy;
+}
+
 void Component::Update(float _dt)
 {
 }
@@ -141,6 +151,10 @@ RECT* Component::getBounds()
 }
 
 void Component::onKeyUp()
+{
+}
+
+void Component::onKeyUp(KeyType _keyType)
 {
 }
 
@@ -171,10 +185,10 @@ bool Component::isColliding(RECT* object, RECT* other)
 RECT* Component::getSweptBroadphaseRect()
 {
 	RECT* r = new RECT();
-	r->left = this->getCurrentVx() > 0 ? this->getX() : this->getX() + this->getCurrentVx();
-	r->top = this->getCurrentVy() > 0 ? this->getY() : this->getY() + this->getCurrentVy();
-	r->right = this->getCurrentVx() > 0 ? this->getBounds()->right + this->getCurrentVx() : this->getBounds()->right;
-	r->bottom = this->getCurrentVy() > 0 ? this->getBounds()->bottom + this->getCurrentVy() : this->getBounds()->bottom;
+	r->left = this->getVx() > 0 ? this->getX() : this->getX() + this->getVx();
+	r->top = this->getVy() > 0 ? this->getY() : this->getY() + this->getVy();
+	r->right = this->getVx() > 0 ? this->getBounds()->right + this->getVx() : this->getBounds()->right;
+	r->bottom = this->getVy() > 0 ? this->getBounds()->bottom + this->getVy() : this->getBounds()->bottom;
 
 	return r;
 }
@@ -187,13 +201,20 @@ tuple<bool, float, vector<CollisionEdge>> Component::sweptAABB(Component* other,
 	float txEntry, txExit;
 	float tyEntry, tyExit;
 
-	if (this->isColliding(this->getSweptBroadphaseRect(), other->getBounds()) == false) {
+	// Quick result
+	if (this->isColliding(this->getSweptBroadphaseRect(), other->getBounds()) == false) { // No Collide
 		get<0>(result) = false;
 		return result;
 	}
 
+	if (this->getVx() == 0.0 && this->getVy() == 0.0) { // Collide
+		get<0>(result) = true;
+		get<1>(result) = 0.0;
+		return result;
+	}
+
 	// Distance
-	if (this->getCurrentVx() > 0.0f)
+	if (this->getVx() > 0.0f)
 	{
 		dxEntry = other->getX() - this->getBounds()->right;
 		dxExit = other->getBounds()->right - this->getX();
@@ -203,7 +224,7 @@ tuple<bool, float, vector<CollisionEdge>> Component::sweptAABB(Component* other,
 		dxEntry = other->getBounds()->right - this->getX();
 		dxExit = other->getX() - this->getBounds()->right;
 	}
-	if (this->getCurrentVy() > 0.0f)
+	if (this->getVy() > 0.0f)
 	{
 		dyEntry = other->getY() - this->getBounds()->bottom;
 		dyExit = other->getBounds()->bottom - this->getY();
@@ -216,32 +237,32 @@ tuple<bool, float, vector<CollisionEdge>> Component::sweptAABB(Component* other,
 
 
 	// Time
-	if (this->getCurrentVx() == 0.0f)
+	if (this->getVx() == 0.0f)
 	{
 		txEntry = -std::numeric_limits<float>::infinity();
 		txExit = std::numeric_limits<float>::infinity();
 	}
 	else
 	{
-		txEntry = dxEntry / this->getCurrentVx();
-		txExit = dxExit / this->getCurrentVx();
+		txEntry = dxEntry / this->getVx();
+		txExit = dxExit / this->getVx();
 	}
-	if (this->getCurrentVy() == 0.0f)
+	if (this->getVy() == 0.0f)
 	{
 		tyEntry = -std::numeric_limits<float>::infinity();
 		tyExit = std::numeric_limits<float>::infinity();
 	}
 	else
 	{
-		tyEntry = dyEntry / this->getCurrentVy();
-		tyExit = dyExit / this->getCurrentVy();
+		tyEntry = dyEntry / this->getVy();
+		tyExit = dyExit / this->getVy();
 	}
 	float entryTime = max(txEntry, tyEntry);
 	float exitTime = min(txExit, tyExit);
 
 
 	// Result
-	if (entryTime > exitTime || (txEntry < 0.0f && tyEntry < 0.0f) || txEntry > _dt || tyEntry > _dt)
+	if (entryTime > exitTime || txEntry > _dt || tyEntry > _dt)
 	{
 		get<0>(result) = false;
 	}

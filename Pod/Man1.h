@@ -6,9 +6,9 @@
 class Man1 : public ViewController
 {
 private:
+	Ground* ground;
 public:
 	void viewDidLoad();
-	void viewReceiveKeyDown(KeyType _keyType);
-	void viewReceiveKeyUp();
+	void viewDidUpdate(float _dt);
 };
 

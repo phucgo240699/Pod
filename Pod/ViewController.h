@@ -1,7 +1,7 @@
 	#pragma once
 #include <vector>
 #include "Setting.h"
-#include "Component.h"
+#include "MainCharacter.h"
 #include "KeyType.h"
 #include "Camera.h"
 #include "Map.h"
@@ -9,7 +9,7 @@
 class ViewController
 {
 protected:
-	Component* mainCharacter;
+	MainCharacter* mainCharacter;
 	Map* map;
 
 public:
@@ -21,8 +21,9 @@ public:
 
 	// Life cycle
 	virtual void viewDidLoad();
-	virtual void viewReceiveKeyDown(KeyType _keyType);
 	virtual void viewReceiveKeyUp();
+	virtual void viewReceiveKeyUp(KeyType _keyType);
+	virtual void viewReceiveKeyDown(KeyType _keyType);
 	virtual void viewWillUpdate(float _dt);
 	virtual void viewDidUpdate(float _dt);
 	virtual void viewWillRender();

@@ -104,17 +104,17 @@ void Camera::follow(Component* _target, float _dt)
 	// If target not in safe area, and new location of camera not outside of map
 	if (_target->getX() > this->getWidth() / 2 &&
 		_target->getX() < this->getLimitX() - (this->getWidth() / 2) &&
-		0 < this->getX() + _target->getCurrentVx() &&
-		this->getX() + this->getWidth() + _target->getCurrentVx() < this->getLimitX()) {
-		this->plusX(_target->getCurrentVx());
+		0 < this->getX() + _target->getVx() &&
+		this->getX() + this->getWidth() + _target->getVx() < this->getLimitX()) {
+		this->plusX(_target->getVx());
 	}
 
 	// If target run through half of camera's height, and new location of camera not outside of map
 	if (_target->getY() > this->getHeight() / 2 &&
 		_target->getY() < this->getLimitY() - (this->getHeight() / 2) &&
-		0 < this->getY() + _target->getCurrentVy() &&
-		this->getY() + this->getHeight() + _target->getCurrentVy() < this->getLimitY()) {
-		this->plusY(_target->getCurrentVy());
+		0 < this->getY() + _target->getVy() &&
+		this->getY() + this->getHeight() + _target->getVy() < this->getLimitY()) {
+		this->plusY(_target->getVy());
 	}
 }
 

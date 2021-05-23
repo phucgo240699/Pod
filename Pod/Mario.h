@@ -3,9 +3,13 @@
 #include "KeyType.h"
 #include "Camera.h"
 #include "Animation.h"
+#include "MainCharacter.h"
 #include <unordered_map>
+#include <math.h>
 
-class Mario : public Component
+using namespace std;
+
+class Mario : public MainCharacter
 {
 private:
 	LPDIRECT3DTEXTURE9 texture;
@@ -14,6 +18,9 @@ private:
 	
 	vector<Animation*>* animations;
 	Animation* currentAnimation;
+	float gravity = 1;
+	float maxVy = 10;
+	float maxVx = 5;
 
 	void setUpAnimations();
 
@@ -26,12 +33,16 @@ public:
 	~Mario();
 
 	// Getter
+	Animation* getCurrentAnimation();
 	MarioState getState();
 	RECT* getBounds();
+	bool getIsFlip();
 
 	// Setter
+	void setIsFlip(bool _isFlip);
 	void setState(MarioState _state);
-	void updateCurrentAnimation(MarioState _state);
+	//void updateCurrentAnimationByState();
+	void updateVelocity();
 
 	// Inherit
 	void Update(float _dt);
@@ -39,6 +50,7 @@ public:
 
 	// Keyboard
 	void onKeyUp();
+	void onKeyUp(KeyType _keyType);
 	void onKeyDown(KeyType _keyType);
 };
 
