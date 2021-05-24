@@ -48,8 +48,8 @@ public:
 
 	void plusX(float _x);
 	void plusY(float _y);
-	void plusCurrentVx(float _currentVx);
-	void plusCurrentVy(float _currentVy);
+	void plusVx(float _vx);
+	void plusVy(float _vy);
 
 	virtual void Update(float _dt);
 	virtual void Draw();
@@ -57,8 +57,8 @@ public:
 
 	// Keyboard
 	virtual void onKeyUp();
-	virtual void onKeyUp(KeyType _keyType);
-	virtual void onKeyDown(KeyType _keyType);
+	virtual void onKeyUp(vector<KeyType> _keyTypes);
+	virtual void onKeyDown(vector<KeyType> _keyTypes);
 
 
 	// Collision

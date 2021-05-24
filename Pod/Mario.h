@@ -18,9 +18,8 @@ private:
 	
 	vector<Animation*>* animations;
 	Animation* currentAnimation;
-	float gravity = 1;
-	float maxVy = 10;
-	float maxVx = 5;
+	float accelerationX = 0, accelerationY = 0;
+	float maxVx = 0, maxVy = 0;
 
 	void setUpAnimations();
 
@@ -41,7 +40,6 @@ public:
 	// Setter
 	void setIsFlip(bool _isFlip);
 	void setState(MarioState _state);
-	//void updateCurrentAnimationByState();
 	void updateVelocity();
 
 	// Inherit
@@ -50,7 +48,7 @@ public:
 
 	// Keyboard
 	void onKeyUp();
-	void onKeyUp(KeyType _keyType);
-	void onKeyDown(KeyType _keyType);
+	void onKeyUp(vector<KeyType> _keyTypes);
+	void onKeyDown(vector<KeyType> _keyTypes);
 };
 

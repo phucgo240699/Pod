@@ -22,8 +22,8 @@ public:
 	// Life cycle
 	virtual void viewDidLoad();
 	virtual void viewReceiveKeyUp();
-	virtual void viewReceiveKeyUp(KeyType _keyType);
-	virtual void viewReceiveKeyDown(KeyType _keyType);
+	virtual void viewReceiveKeyUp(vector<KeyType> _keyTypes);
+	virtual void viewReceiveKeyDown(vector<KeyType> _keyTypes);
 	virtual void viewWillUpdate(float _dt);
 	virtual void viewDidUpdate(float _dt);
 	virtual void viewWillRender();

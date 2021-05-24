@@ -36,6 +36,5 @@ public:
 
 
 	void Update(float _dt);
-	void Draw(LPDIRECT3DTEXTURE9 _texture, D3DXVECTOR3* _position, D3DXVECTOR2 _translation, D3DCOLOR _color = D3DCOLOR_XRGB(255, 255, 255), bool _isFlip = false);
+	void Draw(LPDIRECT3DTEXTURE9 _texture, D3DXVECTOR3* _position, D3DXVECTOR2 _translation, bool _isFlip, D3DCOLOR _color = D3DCOLOR_XRGB(255, 255, 255));
 };
-

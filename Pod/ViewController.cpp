@@ -15,9 +15,9 @@ void ViewController::viewDidLoad()
 	int a = 0;
 }
 
-void ViewController::viewReceiveKeyDown(KeyType _keyType)
+void ViewController::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 {
-	mainCharacter->onKeyDown(_keyType);
+	mainCharacter->onKeyDown(_keyTypes);
 }
 
 void ViewController::viewReceiveKeyUp()
@@ -25,9 +25,9 @@ void ViewController::viewReceiveKeyUp()
 	mainCharacter->onKeyUp();
 }
 
-void ViewController::viewReceiveKeyUp(KeyType _keyType)
+void ViewController::viewReceiveKeyUp(vector<KeyType> _keyTypes)
 {
-	mainCharacter->onKeyUp(_keyType);
+	mainCharacter->onKeyUp(_keyTypes);
 }
 
 void ViewController::viewWillUpdate(float _dt)

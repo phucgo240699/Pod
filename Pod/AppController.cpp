@@ -41,6 +41,9 @@ void AppController::Game_End(HWND hwnd)
 
 void AppController::Handler_Keyboard(HWND hwnd)
 {
+	vector<KeyType> keyDowns = vector<KeyType>();
+	vector<KeyType> keyUps = vector<KeyType>();
+
 	bool hasKeyDown = false;
 	// Escape
 	if (KEY_DOWN(VK_ESCAPE) == 1) {
@@ -50,50 +53,52 @@ void AppController::Handler_Keyboard(HWND hwnd)
 
 	// Up
 	if (KEY_DOWN(VK_UP) == 1) {
-		this->rootViewController->viewReceiveKeyDown(KeyType::up);
+		keyDowns.push_back(KeyType::up);
 		hasKeyDown = true;
 	}
 	else if (KEY_DOWN(VK_UP) != 1) {
-		this->rootViewController->viewReceiveKeyUp(KeyType::up);
+		keyUps.push_back(KeyType::up);
 	}
 
 	// Down
 	if (KEY_DOWN(VK_DOWN) == 1) {
-		this->rootViewController->viewReceiveKeyDown(KeyType::down);
+		keyDowns.push_back(KeyType::down);
 		hasKeyDown = true;
 	}
 	else if (KEY_DOWN(VK_DOWN) != 1) {
-		this->rootViewController->viewReceiveKeyUp(KeyType::down);
+		keyUps.push_back(KeyType::down);
 	}
 
 	// Left
 	if (KEY_DOWN(VK_LEFT) == 1) {
-		this->rootViewController->viewReceiveKeyDown(KeyType::left);
+		keyDowns.push_back(KeyType::left);
 		hasKeyDown = true;
 	}
 	else if (KEY_DOWN(VK_LEFT) != 1) {
-		this->rootViewController->viewReceiveKeyUp(KeyType::left);
+		keyUps.push_back(KeyType::left);
 	}
 
 	// Right
 	if (KEY_DOWN(VK_RIGHT) == 1) {
-		this->rootViewController->viewReceiveKeyDown(KeyType::right);
+		keyDowns.push_back(KeyType::right);
 		hasKeyDown = true;
 	}
 	else if (KEY_DOWN(VK_RIGHT) != 1) {
-		this->rootViewController->viewReceiveKeyUp(KeyType::right);
+		keyUps.push_back(KeyType::right);
 	}
 
 	// SPACE
 	if (KEY_DOWN(VK_SPACE) == 1) {
-		this->rootViewController->viewReceiveKeyDown(KeyType::space);
+		keyDowns.push_back(KeyType::space);
 		hasKeyDown = true;
 	}
 	else if (KEY_DOWN(VK_SPACE) != 1) {
-		this->rootViewController->viewReceiveKeyUp(KeyType::space);
+		keyUps.push_back(KeyType::space);
 	}
 
+	this->rootViewController->viewReceiveKeyUp(keyUps);
 	if (!hasKeyDown) {
 		this->rootViewController->viewReceiveKeyUp();
 	}
+	this->rootViewController->viewReceiveKeyDown(keyDowns);
 }

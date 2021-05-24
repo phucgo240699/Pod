@@ -127,14 +127,14 @@ void Component::plusY(float _y)
 	this->position->y += _y;
 }
 
-void Component::plusCurrentVx(float _currentVx)
+void Component::plusVx(float _vx)
 {
-	this->vx += _currentVx;
+	this->vx += _vx;
 }
 
-void Component::plusCurrentVy(float _currentVy)
+void Component::plusVy(float _vy)
 {
-	this->vy += _currentVy;
+	this->vy += _vy;
 }
 
 void Component::Update(float _dt)
@@ -154,11 +154,11 @@ void Component::onKeyUp()
 {
 }
 
-void Component::onKeyUp(KeyType _keyType)
+void Component::onKeyUp(vector<KeyType> _keyTypes)
 {
 }
 
-void Component::onKeyDown(KeyType _keyType)
+void Component::onKeyDown(vector<KeyType> _keyTypes)
 {
 }
 
@@ -204,12 +204,6 @@ tuple<bool, float, vector<CollisionEdge>> Component::sweptAABB(Component* other,
 	// Quick result
 	if (this->isColliding(this->getSweptBroadphaseRect(), other->getBounds()) == false) { // No Collide
 		get<0>(result) = false;
-		return result;
-	}
-
-	if (this->getVx() == 0.0 && this->getVy() == 0.0) { // Collide
-		get<0>(result) = true;
-		get<1>(result) = 0.0;
 		return result;
 	}
 
@@ -262,7 +256,7 @@ tuple<bool, float, vector<CollisionEdge>> Component::sweptAABB(Component* other,
 
 
 	// Result
-	if (entryTime > exitTime || txEntry > _dt || tyEntry > _dt)
+	if (entryTime > exitTime || (txEntry < 0.0f && tyEntry < 0.0f) || txEntry > _dt || tyEntry > _dt)
 	{
 		get<0>(result) = false;
 	}
