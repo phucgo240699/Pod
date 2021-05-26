@@ -107,30 +107,52 @@ void Mario::setIsFlip(bool _isFlip)
 
 void Mario::setState(MarioState _state)
 {
-
 	switch (_state)
 	{
 	case STANDING:
 		if (this->getState() != STANDING || this->currentAnimation == NULL) {
 			this->currentAnimation = this->animations->at(0);
-			this->accelerationX = 0;
-			this->accelerationY = 0;
-			this->maxVx = 0;
-			this->maxVy = 0;
-			this->setVx(0);
+			this->setTargetVx(0);
+			this->setTargetVy(0);
+			this->setAccelerationY(0);
 			this->setVy(0);
+			if (this->getState() == WALKING) {
+				int a = 0;
+			}
+
+			if (this->getVx() > this->getTargetVx()) {
+				this->setAccelerationX(-0.6);
+			}
+			else if (this->getVx() < this->getTargetVx()) {
+				this->setAccelerationX(0.6);
+			}
+			else {
+				this->setAccelerationX(0);
+			}
 		}
+		
 		break;
 	case WALKING:
 		if (this->getState() != WALKING || this->currentAnimation == NULL) {
 			this->currentAnimation = this->animations->at(1);
+			
 		}
+		
+		break;
+	case JUMPING:
+		if (this->getState() != JUMPING || this->currentAnimation == NULL) {
+			this->currentAnimation = this->animations->at(2);
+			this->setTargetVy(0);
+			this->setVy(-5);
+			this->setAccelerationY(0.2);
+		}
+
 		break;
 	case DROPPING:
 		if (this->getState() != DROPPING || this->currentAnimation == NULL) {
 			this->currentAnimation = this->animations->at(2);
-			this->accelerationY = 1;
-			this->maxVy = 10;
+			this->setTargetVy(10);
+			this->setAccelerationY(1);
 		}
 		break;
 	default:
@@ -142,7 +164,7 @@ void Mario::setState(MarioState _state)
 
 void Mario::updateVelocity()
 {
-	if (this->accelerationX > 0) {
+	/*if (this->accelerationX > 0) {
 		if (this->getVx() + this->accelerationX <= this->maxVx) {
 			this->plusVx(this->accelerationX);
 		}
@@ -161,6 +183,64 @@ void Mario::updateVelocity()
 	else if (this->accelerationY < 0) {
 		if (this->getVy() + this->accelerationY >= this->maxVy) {
 			this->plusVy(this->accelerationY);
+			if (this->accelerationY >= -3) {
+				int a = 0;
+			}
+			if (this->accelerationY <= -1) {
+    				this->accelerationY += 1;
+			}
+			else {
+				this->setState(MarioState::DROPPING);
+			}
+		}
+	}*/
+
+	if (this->getTargetVx() > 0) {
+		if (this->getVx() + this->getAccelerationX() <= this->getTargetVx()) {
+			this->plusVx(this->getAccelerationX());
+		}
+	}
+	else if (this->getTargetVx() < 0) {
+		if (this->getVx() + this->getAccelerationX() >= this->getTargetVx()) {
+			this->plusVx(this->getAccelerationX());
+		}
+	}
+	else { // = 0
+		if (this->getIsFlip() == false) { // -->
+			if (this->getVx() + this->getAccelerationX() > 0) {
+				this->plusVx(this->getAccelerationX());
+			}
+			else {
+				this->setVx(0);
+			}
+		}
+		else { // <--
+			if (this->getVx() + this->getAccelerationX() < 0) {
+				this->plusVx(this->getAccelerationX());
+			}
+			else {
+				this->setVx(0);
+			}
+		}
+	}
+
+	/*if (abs(this->getVx()) > 10) {
+		int a = 0;
+	}*/
+
+	if (this->getTargetVy() > 0) {
+		if (this->getVy() + this->getAccelerationY() <= this->getTargetVy()) {
+			this->plusVy(this->getAccelerationY());
+		}
+	}
+	else if (this->getTargetVy() == 0) {
+		if (this->getState() == JUMPING) {
+			if (this->getVy() + this->getAccelerationY() < 0) {
+				this->plusVy(this->getAccelerationY());
+			}
+			else {
+				this->setState(MarioState::DROPPING);
+			}
 		}
 	}
 }
@@ -170,30 +250,24 @@ void Mario::onKeyUp()
 	if (this->getState() == WALKING) {
 		this->setState(MarioState::STANDING);
 	}
+	else if (this->getState() == DROPPING) {
+		if (this->getAccelerationX() != 0) {
+			this->setAccelerationX(0);
+		}
+		if (this->getTargetVx() != 0) {
+			this->setTargetVx(0);
+		}
+	}
 }
 
 void Mario::onKeyUp(vector<KeyType> _keyTypes)
 {
 	for (int i = 0; i < _keyTypes.size(); ++i) {
-		if (_keyTypes[i] == KeyType::right) {
-			if (this->getVx() > 0) {
-				this->accelerationX = -1;
+		if (_keyTypes[i] == KeyType::space) {
+			if (this->getState() == JUMPING) {
+				this->setState(MarioState::DROPPING);
 			}
-			else if (this->getVx() < 0) {
-				this->accelerationX = 1;
-			}
-			this->maxVx = 0;
 		}
-		else if (_keyTypes[i] == KeyType::left) {
-			if (this->getVx() > 0) {
-				this->accelerationX = -1;
-			}
-			else if (this->getVx() < 0) {
-				this->accelerationX = 1;
-			}
-			this->maxVx = 0;
-		}
-		
 	}
 }
 
@@ -201,44 +275,72 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 {
 	bool hasKeyRight = false;
 	bool hasKeyLeft = false;
+
 	for (int i = 0; i < _keyTypes.size(); ++i) {
 		if (_keyTypes[i] == KeyType::right) {
 			hasKeyRight = true;
-			this->maxVx = 2;
+
 			if (!hasKeyLeft) {
-				this->accelerationX = 1;
 				this->setIsFlip(false);
+				if (this->getState() == DROPPING) {
+					this->setTargetVx(2);
+				}
+				else {
+					this->setTargetVx(3);
+				}
+				this->setAccelerationX(0.4);
 			}
 			else {
-				if (this->getVx() > 0) {
-					this->accelerationX = -1;
+				this->setTargetVx(0);
+				if (this->getVx() > this->getTargetVx()) {
+					this->setAccelerationX(-0.6);
 				}
-				else if (this->getVx() < 0) {
-					this->accelerationX = 1;
+				else if (this->getVx() < this->getTargetVx()) {
+					this->setAccelerationX(0.6);
 				}
-			}
-			if (this->getState() == STANDING) {
-				this->setState(MarioState::WALKING);
+				else {
+					this->setAccelerationX(0);
+				}
 			}
 		}
 		else if (_keyTypes[i] == KeyType::left) {
 			hasKeyLeft = true;
-			this->maxVx = -2;
+
 			if (!hasKeyRight) {
-				this->accelerationX = -1;
 				this->setIsFlip(true);
+				if (this->getState() == DROPPING) {
+					this->setTargetVx(-2);
+				}
+				else {
+					this->setTargetVx(-3);
+				}
+				this->setAccelerationX(-0.4);
 			}
 			else {
-				if (this->getVx() > 0) {
-					this->accelerationX = -1;
+				this->setTargetVx(0);
+				if (this->getVx() > this->getTargetVx()) {
+					this->setAccelerationX(-0.6);
 				}
-				else if (this->getVx() < 0) {
-					this->accelerationX = 1;
+				else if (this->getVx() < this->getTargetVx()) {
+					this->setAccelerationX(0.6);
 				}
-			}
-			if (this->getState() == STANDING) {
-				this->setState(MarioState::WALKING);
+				else {
+					this->setAccelerationX(0);
+				}
 			}
 		}
+		else if (_keyTypes[i] == KeyType::space) {
+			
+			if (this->getState() == STANDING || this->getState() == WALKING) {
+				this->setState(MarioState::JUMPING);
+			}
+		}
+	}
+
+	if (this->getTargetVx() == 0 && this->getState() == WALKING) {
+		this->setState(MarioState::STANDING);
+	}
+	if (this->getTargetVx() != 0 && this->getState() == STANDING) {
+		this->setState(MarioState::WALKING);
 	}
 }

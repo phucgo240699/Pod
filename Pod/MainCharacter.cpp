@@ -23,3 +23,43 @@ Animation* MainCharacter::getCurrentAnimation()
 {
     return nullptr;
 }
+
+float MainCharacter::getAccelerationX()
+{
+    return this->accelerationX;
+}
+
+float MainCharacter::getAccelerationY()
+{
+    return this->accelerationY;
+}
+
+float MainCharacter::getTargetVx()
+{
+    return this->targetVx;
+}
+
+float MainCharacter::getTargetVy()
+{
+    return this->targetVy;
+}
+
+void MainCharacter::setAccelerationX(float _accelerationX)
+{
+    this->accelerationX = _accelerationX;
+}
+
+void MainCharacter::setAccelerationY(float _accelerationY)
+{
+    this->accelerationY = _accelerationY;
+}
+
+void MainCharacter::setTargetVx(float _targetVx)
+{
+    this->targetVx = _targetVx;
+}
+
+void MainCharacter::setTargetVy(float _targetVy)
+{
+    this->targetVy = _targetVy;
+}

@@ -18,8 +18,6 @@ private:
 	
 	vector<Animation*>* animations;
 	Animation* currentAnimation;
-	float accelerationX = 0, accelerationY = 0;
-	float maxVx = 0, maxVy = 0;
 
 	void setUpAnimations();
 

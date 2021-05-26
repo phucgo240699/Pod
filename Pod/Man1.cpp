@@ -13,7 +13,7 @@ void Man1::viewDidLoad()
 	vector<string> vectorGround = Tool::splitToVectorStringFrom(dataGround, ',');
 
 	map = new Map(ImagePath::getInstance()->tile_set_man1, FilePath::getInstance()->map_indexes_man1, FilePath::getInstance()->map_info_man1, ' ', NULL);
-	mainCharacter = new Mario(stof(vectorMario[0]), stof(vectorMario[1]), stof(vectorMario[2]), stof(vectorMario[3]), stof(vectorMap[4]), stof(vectorMap[5]), ImagePath::getInstance()->mario, D3DCOLOR_XRGB(255, 0, 255), DROPPING);
+	mainCharacter = new Mario(stof(vectorMario[0]), stof(vectorMario[1]), 0, 0, stof(vectorMap[4]), stof(vectorMap[5]), ImagePath::getInstance()->mario, D3DCOLOR_XRGB(255, 0, 255), DROPPING);
 	Camera::getInstance()->setPositionBy(mainCharacter);
 	ground = new Ground(stof(vectorGround[0]), stof(vectorGround[1]), stof(vectorGround[2]), stof(vectorGround[3]), stof(vectorGround[4]), stof(vectorGround[5]), stof(vectorGround[6]), stof(vectorGround[7]));
 }
