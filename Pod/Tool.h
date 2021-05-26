@@ -76,39 +76,21 @@ public:
 	}
 
 	static EnumColor getColorFromString(string str) {
-		if (str == "red") return red;
-		if (str == "orange") return orange;
-		if (str == "yellow") return yellow;
-		if (str == "green") return green;
-		if (str == "blue") return blue;
 		if (str == "pinkFF00FF") return pinkFF00FF;
-		if (str == "purple") return purple;
 		if (str == "black") return black;
-		if (str == "gray") return gray;
-		if (str == "white") return white;
+		if (str == "blue9CFCF0") return blue9CFCF0;
+		else return white;
 
 	}
 	static string getStringFromColor(EnumColor color) {
 		switch (color)
 		{
-		case red:
-			return "red";
-		case orange:
-			return "orange";
-		case yellow:
-			return "yellow";
-		case green:
-			return "green";
-		case blue:
-			return "blue";
 		case pinkFF00FF:
 			return "pinkFF00FF";
-		case purple:
-			return "purple";
 		case black:
 			return "black";
-		case gray:
-			return "gray";
+		case blue9CFCF0:
+			return "blue9CFCF0";
 		default:
 			return "white";
 		}
