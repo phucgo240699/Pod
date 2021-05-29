@@ -20,9 +20,6 @@ private:
 	int screenHeight = 480;
 	ScreenMode screenMode = window;
 	Color* defaultBackgroundColorViewController = new Color(black);
-	/*string rootImagesFolder = "./Assets/Images/";
-	string rootSoundsFolder = "./Assets/Sounds/";
-	string rootTextFileFolder = "./Assets/TextFiles/";*/
 
 public:
 	Setting(const Setting&) = delete; // 3. delete copy constructor
@@ -35,9 +32,6 @@ public:
 	int getScreenHeight();
 	ScreenMode getScreenMode();
 	Color* getDefaultBackgroundColorViewController();
-	/*string getRootImagesFolder();
-	string getRootSoundsFolder();
-	string getRootTextFilesFolder();*/
 
 
 	// Setter
@@ -47,11 +41,9 @@ public:
 	void setScreenHeight(int _height);
 	void setScreenMode(ScreenMode _screenMode);
 	void setDefaultBackgroundColorViewController(Color* _color);
-	/*void setRootImagesFolder(string _path);
-	void setRootSoundsFolder(string _path);
-	void setRootTextFilesFolder(string _path);*/
 
 	// Others
 	void save();
 	void load();
+	void load(string line, char seperator);
 };

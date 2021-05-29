@@ -113,6 +113,17 @@ void Setting::load()
 	}
 }
 
+void Setting::load(string line, char seperator)
+{
+	vector<string> settings = Tool::splitToVectorStringFrom(line, seperator);
+	this->dt = stof(settings[0]);
+	this->fps = stoi(settings[1]);
+	this->screenWidth = stoi(settings[2]);
+	this->screenHeight = stoi(settings[3]);
+	this->screenMode = settings[4] == "0" ? window : fullScreen;
+	this->defaultBackgroundColorViewController = new Color(Tool::getColorFromString(settings[5]));
+}
+
 void Setting::save()
 {
 	string settingsStr = "";

@@ -4,6 +4,7 @@
 #include <sstream>
 #include <d3d9.h>
 #include "Color.h"
+#include "MarioState.h"
 
 using namespace std;
 
@@ -39,13 +40,13 @@ public:
 		return string(ws.begin(), ws.end());
 	}
 
-	static vector<string> splitToVectorStringFrom(string s, char character) {
+	static vector<string> splitToVectorStringFrom(string s, char seperator) {
 		vector<string> vector;
 		istringstream stm(s);
 		
 		int fromIndex = 0;
 		for (int i = 0; i < s.length(); ++i) {
-			if (s[i] == character) {
+			if (s[i] == seperator) {
 				vector.push_back(s.substr(fromIndex, i - fromIndex));
 				fromIndex = i + 1;
 			}
@@ -56,13 +57,13 @@ public:
 		return vector;
 	}
 
-	static vector<int> splitToVectorIntegerFrom(string s, char character) {
+	static vector<int> splitToVectorIntegerFrom(string s, char seperator) {
 		vector<int> vector;
 		istringstream stm(s);
 
 		int fromIndex = 0;
 		for (int i = 0; i < s.length(); ++i) {
-			if (s[i] == character) {
+			if (s[i] == seperator) {
 				vector.push_back(stoi(s.substr(fromIndex, i - fromIndex)));
 				fromIndex = i + 1;
 			}
@@ -73,6 +74,35 @@ public:
 		}
 
 		return vector;
+	}
+
+	static vector<float> splitToVectorFloatFrom(string s, char seperator) {
+		vector<float> vector;
+		istringstream stm(s);
+
+		int fromIndex = 0;
+		for (int i = 0; i < s.length(); ++i) {
+			if (s[i] == seperator) {
+				vector.push_back(stof(s.substr(fromIndex, i - fromIndex)));
+				fromIndex = i + 1;
+			}
+		}
+		string a = s.substr(fromIndex, s.length() - fromIndex);
+		if (a != "") {
+			vector.push_back(stof(a));
+		}
+
+		return vector;
+	}
+
+	static vector<vector<int>> getMatrixFrom(vector<string> data, char seperator) {
+		vector<vector<int>> result;
+
+		for (int i = 0; i < data.size(); ++i) {
+			result.push_back(splitToVectorIntegerFrom(data[i], seperator));
+		}
+
+		return result;
 	}
 
 	static EnumColor getColorFromString(string str) {
@@ -94,5 +124,12 @@ public:
 		default:
 			return "white";
 		}
+	}
+
+	static MarioState getMarioStateFromString(string str) {
+		if (str == "DROPPING") return MarioState::DROPPING;
+		else if (str == "JUMPING") return MarioState::JUMPING;
+		else if (str == "STANDING") return MarioState::STANDING;
+		else return MarioState::WALKING;
 	}
 };

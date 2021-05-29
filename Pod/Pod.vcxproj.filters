@@ -82,6 +82,12 @@
     <Filter Include="Source Files\System\Animation">
       <UniqueIdentifier>{8ecae71c-866d-4926-b505-a0822bf26a1c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ViewController\SunnyMap">
+      <UniqueIdentifier>{0212b9e2-8abc-43fb-9839-d208f35cc63f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ViewController\SunnyMap">
+      <UniqueIdentifier>{13636691-893f-4299-89b2-7404cdd041bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -140,6 +146,9 @@
     </ClCompile>
     <ClCompile Include="MainCharacter.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SunnyMap.cpp">
+      <Filter>Source Files\ViewController\SunnyMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -208,6 +217,12 @@
     </ClInclude>
     <ClInclude Include="MainCharacter.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SunnyMap.h">
+      <Filter>Header Files\ViewController\SunnyMap</Filter>
+    </ClInclude>
+    <ClInclude Include="SectionFile.h">
+      <Filter>Header Files\System\Enums</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

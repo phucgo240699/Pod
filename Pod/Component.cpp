@@ -150,6 +150,24 @@ RECT* Component::getBounds()
 	return nullptr;
 }
 
+float Component::getWidth()
+{
+	return 0.0f;
+}
+
+float Component::getHeight()
+{
+	return 0.0f;
+}
+
+void Component::setWidth(float _width)
+{
+}
+
+void Component::setHeight(float _height)
+{
+}
+
 void Component::onKeyUp()
 {
 }

@@ -12,19 +12,19 @@ void Mario::setUpAnimations()
 Mario::Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state) : MainCharacter(_x, _y, _vx, _vy, _limitX, _limitY)
 {
 	MainCharacter::MainCharacter(_x, _y, _vx, _vy, _limitX, _limitY);
-	setUpAnimations();
+
 	this->texture = LoadTextureFromImage(_imagePath, _transcolor);
-	this->state = _state;
-	this->setState(_state);
+	/*this->state = _state;
+	this->setState(_state);*/
 }
 
 Mario::Mario(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state) : MainCharacter(_position, _vx, _vy, _limitX, _limitY)
 {
 	MainCharacter::MainCharacter(_position, _vx, _vy, _limitX, _limitY);
-	setUpAnimations();
+
 	this->texture = LoadTextureFromImage(_imagePath, _transcolor);
-	this->state = _state;
-	this->setState(_state);
+	/*this->state = _state;
+	this->setState(_state);*/
 }
 
 Mario::~Mario()
@@ -308,4 +308,42 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 	if (this->getTargetVx() != 0 && this->getState() == STANDING) {
 		this->setState(MarioState::WALKING);
 	}
+}
+
+void Mario::loadInfo(string line, char seperator)
+{
+	vector<string> v = Tool::splitToVectorStringFrom(line, seperator);
+	this->setX(stof(v[0]));
+	this->setY(stof(v[1]));
+	this->setLimitX(stof(v[2]));
+	this->setLimitY(stof(v[3]));
+	this->setState(Tool::getMarioStateFromString(v[4]));
+}
+
+void Mario::loadAnimations(vector<string> data, char seperatorRow, char seperatorCol)
+{
+	this->animations = new vector<Animation*>();
+	vector<RECT*>* frames = new vector<RECT*>();
+	vector<int> frame;
+	RECT* r;
+	int id = 0;
+
+	for (int i = 0; i < data.size(); ++i) {
+		if (data[i].at(0) == seperatorRow) {
+			this->animations->push_back(new Animation(0, 0, stoi(data[i].substr(2,1)), frames));
+			++id;
+			frame.clear();
+			frames = new vector<RECT*>();
+			continue;
+		};
+
+		frame = Tool::splitToVectorIntegerFrom(data[i], seperatorCol);
+		r = new RECT();
+		r->left = frame[0];
+		r->top = frame[1];
+		r->right = r->left + frame[2];
+		r->bottom = r->top + frame[3];
+		frames->push_back(r);
+	}
+	int a = 0;
 }

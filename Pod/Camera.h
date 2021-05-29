@@ -17,10 +17,6 @@ public:
 	// Getter
 	float getWidth();
 	float getHeight();
-	//bool getOnTopSafeArea();
-	//bool getOnBottomSafeArea();
-	//bool getOnLeftSafeArea();
-	//bool getOnRightSafeArea();
 
 	// Setter
 	void setWidth(float _width);
@@ -30,6 +26,7 @@ public:
 	void follow(Component* _target, float _dt);
 
 	void load();
+	void load(string line, char seperator);
 	void save();
 };
 

@@ -1,9 +1,8 @@
 #include "Man1.h"
+#include "SunnyMap.h"
 
 void Man1::viewDidLoad()
 {
-	ViewController::viewDidLoad();
-
 	Camera::getInstance()->load();
 
 	// Read data from file

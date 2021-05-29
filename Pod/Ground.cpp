@@ -40,3 +40,26 @@ RECT* Ground::getBounds()
 	r->right = this->getX() + this->width;
 	return r;
 }
+
+void Ground::setWidth(float _width)
+{
+	this->width = _width;
+}
+
+void Ground::setHeight(float _height)
+{
+	this->height = _height;
+}
+
+void Ground::load(string line, char seperator)
+{
+	vector<float> v = Tool::splitToVectorFloatFrom(line, seperator);
+	this->setX(v[0]);
+	this->setY(v[1]);
+	this->setWidth(v[2]);
+	this->setHeight(v[3]);
+	this->setVx(v[4]);
+	this->setVy(v[5]);
+	this->setLimitX(v[6]);
+	this->setLimitY(v[7]);
+}

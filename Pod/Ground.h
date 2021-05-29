@@ -17,5 +17,9 @@ public:
 	float getWidth();
 	float getHeight();
 	RECT* getBounds();
+	void setWidth(float _width);
+	void setHeight(float _height);
+
+	void load(string line, char seperator);
 };
 

@@ -54,6 +54,10 @@ public:
 	virtual void Update(float _dt);
 	virtual void Draw();
 	virtual RECT* getBounds();
+	virtual float getWidth();
+	virtual float getHeight();
+	virtual void setWidth(float _width);
+	virtual void setHeight(float _height);
 
 	// Keyboard
 	virtual void onKeyUp();

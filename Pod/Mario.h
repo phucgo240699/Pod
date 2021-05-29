@@ -48,5 +48,8 @@ public:
 	void onKeyUp();
 	void onKeyUp(vector<KeyType> _keyTypes);
 	void onKeyDown(vector<KeyType> _keyTypes);
+
+	void loadInfo(string line, char seperator);
+	void loadAnimations(vector<string> data, char seperatorRow, char seperatorCol);
 };
 

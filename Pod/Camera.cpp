@@ -27,26 +27,6 @@ float Camera::getHeight()
 	return this->height;
 }
 
-//bool Camera::getOnTopSafeArea()
-//{
-//	return this->onTopSafeArea;
-//}
-//
-//bool Camera::getOnBottomSafeArea()
-//{
-//	return this->onBottomSafeArea;
-//}
-//
-//bool Camera::getOnLeftSafeArea()
-//{
-//	return this->onLeftSafeArea;
-//}
-//
-//bool Camera::getOnRightSafeArea()
-//{
-//	return this->onRightSafeArea;
-//}
-
 void Camera::setWidth(float _width)
 {
 	this->width = _width;
@@ -86,8 +66,8 @@ void Camera::follow(Component* _target, float _dt)
 	// If target not in safe area, and new location of camera not outside of map
 	if (_target->getX() > this->getWidth() / 2 &&
 		_target->getX() < this->getLimitX() - (this->getWidth() / 2) &&
-		0 < this->getX() + _target->getVx() &&
-		this->getX() + this->getWidth() + _target->getVx() < this->getLimitX()) {
+		0 <= this->getX() + _target->getVx() &&
+		this->getX() + this->getWidth() + _target->getVx() <= this->getLimitX()) {
 		if ((_target->getVx() * _dt) > _target->getX() - (this->getWidth() / 2)) { // may cause when target move too fast
 			this->plusX(_target->getX() - (this->getWidth() / 2));
 		}
@@ -100,14 +80,19 @@ void Camera::follow(Component* _target, float _dt)
 	// If target run through half of camera's height, and new location of camera not outside of map
 	if (_target->getY() > this->getHeight() / 2 &&
 		_target->getY() < this->getLimitY() - (this->getHeight() / 2) &&
-		0 < this->getY() + _target->getVy() &&
-		this->getY() + this->getHeight() + _target->getVy() < this->getLimitY()) {
+		0 <= this->getY() + _target->getVy() &&
+		this->getY() + this->getHeight() + _target->getVy() <= this->getLimitY()) {
 		if ((_target->getVy() * _dt) > _target->getY() - (this->getHeight() / 2)) { // may cause when target move too fast
 			this->plusY(_target->getY() - (this->getHeight() / 2));
 		}
 		else {
 			//this->plusY(_target->getVy() * _dt);
 			this->setY(_target->getY() - (this->getHeight() / 2));
+		}
+	}
+	else if (_target->getY() > this->getLimitY() - (this->getHeight() / 2)) {
+		if (this->getY() + this->getHeight() < this->getLimitY()) {
+			this->setY(this->getLimitY() - this->getHeight());
 		}
 	}
 }
@@ -136,6 +121,14 @@ void Camera::load()
 	if (this->getY() + this->height > this->limitY) {
 		throw("Camera is out side of map by Y-axis.");
 	}
+}
+
+void Camera::load(string line, char seperator)
+{
+	vector<int> v = Tool::splitToVectorIntegerFrom(line, seperator);
+
+	this->setLimitX(v[0]);
+	this->setLimitY(v[1]);
 }
 
 void Camera::save()

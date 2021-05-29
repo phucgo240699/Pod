@@ -11,6 +11,7 @@
 #include<stdlib.h>
 #include"dxgraphics.h"
 #include"Man1.h"
+#include"SunnyMap.h"
 
 
 // Read keyboard command
@@ -20,7 +21,7 @@
 class AppController {
 	// Name of program
 private:
-	ViewController* rootViewController = new Man1();
+	ViewController* rootViewController = new SunnyMap();
 
 public:
 
