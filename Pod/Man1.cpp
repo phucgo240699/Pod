@@ -4,6 +4,8 @@ void Man1::viewDidLoad()
 {
 	ViewController::viewDidLoad();
 
+	Camera::getInstance()->load();
+
 	// Read data from file
 	string dataMario = FileManager::getInstance()->getStringFromTextFile(FilePath::getInstance()->mario_info);
 	vector<string> vectorMario = Tool::splitToVectorStringFrom(dataMario, ',');
@@ -18,9 +20,34 @@ void Man1::viewDidLoad()
 	ground = new Ground(stof(vectorGround[0]), stof(vectorGround[1]), stof(vectorGround[2]), stof(vectorGround[3]), stof(vectorGround[4]), stof(vectorGround[5]), stof(vectorGround[6]), stof(vectorGround[7]));
 }
 
+void Man1::viewReceiveKeyUp()
+{
+	mainCharacter->onKeyUp();
+}
+
+void Man1::viewReceiveKeyUp(vector<KeyType> _keyTypes)
+{
+	mainCharacter->onKeyUp(_keyTypes);
+}
+
+void Man1::viewReceiveKeyDown(vector<KeyType> _keyTypes)
+{
+	mainCharacter->onKeyDown(_keyTypes);
+}
+
+void Man1::viewWillUpdate(float _dt)
+{
+}
+
 void Man1::viewDidUpdate(float _dt)
 {
-	ViewController::viewDidUpdate(_dt);
+	if (map != NULL) {
+		map->Update(_dt);
+	}
+	if (mainCharacter != NULL) {
+		mainCharacter->Update(_dt);
+		Camera::getInstance()->follow(mainCharacter, _dt);
+	}
 
 	// Collision: MainCharacter and Ground
 	tuple<bool, float, vector<CollisionEdge>> mainCharacter_ground_collision = this->mainCharacter->sweptAABB(this->ground, _dt);
@@ -33,4 +60,35 @@ void Man1::viewDidUpdate(float _dt)
 			}
 		}
 	}
+}
+
+void Man1::viewWillRender()
+{
+}
+
+void Man1::viewDidRender()
+{
+	if (d3ddev->BeginScene()) {
+		// Clear backbuffer
+		d3ddev->Clear(0, NULL, D3DCLEAR_TARGET, Setting::getInstance()->getDefaultBackgroundColorViewController()->toD3DColor(), 1.0f, 0);
+
+		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
+
+		if (map != NULL) {
+			map->Draw();
+		}
+		if (mainCharacter != NULL) {
+			mainCharacter->Draw();
+		}
+
+		spriteHandler->End();
+
+		d3ddev->EndScene();
+	}
+
+	d3ddev->Present(NULL, NULL, NULL, NULL);
+}
+
+void Man1::viewWillRelease()
+{
 }

@@ -164,37 +164,6 @@ void Mario::setState(MarioState _state)
 
 void Mario::updateVelocity()
 {
-	/*if (this->accelerationX > 0) {
-		if (this->getVx() + this->accelerationX <= this->maxVx) {
-			this->plusVx(this->accelerationX);
-		}
-	}
-	else if (this->accelerationX < 0) {
-		if (this->getVx() + this->accelerationX >= this->maxVx) {
-			this->plusVx(this->accelerationX);
-		}
-	}
-
-	if (this->accelerationY > 0) {
-		if (this->getVy() + this->accelerationY <= this->maxVy) {
-			this->plusVy(this->accelerationY);
-		}
-	}
-	else if (this->accelerationY < 0) {
-		if (this->getVy() + this->accelerationY >= this->maxVy) {
-			this->plusVy(this->accelerationY);
-			if (this->accelerationY >= -3) {
-				int a = 0;
-			}
-			if (this->accelerationY <= -1) {
-    				this->accelerationY += 1;
-			}
-			else {
-				this->setState(MarioState::DROPPING);
-			}
-		}
-	}*/
-
 	if (this->getTargetVx() > 0) {
 		if (this->getVx() + this->getAccelerationX() <= this->getTargetVx()) {
 			this->plusVx(this->getAccelerationX());
@@ -223,10 +192,6 @@ void Mario::updateVelocity()
 			}
 		}
 	}
-
-	/*if (abs(this->getVx()) > 10) {
-		int a = 0;
-	}*/
 
 	if (this->getTargetVy() > 0) {
 		if (this->getVy() + this->getAccelerationY() <= this->getTargetVy()) {
@@ -283,10 +248,10 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 			if (!hasKeyLeft) {
 				this->setIsFlip(false);
 				if (this->getState() == DROPPING) {
-					this->setTargetVx(2);
+					this->setTargetVx(1.6);
 				}
 				else {
-					this->setTargetVx(3);
+					this->setTargetVx(2.4);
 				}
 				this->setAccelerationX(0.4);
 			}
@@ -309,10 +274,10 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 			if (!hasKeyRight) {
 				this->setIsFlip(true);
 				if (this->getState() == DROPPING) {
-					this->setTargetVx(-2);
+					this->setTargetVx(-1.6);
 				}
 				else {
-					this->setTargetVx(-3);
+					this->setTargetVx(-2.4);
 				}
 				this->setAccelerationX(-0.4);
 			}

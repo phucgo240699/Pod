@@ -9,15 +9,8 @@
 class ViewController
 {
 protected:
-	MainCharacter* mainCharacter;
-	Map* map;
 
 public:
-	// Init
-	ViewController();
-
-	// De Init
-	~ViewController();
 
 	// Life cycle
 	virtual void viewDidLoad();
