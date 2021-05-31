@@ -5,7 +5,6 @@
 #include "Animation.h"
 #include "MainCharacter.h"
 #include <unordered_map>
-#include <math.h>
 
 using namespace std;
 
@@ -15,13 +14,14 @@ private:
 	LPDIRECT3DTEXTURE9 texture;
 	MarioState state;
 	bool isFlip; // false: Left side - true: Right side. Default is false
-	
+
 	vector<Animation*>* animations;
 	Animation* currentAnimation;
 
 	void setUpAnimations();
 
 public:
+	float startdrop = 0;
 	// Init
 	Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state);
 	Mario(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state);

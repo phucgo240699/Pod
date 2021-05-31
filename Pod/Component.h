@@ -7,6 +7,7 @@
 #include "Animation.h"
 #include <tuple>
 #include <vector>
+#include <math.h>
 
 using namespace std;
 

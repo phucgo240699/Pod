@@ -10,6 +10,8 @@ private:
 	Mario* mario;
 	Map* map;
 	Ground* ground;
+
+	tuple<bool, float, vector<CollisionEdge>> mario_ground_collision;
 public:
 	void viewDidLoad();
 	void viewReceiveKeyUp();

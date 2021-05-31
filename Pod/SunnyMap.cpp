@@ -139,22 +139,22 @@ void SunnyMap::viewWillUpdate(float _dt)
 		mario->Update(_dt);
 		Camera::getInstance()->follow(mario, _dt);
 	}
-
-	// Collision: MainCharacter and Ground
-	tuple<bool, float, vector<CollisionEdge>> mainCharacter_ground_collision = this->mario->sweptAABB(this->ground, _dt);
-	if (get<0>(mainCharacter_ground_collision) == true) {
-		(mario->setState(MarioState::STANDING));
-		for (int i = 0; i < get<2>(mainCharacter_ground_collision).size(); ++i) {
-			CollisionEdge edge = get<2>(mainCharacter_ground_collision)[i];
-			if (edge == topEdge) {
-				mario->setY(ground->getY() - (mario->getCurrentAnimation()->getCurrentFrameHeight()));
-			}
-		}
-	}
 }
 
 void SunnyMap::viewDidUpdate(float _dt)
 {
+	// Collision: MainCharacter and Ground
+	mario_ground_collision = this->mario->sweptAABB(this->ground, _dt);
+	if (get<0>(mario_ground_collision) == true) {
+		for (int i = 0; i < get<2>(mario_ground_collision).size(); ++i) {
+			CollisionEdge edge = get<2>(mario_ground_collision)[i];
+			if (edge == topEdge) {
+				//mario->plusY(round(mario->getVy() * get<1>(mario_ground_collision)));
+				mario->setState(MarioState::STANDING);
+				mario->setY(ground->getY() - (mario->getCurrentAnimation()->getCurrentFrameHeight()));
+			}
+		}
+	}
 }
 
 void SunnyMap::viewWillRender()

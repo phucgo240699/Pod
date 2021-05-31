@@ -116,9 +116,6 @@ void Mario::setState(MarioState _state)
 			this->setTargetVy(0);
 			this->setAccelerationY(0);
 			this->setVy(0);
-			if (this->getState() == WALKING) {
-				int a = 0;
-			}
 
 			if (this->getVx() > this->getTargetVx()) {
 				this->setAccelerationX(-0.6);
@@ -151,8 +148,8 @@ void Mario::setState(MarioState _state)
 	case DROPPING:
 		if (this->getState() != DROPPING || this->currentAnimation == NULL) {
 			this->currentAnimation = this->animations->at(2);
-			this->setTargetVy(10);
-			this->setAccelerationY(1);
+			this->setTargetVy(8);
+			this->setAccelerationY(0.6);
 		}
 		break;
 	default:
@@ -161,7 +158,8 @@ void Mario::setState(MarioState _state)
 
 	this->state = _state;
 }
-
+// 2760 1066
+// 028 5409 6666
 void Mario::updateVelocity()
 {
 	if (this->getTargetVx() > 0) {
@@ -230,6 +228,7 @@ void Mario::onKeyUp(vector<KeyType> _keyTypes)
 	for (int i = 0; i < _keyTypes.size(); ++i) {
 		if (_keyTypes[i] == KeyType::space) {
 			if (this->getState() == JUMPING) {
+				startdrop = this->getY();
 				this->setState(MarioState::DROPPING);
 			}
 		}
@@ -295,7 +294,9 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 			}
 		}
 		else if (_keyTypes[i] == KeyType::space) {
-			
+			if (this->getState() == DROPPING) {
+				return;
+			}
 			if (this->getState() == STANDING || this->getState() == WALKING) {
 				this->setState(MarioState::JUMPING);
 			}

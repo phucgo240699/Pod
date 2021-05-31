@@ -1,6 +1,6 @@
 <Setting>
 #(dt,fps,width,height,isFullScreen,backBufferColor)
-1.0,30,280,180,0,black
+1.0,60,280,180,0,black
 </Setting>
 
 <Camera>
@@ -46,13 +46,21 @@
 <MarioAnimations>
 # Standing > Running > Jumping > Dropping
 # Every animation has a param is: delay frame after this character: >
+
+# Stading
 0,1,12,15
 > 2
+
+# Running
 0,1,12,15
 12,0,15,16
 > 2
+
+#Jumping
 27,0,16,16
 > 2
+
+#Dropping
 27,0,16,16
 > 2
 </MarioAnimations>

@@ -196,17 +196,36 @@ bool Component::isColliding(RECT* object, RECT* other)
 	float top = other->bottom - object->top;
 	float right = other->right - object->left;
 	float bottom = other->top - object->bottom;
-
+	
 	return !(left > 0 || right < 0 || top < 0 || bottom > 0);
+	/*if (other->left <= object->right && other->right >= object->left && other->top >= object->bottom && other->bottom <= object->top) {
+		return true;
+	}
+	return false;*/
 }
 
 RECT* Component::getSweptBroadphaseRect()
 {
 	RECT* r = new RECT();
+
 	r->left = this->getVx() > 0 ? this->getX() : this->getX() + this->getVx();
 	r->top = this->getVy() > 0 ? this->getY() : this->getY() + this->getVy();
 	r->right = this->getVx() > 0 ? this->getBounds()->right + this->getVx() : this->getBounds()->right;
 	r->bottom = this->getVy() > 0 ? this->getBounds()->bottom + this->getVy() : this->getBounds()->bottom;
+	
+	/*if (this->getY() > 416) {
+		int a = 0;
+	}*/
+
+	/*float x = this->getVx() > 0 ? this->getX() : this->getX() + this->getVx();
+	float y = this->getVy() > 0 ? this->getY() : this->getY() + this->getVy();
+	float w = this->getWidth() + abs(this->getVx());
+	float h = this->getHeight() + abs(this->getVy());
+
+	r->left = x;
+	r->top = y;
+	r->right = x + w;
+	r->bottom = y + h;*/
 
 	return r;
 }
