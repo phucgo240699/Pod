@@ -4,7 +4,7 @@ void SunnyMap::viewDidLoad()
 {
 	mario = new Mario(0, 0, 0, 0, 0, 0, ImagePath::getInstance()->mario, D3DCOLOR_XRGB(255, 0, 255), DROPPING);
 	map = new Map(ImagePath::getInstance()->tile_set_man1, D3DCOLOR_XRGB(255, 0, 255));
-	ground = new Ground(0, 0, 0, 0, 0, 0, 0, 0);
+	grounds = new vector<Ground*>();
 	Camera* camera = Camera::getInstance();
 	Setting* setting = Setting::getInstance();
 
@@ -77,6 +77,12 @@ void SunnyMap::viewDidLoad()
 			continue;
 		}
 		else if (line == "</Grounds>") {
+			for (int i = 0; i < data.size(); ++i) {
+				Ground* ground = new Ground(0, 0, 0, 0, 0, 0, 0, 0);
+				ground->load(data[i], ',');
+				this->grounds->push_back(ground);
+			}
+			data.clear();
 			section = SECTION_NONE;
 			continue;
 		}
@@ -104,7 +110,7 @@ void SunnyMap::viewDidLoad()
 			data.push_back(line);
 			break;
 		case SECTION_GROUNDS:
-			ground->load(line, ',');
+			data.push_back(line);
 			break;
 		default:
 			break;
@@ -144,19 +150,27 @@ void SunnyMap::viewWillUpdate(float _dt)
 void SunnyMap::viewDidUpdate(float _dt)
 {
 	// Collision: MainCharacter and Ground
-	mario_ground_collision = this->mario->sweptAABB(this->ground, _dt);
-	if (get<0>(mario_ground_collision) == true) {
-		for (int i = 0; i < get<2>(mario_ground_collision).size(); ++i) {
-			CollisionEdge edge = get<2>(mario_ground_collision)[i];
-			if (edge == topEdge) {
-				//mario->plusY(round(mario->getVy() * get<1>(mario_ground_collision)));
-				mario->setState(MarioState::STANDING);
-				mario->setY(ground->getY() - (mario->getCurrentAnimation()->getCurrentFrameHeight()));
+	for (int i = 0; i < this->grounds->size(); ++i) {
+		mario_ground_collision = this->mario->sweptAABB(this->grounds->at(i), _dt);
+		if (get<0>(mario_ground_collision) == true) {
+			for (int i = 0; i < get<2>(mario_ground_collision).size(); ++i) {
+				CollisionEdge edge = get<2>(mario_ground_collision)[i];
+				if (edge == topEdge) {
+					//mario->plusY(round(mario->getVy() * get<1>(mario_ground_collision)));
+					mario->setState(MarioState::STANDING);
+					mario->setY(this->grounds->at(i)->getY() - (mario->getCurrentAnimation()->getCurrentFrameHeight()));
+				}
 			}
 		}
-	}
-	if (mario->getX() + mario->getCurrentAnimation()->getCurrentFrameWidth() < ground->getX() || mario->getX() > ground->getX() + ground->getWidth()) {
-		mario->setState(MarioState::DROPPING);
+		else {
+			// if mario walk out of ground top surface, it will drop
+			if (this->grounds->at(i)->getX() <= this->mario->getX()
+			&& this->mario->getBounds()->right <= this->grounds->at(i)->getBounds()->right) {
+				if (mario->getX() + mario->getCurrentAnimation()->getCurrentFrameWidth() < this->grounds->at(i)->getX() || mario->getX() > this->grounds->at(i)->getX() + this->grounds->at(i)->getWidth()) {
+					mario->setState(MarioState::DROPPING);
+				}
+			}
+		}
 	}
 }
 

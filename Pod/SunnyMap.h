@@ -9,7 +9,7 @@ class SunnyMap : public ViewController
 private:
 	Mario* mario;
 	Map* map;
-	Ground* ground;
+	vector<Ground*>* grounds;
 
 	tuple<bool, float, vector<CollisionEdge>> mario_ground_collision;
 public:

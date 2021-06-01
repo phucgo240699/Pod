@@ -75,6 +75,8 @@ void Mario::Update(float _dt)
 	if (currentAnimation == NULL) {
 		return;
 	}
+
+
 	this->currentAnimation->Update(_dt);
 	this->updateVelocity();
 	this->plusX(round(this->getVx() * _dt));
@@ -132,7 +134,6 @@ void Mario::setState(MarioState _state)
 	case WALKING:
 		if (this->getState() != WALKING || this->currentAnimation == NULL) {
 			this->currentAnimation = this->animations->at(1);
-			
 		}
 		
 		break;
@@ -149,7 +150,7 @@ void Mario::setState(MarioState _state)
 		if (this->getState() != DROPPING || this->currentAnimation == NULL) {
 			this->currentAnimation = this->animations->at(2);
 			this->setTargetVy(8);
-			this->setAccelerationY(0.6);
+			this->setAccelerationY(0.4);
 		}
 		break;
 	default:

@@ -48,11 +48,11 @@
 # Every animation has a param is: delay frame after this character: >
 
 # Stading
-0,1,12,15
+0,0,12,16
 > 2
 
 # Running
-0,1,12,15
+0,0,12,16
 12,0,15,16
 > 2
 
@@ -67,10 +67,12 @@
 
 <MarioInfo>
 #(x,y,limitX,limitY,state)
-300,0,2816,432,DROPPING
+200,0,2816,432,DROPPING
 </MarioInfo>
 
 <Grounds>
 #(x,y,width,height,vx,vy,limitX,limitY)
 0,416,624,16,0,0,2816,432
+625,400,463,32,0,0,2816,432
+1152,416,348,16,0,0,2816,432
 </Grounds>
