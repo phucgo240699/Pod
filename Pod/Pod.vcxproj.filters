@@ -31,12 +31,6 @@
     <Filter Include="Source Files\ViewController">
       <UniqueIdentifier>{1f60af6a-12e1-4323-92dc-ce03d014021c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\ViewController\Man1">
-      <UniqueIdentifier>{346d8bc1-f166-4768-8119-d058cb1eb303}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\ViewController\Man1">
-      <UniqueIdentifier>{1546b113-08b5-4d29-aadb-cbe632cb5e5f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Components\Mario">
       <UniqueIdentifier>{da33f3d3-edeb-4b09-80b3-190e597ec3e0}</UniqueIdentifier>
     </Filter>
@@ -111,9 +105,6 @@
     <ClCompile Include="AppController.cpp">
       <Filter>Source Files\System\AppController</Filter>
     </ClCompile>
-    <ClCompile Include="Man1.cpp">
-      <Filter>Source Files\ViewController\Man1</Filter>
-    </ClCompile>
     <ClCompile Include="AppConfig.cpp">
       <Filter>Source Files\System\AppController</Filter>
     </ClCompile>
@@ -175,9 +166,6 @@
     </ClInclude>
     <ClInclude Include="AppConfig.h">
       <Filter>Header Files\System\AppController</Filter>
-    </ClInclude>
-    <ClInclude Include="Man1.h">
-      <Filter>Header Files\ViewController\Man1</Filter>
     </ClInclude>
     <ClInclude Include="Mario.h">
       <Filter>Header Files\Components\Mario</Filter>

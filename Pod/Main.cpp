@@ -121,6 +121,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			DispatchMessage(&msg);
 		}
 		else {
+			appController->Handler_Keyboard(hWnd);
 			if (GetTickCount() - startTime > (1000 / setting->getFPS())) {
 				appController->Game_Run(hWnd, Setting::getInstance()->getDt());
 				startTime = GetTickCount();

@@ -10,7 +10,6 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include"dxgraphics.h"
-#include"Man1.h"
 #include"SunnyMap.h"
 
 

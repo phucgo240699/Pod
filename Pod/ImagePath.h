@@ -14,5 +14,6 @@ public:
 
 	LPCWSTR tile_set_man1 = L"./Assets/Images/Map/man1.png";
 	LPCWSTR mario = L"./Assets/Images/Mario/mario.png";
+	LPCWSTR debug_box = L"./Assets/Images/debug_box.png";
 };
 

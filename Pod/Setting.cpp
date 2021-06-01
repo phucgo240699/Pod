@@ -47,20 +47,10 @@ Color* Setting::getDefaultBackgroundColorViewController()
 	return this->defaultBackgroundColorViewController;
 }
 
-//string Setting::getRootImagesFolder()
-//{
-//	return this->rootImagesFolder;
-//}
-//
-//string Setting::getRootSoundsFolder()
-//{
-//	return this->rootSoundsFolder;
-//}
-//
-//string Setting::getRootTextFilesFolder()
-//{
-//	return this->rootTextFileFolder;
-//}
+bool Setting::getDebugMode()
+{
+	return this->debugMode;
+}
 
 void Setting::setScreenMode(ScreenMode _screenMode)
 {
@@ -85,6 +75,16 @@ void Setting::setDt(float _dt)
 void Setting::setDefaultBackgroundColorViewController(Color* _color)
 {
 	this->defaultBackgroundColorViewController = _color;
+}
+
+void Setting::setDebugMode(bool _debugMode)
+{
+	this->debugMode = _debugMode;
+}
+
+void Setting::toggleDebugMode()
+{
+	this->debugMode = !(this->debugMode);
 }
 
 void Setting::load()
@@ -122,6 +122,7 @@ void Setting::load(string line, char seperator)
 	this->screenHeight = stoi(settings[3]);
 	this->screenMode = settings[4] == "0" ? window : fullScreen;
 	this->defaultBackgroundColorViewController = new Color(Tool::getColorFromString(settings[5]));
+	this->debugMode = settings[6] == "1" ? true : false;
 }
 
 void Setting::save()

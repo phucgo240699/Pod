@@ -164,7 +164,6 @@
     <ClCompile Include="ImagePath.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainCharacter.cpp" />
-    <ClCompile Include="Man1.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="Setting.cpp" />
@@ -187,7 +186,6 @@
     <ClInclude Include="ImagePath.h" />
     <ClInclude Include="KeyType.h" />
     <ClInclude Include="MainCharacter.h" />
-    <ClInclude Include="Man1.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="MarioState.h" />

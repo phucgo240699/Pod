@@ -20,6 +20,7 @@ private:
 	int screenHeight = 480;
 	ScreenMode screenMode = window;
 	Color* defaultBackgroundColorViewController = new Color(black);
+	bool debugMode = false;
 
 public:
 	Setting(const Setting&) = delete; // 3. delete copy constructor
@@ -32,6 +33,7 @@ public:
 	int getScreenHeight();
 	ScreenMode getScreenMode();
 	Color* getDefaultBackgroundColorViewController();
+	bool getDebugMode();
 
 
 	// Setter
@@ -41,6 +43,9 @@ public:
 	void setScreenHeight(int _height);
 	void setScreenMode(ScreenMode _screenMode);
 	void setDefaultBackgroundColorViewController(Color* _color);
+	void setDebugMode(bool _debugMode);
+
+	void toggleDebugMode();
 
 	// Others
 	void save();

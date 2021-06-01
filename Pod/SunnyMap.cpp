@@ -2,7 +2,7 @@
 
 void SunnyMap::viewDidLoad()
 {
-	mario = new Mario(0, 0, 0, 0, 0, 0, ImagePath::getInstance()->mario, D3DCOLOR_XRGB(255, 0, 255), DROPPING);
+	mario = new Mario(0, 0, 0, 0, 0, 0, ImagePath::getInstance()->mario, ImagePath::getInstance()->debug_box, D3DCOLOR_XRGB(255, 0, 255), DROPPING);
 	map = new Map(ImagePath::getInstance()->tile_set_man1, D3DCOLOR_XRGB(255, 0, 255));
 	grounds = new vector<Ground*>();
 	Camera* camera = Camera::getInstance();
