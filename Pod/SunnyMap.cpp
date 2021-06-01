@@ -155,6 +155,9 @@ void SunnyMap::viewDidUpdate(float _dt)
 			}
 		}
 	}
+	if (mario->getX() + mario->getCurrentAnimation()->getCurrentFrameWidth() < ground->getX() || mario->getX() > ground->getX() + ground->getWidth()) {
+		mario->setState(MarioState::DROPPING);
+	}
 }
 
 void SunnyMap::viewWillRender()

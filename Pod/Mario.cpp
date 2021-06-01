@@ -214,8 +214,11 @@ void Mario::onKeyUp()
 		this->setState(MarioState::STANDING);
 	}
 	else if (this->getState() == DROPPING) {
-		if (this->getAccelerationX() != 0) {
-			this->setAccelerationX(0);
+		if (this->getVx() < 0) {
+			this->setAccelerationX(0.6);
+		}
+		else if (this->getVx() > 0) {
+			this->setAccelerationX(-0.6);
 		}
 		if (this->getTargetVx() != 0) {
 			this->setTargetVx(0);

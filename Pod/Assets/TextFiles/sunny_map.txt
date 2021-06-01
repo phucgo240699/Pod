@@ -67,10 +67,10 @@
 
 <MarioInfo>
 #(x,y,limitX,limitY,state)
-0,0,2816,432,DROPPING
+300,0,2816,432,DROPPING
 </MarioInfo>
 
 <Grounds>
 #(x,y,width,height,vx,vy,limitX,limitY)
-0,416,2816,16,0,0,2816,432
+0,416,624,16,0,0,2816,432
 </Grounds>
