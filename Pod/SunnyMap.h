@@ -10,6 +10,7 @@ private:
 	Mario* mario;
 	Map* map;
 	vector<Ground*>* grounds;
+	int currentGroundIndex = 0; // this is the ground that mario is standing on
 
 	tuple<bool, float, vector<CollisionEdge>> mario_ground_collision;
 public:
@@ -23,4 +24,6 @@ public:
 	void viewDidRender();
 	void viewWillRelease();
 	~SunnyMap();
+
+	void adaptData();
 };

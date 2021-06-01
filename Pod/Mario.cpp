@@ -47,6 +47,11 @@ Animation* Mario::getCurrentAnimation()
 	return this->currentAnimation;
 }
 
+MarioSubState Mario::getSubState()
+{
+	return this->subState;
+}
+
 MarioState Mario::getState()
 {
 	return this->state;
@@ -164,6 +169,21 @@ void Mario::setState(MarioState _state)
 
 	this->state = _state;
 }
+void Mario::setSubState(MarioSubState _subState)
+{
+	switch (_subState)
+	{
+	case NONE:
+		break;
+	case PUSHING:
+		this->setVx(0);
+		this->setAccelerationX(0);
+		break;
+	default:
+		break;
+	}
+	this->subState = _subState;
+}
 // 2760 1066
 // 028 5409 6666
 void Mario::updateVelocity()
@@ -241,6 +261,16 @@ void Mario::onKeyUp(vector<KeyType> _keyTypes)
 				this->setState(MarioState::DROPPING);
 			}
 		}
+		else if (_keyTypes[i] == KeyType::right) {
+			if (this->getSubState() == PUSHING) {
+				this->setSubState(MarioSubState::NONE);
+			}
+		}
+		else if (_keyTypes[i] == KeyType::left) {
+			if (this->getSubState() == PUSHING) {
+				this->setSubState(MarioSubState::NONE);
+			}
+		}
 	}
 }
 
@@ -251,6 +281,9 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 
 	for (int i = 0; i < _keyTypes.size(); ++i) {
 		if (_keyTypes[i] == KeyType::right) {
+			if (this->getSubState() == PUSHING) {
+				continue;
+			}
 			hasKeyRight = true;
 
 			if (!hasKeyLeft) {
@@ -277,6 +310,9 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 			}
 		}
 		else if (_keyTypes[i] == KeyType::left) {
+			if (this->getSubState() == PUSHING) {
+				continue;
+			}
 			hasKeyLeft = true;
 
 			if (!hasKeyRight) {

@@ -14,6 +14,7 @@ private:
 	LPDIRECT3DTEXTURE9 debugTexture;
 	LPDIRECT3DTEXTURE9 texture;
 	MarioState state;
+	MarioSubState subState;
 	bool isFlip; // false: Left side - true: Right side. Default is false
 	bool debugMode = true;
 
@@ -33,6 +34,7 @@ public:
 
 	// Getter
 	Animation* getCurrentAnimation();
+	MarioSubState getSubState();
 	MarioState getState();
 	RECT* getBounds();
 	bool getIsFlip();
@@ -40,6 +42,7 @@ public:
 	// Setter
 	void setIsFlip(bool _isFlip);
 	void setState(MarioState _state);
+	void setSubState(MarioSubState _subState);
 	void updateVelocity();
 
 	// Inherit
