@@ -3,8 +3,8 @@
 Component::Component(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY)
 {
 	this->position = new D3DXVECTOR3(_x, _y, 0);
-	this->vx = _vx;
-	this->vy = _vy;
+	this->vx = round(_vx);
+	this->vy = round(_vy);
 	/*this->currentVx = _vx;
 	this->currentVy = _vy;*/
 	this->limitX = _limitX;
@@ -14,8 +14,8 @@ Component::Component(float _x, float _y, float _vx, float _vy, float _limitX, fl
 Component::Component(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY)
 {
 	this->position = _position;
-	this->vx = _vx;
-	this->vy = _vy;
+	this->vx = round(_vx);
+	this->vy = round(_vy);
 	/*this->currentVx = _vx;
 	this->currentVy = _vy;*/
 	this->limitX = _limitX;
@@ -79,12 +79,12 @@ void Component::setPosition(D3DXVECTOR3* _position)
 
 void Component::setX(float _x)
 {
-	this->position->x = _x;
+	this->position->x = round(_x);
 }
 
 void Component::setY(float _y)
 {
-	this->position->y = _y;
+	this->position->y = round(_y);
 }
 
 //void Component::setVx(float _vx)
@@ -109,22 +109,22 @@ void Component::setVy(float _vy)
 
 void Component::setLimitX(float _limitX)
 {
-	this->limitX = _limitX;
+	this->limitX = round(_limitX);
 }
 
 void Component::setLimitY(float _limitY)
 {
-	this->limitY = _limitY;
+	this->limitY = round(_limitY);
 }
 
 void Component::plusX(float _x)
 {
-	this->position->x += _x;
+	this->position->x += round(_x);
 }
 
 void Component::plusY(float _y)
 {
-	this->position->y += _y;
+	this->position->y += round(_y);
 }
 
 void Component::plusVx(float _vx)
