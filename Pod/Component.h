@@ -17,6 +17,7 @@ protected:
 	float vx, vy;
 	//float currentVx, currentVy;
 	float limitX, limitY;
+	float width, height;
 public:	
 	// Init
 	Component(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY);

@@ -38,6 +38,9 @@ public:
 	MarioState getState();
 	RECT* getBounds();
 	bool getIsFlip();
+	float getWidth();
+	float getHeight();
+
 
 	// Setter
 	void setIsFlip(bool _isFlip);

@@ -130,6 +130,7 @@ void Map::Draw()
 	// begin ---> end: from left ro right
 	Camera* camera = Camera::getInstance();
 	Drawing* drawing = Drawing::getInstance();
+	
 	int cellIndexBeginX = camera->getX() / tileSize;
 	int cellIndexEndX = (camera->getX() + camera->getWidth()) / tileSize;
 	//	begin
@@ -152,6 +153,9 @@ void Map::Draw()
 		else {
 			rowIndex = i;
 		}
+		if (rowIndex < 0 || rowIndex >= this->matrixIds.size()) {
+			continue;
+		}
 		for (int j = cellIndexBeginX; j <= cellIndexEndX; ++j) {
 			
 			if (j == matrixIds[rowIndex].size()) {
@@ -159,6 +163,10 @@ void Map::Draw()
 			}
 			else {
 				columnIndex = j;
+			}
+
+			if (columnIndex < 0 || columnIndex >= this->matrixIds[0].size()) {
+				continue;
 			}
 
 			tileId = this->matrixIds[rowIndex][columnIndex];
@@ -172,7 +180,7 @@ void Map::Draw()
 
 			//// Postion of a tile compare to position of camera.
 			//// (top-left)
-
+			
 			position = D3DXVECTOR3(j * tileSize - camera->getX(), i * tileSize - camera->getY(), 0);
 			
 

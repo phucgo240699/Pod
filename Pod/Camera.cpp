@@ -17,25 +17,25 @@ Camera* Camera::getInstance()
 	return instance;
 }
 
-float Camera::getWidth()
-{
-	return this->width;
-}
-
-float Camera::getHeight()
-{
-	return this->height;
-}
-
-void Camera::setWidth(float _width)
-{
-	this->width = _width;
-}
-
-void Camera::setHeight(float _height)
-{
-	this->height = _height;
-}
+//float Camera::getWidth()
+//{
+//	return this->width;
+//}
+//
+//float Camera::getHeight()
+//{
+//	return this->height;
+//}
+//
+//void Camera::setWidth(float _width)
+//{
+//	this->width = _width;
+//}
+//
+//void Camera::setHeight(float _height)
+//{
+//	this->height = _height;
+//}
 
 void Camera::setPositionBy(Component* _target)
 {

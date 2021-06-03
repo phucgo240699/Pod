@@ -147,25 +147,33 @@ void Component::Draw()
 
 RECT* Component::getBounds()
 {
-	return nullptr;
+	RECT* r = new RECT();
+	r->top = this->getY();
+	r->bottom = r->top + this->getHeight();
+	r->left = this->getX();
+	r->right = r->left + this->getWidth();
+
+	return r;
 }
 
 float Component::getWidth()
 {
-	return 0.0f;
+	return this->width;
 }
 
 float Component::getHeight()
 {
-	return 0.0f;
+	return this->height;
 }
 
 void Component::setWidth(float _width)
 {
+	this->width = _width;
 }
 
 void Component::setHeight(float _height)
 {
+	this->height = _height;
 }
 
 void Component::onKeyUp()

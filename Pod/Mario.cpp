@@ -77,6 +77,16 @@ bool Mario::getIsFlip()
 	return this->isFlip;
 }
 
+float Mario::getWidth()
+{
+	return this->currentAnimation->getCurrentFrameWidth();
+}
+
+float Mario::getHeight()
+{
+	return this->currentAnimation->getCurrentFrameHeight();
+}
+
 void Mario::Update(float _dt)
 {
 	if (currentAnimation == NULL) {
