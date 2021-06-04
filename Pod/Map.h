@@ -18,6 +18,7 @@ public:
 	~Map();
 
 	// Getter
+	LPDIRECT3DTEXTURE9 getTexture();
 	int getTileSize();
 	int getSpaceBetweenTiles();
 	int getTilesPerRow();

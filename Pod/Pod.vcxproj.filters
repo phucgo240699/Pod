@@ -82,6 +82,12 @@
     <Filter Include="Source Files\ViewController\SunnyMap">
       <UniqueIdentifier>{13636691-893f-4299-89b2-7404cdd041bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Components\Map\GiftBrick">
+      <UniqueIdentifier>{d72264c8-3e9e-4057-8f9d-8a6b0e908556}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Map\GiftBrick">
+      <UniqueIdentifier>{c12f7196-e369-4842-8609-10fa01024341}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -140,6 +146,9 @@
     </ClCompile>
     <ClCompile Include="SunnyMap.cpp">
       <Filter>Source Files\ViewController\SunnyMap</Filter>
+    </ClCompile>
+    <ClCompile Include="GiftBrick.cpp">
+      <Filter>Source Files\Components\Map\GiftBrick</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +220,9 @@
     </ClInclude>
     <ClInclude Include="SectionFile.h">
       <Filter>Header Files\System\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="GiftBrick.h">
+      <Filter>Header Files\Components\Map\GiftBrick</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

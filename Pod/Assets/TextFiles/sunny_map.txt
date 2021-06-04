@@ -80,3 +80,16 @@
 # increase 6+6=12 between these 2 ground
 2262,416,554,16,0,0,2816,432
 </Grounds>
+
+<GiftBrickFrames>
+176,352,16,16
+192,352,16,16
+</GiftBrickFrames>
+
+<GiftBrickAnimation>
+170,0,16,16
+187,0,16,16
+204,0,16,16
+221,0,16,16
+238,0,16,16
+</GiftBrickAnimation>

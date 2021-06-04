@@ -36,6 +36,11 @@ Map::~Map()
 	delete& matrixIds;
 }
 
+LPDIRECT3DTEXTURE9 Map::getTexture()
+{
+	return this->texture;
+}
+
 int Map::getTileSize()
 {
 	return this->tileSize;

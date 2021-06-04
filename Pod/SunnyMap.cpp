@@ -5,6 +5,7 @@ void SunnyMap::viewDidLoad()
 	mario = new Mario(0, 0, 0, 0, 0, 0, ImagePath::getInstance()->mario, ImagePath::getInstance()->debug_box, D3DCOLOR_XRGB(255, 0, 255), DROPPING);
 	map = new Map(ImagePath::getInstance()->tile_set_man1, D3DCOLOR_XRGB(255, 0, 255));
 	grounds = new vector<Ground*>();
+	giftBrick = new GiftBrick();
 
 	this->adaptData();
 }
@@ -33,6 +34,9 @@ void SunnyMap::viewWillUpdate(float _dt)
 		mario->Update(_dt);
 		Camera::getInstance()->follow(mario, _dt);
 	}
+	if (giftBrick != NULL) {
+		giftBrick->Update(_dt);
+	}
 }
 
 void SunnyMap::viewDidUpdate(float _dt)
@@ -46,14 +50,14 @@ void SunnyMap::viewDidUpdate(float _dt)
 					CollisionEdge edge = get<2>(mario_ground_collision)[j];
 					if (edge == topEdge) {
 						currentGroundIndex = i;
-						mario->setState(MarioState::STANDING);
 						mario->setY(this->grounds->at(i)->getY() - mario->getCurrentAnimation()->getCurrentFrameHeight());
+						mario->setState(MarioState::STANDING);
 					}
-					else if (edge == bottomEdge) {
+					/*else if (edge == bottomEdge) {
 						currentGroundIndex = i;
 						mario->setState(MarioState::STANDING);
 						mario->setY(this->grounds->at(i)->getY() - mario->getCurrentAnimation()->getCurrentFrameHeight());
-					}
+					}*/
 					else if (edge == leftEdge) {
 						mario->setSubState(MarioSubState::PUSHING);
 					}
@@ -93,6 +97,10 @@ void SunnyMap::viewDidRender()
 		}
 		if (mario != NULL) {
 			mario->Draw();
+		}
+
+		if (giftBrick != NULL) {
+			giftBrick->Draw(map->getTexture());
 		}
 
 		spriteHandler->End();
@@ -194,6 +202,24 @@ void SunnyMap::adaptData()
 			section = SECTION_NONE;
 			continue;
 		}
+		else if (line == "<GiftBrickFrames>") {
+			section = SECTION_GIFT_BRICK_FRAMES;
+			continue;
+		}
+		else if (line == "</GiftBrickFrames>") {
+			giftBrick->loadFrames(data);
+			data.clear();
+			section = SECTION_NONE;
+		}
+		else if (line == "<GiftBrickAnimation>") {
+			section = SECTION_GIFT_BRICK_ANIMATION;
+			continue;
+		}
+		else if (line == "</GiftBrickAnimation>") {
+			giftBrick->loadAnimation(data);
+			data.clear();
+			section = SECTION_NONE;
+		}
 
 		switch (section)
 		{
@@ -218,6 +244,12 @@ void SunnyMap::adaptData()
 			data.push_back(line);
 			break;
 		case SECTION_GROUNDS:
+			data.push_back(line);
+			break;
+		case SECTION_GIFT_BRICK_FRAMES:
+			data.push_back(line);
+			break;
+		case SECTION_GIFT_BRICK_ANIMATION:
 			data.push_back(line);
 			break;
 		default:

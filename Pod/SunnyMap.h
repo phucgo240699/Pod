@@ -3,6 +3,7 @@
 #include "Ground.h"
 #include "Mario.h"
 #include "SectionFile.h"
+#include "GiftBrick.h"
 
 class SunnyMap : public ViewController
 {
@@ -11,6 +12,8 @@ private:
 	Map* map;
 	vector<Ground*>* grounds;
 	int currentGroundIndex = 0; // this is the ground that mario is standing on
+
+	GiftBrick* giftBrick;
 
 	tuple<bool, float, vector<CollisionEdge>> mario_ground_collision;
 public:

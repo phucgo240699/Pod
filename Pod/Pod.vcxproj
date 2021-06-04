@@ -160,6 +160,7 @@
     <ClCompile Include="dxgraphics.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="FilePath.cpp" />
+    <ClCompile Include="GiftBrick.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="ImagePath.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="dxgraphics.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="FilePath.h" />
+    <ClInclude Include="GiftBrick.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="ImagePath.h" />
     <ClInclude Include="KeyType.h" />
