@@ -53,11 +53,11 @@ void SunnyMap::viewDidUpdate(float _dt)
 						mario->setY(this->grounds->at(i)->getY() - mario->getCurrentAnimation()->getCurrentFrameHeight());
 						mario->setState(MarioState::STANDING);
 					}
-					/*else if (edge == bottomEdge) {
+					else if (edge == bottomEdge) {
 						currentGroundIndex = i;
-						mario->setState(MarioState::STANDING);
 						mario->setY(this->grounds->at(i)->getY() - mario->getCurrentAnimation()->getCurrentFrameHeight());
-					}*/
+						mario->setState(MarioState::STANDING);
+					}
 					else if (edge == leftEdge) {
 						mario->setSubState(MarioSubState::PUSHING);
 					}
