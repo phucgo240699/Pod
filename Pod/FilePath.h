@@ -27,5 +27,5 @@ public:
 	string camera = "./Assets/TextFiles/Camera/camera.txt";
 
 	// Setting
-	string setting = "./Assets/TextFiles/Setting/setting.txt";
+	string setting = "./Assets/TextFiles/setting.txt";
 };

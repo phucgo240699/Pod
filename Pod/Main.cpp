@@ -3,7 +3,7 @@
 #include"AppConfig.h"
 
 AppConfig* appConfig = new AppConfig();
-AppController* appController;
+AppController* appController = appConfig->appController;
 Setting* setting = appConfig->setting;
 
 LPCWSTR APP_TITLE = L"Pod";
@@ -94,9 +94,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	if (!Init_Direct3D(hWnd, setting->getScreenWidth(), setting->getScreenHeight(), setting->getScreenMode() == fullScreen))
 		return 0;
-
-	// init appController
-	appController = appConfig->appController = new AppController();
 
 	// initialize the game
 	if (!appController->Game_Init(hWnd)) {

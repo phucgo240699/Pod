@@ -1,8 +1,3 @@
-<Setting>
-#(dt,fps,width,height,isFullScreen,backBufferColor,debugMode)
-1.0,60,280,180,0,blue9CFCF0,0
-</Setting>
-
 <Camera>
 #(limitX,limitY)
 2816,432

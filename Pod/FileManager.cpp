@@ -28,6 +28,7 @@ string FileManager::getStringFromTextFile(string fileName)
     while (!f.eof()) // eof: End Of File
     {
         getline(f, line);
+        if (line == "" || line[0] == '#') continue;
         data += line;
     }
 
@@ -46,6 +47,7 @@ vector<vector<int>> FileManager::getIntegerMatrixFromTextFile(string fileName, c
 
     while (!f.eof()) { // eof: End Of File
         getline(f, line);
+        if (line == "" || line[0] == '#') continue;
         matrix.push_back(Tool::splitToVectorIntegerFrom(line, seperator));
     }
 
@@ -65,6 +67,7 @@ vector<RECT*>* FileManager::getFramesFrom(string fileName, char seperator)
 
     while (!f.eof()) {
         getline(f, line);
+        if (line == "" || line[0] == '#') continue;
         frame = Tool::splitToVectorIntegerFrom(line, seperator);
         r = new RECT();
         r->left = frame[0];

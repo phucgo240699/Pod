@@ -137,15 +137,7 @@ void SunnyMap::adaptData()
 		if (line[0] == '#') continue; // Comment
 		if (line == "") continue; // Empty
 
-		if (line == "<Setting>") {
-			section = SECTION_SETTING;
-			continue;
-		}
-		else if (line == "</Setting>") {
-			section = SECTION_NONE;
-			continue;
-		}
-		else if (line == "<Camera>") {
+		if (line == "<Camera>") {
 			section = SECTION_CAMERA;
 			continue;
 		}
@@ -224,9 +216,6 @@ void SunnyMap::adaptData()
 		switch (section)
 		{
 		case SECTION_NONE:
-			break;
-		case SECTION_SETTING:
-			setting->load(line, ',');
 			break;
 		case SECTION_CAMERA:
 			camera->load(line, ',');

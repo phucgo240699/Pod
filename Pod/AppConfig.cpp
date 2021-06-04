@@ -3,6 +3,7 @@
 AppConfig::AppConfig()
 {
 	setting = Setting::getInstance();
+	appController = new AppController();
 	setting->load();
 }
 
