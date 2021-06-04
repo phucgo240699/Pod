@@ -1,250 +1,94 @@
 #include "SunnyMap.h"
 
-void SunnyMap::viewDidLoad()
+SunnyMap::SunnyMap(LPCWSTR _tileSetPath, D3DCOLOR _transcolor) : Map(_tileSetPath, _transcolor)
 {
-	mario = new Mario(0, 0, 0, 0, 0, 0, ImagePath::getInstance()->mario, ImagePath::getInstance()->debug_box, D3DCOLOR_XRGB(255, 0, 255), DROPPING);
-	map = new Map(ImagePath::getInstance()->tile_set_man1, D3DCOLOR_XRGB(255, 0, 255));
-	grounds = new vector<Ground*>();
-	giftBrick = new GiftBrick();
-
-	this->adaptData();
+	this->rect = RECT();
+	this->position = D3DXVECTOR3(0, 0, 0);
 }
 
-void SunnyMap::viewReceiveKeyUp()
+void SunnyMap::Update(float _dt)
 {
-	mario->onKeyUp();
 }
 
-void SunnyMap::viewReceiveKeyUp(vector<KeyType> _keyTypes)
+void SunnyMap::Draw()
 {
-	mario->onKeyUp(_keyTypes);
-}
 
-void SunnyMap::viewReceiveKeyDown(vector<KeyType> _keyTypes)
-{
-	mario->onKeyDown(_keyTypes);
-}
+	// begin ---> end: from left ro right
+	Camera* camera = Camera::getInstance();
+	Drawing* drawing = Drawing::getInstance();
 
-void SunnyMap::viewWillUpdate(float _dt)
-{
-	if (map != NULL) {
-		map->Update(_dt);
-	}
-	if (mario != NULL) {
-		mario->Update(_dt);
-		Camera::getInstance()->follow(mario, _dt);
-	}
-	if (giftBrick != NULL) {
-		giftBrick->Update(_dt);
-	}
-}
+	int cellIndexBeginX = camera->getX() / tileSize;
+	int cellIndexEndX = (camera->getX() + camera->getWidth()) / tileSize;
+	//	begin
+	//	  |
+	//	  |
+	//	  v
+	//	 end
+	// from up to down
+	int cellIndexBeginY = camera->getY() / tileSize;
+	int cellIndexEndY = (camera->getY() + camera->getHeight()) / tileSize;
 
-void SunnyMap::viewDidUpdate(float _dt)
-{
-	// Collision: MainCharacter and Ground
-	for (int i = 0; i < this->grounds->size(); ++i) {
-		
-			mario_ground_collision = this->mario->sweptAABB(this->grounds->at(i), _dt);
-			if (get<0>(mario_ground_collision) == true) {
-				for (int j = 0; j < get<2>(mario_ground_collision).size(); ++j) {
-					CollisionEdge edge = get<2>(mario_ground_collision)[j];
-					if (edge == topEdge) {
-						currentGroundIndex = i;
-						mario->setY(this->grounds->at(i)->getY() - mario->getCurrentAnimation()->getCurrentFrameHeight());
-						mario->setState(MarioState::STANDING);
-					}
-					else if (edge == bottomEdge) {
-						currentGroundIndex = i;
-						mario->setY(this->grounds->at(i)->getY() - mario->getCurrentAnimation()->getCurrentFrameHeight());
-						mario->setState(MarioState::STANDING);
-					}
-					else if (edge == leftEdge) {
-						mario->setSubState(MarioSubState::PUSHING);
-					}
-					else if (edge == rightEdge) {
-						mario->setSubState(MarioSubState::PUSHING);
-					}
-				}
+	int tileId; // from index 0
+	int r, c; // from index 0. These are row, column in tileset
+	int rowIndex, columnIndex; // from index 0. These are row, column in matrix indexes
+	for (int i = cellIndexBeginY; i <= cellIndexEndY; ++i) {
+
+		if (i == matrixIds.size()) {
+			rowIndex = i - 1;
+		}
+		else {
+			rowIndex = i;
+		}
+		if (rowIndex < 0 || rowIndex >= this->matrixIds.size()) {
+			continue;
+		}
+		for (int j = cellIndexBeginX; j <= cellIndexEndX; ++j) {
+
+			if (j == matrixIds[rowIndex].size()) {
+				columnIndex = j - 1;
 			}
 			else {
-				// if mario walk out of ground top surface, it will drop
-				if (mario->getState() == WALKING || mario->getState() == STANDING) {
-					if (mario->getBounds()->right < this->grounds->at(currentGroundIndex)->getX() || mario->getX() > this->grounds->at(currentGroundIndex)->getBounds()->right) { // this is check which ground that mario is standing on
-						if (mario->getBounds()->bottom <= this->grounds->at(currentGroundIndex)->getY()) {
-							mario->setState(MarioState::DROPPING);
-						}
-					}
-				}
+				columnIndex = j;
 			}
-		
-	}
-}
 
-void SunnyMap::viewWillRender()
-{
-}
-
-void SunnyMap::viewDidRender()
-{
-	if (d3ddev->BeginScene()) {
-		// Clear backbuffer
-		d3ddev->Clear(0, NULL, D3DCLEAR_TARGET, Setting::getInstance()->getDefaultBackgroundColorViewController()->toD3DColor(), 1.0f, 0);
-
-		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
-
-		if (map != NULL) {
-			map->Draw();
-		}
-		if (mario != NULL) {
-			mario->Draw();
-		}
-
-		if (giftBrick != NULL) {
-			giftBrick->Draw(map->getTexture());
-		}
-
-		spriteHandler->End();
-
-		d3ddev->EndScene();
-	}
-
-	d3ddev->Present(NULL, NULL, NULL, NULL);
-}
-
-void SunnyMap::viewWillRelease()
-{
-}
-
-SunnyMap::~SunnyMap()
-{
-}
-
-void SunnyMap::adaptData()
-{
-	Camera* camera = Camera::getInstance();
-	Setting* setting = Setting::getInstance();
-
-	fstream fs;
-	fs.open(FilePath::getInstance()->sunny_map, ios::in);
-
-	SectionFileType section = SECTION_NONE;
-	vector<string> data = vector<string>();
-	string line;
-
-
-	while (!fs.eof()) { // End of line
-		getline(fs, line);
-		if (line[0] == '#') continue; // Comment
-		if (line == "") continue; // Empty
-
-		if (line == "<Camera>") {
-			section = SECTION_CAMERA;
-			continue;
-		}
-		else if (line == "</Camera>") {
-			section = SECTION_NONE;
-			continue;
-		}
-		else if (line == "<MapInfo>") {
-			section = SECTION_MAP_INFO;
-			continue;
-		}
-		else if (line == "</MapInfo>") {
-			section = SECTION_NONE;
-			continue;
-		}
-		else if (line == "<MapIndexes>") {
-			section = SECTION_MAP_INDEXES;
-			continue;
-		}
-		else if (line == "</MapIndexes>") {
-			map->loadIndexes(data, ' ');
-			data.clear();
-			section = SECTION_NONE;
-			continue;
-		}
-		else if (line == "<MarioInfo>") {
-			section = SECTION_MARIO_INFO;
-			continue;
-		}
-		else if (line == "</MarioInfo>") {
-			section = SECTION_NONE;
-			continue;
-		}
-		else if (line == "<MarioAnimations>") {
-			section = SECTION_MARIO_ANIMATIONS;
-			continue;
-		}
-		else if (line == "</MarioAnimations>") {
-			mario->loadAnimations(data, '>', ',');
-			data.clear();
-			continue;
-		}
-		else if (line == "<Grounds>") {
-			section = SECTION_GROUNDS;
-			continue;
-		}
-		else if (line == "</Grounds>") {
-			for (int i = 0; i < data.size(); ++i) {
-				Ground* ground = new Ground(0, 0, 0, 0, 0, 0, 0, 0);
-				ground->load(data[i], ',');
-				this->grounds->push_back(ground);
+			if (columnIndex < 0 || columnIndex >= this->matrixIds[0].size()) {
+				continue;
 			}
-			data.clear();
-			section = SECTION_NONE;
-			continue;
-		}
-		else if (line == "<GiftBrickFrames>") {
-			section = SECTION_GIFT_BRICK_FRAMES;
-			continue;
-		}
-		else if (line == "</GiftBrickFrames>") {
-			giftBrick->loadFrames(data);
-			data.clear();
-			section = SECTION_NONE;
-		}
-		else if (line == "<GiftBrickAnimation>") {
-			section = SECTION_GIFT_BRICK_ANIMATION;
-			continue;
-		}
-		else if (line == "</GiftBrickAnimation>") {
-			giftBrick->loadAnimation(data);
-			data.clear();
-			section = SECTION_NONE;
-		}
 
-		switch (section)
-		{
-		case SECTION_NONE:
-			break;
-		case SECTION_CAMERA:
-			camera->load(line, ',');
-			break;
-		case SECTION_MAP_INFO:
-			map->loadInfo(line, ',');
-			break;
-		case SECTION_MAP_INDEXES:
-			data.push_back(line);
-			break;
-		case SECTION_MARIO_INFO:
-			mario->loadInfo(line, ',');
-			break;
-		case SECTION_MARIO_ANIMATIONS:
-			data.push_back(line);
-			break;
-		case SECTION_GROUNDS:
-			data.push_back(line);
-			break;
-		case SECTION_GIFT_BRICK_FRAMES:
-			data.push_back(line);
-			break;
-		case SECTION_GIFT_BRICK_ANIMATION:
-			data.push_back(line);
-			break;
-		default:
-			break;
+			tileId = this->matrixIds[rowIndex][columnIndex];
+
+			r = tileId / tilesPerRow;
+			c = tileId % tilesPerRow;
+			rect.top = r * tileSize + r * spaceBetweenTiles;
+			rect.bottom = rect.top + tileSize;
+			rect.left = c * tileSize + c * spaceBetweenTiles;
+			rect.right = rect.left + tileSize;
+
+			//// Postion of a tile compare to position of camera.
+			//// (top-left)
+
+			//position = D3DXVECTOR3(j * tileSize - camera->getX(), i * tileSize - camera->getY(), 0);
+			
+			position.x = j * tileSize - camera->getX();
+			position.y = i * tileSize - camera->getY();
+
+			drawing->draw(texture, &rect, NULL, &position);
 		}
 	}
+}
 
-	fs.close();
+void SunnyMap::loadInfo(string line, char seperator)
+{
+	vector<int> v = Tool::splitToVectorIntegerFrom(line, seperator);
+	this->setTileSize(v[0]);
+	this->setSpaceBetweenTiles(v[1]);
+	this->setTilesPerRow(v[2]);
+	this->setTilesPerColumn(v[3]);
+	this->setWidth(v[4]);
+	this->setHeight(v[5]);
+}
+
+void SunnyMap::loadIndexes(vector<string> data, char seperator)
+{
+	this->matrixIds = Tool::getMatrixFrom(data, seperator);
 }

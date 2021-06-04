@@ -97,31 +97,31 @@ void Camera::follow(Component* _target, float _dt)
 	}
 }
 
-void Camera::load()
-{
-	// Read data from camera file
-	string data = FileManager::getInstance()->getStringFromTextFile(FilePath::getInstance()->camera);
-	vector<int> v = Tool::splitToVectorIntegerFrom(data, ',');
-
-	this->setX(v[0]);
-	this->setY(v[1]);
-	this->setVx(v[2]);
-	this->setVy(v[3]);
-
-	// Read data from map file
-	data = FileManager::getInstance()->getStringFromTextFile(FilePath::getInstance()->map_info_man1);
-	v = Tool::splitToVectorIntegerFrom(data, ',');
-	this->setLimitX(v[4]);
-	this->setLimitY(v[5]);
-
-	// Validate data
-	if (this->getX() + this->width > this->limitX) {
-		throw("Camera is out side of map by X-axis.");
-	}
-	if (this->getY() + this->height > this->limitY) {
-		throw("Camera is out side of map by Y-axis.");
-	}
-}
+//void Camera::load()
+//{
+//	// Read data from camera file
+//	string data = FileManager::getInstance()->getStringFromTextFile(FilePath::getInstance()->camera);
+//	vector<int> v = Tool::splitToVectorIntegerFrom(data, ',');
+//
+//	this->setX(v[0]);
+//	this->setY(v[1]);
+//	this->setVx(v[2]);
+//	this->setVy(v[3]);
+//
+//	// Read data from map file
+//	data = FileManager::getInstance()->getStringFromTextFile(FilePath::getInstance()->map_info_man1);
+//	v = Tool::splitToVectorIntegerFrom(data, ',');
+//	this->setLimitX(v[4]);
+//	this->setLimitY(v[5]);
+//
+//	// Validate data
+//	if (this->getX() + this->width > this->limitX) {
+//		throw("Camera is out side of map by X-axis.");
+//	}
+//	if (this->getY() + this->height > this->limitY) {
+//		throw("Camera is out side of map by Y-axis.");
+//	}
+//}
 
 void Camera::load(string line, char seperator)
 {
@@ -131,20 +131,20 @@ void Camera::load(string line, char seperator)
 	this->setLimitY(v[1]);
 }
 
-void Camera::save()
-{
-	string data = "";
-	data += to_string(this->position->x);
-	data += ",";
-	data += to_string(this->position->y);
-	data += ",";
-	data += to_string(this->vx);
-	data += ",";
-	data += to_string(this->vy);
-	data += ",";
-	data += to_string(this->limitX);
-	data += ",";
-	data += to_string(this->limitY);
-	FileManager::getInstance()->writeStringToTextFile(FilePath::getInstance()->camera, data);
-}
+//void Camera::save()
+//{
+//	string data = "";
+//	data += to_string(this->position->x);
+//	data += ",";
+//	data += to_string(this->position->y);
+//	data += ",";
+//	data += to_string(this->vx);
+//	data += ",";
+//	data += to_string(this->vy);
+//	data += ",";
+//	data += to_string(this->limitX);
+//	data += ",";
+//	data += to_string(this->limitY);
+//	FileManager::getInstance()->writeStringToTextFile(FilePath::getInstance()->camera, data);
+//}
 

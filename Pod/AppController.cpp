@@ -18,8 +18,6 @@ void AppController::setRootViewController(ViewController* _rootViewController)
 
 int AppController::Game_Init(HWND hwnd)
 {
-
-
 	this->rootViewController->viewDidLoad();
 	return 1;
 }

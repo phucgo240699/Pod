@@ -170,6 +170,7 @@
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="Setting.cpp" />
     <ClCompile Include="SunnyMap.cpp" />
+    <ClCompile Include="SunnyVC.cpp" />
     <ClCompile Include="ViewController.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -195,6 +196,7 @@
     <ClInclude Include="SectionFile.h" />
     <ClInclude Include="Setting.h" />
     <ClInclude Include="SunnyMap.h" />
+    <ClInclude Include="SunnyVC.h" />
     <ClInclude Include="Tool.h" />
     <ClInclude Include="ViewController.h" />
   </ItemGroup>

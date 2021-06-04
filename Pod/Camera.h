@@ -25,8 +25,8 @@ public:
 	void setPositionBy(Component* _target);
 	void follow(Component* _target, float _dt);
 
-	void load();
+	//void load();
 	void load(string line, char seperator);
-	void save();
+	//void save();
 };
 

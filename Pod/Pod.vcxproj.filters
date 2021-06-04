@@ -76,17 +76,23 @@
     <Filter Include="Source Files\System\Animation">
       <UniqueIdentifier>{8ecae71c-866d-4926-b505-a0822bf26a1c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\ViewController\SunnyMap">
-      <UniqueIdentifier>{0212b9e2-8abc-43fb-9839-d208f35cc63f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\ViewController\SunnyMap">
-      <UniqueIdentifier>{13636691-893f-4299-89b2-7404cdd041bd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Components\Map\GiftBrick">
       <UniqueIdentifier>{d72264c8-3e9e-4057-8f9d-8a6b0e908556}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Components\Map\GiftBrick">
       <UniqueIdentifier>{c12f7196-e369-4842-8609-10fa01024341}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ViewController\SunnyVC">
+      <UniqueIdentifier>{0212b9e2-8abc-43fb-9839-d208f35cc63f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ViewController\SunnyVC">
+      <UniqueIdentifier>{13636691-893f-4299-89b2-7404cdd041bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ViewController\SunnyVC\SunnyMap">
+      <UniqueIdentifier>{51874067-8ced-403f-860b-db488bebb8bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ViewController\SunnyVC\SunnyMap">
+      <UniqueIdentifier>{628be196-b193-49a8-bed8-cdd3b45c11fa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -144,11 +150,14 @@
     <ClCompile Include="MainCharacter.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="SunnyMap.cpp">
-      <Filter>Source Files\ViewController\SunnyMap</Filter>
-    </ClCompile>
     <ClCompile Include="GiftBrick.cpp">
       <Filter>Source Files\Components\Map\GiftBrick</Filter>
+    </ClCompile>
+    <ClCompile Include="SunnyVC.cpp">
+      <Filter>Source Files\ViewController\SunnyVC</Filter>
+    </ClCompile>
+    <ClCompile Include="SunnyMap.cpp">
+      <Filter>Source Files\ViewController\SunnyVC\SunnyMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -215,14 +224,17 @@
     <ClInclude Include="MainCharacter.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="SunnyMap.h">
-      <Filter>Header Files\ViewController\SunnyMap</Filter>
-    </ClInclude>
     <ClInclude Include="SectionFile.h">
       <Filter>Header Files\System\Enums</Filter>
     </ClInclude>
     <ClInclude Include="GiftBrick.h">
       <Filter>Header Files\Components\Map\GiftBrick</Filter>
+    </ClInclude>
+    <ClInclude Include="SunnyVC.h">
+      <Filter>Header Files\ViewController\SunnyVC</Filter>
+    </ClInclude>
+    <ClInclude Include="SunnyMap.h">
+      <Filter>Header Files\ViewController\SunnyVC\SunnyMap</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

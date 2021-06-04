@@ -1,13 +1,13 @@
 #include "Mario.h"
 
-void Mario::setUpAnimations()
-{
-	this->animations = new vector<Animation*>();
-
-	this->animations->push_back(new Animation(0, 0, 2, FilePath::getInstance()->mario_standing));
-	this->animations->push_back(new Animation(0, 0, 2, FilePath::getInstance()->mario_running));
-	this->animations->push_back(new Animation(0, 0, 2, FilePath::getInstance()->mario_jumping_dropping));
-}
+//void Mario::setUpAnimations()
+//{
+//	this->animations = new vector<Animation*>();
+//
+//	this->animations->push_back(new Animation(0, 0, 2, FilePath::getInstance()->mario_standing));
+//	this->animations->push_back(new Animation(0, 0, 2, FilePath::getInstance()->mario_running));
+//	this->animations->push_back(new Animation(0, 0, 2, FilePath::getInstance()->mario_jumping_dropping));
+//}
 
 Mario::Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, LPCWSTR _debugBoxPath, D3DCOLOR _transcolor, MarioState _state) : MainCharacter(_x, _y, _vx, _vy, _limitX, _limitY)
 {
@@ -198,8 +198,7 @@ void Mario::setSubState(MarioSubState _subState)
 	}
 	this->subState = _subState;
 }
-// 2760 1066
-// 028 5409 6666
+
 void Mario::updateVelocity()
 {
 	if (this->getTargetVx() > 0) {

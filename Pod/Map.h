@@ -7,13 +7,13 @@ using namespace std;
 
 class Map
 {
-private:
+protected:
 	LPDIRECT3DTEXTURE9 texture;
 	vector<vector<int>> matrixIds;
 	int tileSize, spaceBetweenTiles, tilesPerRow, tilesPerColumn;
 	int width, height;
 public:
-	Map(LPCWSTR _tileSetPath, string _matrixIdsPath, string _mapInfoPath, char _seperatorOfMatrixIds, D3DCOLOR _transcolor);
+	//Map(LPCWSTR _tileSetPath, string _matrixIdsPath, string _mapInfoPath, char _seperatorOfMatrixIds, D3DCOLOR _transcolor);
 	Map(LPCWSTR _tileSetPath, D3DCOLOR _transcolor);
 	~Map();
 
@@ -34,9 +34,9 @@ public:
 	void setWidth(int _width);
 	void setHeight(int _height);
 
-	void Update(float _dt);
-	void Draw();
+	virtual void Update(float _dt);
+	virtual void Draw();
 
-	void loadInfo(string line, char seperator);
-	void loadIndexes(vector<string> data, char seperator);
+	virtual void loadInfo(string line, char seperator);
+	virtual void loadIndexes(vector<string> data, char seperator);
 };

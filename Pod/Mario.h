@@ -21,7 +21,7 @@ private:
 	vector<Animation*>* animations;
 	Animation* currentAnimation;
 
-	void setUpAnimations();
+	//void setUpAnimations();
 
 public:
 	float startdrop = 0;

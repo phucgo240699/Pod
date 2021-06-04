@@ -1,32 +1,19 @@
 #pragma once
-#include "ViewController.h"
-#include "Ground.h"
-#include "Mario.h"
-#include "SectionFile.h"
-#include "GiftBrick.h"
+#include "Map.h"
 
-class SunnyMap : public ViewController
+class SunnyMap : public Map
 {
 private:
-	Mario* mario;
-	Map* map;
-	vector<Ground*>* grounds;
-	int currentGroundIndex = 0; // this is the ground that mario is standing on
+	RECT rect; // for draw a tile in matrix indexes
+	D3DXVECTOR3 position; // know where to draw a tile in matrix indexes
 
-	GiftBrick* giftBrick;
-
-	tuple<bool, float, vector<CollisionEdge>> mario_ground_collision;
 public:
-	void viewDidLoad();
-	void viewReceiveKeyUp();
-	void viewReceiveKeyUp(vector<KeyType> _keyTypes);
-	void viewReceiveKeyDown(vector<KeyType> _keyTypes);
-	void viewWillUpdate(float _dt);
-	void viewDidUpdate(float _dt);
-	void viewWillRender();
-	void viewDidRender();
-	void viewWillRelease();
-	~SunnyMap();
+	SunnyMap(LPCWSTR _tileSetPath, D3DCOLOR _transcolor);
 
-	void adaptData();
+	void Update(float _dt);
+	void Draw();
+
+	void loadInfo(string line, char seperator);
+	void loadIndexes(vector<string> data, char seperator);
 };
+

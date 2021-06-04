@@ -10,7 +10,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include"dxgraphics.h"
-#include"SunnyMap.h"
+#include"SunnyVC.h"
 
 
 // Read keyboard command
@@ -20,7 +20,7 @@
 class AppController {
 	// Name of program
 private:
-	ViewController* rootViewController = new SunnyMap();
+	ViewController* rootViewController = new SunnyVC();
 
 public:
 
