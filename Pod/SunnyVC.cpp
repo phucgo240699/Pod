@@ -6,6 +6,7 @@ void SunnyVC::viewDidLoad()
 	map = new SunnyMap(ImagePath::getInstance()->sunny_map, D3DCOLOR_XRGB(255, 0, 255));
 	grounds = new vector<Ground*>();
 	giftBrick = new GiftBrick();
+	scoreBoard = new ScoreBoard(ImagePath::getInstance()->board, D3DCOLOR_XRGB(255, 0, 255));
 
 	this->adaptData();
 }
@@ -32,6 +33,9 @@ void SunnyVC::viewWillUpdate(float _dt)
 	}
 	if (giftBrick != NULL) {
 		giftBrick->Update(_dt);
+	}
+	if (scoreBoard != NULL) {
+		scoreBoard->Update(_dt);
 	}
 	if (mario != NULL) {
 		mario->Update(_dt);
@@ -98,8 +102,9 @@ void SunnyVC::viewDidRender()
 		if (giftBrick != NULL) {
 			giftBrick->Draw(map->getTexture());
 		}
-
-		Drawing::getInstance()->drawBoard(NULL, NULL, this->boardPos, D3DCOLOR_XRGB(255, 255, 255));
+		if (scoreBoard != NULL) {
+			scoreBoard->Draw();
+		}
 
 		if (mario != NULL) {
 			mario->Draw();
@@ -214,6 +219,13 @@ void SunnyVC::adaptData()
 			data.clear();
 			section = SECTION_NONE;
 		}
+		else if (line == "<ScoreBoard>") {
+			section = SECTION_SCORE_BOARD;
+			continue;
+		}
+		else if (line == "</ScoreBoard>") {
+			section = SECTION_NONE;
+		}
 
 		switch (section)
 		{
@@ -243,6 +255,8 @@ void SunnyVC::adaptData()
 		case SECTION_GIFT_BRICK_ANIMATION:
 			data.push_back(line);
 			break;
+		case SECTION_SCORE_BOARD:
+			scoreBoard->loadPosition(line, ',');
 		default:
 			break;
 		}

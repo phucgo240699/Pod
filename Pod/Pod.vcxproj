@@ -168,6 +168,7 @@
     <ClCompile Include="MainCharacter.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Mario.cpp" />
+    <ClCompile Include="ScoreBoard.cpp" />
     <ClCompile Include="Setting.cpp" />
     <ClCompile Include="SunnyMap.cpp" />
     <ClCompile Include="SunnyVC.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="MarioState.h" />
+    <ClInclude Include="ScoreBoard.h" />
     <ClInclude Include="SectionFile.h" />
     <ClInclude Include="Setting.h" />
     <ClInclude Include="SunnyMap.h" />

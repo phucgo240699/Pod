@@ -94,3 +94,7 @@
 238,0,16,16
 > 4
 </GiftBrickAnimation>
+
+<ScoreBoard>
+0,168
+</ScoreBoard>

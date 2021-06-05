@@ -94,6 +94,12 @@
     <Filter Include="Source Files\ViewController\SunnyVC\SunnyMap">
       <UniqueIdentifier>{628be196-b193-49a8-bed8-cdd3b45c11fa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\Map\ScoreBoard">
+      <UniqueIdentifier>{c2f2c955-baac-46a6-8232-bb9cc032630e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Map\ScoreBoard">
+      <UniqueIdentifier>{c4e12c99-9fbe-4ee8-87d7-567bd7785df2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -158,6 +164,9 @@
     </ClCompile>
     <ClCompile Include="SunnyMap.cpp">
       <Filter>Source Files\ViewController\SunnyVC\SunnyMap</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreBoard.cpp">
+      <Filter>Source Files\Components\Map\ScoreBoard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -235,6 +244,9 @@
     </ClInclude>
     <ClInclude Include="SunnyMap.h">
       <Filter>Header Files\ViewController\SunnyVC\SunnyMap</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreBoard.h">
+      <Filter>Header Files\Components\Map\ScoreBoard</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

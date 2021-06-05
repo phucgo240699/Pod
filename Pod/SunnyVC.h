@@ -5,6 +5,7 @@
 #include "SectionFile.h"
 #include "GiftBrick.h"
 #include "SunnyMap.h"
+#include "ScoreBoard.h"
 
 class SunnyVC : public ViewController
 {
@@ -15,8 +16,8 @@ private:
 	int currentGroundIndex = 0; // this is the ground that mario is standing on
 
 	GiftBrick* giftBrick;
+	ScoreBoard* scoreBoard;
 
-	D3DXVECTOR3* boardPos = new D3DXVECTOR3(D3DXVECTOR3(0, Setting::getInstance()->getScreenHeight() - 32, 0));
 
 	tuple<bool, float, vector<CollisionEdge>> mario_ground_collision;
 public:

@@ -23,8 +23,4 @@ public:
 	
 	void drawDebugBox(RECT* _srcRect, D3DXVECTOR3* _center, D3DXVECTOR3* _position, D3DCOLOR _color = D3DCOLOR_XRGB(255, 255, 255));
 	void drawDebugBox(RECT* _srcRect, D3DXVECTOR3* _center, D3DXVECTOR3* _position, D3DXVECTOR2 _translation, bool _isFlip, D3DCOLOR _color = D3DCOLOR_XRGB(255, 255, 255));
-
-	void drawBoard(RECT* _srcRect, D3DXVECTOR3* _center, D3DXVECTOR3* _position, D3DCOLOR _color = D3DCOLOR_XRGB(255, 255, 255));
-	void drawBoard(RECT* _srcRect, D3DXVECTOR3* _center, D3DXVECTOR3* _position, D3DXVECTOR2 _translation, bool _isFlip, D3DCOLOR _color = D3DCOLOR_XRGB(255, 255, 255));
-	//void draw(LPDIRECT3DSURFACE9 surface, RECT* _srcRect, D3DCOLOR _color = D3DCOLOR_XRGB(255, 255, 255));
 };
