@@ -54,12 +54,12 @@ void SunnyVC::viewDidUpdate(float _dt)
 					CollisionEdge edge = get<2>(mario_ground_collision)[j];
 					if (edge == topEdge) {
 						currentGroundIndex = i;
-						mario->setY(this->grounds->at(i)->getY() - mario->getCurrentAnimation()->getCurrentFrameHeight());
+						mario->setY(this->grounds->at(i)->getY() - mario->getCurrentAnimation()->getCurrentFrameHeight() - 0.2);
 						mario->setState(MarioState::STANDING);
 					}
 					else if (edge == bottomEdge) {
 						currentGroundIndex = i;
-						mario->setY(this->grounds->at(i)->getY() - mario->getCurrentAnimation()->getCurrentFrameHeight());
+						mario->setY(this->grounds->at(i)->getY() - mario->getCurrentAnimation()->getCurrentFrameHeight() - 0.2);
 						mario->setState(MarioState::STANDING);
 					}
 					else if (edge == leftEdge) {
@@ -78,6 +78,7 @@ void SunnyVC::viewDidUpdate(float _dt)
 							mario->setState(MarioState::DROPPING);
 						}
 					}
+					//mario->setState(MarioState::DROPPING);
 				}
 			}
 		

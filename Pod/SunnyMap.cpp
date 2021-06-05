@@ -69,8 +69,8 @@ void SunnyMap::Draw()
 
 			//position = D3DXVECTOR3(j * tileSize - camera->getX(), i * tileSize - camera->getY(), 0);
 			
-			position.x = j * tileSize - camera->getX();
-			position.y = i * tileSize - camera->getY();
+			position.x = round(j * tileSize - camera->getX());
+			position.y = round(i * tileSize - camera->getY());
 
 			drawing->draw(texture, &rect, NULL, &position);
 		}
