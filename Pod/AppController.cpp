@@ -18,6 +18,7 @@ void AppController::setRootViewController(ViewController* _rootViewController)
 
 int AppController::Game_Init(HWND hwnd)
 {
+	rootViewController = new SunnyVC();
 	this->rootViewController->viewDidLoad();
 	return 1;
 }

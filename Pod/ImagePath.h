@@ -16,5 +16,6 @@ public:
 	LPCWSTR world_map = L"./Assets/Images/Map/world_map.png";
 	LPCWSTR mario = L"./Assets/Images/Mario/mario.png";
 	LPCWSTR debug_box = L"./Assets/Images/debug_box.png";
+	LPCWSTR board = L"./Assets/Images/board.png";
 };
 

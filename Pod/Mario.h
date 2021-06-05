@@ -11,7 +11,6 @@ using namespace std;
 class Mario : public MainCharacter
 {
 private:
-	LPDIRECT3DTEXTURE9 debugTexture;
 	LPDIRECT3DTEXTURE9 texture;
 	MarioState state;
 	MarioSubState subState;
@@ -26,8 +25,8 @@ private:
 public:
 	float startdrop = 0;
 	// Init
-	Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, LPCWSTR _debugBoxPath, D3DCOLOR _transcolor, MarioState _state);
-	Mario(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, LPCWSTR _debugBoxPath, D3DCOLOR _transcolor, MarioState _state);
+	Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state);
+	Mario(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state);
 
 	// De Init
 	~Mario();

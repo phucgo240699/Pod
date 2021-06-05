@@ -20,7 +20,7 @@
 class AppController {
 	// Name of program
 private:
-	ViewController* rootViewController = new SunnyVC();
+	ViewController* rootViewController;
 
 public:
 

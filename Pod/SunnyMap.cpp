@@ -33,23 +33,23 @@ void SunnyMap::Draw()
 	int rowIndex, columnIndex; // from index 0. These are row, column in matrix indexes
 	for (int i = cellIndexBeginY; i <= cellIndexEndY; ++i) {
 
-		if (i == matrixIds.size()) {
+		/*if (i == matrixIds.size()) {
 			rowIndex = i - 1;
 		}
-		else {
+		else {*/
 			rowIndex = i;
-		}
+		//}
 		if (rowIndex < 0 || rowIndex >= this->matrixIds.size()) {
 			continue;
 		}
 		for (int j = cellIndexBeginX; j <= cellIndexEndX; ++j) {
 
-			if (j == matrixIds[rowIndex].size()) {
+			/*if (j == matrixIds[rowIndex].size()) {
 				columnIndex = j - 1;
 			}
-			else {
+			else {*/
 				columnIndex = j;
-			}
+			//}
 
 			if (columnIndex < 0 || columnIndex >= this->matrixIds[0].size()) {
 				continue;
