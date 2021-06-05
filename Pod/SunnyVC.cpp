@@ -3,7 +3,7 @@
 void SunnyVC::viewDidLoad()
 {
 	mario = new Mario(0, 0, 0, 0, 0, 0, ImagePath::getInstance()->mario, ImagePath::getInstance()->debug_box, D3DCOLOR_XRGB(255, 0, 255), DROPPING);
-	map = new SunnyMap(ImagePath::getInstance()->tile_set_man1, D3DCOLOR_XRGB(255, 0, 255));
+	map = new SunnyMap(ImagePath::getInstance()->sunny_map, D3DCOLOR_XRGB(255, 0, 255));
 	grounds = new vector<Ground*>();
 	giftBrick = new GiftBrick();
 
@@ -30,12 +30,12 @@ void SunnyVC::viewWillUpdate(float _dt)
 	if (map != NULL) {
 		map->Update(_dt);
 	}
+	if (giftBrick != NULL) {
+		giftBrick->Update(_dt);
+	}
 	if (mario != NULL) {
 		mario->Update(_dt);
 		Camera::getInstance()->follow(mario, _dt);
-	}
-	if (giftBrick != NULL) {
-		giftBrick->Update(_dt);
 	}
 }
 
@@ -95,12 +95,12 @@ void SunnyVC::viewDidRender()
 		if (map != NULL) {
 			map->Draw();
 		}
-		if (mario != NULL) {
-			mario->Draw();
-		}
-
 		if (giftBrick != NULL) {
 			giftBrick->Draw(map->getTexture());
+		}
+
+		if (mario != NULL) {
+			mario->Draw();
 		}
 
 		spriteHandler->End();

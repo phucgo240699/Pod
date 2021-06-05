@@ -1,3 +1,8 @@
+<Settings>
+#(dt,fps,width,height,isFullScreen,backBufferColor,debugMode)
+1.0,30,280,180,0,black,2816,432
+</Settings>
+
 <Camera>
 #(limitX,limitY)
 2816,432

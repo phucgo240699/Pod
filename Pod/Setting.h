@@ -1,6 +1,10 @@
 #pragma once
 #include "Tool.h"
 #include "FileManager.h"
+#include "string"
+#include "SectionFile.h"
+
+using namespace std;
 
 enum ScreenMode {
 	window,		// 0
@@ -48,7 +52,7 @@ public:
 	void toggleDebugMode();
 
 	// Others
-	void save();
+	//void save();
 	void load();
 	void load(string line, char seperator);
 };

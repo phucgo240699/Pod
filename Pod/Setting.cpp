@@ -89,28 +89,73 @@ void Setting::toggleDebugMode()
 
 void Setting::load()
 {
-	string settingsStr = FileManager::getInstance()->getStringFromTextFile(FilePath::getInstance()->setting);
-	vector<string> v = Tool::splitToVectorStringFrom(settingsStr, ',');
-	
-	this->dt = stof(v[0]);
-	this->fps = stoi(v[1]);
-	this->screenWidth = stoi(v[2]);
-	this->screenHeight = stoi(v[3]);
-	this->screenMode = v[4] == "0" ? window : fullScreen;
-	this->defaultBackgroundColorViewController = new Color(Tool::getColorFromString(v[5]));
+	//string settingsStr = FileManager::getInstance()->getStringFromTextFile(FilePath::getInstance()->setting);
+	//vector<string> v = Tool::splitToVectorStringFrom(settingsStr, ',');
+	//
+	//this->dt = stof(v[0]);
+	//this->fps = stoi(v[1]);
+	//this->screenWidth = stoi(v[2]);
+	//this->screenHeight = stoi(v[3]);
+	//this->screenMode = v[4] == "0" ? window : fullScreen;
+	//this->defaultBackgroundColorViewController = new Color(Tool::getColorFromString(v[5]));
 
-	// Read data from map file
-	string dataMap = FileManager::getInstance()->getStringFromTextFile(FilePath::getInstance()->map_info_man1);
-	vector<int> vectorMap = Tool::splitToVectorIntegerFrom(dataMap, ',');
+	//// Read data from map file
+	//string dataMap = FileManager::getInstance()->getStringFromTextFile(FilePath::getInstance()->map_info_man1);
+	//vector<int> vectorMap = Tool::splitToVectorIntegerFrom(dataMap, ',');
 
 
-	// Validate data
-	if (this->screenWidth > vectorMap[4]) {
-		throw("Screen width must be less than or equal to map width.");
+	//// Validate data
+	//if (this->screenWidth > stoi(v[6])) {
+	//	throw("Screen width must be less than or equal to map width.");
+	//}
+	//if (this->screenHeight > stoi(v[7])) {
+	//	throw("Screen height must be less than or equal to map height.");
+	//}
+
+	fstream fs;
+	fs.open(FilePath::getInstance()->sunny_map, ios::in);
+	string line;
+	SectionFileType section = SECTION_NONE;
+	vector<string> v;
+
+	while (!fs.eof()) {
+		getline(fs, line);
+
+		if (line == "" || line[0] == '#') continue;
+		if (line == "<Settings>") {
+			section = SECTION_SETTING;
+			continue;
+		}
+		else if (line == "</Settings>") return;
+
+		switch (section)
+		{
+		case SECTION_SETTING:
+			v = Tool::splitToVectorStringFrom(line, ',');
+
+			this->dt = stof(v[0]);
+			this->fps = stoi(v[1]);
+			this->screenWidth = stoi(v[2]);
+			this->screenHeight = stoi(v[3]);
+			this->screenMode = v[4] == "0" ? window : fullScreen;
+			this->defaultBackgroundColorViewController = new Color(Tool::getColorFromString(v[5]));
+
+			// Validate data
+			if (this->screenWidth > stoi(v[6])) {
+				throw("Screen width must be less than or equal to map width.");
+				return;
+			}
+			if (this->screenHeight > stoi(v[7])) {
+				throw("Screen height must be less than or equal to map height.");
+				return;
+			}
+			break;
+		default:
+			break;
+		}
 	}
-	if (this->screenHeight > vectorMap[5]) {
-		throw("Screen height must be less than or equal to map height.");
-	}
+
+	fs.close();
 }
 
 void Setting::load(string line, char seperator)
@@ -125,21 +170,21 @@ void Setting::load(string line, char seperator)
 	this->debugMode = settings[6] == "1" ? true : false;
 }
 
-void Setting::save()
-{
-	string settingsStr = "";
-	settingsStr += to_string(this->dt);
-	settingsStr += ',';
-	settingsStr += to_string(this->fps);
-	settingsStr += ",";
-	settingsStr += to_string(this->screenWidth);
-	settingsStr += ",";
-	settingsStr += to_string(this->screenHeight);
-	settingsStr += (',' + string((this->screenMode == window) ? "0" : "1")); // 0: window		1: fullscreen
-	settingsStr += (',' + Tool::getStringFromColor(this->defaultBackgroundColorViewController->getValue()));
-
-	FileManager::getInstance()->writeStringToTextFile(FilePath::getInstance()->setting, settingsStr);
-}
+//void Setting::save()
+//{
+//	string settingsStr = "";
+//	settingsStr += to_string(this->dt);
+//	settingsStr += ',';
+//	settingsStr += to_string(this->fps);
+//	settingsStr += ",";
+//	settingsStr += to_string(this->screenWidth);
+//	settingsStr += ",";
+//	settingsStr += to_string(this->screenHeight);
+//	settingsStr += (',' + string((this->screenMode == window) ? "0" : "1")); // 0: window		1: fullscreen
+//	settingsStr += (',' + Tool::getStringFromColor(this->defaultBackgroundColorViewController->getValue()));
+//
+//	FileManager::getInstance()->writeStringToTextFile(FilePath::getInstance()->setting, settingsStr);
+//}
 
 //void Setting::setRootImagesFolder(string _path)
 //{
