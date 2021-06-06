@@ -12,6 +12,9 @@ protected:
 	vector<vector<int>> matrixIds;
 	int tileSize, spaceBetweenTiles, tilesPerRow, tilesPerColumn;
 	int width, height;
+
+	RECT rect; // for draw a tile in matrix indexes
+	D3DXVECTOR3 position; // know where to draw a tile in matrix indexes
 public:
 	//Map(LPCWSTR _tileSetPath, string _matrixIdsPath, string _mapInfoPath, char _seperatorOfMatrixIds, D3DCOLOR _transcolor);
 	Map(LPCWSTR _tileSetPath, D3DCOLOR _transcolor);
@@ -34,9 +37,9 @@ public:
 	void setWidth(int _width);
 	void setHeight(int _height);
 
-	virtual void Update(float _dt);
-	virtual void Draw();
+	void Update(float _dt);
+	void Draw();
 
-	virtual void loadInfo(string line, char seperator);
-	virtual void loadIndexes(vector<string> data, char seperator);
+	void loadInfo(string line, char seperator);
+	void loadIndexes(vector<string> data, char seperator);
 };

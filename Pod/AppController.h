@@ -4,13 +4,15 @@
 #endif _AppController
 
 
-#include<d3dx9math.h>
-#include<string>
-#include<time.h>
-#include<stdio.h>
-#include<stdlib.h>
-#include"dxgraphics.h"
-#include"SunnyVC.h"
+#include <d3dx9math.h>
+#include <string>
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include "dxgraphics.h"
+#include "SunnyVC.h"
+#include "WorldVC.h"
+#include "SceneName.h"
 
 
 // Read keyboard command
@@ -21,7 +23,6 @@ class AppController {
 	// Name of program
 private:
 	ViewController* rootViewController;
-
 public:
 
 	// De Init

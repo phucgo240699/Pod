@@ -126,9 +126,14 @@ void Camera::follow(Component* _target, float _dt)
 void Camera::load(string line, char seperator)
 {
 	vector<int> v = Tool::splitToVectorIntegerFrom(line, seperator);
-
-	this->setLimitX(v[0]);
-	this->setLimitY(v[1]);
+	this->setX(v[0]);
+	this->setY(v[1]);
+	this->setVx(v[2]);
+	this->setVy(v[3]);
+	this->setWidth(v[4]);
+	this->setHeight(v[5]);
+	this->setLimitX(v[6]);
+	this->setLimitY(v[7]);
 }
 
 //void Camera::save()

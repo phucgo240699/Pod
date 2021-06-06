@@ -100,6 +100,18 @@
     <Filter Include="Source Files\Components\Map\ScoreBoard">
       <UniqueIdentifier>{c4e12c99-9fbe-4ee8-87d7-567bd7785df2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ViewController\WorldVC">
+      <UniqueIdentifier>{6722c219-c792-4452-aaf7-51628ed226a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ViewController\WorldVC">
+      <UniqueIdentifier>{fd33d7e7-11fc-47f1-8590-692083eb231c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ViewController\WorldVC\WorldMap">
+      <UniqueIdentifier>{3b44b4a7-d8e8-4a9b-af45-5f3cef9b438f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ViewController\WorldVC\WorldMap">
+      <UniqueIdentifier>{19244128-329f-4540-a8b1-66c7869fe6e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -167,6 +179,12 @@
     </ClCompile>
     <ClCompile Include="ScoreBoard.cpp">
       <Filter>Source Files\Components\Map\ScoreBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldVC.cpp">
+      <Filter>Source Files\ViewController\WorldVC</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldMap.cpp">
+      <Filter>Source Files\ViewController\WorldVC\WorldMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -247,6 +265,15 @@
     </ClInclude>
     <ClInclude Include="ScoreBoard.h">
       <Filter>Header Files\Components\Map\ScoreBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldVC.h">
+      <Filter>Header Files\ViewController\WorldVC</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldMap.h">
+      <Filter>Header Files\ViewController\WorldVC\WorldMap</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneName.h">
+      <Filter>Header Files\System\Enums</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -173,6 +173,8 @@
     <ClCompile Include="SunnyMap.cpp" />
     <ClCompile Include="SunnyVC.cpp" />
     <ClCompile Include="ViewController.cpp" />
+    <ClCompile Include="WorldMap.cpp" />
+    <ClCompile Include="WorldVC.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -194,6 +196,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="MarioState.h" />
+    <ClInclude Include="SceneName.h" />
     <ClInclude Include="ScoreBoard.h" />
     <ClInclude Include="SectionFile.h" />
     <ClInclude Include="Setting.h" />
@@ -201,6 +204,8 @@
     <ClInclude Include="SunnyVC.h" />
     <ClInclude Include="Tool.h" />
     <ClInclude Include="ViewController.h" />
+    <ClInclude Include="WorldMap.h" />
+    <ClInclude Include="WorldVC.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

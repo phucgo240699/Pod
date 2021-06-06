@@ -18,8 +18,18 @@ void AppController::setRootViewController(ViewController* _rootViewController)
 
 int AppController::Game_Init(HWND hwnd)
 {
-	rootViewController = new SunnyVC();
-	this->rootViewController->viewDidLoad();
+	switch (Setting::getInstance()->getSceneName())
+	{
+	case WorldScene:
+		this->setRootViewController(new WorldVC());
+		break;
+	case SunnyScene:
+		this->setRootViewController(new SunnyVC());
+		break;
+	default:
+		break;
+	}
+	this->getRootViewController()->viewDidLoad();
 	return 1;
 }
 

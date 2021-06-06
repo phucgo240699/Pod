@@ -13,6 +13,7 @@ public:
 
 	// Map
 	string sunny_map = "./Assets/TextFiles/sunny_map.txt";
+	string world_map = "./Assets/TextFiles/world_map.txt";
 	/*string map_indexes_man1 = "./Assets/TextFiles/Map/Man1/indexes.txt";
 	string map_info_man1 = "./Assets/TextFiles/Map/Man1/info.txt";
 	string ground_man1 = "./Assets/TextFiles/Map/Man1/ground.txt";*/

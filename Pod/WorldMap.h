@@ -1,10 +1,10 @@
 #pragma once
 #include "Map.h"
 
-class SunnyMap : public Map
+class WorldMap : public Map
 {
 public:
-	SunnyMap(LPCWSTR _tileSetPath, D3DCOLOR _transcolor);
+	WorldMap(LPCWSTR _tileSetPath, D3DCOLOR _transcolor);
 
 	void Update(float _dt);
 	void Draw();

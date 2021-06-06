@@ -123,14 +123,9 @@ void SunnyVC::viewWillRelease()
 {
 }
 
-SunnyVC::~SunnyVC()
-{
-}
-
 void SunnyVC::adaptData()
 {
 	Camera* camera = Camera::getInstance();
-	Setting* setting = Setting::getInstance();
 
 	fstream fs;
 	fs.open(FilePath::getInstance()->sunny_map, ios::in);

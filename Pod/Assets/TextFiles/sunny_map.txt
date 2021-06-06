@@ -4,8 +4,8 @@
 </Settings>
 
 <Camera>
-#(limitX,limitY)
-2816,464
+#(x,y,vX,vY,width,height,limitX,limitY)
+0,0,0,0,236,200,2816,464
 </Camera>
 
 <MapInfo>

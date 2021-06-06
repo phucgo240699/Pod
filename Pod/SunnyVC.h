@@ -30,7 +30,6 @@ public:
 	void viewWillRender();
 	void viewDidRender();
 	void viewWillRelease();
-	~SunnyVC();
 
 	void adaptData();
 };

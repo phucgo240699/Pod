@@ -52,6 +52,11 @@ bool Setting::getDebugMode()
 	return this->debugMode;
 }
 
+SceneName Setting::getSceneName()
+{
+	return this->sceneName;
+}
+
 void Setting::setScreenMode(ScreenMode _screenMode)
 {
 	this->screenMode = _screenMode;
@@ -82,6 +87,11 @@ void Setting::setDebugMode(bool _debugMode)
 	this->debugMode = _debugMode;
 }
 
+void Setting::setSceneName(SceneName _sceneName)
+{
+	this->sceneName = _sceneName;
+}
+
 void Setting::toggleDebugMode()
 {
 	this->debugMode = !(this->debugMode);
@@ -89,31 +99,22 @@ void Setting::toggleDebugMode()
 
 void Setting::load()
 {
-	//string settingsStr = FileManager::getInstance()->getStringFromTextFile(FilePath::getInstance()->setting);
-	//vector<string> v = Tool::splitToVectorStringFrom(settingsStr, ',');
-	//
-	//this->dt = stof(v[0]);
-	//this->fps = stoi(v[1]);
-	//this->screenWidth = stoi(v[2]);
-	//this->screenHeight = stoi(v[3]);
-	//this->screenMode = v[4] == "0" ? window : fullScreen;
-	//this->defaultBackgroundColorViewController = new Color(Tool::getColorFromString(v[5]));
+	string filePath = "";
 
-	//// Read data from map file
-	//string dataMap = FileManager::getInstance()->getStringFromTextFile(FilePath::getInstance()->map_info_man1);
-	//vector<int> vectorMap = Tool::splitToVectorIntegerFrom(dataMap, ',');
-
-
-	//// Validate data
-	//if (this->screenWidth > stoi(v[6])) {
-	//	throw("Screen width must be less than or equal to map width.");
-	//}
-	//if (this->screenHeight > stoi(v[7])) {
-	//	throw("Screen height must be less than or equal to map height.");
-	//}
+	switch (this->sceneName)
+	{
+	case WorldScene:
+		filePath = FilePath::getInstance()->world_map;
+		break;
+	case SunnyScene:
+		filePath = FilePath::getInstance()->sunny_map;
+		break;
+	default:
+		break;
+	}
 
 	fstream fs;
-	fs.open(FilePath::getInstance()->sunny_map, ios::in);
+	fs.open(filePath, ios::in);
 	string line;
 	SectionFileType section = SECTION_NONE;
 	vector<string> v;
@@ -133,22 +134,21 @@ void Setting::load()
 		case SECTION_SETTING:
 			v = Tool::splitToVectorStringFrom(line, ',');
 
-			this->dt = stof(v[0]);
-			this->fps = stoi(v[1]);
-			this->screenWidth = stoi(v[2]);
-			this->screenHeight = stoi(v[3]);
-			this->screenMode = v[4] == "0" ? window : fullScreen;
-			this->defaultBackgroundColorViewController = new Color(Tool::getColorFromString(v[5]));
-
-			// Validate data
-			if (this->screenWidth > stoi(v[6])) {
-				throw("Screen width must be less than or equal to map width.");
-				return;
+			this->setDt(stof(v[0]));
+			this->setFPS(stof(v[1]));
+			this->setScreenWidth(stoi(v[2]));
+			this->setScreenHeight(stoi(v[3]));
+			this->setScreenMode(v[4] == "0" ? window : fullScreen);
+			this->setDefaultBackgroundColorViewController(new Color(Tool::getColorFromString(v[5])));
+			this->setDebugMode(v[6] == "1" ? true : false);
+			
+			if (v[7] == "WorldScene") {
+				this->setSceneName(SceneName::WorldScene);
 			}
-			if (this->screenHeight > stoi(v[7])) {
-				throw("Screen height must be less than or equal to map height.");
-				return;
+			else if (v[7] == "SunnyScene") {
+				this->setSceneName(SceneName::SunnyScene);
 			}
+			
 			break;
 		default:
 			break;
@@ -158,17 +158,17 @@ void Setting::load()
 	fs.close();
 }
 
-void Setting::load(string line, char seperator)
-{
-	vector<string> settings = Tool::splitToVectorStringFrom(line, seperator);
-	this->dt = stof(settings[0]);
-	this->fps = stoi(settings[1]);
-	this->screenWidth = stoi(settings[2]);
-	this->screenHeight = stoi(settings[3]);
-	this->screenMode = settings[4] == "0" ? window : fullScreen;
-	this->defaultBackgroundColorViewController = new Color(Tool::getColorFromString(settings[5]));
-	this->debugMode = settings[6] == "1" ? true : false;
-}
+//void Setting::load(string line, char seperator)
+//{
+//	vector<string> settings = Tool::splitToVectorStringFrom(line, seperator);
+//	this->dt = stof(settings[0]);
+//	this->fps = stoi(settings[1]);
+//	this->screenWidth = stoi(settings[2]);
+//	this->screenHeight = stoi(settings[3]);
+//	this->screenMode = settings[4] == "0" ? window : fullScreen;
+//	this->defaultBackgroundColorViewController = new Color(Tool::getColorFromString(settings[5]));
+//	this->debugMode = settings[6] == "1" ? true : false;
+//}
 
 //void Setting::save()
 //{

@@ -3,6 +3,7 @@
 #include "FileManager.h"
 #include "string"
 #include "SectionFile.h"
+#include "SceneName.h"
 
 using namespace std;
 
@@ -25,6 +26,7 @@ private:
 	ScreenMode screenMode = window;
 	Color* defaultBackgroundColorViewController = new Color(black);
 	bool debugMode = false;
+	SceneName sceneName = WorldScene;
 
 public:
 	Setting(const Setting&) = delete; // 3. delete copy constructor
@@ -38,7 +40,7 @@ public:
 	ScreenMode getScreenMode();
 	Color* getDefaultBackgroundColorViewController();
 	bool getDebugMode();
-
+	SceneName getSceneName();
 
 	// Setter
 	void setDt(float _dt);
@@ -48,11 +50,12 @@ public:
 	void setScreenMode(ScreenMode _screenMode);
 	void setDefaultBackgroundColorViewController(Color* _color);
 	void setDebugMode(bool _debugMode);
+	void setSceneName(SceneName _sceneName);
 
 	void toggleDebugMode();
 
 	// Others
 	//void save();
 	void load();
-	void load(string line, char seperator);
+	//void load(string line, char seperator);
 };
