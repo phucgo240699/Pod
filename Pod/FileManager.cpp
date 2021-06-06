@@ -55,25 +55,25 @@ vector<vector<int>> FileManager::getIntegerMatrixFromTextFile(string fileName, c
     return matrix;
 }
 
-vector<RECT*>* FileManager::getFramesFrom(string fileName, char seperator)
+vector<RECT>* FileManager::getFramesFrom(string fileName, char seperator)
 {
     fstream f;
     f.open(this->rootFolderTextFile + fileName);
 
-    vector<RECT*>* frames = new vector<RECT*>();
+    vector<RECT>* frames = new vector<RECT>();
     string line;
     vector<int> frame;
-    RECT* r;
+    RECT r;
 
     while (!f.eof()) {
         getline(f, line);
         if (line == "" || line[0] == '#') continue;
         frame = Tool::splitToVectorIntegerFrom(line, seperator);
-        r = new RECT();
-        r->left = frame[0];
-        r->top = frame[1];
-        r->right = r->left + frame[2];
-        r->bottom = r->top + frame[3];
+        r = RECT();
+        r.left = frame[0];
+        r.top = frame[1];
+        r.right = r.left + frame[2];
+        r.bottom = r.top + frame[3];
         frames->push_back(r);
     }
 

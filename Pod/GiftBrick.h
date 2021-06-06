@@ -6,7 +6,7 @@ class GiftBrick
 {
 private:
 	Animation* animation;
-	vector<RECT*>* frames;
+	vector<RECT>* frames;
 public:
 	void loadAnimation(vector<string> data);
 	void loadFrames(vector<string> data);

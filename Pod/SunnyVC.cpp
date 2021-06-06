@@ -73,8 +73,8 @@ void SunnyVC::viewDidUpdate(float _dt)
 			else {
 				// if mario walk out of ground top surface, it will drop
 				if (mario->getState() == WALKING || mario->getState() == STANDING) {
-					if (mario->getBounds()->right < this->grounds->at(currentGroundIndex)->getX() || mario->getX() > this->grounds->at(currentGroundIndex)->getBounds()->right) { // this is check which ground that mario is standing on
-						if (mario->getBounds()->bottom <= this->grounds->at(currentGroundIndex)->getY()) {
+					if (mario->getBounds().right < this->grounds->at(currentGroundIndex)->getX() || mario->getX() > this->grounds->at(currentGroundIndex)->getBounds().right) { // this is check which ground that mario is standing on
+						if (mario->getBounds().bottom <= this->grounds->at(currentGroundIndex)->getY()) {
 							mario->setState(MarioState::DROPPING);
 						}
 					}

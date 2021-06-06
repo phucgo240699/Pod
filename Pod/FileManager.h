@@ -24,6 +24,6 @@ public:
 
 
 	// Animations
-	vector<RECT*>* getFramesFrom(string fileName, char seperator);
+	vector<RECT>* getFramesFrom(string fileName, char seperator);
 };
 

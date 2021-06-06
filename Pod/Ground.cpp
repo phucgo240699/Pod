@@ -21,36 +21,6 @@ Ground::~Ground()
 	delete& height;
 }
 
-float Ground::getWidth()
-{
-	return this->width;
-}
-
-float Ground::getHeight()
-{
-	return this->height;
-}
-
-RECT* Ground::getBounds()
-{
-	RECT* r = new RECT();
-	r->top = this->getY();
-	r->bottom = this->getY() + this->height;
-	r->left = this->getX();
-	r->right = this->getX() + this->width;
-	return r;
-}
-
-void Ground::setWidth(float _width)
-{
-	this->width = _width;
-}
-
-void Ground::setHeight(float _height)
-{
-	this->height = _height;
-}
-
 void Ground::load(string line, char seperator)
 {
 	vector<float> v = Tool::splitToVectorFloatFrom(line, seperator);

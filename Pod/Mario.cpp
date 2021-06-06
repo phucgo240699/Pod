@@ -55,17 +55,13 @@ MarioState Mario::getState()
 	return this->state;
 }
 
-RECT* Mario::getBounds()
+RECT Mario::getBounds()
 {
-	if (currentAnimation == NULL) {
-		return NULL;
-	}
-
-	RECT* r = new RECT();
-	r->top = this->getY();
-	r->bottom = r->top + this->currentAnimation->getCurrentFrameHeight();
-	r->left = this->getX();
-	r->right = r->left + this->currentAnimation->getCurrentFrameWidth();
+	RECT r = RECT();
+	r.top = this->getY();
+	r.bottom = r.top + this->currentAnimation->getCurrentFrameHeight();
+	r.left = this->getX();
+	r.right = r.left + this->currentAnimation->getCurrentFrameWidth();
 
 	return r;
 }
@@ -380,9 +376,9 @@ void Mario::loadInfo(string line, char seperator)
 void Mario::loadAnimations(vector<string> data, char seperatorRow, char seperatorCol)
 {
 	this->animations = new vector<Animation*>();
-	vector<RECT*>* frames = new vector<RECT*>();
+	vector<RECT>* frames = new vector<RECT>();
 	vector<int> frame;
-	RECT* r;
+	RECT r;
 	int id = 0;
 
 	for (int i = 0; i < data.size(); ++i) {
@@ -390,17 +386,16 @@ void Mario::loadAnimations(vector<string> data, char seperatorRow, char seperato
 			this->animations->push_back(new Animation(0, 0, stoi(data[i].substr(2,1)), frames));
 			++id;
 			frame.clear();
-			frames = new vector<RECT*>();
+			frames = new vector<RECT>();
 			continue;
 		};
 
 		frame = Tool::splitToVectorIntegerFrom(data[i], seperatorCol);
-		r = new RECT();
-		r->left = frame[0];
-		r->top = frame[1];
-		r->right = r->left + frame[2];
-		r->bottom = r->top + frame[3];
+		r = RECT();
+		r.left = frame[0];
+		r.top = frame[1];
+		r.right = r.left + frame[2];
+		r.bottom = r.top + frame[3];
 		frames->push_back(r);
 	}
-	int a = 0;
 }

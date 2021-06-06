@@ -6,10 +6,10 @@ Animation::Animation(int _id, int _indexFrame, int _animDelay)
 	this->currentIndexFrame = _indexFrame;
 	this->animDelay = _animDelay;
 	this->animCount = 0;
-	this->frames = new vector<RECT*>();
+	this->frames = new vector<RECT>();
 }
 
-Animation::Animation(int _id, int _indexFrame, int _animDelay, vector<RECT*>* _frames)
+Animation::Animation(int _id, int _indexFrame, int _animDelay, vector<RECT>* _frames)
 {
 	this->id = _id;
 	this->currentIndexFrame = _indexFrame;
@@ -30,7 +30,7 @@ Animation::Animation(int _id, int _indexFrame, int _animDelay, string filePath)
 Animation::~Animation()
 {
 	for (int i = 0; i < this->frames->size(); ++i) {
-		delete (this->frames->at(i));
+		delete &(this->frames->at(i));
 	}
 
 	delete this->frames;
@@ -56,7 +56,7 @@ int Animation::getAnimCount()
 	return this->animCount;
 }
 
-RECT* Animation::getCurrentFrame()
+RECT Animation::getCurrentFrame()
 {
 	return this->frames->at(currentIndexFrame);
 }
@@ -68,12 +68,12 @@ int Animation::getTotalFrames()
 
 float Animation::getCurrentFrameWidth()
 {
-	return this->getCurrentFrame()->right - this->getCurrentFrame()->left;
+	return this->getCurrentFrame().right - this->getCurrentFrame().left;
 }
 
 float Animation::getCurrentFrameHeight()
 {
-	return this->getCurrentFrame()->bottom - this->getCurrentFrame()->top;
+	return this->getCurrentFrame().bottom - this->getCurrentFrame().top;
 }
 
 void Animation::setCurrentIndexFrame(int _indexFrame)

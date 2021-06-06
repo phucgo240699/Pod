@@ -8,12 +8,12 @@ class Animation
 {
 private:
 	int id, currentIndexFrame, animDelay, animCount;
-	vector<RECT*>* frames;
+	vector<RECT>* frames;
 
 public:
 	// Init
 	Animation(int _id, int _indexFrame, int _animDelay);
-	Animation(int _id, int _indexFrame, int _animDelay, vector<RECT*>* _frames);
+	Animation(int _id, int _indexFrame, int _animDelay, vector<RECT>* _frames);
 	Animation(int _id, int _indexFrame, int _animDelay, string filePath);
 
 	// De Init
@@ -24,7 +24,7 @@ public:
 	int getCurrentIndexFrame();
 	int getAnimDelay();
 	int getAnimCount();
-	RECT* getCurrentFrame();
+	RECT getCurrentFrame();
 	int getTotalFrames();
 	float getCurrentFrameWidth();
 	float getCurrentFrameHeight();

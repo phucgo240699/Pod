@@ -55,7 +55,7 @@ public:
 
 	virtual void Update(float _dt);
 	virtual void Draw();
-	virtual RECT* getBounds();
+	virtual RECT getBounds();
 	virtual float getWidth();
 	virtual float getHeight();
 	virtual void setWidth(float _width);
@@ -68,9 +68,9 @@ public:
 
 
 	// Collision
-	bool isColliding(RECT* other);
-	bool isColliding(RECT* object, RECT* other);
-	RECT* getSweptBroadphaseRect();
+	bool isColliding(RECT other);
+	bool isColliding(RECT object, RECT other);
+	RECT getSweptBroadphaseRect();
 	tuple<bool, float, vector<CollisionEdge>> sweptAABB(Component* other, float _dt);
 
 };
