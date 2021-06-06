@@ -142,13 +142,6 @@ void Setting::load()
 			this->setDefaultBackgroundColorViewController(new Color(Tool::getColorFromString(v[5])));
 			this->setDebugMode(v[6] == "1" ? true : false);
 			
-			if (v[7] == "WorldScene") {
-				this->setSceneName(SceneName::WorldScene);
-			}
-			else if (v[7] == "SunnyScene") {
-				this->setSceneName(SceneName::SunnyScene);
-			}
-			
 			break;
 		default:
 			break;

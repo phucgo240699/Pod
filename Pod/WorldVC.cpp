@@ -3,12 +3,20 @@
 void WorldVC::viewDidLoad()
 {
 	map = new WorldMap(ImagePath::getInstance()->world_map, D3DCOLOR_XRGB(255, 0, 255));
+	grasses = new Grass();
+
 	this->adaptData();
 }
 
 void WorldVC::viewWillUpdate(float _dt)
 {
-	map->Update(_dt);
+	if (map != NULL) {
+		map->Update(_dt);
+	}
+
+	if (grasses != NULL) {
+		grasses->Update(_dt);
+	}
 }
 
 void WorldVC::viewDidRender()
@@ -21,6 +29,10 @@ void WorldVC::viewDidRender()
 
 		if (map != NULL) {
 			map->Draw();
+		}
+
+		if (grasses != NULL) {
+			grasses->Draw(map->getTexture());
 		}
 
 		spriteHandler->End();
@@ -55,7 +67,6 @@ void WorldVC::adaptData()
 		}
 		else if (line == "</Camera>") {
 			section = SECTION_NONE;
-			continue;
 		}
 		else if (line == "<MapInfo>") {
 			section = SECTION_MAP_INFO;
@@ -63,7 +74,6 @@ void WorldVC::adaptData()
 		}
 		else if (line == "</MapInfo>") {
 			section = SECTION_NONE;
-			continue;
 		}
 		else if (line == "<MapIndexes>") {
 			section = SECTION_MAP_INDEXES;
@@ -73,7 +83,24 @@ void WorldVC::adaptData()
 			map->loadIndexes(data, ' ');
 			data.clear();
 			section = SECTION_NONE;
+		}
+		else if (line == "<GrassAnimation>") {
+			section = SECTION_GRASS_ANIMATION;
 			continue;
+		}
+		else if (line == "</GrassAnimation>") {
+			grasses->loadAnimation(data, '>', ',');
+			data.clear();
+			section = SECTION_NONE;
+		}
+		else if (line == "<GrassFrames>") {
+			section = SECTION_GRASS_FRAMES;
+			continue;
+		}
+		else if (line == "</GrassFrames>") {
+			grasses->loadFrames(data, ',');
+			data.clear();
+			section = SECTION_NONE;
 		}
 
 		switch (section)
@@ -87,6 +114,12 @@ void WorldVC::adaptData()
 			map->loadInfo(line, ',');
 			break;
 		case SECTION_MAP_INDEXES:
+			data.push_back(line);
+			break;
+		case SECTION_GRASS_ANIMATION:
+			data.push_back(line);
+			break;
+		case SECTION_GRASS_FRAMES:
 			data.push_back(line);
 			break;
 		default:

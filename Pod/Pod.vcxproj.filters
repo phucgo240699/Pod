@@ -112,6 +112,12 @@
     <Filter Include="Source Files\ViewController\WorldVC\WorldMap">
       <UniqueIdentifier>{19244128-329f-4540-a8b1-66c7869fe6e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\Map\Grass">
+      <UniqueIdentifier>{4994845a-d2b7-4543-93fa-5929d9e75666}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Map\Grass">
+      <UniqueIdentifier>{07bdd801-a343-447e-bfa4-97a0972b070b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -185,6 +191,9 @@
     </ClCompile>
     <ClCompile Include="WorldMap.cpp">
       <Filter>Source Files\ViewController\WorldVC\WorldMap</Filter>
+    </ClCompile>
+    <ClCompile Include="Grass.cpp">
+      <Filter>Source Files\Components\Map\Grass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -274,6 +283,9 @@
     </ClInclude>
     <ClInclude Include="SceneName.h">
       <Filter>Header Files\System\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Grass.h">
+      <Filter>Header Files\Components\Map\Grass</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

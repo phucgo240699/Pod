@@ -3,6 +3,7 @@
 #include <vector>
 #include <sstream>
 #include <d3d9.h>
+#include <d3dx9.h>
 #include "Color.h"
 #include "MarioState.h"
 
@@ -103,6 +104,44 @@ public:
 		}
 
 		return result;
+	}
+
+	static RECT getRECT(string line, char seperator) {
+		RECT r = RECT();
+		vector<int> v = splitToVectorIntegerFrom(line, seperator);
+
+		r.left = v[0];
+		r.top = v[1];
+		r.right = r.left + v[2];
+		r.bottom = r.top + v[3];
+
+		return r;
+	}
+
+	static vector<RECT>* getRECTs(vector<string> data, char seperator) {
+		vector<RECT>* RECTs = new vector<RECT>();
+
+		for (int i = 0; i < data.size(); ++i) {
+			RECTs->push_back(getRECT(data[i], seperator));
+		}
+
+		return RECTs;
+	}
+
+	static D3DXVECTOR3 getPositionFrom(string data, char seperator) {
+		vector<int> v = splitToVectorIntegerFrom(data, seperator);
+		D3DXVECTOR3 position = D3DXVECTOR3(v[0], v[1], 0);
+		return position;
+	}
+
+	static vector<D3DXVECTOR3> getPositionsFrom(vector<string> data, char seperator) {
+		vector<D3DXVECTOR3> positions = vector<D3DXVECTOR3>();
+
+		for (int i = 0; i < data.size(); ++i) {
+			positions.push_back(getPositionFrom(data[i], seperator));
+		}
+
+		return positions;
 	}
 
 	static EnumColor getColorFromString(string str) {
