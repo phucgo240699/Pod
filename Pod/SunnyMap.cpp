@@ -2,7 +2,6 @@
 
 SunnyMap::SunnyMap(LPCWSTR _tileSetPath, D3DCOLOR _transcolor) : Map(_tileSetPath, _transcolor)
 {
-	Map::Map(_tileSetPath, _transcolor);
 }
 
 void SunnyMap::Update(float _dt)

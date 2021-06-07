@@ -105,3 +105,26 @@
 # row 9
 208,144,16,16
 </GrassFrames>
+
+<WMarioInfo>
+#(x, y, vX, vY, limitX, limitY, tileSize)
+16,32,0,0,224,144,16
+</WMarioInfo>
+
+<WMarioAnimation>
+136,51,16,16
+153,51,16,16
+> 2
+</WMarioAnimation>
+
+<WMarioMovingMatrix>
+X X X 1 2 2 2 2 3 3 3 3 X X
+X X X 1 X X X X X X X 4 X X
+X 1 1 1 X X X X X 4 4 4 X X
+X X X X X X X X X X X X X X
+X X X X X X X X X X X X X X
+X X X X X X X X X X X X X X
+X X X X X X X X X X X X X X
+X X X X X X X X X X X X X X
+X X X X X X X X X X X X X X
+</WMarioMovingMatrix>

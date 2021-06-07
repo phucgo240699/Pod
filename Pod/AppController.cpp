@@ -21,7 +21,7 @@ int AppController::Game_Init(HWND hwnd)
 	switch (Setting::getInstance()->getSceneName())
 	{
 	case WorldScene:
-		this->setRootViewController(new WorldVC());
+		this->setRootViewController(worldVC);
 		break;
 	case SunnyScene:
 		this->setRootViewController(new SunnyVC());

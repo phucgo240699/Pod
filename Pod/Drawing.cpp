@@ -41,9 +41,14 @@ void Drawing::draw(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXVECTOR3* _cent
 	spriteHandler->Draw(texture, &_srcRect, _center, _position, _color);	
 }
 
-void Drawing::draw(LPDIRECT3DTEXTURE9 texture, D3DXVECTOR3* _center, D3DXVECTOR3* _position, D3DCOLOR _color)
+void Drawing::draw(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXVECTOR3* _position, D3DCOLOR _color)
 {
-	spriteHandler->Draw(texture, NULL, _center, _position, _color);
+	spriteHandler->Draw(texture, &_srcRect, NULL, _position, _color);
+}
+
+void Drawing::draw(LPDIRECT3DTEXTURE9 texture, D3DXVECTOR3* _position, D3DCOLOR _color)
+{
+	spriteHandler->Draw(texture, NULL, NULL, _position, _color);
 }
 
 void Drawing::drawDebugBox(RECT _srcRect, D3DXVECTOR3* _center, D3DXVECTOR3* _position, D3DCOLOR _color)

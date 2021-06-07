@@ -1,9 +1,20 @@
 #include "WorldVC.h"
 
+void WorldVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
+{
+	wMario->onKeyDown(_keyTypes);
+}
+
+void WorldVC::viewReceiveKeyUp()
+{
+	wMario->onKeyUp();
+}
+
 void WorldVC::viewDidLoad()
 {
 	map = new WorldMap(ImagePath::getInstance()->world_map, D3DCOLOR_XRGB(255, 0, 255));
 	grasses = new Grass();
+	wMario = new WMario(0, 0, 0, 0, 0, 0);
 
 	this->adaptData();
 }
@@ -16,6 +27,10 @@ void WorldVC::viewWillUpdate(float _dt)
 
 	if (grasses != NULL) {
 		grasses->Update(_dt);
+	}
+
+	if (wMario != NULL) {
+		wMario->Update(_dt);
 	}
 }
 
@@ -33,6 +48,10 @@ void WorldVC::viewDidRender()
 
 		if (grasses != NULL) {
 			grasses->Draw(map->getTexture());
+		}
+
+		if (wMario != NULL) {
+			wMario->Draw(map->getTexture());
 		}
 
 		spriteHandler->End();
@@ -102,6 +121,31 @@ void WorldVC::adaptData()
 			data.clear();
 			section = SECTION_NONE;
 		}
+		else if (line == "<WMarioInfo>") {
+			section = SECTION_WMARIO_INFO;
+			continue;
+		}
+		else if (line == "</WMarioInfo>") {
+			section = SECTION_NONE;
+		}
+		else if (line == "<WMarioAnimation>") {
+			section = SECTION_WMARIO_ANIMATION;
+			continue;
+		}
+		else if (line == "</WMarioAnimation>") {
+			wMario->loadAnimations(data, '>', ',');
+			data.clear();
+			section = SECTION_NONE;
+		}
+		else if (line == "<WMarioMovingMatrix>") {
+			section = SECTION_WMARIO_MOVING_MATRIX;
+			continue;
+		}
+		else if (line == "</WMarioMovingMatrix>") {
+			wMario->loadMovingMatrix(data, ' ');
+			data.clear();
+			section = SECTION_NONE;
+		}
 
 		switch (section)
 		{
@@ -120,6 +164,15 @@ void WorldVC::adaptData()
 			data.push_back(line);
 			break;
 		case SECTION_GRASS_FRAMES:
+			data.push_back(line);
+			break;
+		case SECTION_WMARIO_INFO:
+			wMario->loadInfo(line, ',');
+			break;
+		case SECTION_WMARIO_ANIMATION:
+			data.push_back(line);
+			break;
+		case SECTION_WMARIO_MOVING_MATRIX:
 			data.push_back(line);
 			break;
 		default:

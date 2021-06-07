@@ -1,0 +1,4 @@
+#pragma once
+enum WMarioState {
+	STAND, MOVING_UP, MOVING_DOWN, MOVING_LEFT, MOVING_RIGHT,
+};

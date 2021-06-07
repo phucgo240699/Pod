@@ -96,11 +96,33 @@ public:
 		return vector;
 	}
 
+	static vector<char> splitToVectorCharFrom(string s, char seperator) {
+		vector<char> vector;
+		istringstream stm(s);
+
+		for (int i = 0; i < s.length(); ++i) {
+			if (s[i] == seperator) continue;
+			vector.push_back(s[i]);
+		}
+
+		return vector;
+	}
+
 	static vector<vector<int>> getMatrixFrom(vector<string> data, char seperator) {
-		vector<vector<int>> result;
+		vector<vector<int>> result = vector<vector<int>>();
 
 		for (int i = 0; i < data.size(); ++i) {
 			result.push_back(splitToVectorIntegerFrom(data[i], seperator));
+		}
+
+		return result;
+	}
+
+	static vector<vector<char>> getCharMatrixFrom(vector<string> data, char seperator) {
+		vector<vector<char>> result = vector<vector<char>>();
+
+		for (int i = 0; i < data.size(); ++i) {
+			result.push_back(splitToVectorCharFrom(data[i], seperator));
 		}
 
 		return result;

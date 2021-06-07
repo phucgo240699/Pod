@@ -118,6 +118,12 @@
     <Filter Include="Source Files\Components\Map\Grass">
       <UniqueIdentifier>{07bdd801-a343-447e-bfa4-97a0972b070b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Components\WMario">
+      <UniqueIdentifier>{5d89be50-87b7-457c-837a-7f352d1bf463}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\WMario">
+      <UniqueIdentifier>{6ebfeda4-25c8-42a2-af0f-da03c4c6a262}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -194,6 +200,9 @@
     </ClCompile>
     <ClCompile Include="Grass.cpp">
       <Filter>Source Files\Components\Map\Grass</Filter>
+    </ClCompile>
+    <ClCompile Include="WMario.cpp">
+      <Filter>Source Files\Components\WMario</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -286,6 +295,12 @@
     </ClInclude>
     <ClInclude Include="Grass.h">
       <Filter>Header Files\Components\Map\Grass</Filter>
+    </ClInclude>
+    <ClInclude Include="WMario.h">
+      <Filter>Header Files\Components\WMario</Filter>
+    </ClInclude>
+    <ClInclude Include="WMarioState.h">
+      <Filter>Header Files\Components\WMario</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

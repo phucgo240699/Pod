@@ -17,5 +17,5 @@ void ScoreBoard::Update(float _dt)
 
 void ScoreBoard::Draw()
 {
-	Drawing::getInstance()->draw(this->texture, NULL, this->position);
+	Drawing::getInstance()->draw(this->texture, this->position);
 }
