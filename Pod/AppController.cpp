@@ -68,6 +68,15 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		hasKeyDown = true;
 	}
 
+	// Enter
+	if (KEY_DOWN(VK_RETURN) == 1) {
+		keyDowns.push_back(KeyType::enter);
+		hasKeyDown = true;
+	}
+	else if (KEY_DOWN(VK_RETURN) != 1) {
+		keyUps.push_back(KeyType::enter);
+	}
+
 	// Up
 	if (KEY_DOWN(VK_UP) == 1) {
 		keyDowns.push_back(KeyType::up);

@@ -12,7 +12,6 @@ private:
 	WMario* wMario;
 public:
 	void viewReceiveKeyDown(vector<KeyType> _keyTypes);
-	void viewReceiveKeyUp();
 	void viewDidLoad();
 	void viewWillUpdate(float _dt);
 	void viewDidRender();

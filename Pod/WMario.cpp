@@ -24,11 +24,18 @@ WMarioState WMario::getState()
 	return this->state;
 }
 
+char WMario::getCurrentSceneId()
+{
+	return this->movingMatrix[r][c];
+}
+
 void WMario::setState(WMarioState _state)
 {
 	switch (_state)
 	{
 	case STAND:
+		this->setVx(0);
+		this->setVy(0);
 		break;
 	case MOVING_UP:
 		this->setVy(-2);
@@ -56,7 +63,9 @@ void WMario::Update(float _dt)
 		c = (this->getX() + (this->getVx() * _dt)) / tileSize;
 
 		if (this->getState() == MOVING_UP) {
-			if (this->getY() + (this->getVy() * _dt) >= 0 && this->movingMatrix[r][c] != 'X') {
+			if (this->getY() + (this->getVy() * _dt) >= 0
+			&& this->movingMatrix[r][c] != 'X'
+			&& this->movingMatrix[r][c] != limitScenceId) {
 				this->plusY(round(this->getVy() * _dt));
 			}
 			else {
@@ -65,7 +74,9 @@ void WMario::Update(float _dt)
 			}
 		}
 		else if (this->getState() == MOVING_DOWN) {
-			if (this->getY() + (this->getVy() * _dt) + this->animation->getCurrentFrameHeight() <= this->movingMatrix.size() * tileSize && this->movingMatrix[r + 1][c] != 'X') {
+			if (this->getY() + (this->getVy() * _dt) + this->animation->getCurrentFrameHeight() <= this->movingMatrix.size() * tileSize
+			&& this->movingMatrix[r + 1][c] != 'X'
+			&& this->movingMatrix[r + 1][c] != limitScenceId) {
 				this->plusY(round(this->getVy() * _dt));
 			}
 			else {
@@ -74,7 +85,9 @@ void WMario::Update(float _dt)
 			}
 		}
 		else if (this->getState() == MOVING_LEFT) {
-			if (this->getX() + (this->getVx() * _dt) >= 0 && this->movingMatrix[r][c] != 'X') {
+			if (this->getX() + (this->getVx() * _dt) >= 0
+			&& this->movingMatrix[r][c] != 'X'
+			&& this->movingMatrix[r][c] != limitScenceId) {
 				this->plusX(round(this->getVx() * _dt));
 			}
 			else {
@@ -83,7 +96,9 @@ void WMario::Update(float _dt)
 			}
 		}
 		else if (this->getState() == MOVING_RIGHT) {
-			if (this->getX() + (this->getVx() * _dt) + this->animation->getCurrentFrameWidth() <= this->movingMatrix[r].size() * tileSize && this->movingMatrix[r][c + 1] != 'X') {
+			if (this->getX() + (this->getVx() * _dt) + this->animation->getCurrentFrameWidth() <= this->movingMatrix[r].size() * tileSize
+			&& this->movingMatrix[r][c + 1] != 'X'
+			&& this->movingMatrix[r][c] != limitScenceId) {
 				this->plusX(round(this->getVx() * _dt));
 			}
 			else {
@@ -114,7 +129,7 @@ void WMario::onKeyDown(vector<KeyType> _keyTypes)
 			c = this->getX() / tileSize;
 			if (_keyTypes[i] == KeyType::up) {
 				if (r > 0 && this->movingMatrix[r - 1][c] != 'X') {
-					if (this->movingMatrix[r-1][c] <= limitScenceId) {
+					if (this->movingMatrix[r - 1][c] <= limitSceneMoving) {
 						this->setState(WMarioState::MOVING_UP);
 					}
 				}
@@ -124,33 +139,28 @@ void WMario::onKeyDown(vector<KeyType> _keyTypes)
 				int q2 = this->movingMatrix.size();
 				if (q1 < q2 && this->movingMatrix[r + 1][c] != 'X') {
 					int qwe = int(this->movingMatrix[r + 1][c]);
-					int asd = int(limitScenceId);
-;					if (this->movingMatrix[r+1][c] <= limitScenceId) {
+					int asd = int(limitSceneMoving);
+;					if (this->movingMatrix[r+1][c] <= limitSceneMoving) {
 						this->setState(WMarioState::MOVING_DOWN);
 					}
 				}
 			}
 			else if (_keyTypes[i] == KeyType::left) {
 				if (c > 0 && this->movingMatrix[r][c - 1] != 'X') {
-					if (this->movingMatrix[r][c - 1] <= limitScenceId) {
+					if (this->movingMatrix[r][c - 1] <= limitSceneMoving) {
 						this->setState(WMarioState::MOVING_LEFT);
 					}
 				}
 			}
 			else if (_keyTypes[i] == KeyType::right) {
 				if (c - 1 < this->movingMatrix[r].size() && this->movingMatrix[r][c + 1] != 'X') {
-					if (this->movingMatrix[r][c + 1] <= limitScenceId) {
+					if (this->movingMatrix[r][c + 1] <= limitSceneMoving) {
 						this->setState(WMarioState::MOVING_RIGHT);
 					}
 				}
 			}
 		}
 	}
-}
-
-void WMario::onKeyUp()
-{
-	
 }
 
 void WMario::loadInfo(string line, char seperator)

@@ -2,12 +2,13 @@
 
 void WorldVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 {
+	for (int i = 0; i < _keyTypes.size(); ++i) {
+		if (_keyTypes[i] == enter) {
+			char asd = wMario->getCurrentSceneId();
+			return;
+		}
+	}
 	wMario->onKeyDown(_keyTypes);
-}
-
-void WorldVC::viewReceiveKeyUp()
-{
-	wMario->onKeyUp();
 }
 
 void WorldVC::viewDidLoad()
