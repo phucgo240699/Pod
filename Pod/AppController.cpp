@@ -11,30 +11,36 @@ ViewController* AppController::getRootViewController()
 	return this->rootViewController;
 }
 
-void AppController::setRootViewController(ViewController* _rootViewController)
-{
-	this->rootViewController = _rootViewController;
-}
-
-int AppController::Game_Init(HWND hwnd)
+void AppController::setRootViewController(SceneName _sceneName)
 {
 	switch (Setting::getInstance()->getSceneName())
 	{
 	case WorldScene:
-		this->setRootViewController(worldVC);
+		this->rootViewController = worldVC;
 		break;
 	case SunnyScene:
-		this->setRootViewController(new SunnyVC());
+		this->rootViewController = new SunnyVC();
+		this->rootViewController->viewDidLoad();
 		break;
 	default:
 		break;
 	}
+}
+
+int AppController::Game_Init(HWND hwnd)
+{
+	this->setRootViewController(Setting::getInstance()->getSceneName());
 	this->getRootViewController()->viewDidLoad();
 	return 1;
 }
 
 void AppController::Game_Run(HWND hwnd, float _dt)
 {
+	if (Setting::getInstance()->isTransfering == true) {
+		Setting::getInstance()->isTransfering = false;
+		this->setRootViewController(Setting::getInstance()->getSceneName());
+	}
+
 	this->rootViewController->viewWillUpdate(_dt);
 	this->rootViewController->viewDidUpdate(_dt);
 	this->rootViewController->viewWillRender();

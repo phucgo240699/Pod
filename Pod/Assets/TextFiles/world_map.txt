@@ -1,11 +1,11 @@
 <Settings>
 #(dt,fps,width,height,isFullScreen,backBufferColor,debugMode)
-1.0,30,224,144,0,black,0
+1.0,30,224,176,0,black,0
 </Settings>
 
 <Camera>
 #(x,y,vX,vY,width,height,limitX,limitY)
-0,0,0,0,224,144,224,144
+0,0,0,0,224,176,224,144
 </Camera>
 
 <MapInfo>
@@ -103,7 +103,7 @@
 208,112,16,16
 
 # row 9
-208,144,16,16
+208,128,16,16
 </GrassFrames>
 
 <WMarioInfo>
@@ -128,3 +128,7 @@ X X X X X X X X X X X X X X
 X X X X X X X X X X X X X X
 X X X X X X X X X X X X X X
 </WMarioMovingMatrix>
+
+<ScoreBoard>
+0,144
+</ScoreBoard>

@@ -1,11 +1,11 @@
 <Settings>
 #(dt,fps,width,height,isFullScreen,backBufferColor,debugMode)
-1.0,60,236,200,0,black,2816,432
+1.0,60,224,176,0,black,2816,432
 </Settings>
 
 <Camera>
 #(x,y,vX,vY,width,height,limitX,limitY)
-0,0,0,0,236,200,2816,464
+0,0,0,0,224,176,2816,464
 </Camera>
 
 <MapInfo>
@@ -116,5 +116,5 @@
 </GiftBrickAnimation>
 
 <ScoreBoard>
-0,168
+0,144
 </ScoreBoard>

@@ -253,6 +253,7 @@ void SunnyVC::adaptData()
 			break;
 		case SECTION_SCORE_BOARD:
 			scoreBoard->loadPosition(line, ',');
+			break;
 		default:
 			break;
 		}

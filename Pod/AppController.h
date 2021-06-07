@@ -33,7 +33,7 @@ public:
 	ViewController* getRootViewController();
 
 	// Setter
-	void setRootViewController(ViewController* _rootViewController);
+	void setRootViewController(SceneName _sceneName);
 
 	// Prototypes function
 	int Game_Init(HWND hwnd);

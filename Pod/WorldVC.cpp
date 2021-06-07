@@ -4,8 +4,11 @@ void WorldVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 {
 	for (int i = 0; i < _keyTypes.size(); ++i) {
 		if (_keyTypes[i] == enter) {
-			char asd = wMario->getCurrentSceneId();
-			return;
+			if (wMario->getCurrentSceneId() == 'A') {
+				Setting::getInstance()->isTransfering = true;
+				Setting::getInstance()->setSceneName(SceneName::SunnyScene);
+				return;
+			}
 		}
 	}
 	wMario->onKeyDown(_keyTypes);
@@ -16,6 +19,7 @@ void WorldVC::viewDidLoad()
 	map = new WorldMap(ImagePath::getInstance()->world_map, D3DCOLOR_XRGB(255, 0, 255));
 	grasses = new Grass();
 	wMario = new WMario(0, 0, 0, 0, 0, 0);
+	scoreBoard = new ScoreBoard(ImagePath::getInstance()->board, D3DCOLOR_XRGB(255, 0, 255));
 
 	this->adaptData();
 }
@@ -28,6 +32,10 @@ void WorldVC::viewWillUpdate(float _dt)
 
 	if (grasses != NULL) {
 		grasses->Update(_dt);
+	}
+
+	if (scoreBoard != NULL) {
+		scoreBoard->Update(_dt);
 	}
 
 	if (wMario != NULL) {
@@ -49,6 +57,10 @@ void WorldVC::viewDidRender()
 
 		if (grasses != NULL) {
 			grasses->Draw(map->getTexture());
+		}
+
+		if (scoreBoard != NULL) {
+			scoreBoard->Draw();
 		}
 
 		if (wMario != NULL) {
@@ -147,6 +159,14 @@ void WorldVC::adaptData()
 			data.clear();
 			section = SECTION_NONE;
 		}
+		else if (line == "<ScoreBoard>") {
+			section = SECTION_SCORE_BOARD;
+			continue;
+		}
+		else if (line == "</ScoreBoard>") {
+			section = SECTION_NONE;
+		}
+
 
 		switch (section)
 		{
@@ -175,6 +195,9 @@ void WorldVC::adaptData()
 			break;
 		case SECTION_WMARIO_MOVING_MATRIX:
 			data.push_back(line);
+			break;
+		case SECTION_SCORE_BOARD:
+			scoreBoard->loadPosition(line, ',');
 			break;
 		default:
 			break;

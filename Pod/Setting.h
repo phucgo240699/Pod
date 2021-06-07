@@ -28,9 +28,12 @@ private:
 	bool debugMode = false;
 	SceneName sceneName = WorldScene;
 
+
 public:
 	Setting(const Setting&) = delete; // 3. delete copy constructor
 	static Setting* getInstance();	  // 4. public function for client code usage
+
+	bool isTransfering = false;
 
 	// Getter
 	float getDt();
