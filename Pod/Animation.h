@@ -16,9 +16,6 @@ public:
 	Animation(int _id, int _indexFrame, int _animDelay, vector<RECT>* _frames);
 	Animation(int _id, int _indexFrame, int _animDelay, string filePath);
 
-	// De Init
-	~Animation();
-
 	// Getter
 	int getId();
 	int getCurrentIndexFrame();

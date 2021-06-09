@@ -13,12 +13,6 @@ Map::Map(LPCWSTR _tileSetPath, D3DCOLOR _transcolor)
 	this->position = D3DXVECTOR3(0, 0, 0);
 }
 
-Map::~Map()
-{
-	delete& texture;
-	delete& matrixIds;
-}
-
 LPDIRECT3DTEXTURE9 Map::getTexture()
 {
 	return this->texture;

@@ -18,7 +18,6 @@ protected:
 public:
 	//Map(LPCWSTR _tileSetPath, string _matrixIdsPath, string _mapInfoPath, char _seperatorOfMatrixIds, D3DCOLOR _transcolor);
 	Map(LPCWSTR _tileSetPath, D3DCOLOR _transcolor);
-	~Map();
 
 	// Getter
 	LPDIRECT3DTEXTURE9 getTexture();

@@ -23,9 +23,6 @@ public:
 	Component(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY);
 	Component(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY);
 
-	// De Init
-	//~Component();
-
 	// Getter
 	D3DXVECTOR3* getPosition();
 	float getX();

@@ -27,15 +27,6 @@ Animation::Animation(int _id, int _indexFrame, int _animDelay, string filePath)
 	this->frames = FileManager::getInstance()->getFramesFrom(filePath, ',');
 }
 
-Animation::~Animation()
-{
-	for (int i = 0; i < this->frames->size(); ++i) {
-		delete &(this->frames->at(i));
-	}
-
-	delete this->frames;
-}
-
 int Animation::getId()
 {
 	return this->id;

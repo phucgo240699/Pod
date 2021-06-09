@@ -27,19 +27,6 @@ Mario::Mario(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float 
 	this->setState(_state);*/
 }
 
-Mario::~Mario()
-{
-	MainCharacter::~MainCharacter();
-	delete& texture;
-	delete& state;
-	delete& isFlip;
-
-	for (int i = 0; i < this->animations->size(); ++i) {
-		delete this->animations->at(i);
-	}
-	delete currentAnimation;
-}
-
 Animation* Mario::getCurrentAnimation()
 {
 	return this->currentAnimation;

@@ -130,5 +130,5 @@ X X X X X X X X X X X X X X
 </WMarioMovingMatrix>
 
 <ScoreBoard>
-0,144
+0,144 
 </ScoreBoard>
