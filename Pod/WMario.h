@@ -7,9 +7,10 @@ class WMario : public MainCharacter
 private:
 	Animation* animation;
 	vector<vector<char>> movingMatrix;
-	WMarioState state = STAND;
+	WMarioState state = WMARIO_STANDING;
 
-	int tileSize, r, c;
+	int tileSize, row, col;
+	int startRowMove, startColMove;
 	bool isMoving = false;
 	char limitScenceId = 'A';
 	char limitSceneMoving = '1';
@@ -35,5 +36,11 @@ public:
 	void loadInfo(string line, char seperator);
 	void loadAnimations(vector<string> data, char seperatorRow, char seperatorCol);
 	void loadMovingMatrix(vector<string> data, char seperator);
+
+	// Check methods
+	bool canMoveRight();
+	bool canMoveLeft();
+	bool canMoveTop();
+	bool canMoveBottom();
 };
 

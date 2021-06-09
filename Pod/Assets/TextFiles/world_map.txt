@@ -107,8 +107,8 @@
 </GrassFrames>
 
 <WMarioInfo>
-#(x, y, vX, vY, limitX, limitY, tileSize)
-16,32,0,0,224,144,16
+#(vX, vY, limitX, limitY, tileSize, startRowIndex, startColumnIndex)
+0,0,224,144,16,2,1
 </WMarioInfo>
 
 <WMarioAnimation>
@@ -118,15 +118,15 @@
 </WMarioAnimation>
 
 <WMarioMovingMatrix>
-X X X A 2 2 2 B 3 C 3 4 X X
-X X X 1 X X X X X X X 4 X X
-X 1 1 1 X X X X X D 4 4 X X
-X X X X X X X X X X X X X X
-X X X X X X X X X X X X X X
-X X X X X X X X X X X X X X
-X X X X X X X X X X X X X X
-X X X X X X X X X X X X X X
-X X X X X X X X X X X X X X
+X X X 1 - O - 2 - 3 - O X X
+X X X - X X X - X X X - X X
+X - - O X X X O - 4 - O X X
+X X X X X X X - X X X X X X
+X X X O - O - O X X X X X X
+X X X - X X X X X X X X X X
+X X X O X O - O - O - O X X
+X X X - X X X - X X X X X X
+X X X 5 - O - 6 X X X X X X
 </WMarioMovingMatrix>
 
 <ScoreBoard>
