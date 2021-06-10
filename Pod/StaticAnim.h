@@ -2,7 +2,7 @@
 #include "Component.h"
 #include "Camera.h"
 
-class Grass
+class StaticAnim
 {
 private:
 	Animation* animation;

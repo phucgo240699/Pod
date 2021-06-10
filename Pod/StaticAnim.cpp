@@ -1,12 +1,12 @@
-#include "Grass.h"
+#include "StaticAnim.h"
 
-void Grass::loadAnimation(vector<string> data, char endSeperator, char seperator)
+void StaticAnim::loadAnimation(vector<string> data, char endSeperator, char seperator)
 {
-	int animDelay;
+	int animDelay = 0;
 	vector<RECT>* arr = new vector<RECT>();
 	for (int i = 0; i < data.size(); ++i) {
 		if (data[i][0] == endSeperator) {
-			animDelay = stoi(data[i].substr(2, 1));
+			animDelay = stoi(data[i].substr(2, data[i].size()));
 			continue;
 		}
 		arr->push_back(Tool::getRECT(data[i], seperator));
@@ -15,22 +15,22 @@ void Grass::loadAnimation(vector<string> data, char endSeperator, char seperator
 	animation = new Animation(0, 0, animDelay, arr);
 }
 
-void Grass::loadFrames(vector<string> data, char seperator)
+void StaticAnim::loadFrames(vector<string> data, char seperator)
 {
 	this->frames = Tool::getRECTs(data, seperator);
 }
 
-Animation* Grass::getAnimation()
+Animation* StaticAnim::getAnimation()
 {
 	return this->animation;
 }
 
-void Grass::Update(float _dt)
+void StaticAnim::Update(float _dt)
 {
 	animation->Update(_dt);
 }
 
-void Grass::Draw(LPDIRECT3DTEXTURE9 _texture)
+void StaticAnim::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
 	if (this->animation == NULL) return;
 

@@ -17,7 +17,8 @@ void WorldVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 void WorldVC::viewDidLoad()
 {
 	map = new WorldMap(ImagePath::getInstance()->world_map, D3DCOLOR_XRGB(255, 0, 255));
-	grasses = new Grass();
+	grasses = new StaticAnim();
+	helpLabel = new StaticAnim();
 	wMario = new WMario(0, 0, 0, 0, 0, 0);
 	scoreBoard = new ScoreBoard(ImagePath::getInstance()->board, D3DCOLOR_XRGB(255, 0, 255));
 
@@ -32,6 +33,10 @@ void WorldVC::viewWillUpdate(float _dt)
 
 	if (grasses != NULL) {
 		grasses->Update(_dt);
+	}
+
+	if (helpLabel != NULL) {
+		helpLabel->Update(_dt);
 	}
 
 	if (scoreBoard != NULL) {
@@ -57,6 +62,10 @@ void WorldVC::viewDidRender()
 
 		if (grasses != NULL) {
 			grasses->Draw(map->getTexture());
+		}
+
+		if (helpLabel != NULL) {
+			helpLabel->Draw(map->getTexture());
 		}
 
 		if (scoreBoard != NULL) {
@@ -134,6 +143,24 @@ void WorldVC::adaptData()
 			data.clear();
 			section = SECTION_NONE;
 		}
+		else if (line == "<HelpLabelAnimation>") {
+			section = SECTION_HELP_LABEL_ANIMATION;
+			continue;
+		}
+		else if (line == "</HelpLabelAnimation>") {
+			helpLabel->loadAnimation(data, '>', ',');
+			data.clear();
+			section = SECTION_NONE;
+		}
+		else if (line == "<HelpLabelFrame>") {
+			section = SECTION_HELP_LABEL_FRAME;
+			continue;
+		}
+		else if (line == "</HelpLabelFrame>") {
+			helpLabel->loadFrames(data, ',');
+			data.clear();
+			section = SECTION_NONE;
+		}
 		else if (line == "<WMarioInfo>") {
 			section = SECTION_WMARIO_INFO;
 			continue;
@@ -185,6 +212,12 @@ void WorldVC::adaptData()
 			data.push_back(line);
 			break;
 		case SECTION_GRASS_FRAMES:
+			data.push_back(line);
+			break;
+		case SECTION_HELP_LABEL_ANIMATION:
+			data.push_back(line);
+			break;
+		case SECTION_HELP_LABEL_FRAME:
 			data.push_back(line);
 			break;
 		case SECTION_WMARIO_INFO:

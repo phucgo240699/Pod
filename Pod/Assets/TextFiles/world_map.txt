@@ -106,6 +106,16 @@
 208,128,16,16
 </GrassFrames>
 
+<HelpLabelAnimation>
+17,0,16,16
+0,51,16,16
+> 12
+</HelpLabelAnimation>
+
+<HelpLabelFrame>
+192,80,16,16
+</HelpLabelFrame>
+
 <WMarioInfo>
 #(vX, vY, limitX, limitY, tileSize, startRowIndex, startColumnIndex)
 0,0,224,144,16,2,1
