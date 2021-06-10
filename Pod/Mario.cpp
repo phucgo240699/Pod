@@ -80,9 +80,8 @@ void Mario::Update(float _dt)
 	if (this->getX() + round(this->getVx() * _dt) >= 0 && this->getX() + this->getWidth() + round(this->getVx() * _dt) <= this->getLimitX()) {
 		this->plusX(round(this->getVx() * _dt));
 	}
-	if (this->getY() + round(this->getVy() * _dt) >= 0 && this->getY() + this->getHeight() + round(this->getVy() * _dt) <= this->getLimitY()) {
-		this->plusY(round(this->getVy() * _dt));
-	}
+	
+	this->plusY(round(this->getVy() * _dt));
 }
 
 void Mario::Draw()

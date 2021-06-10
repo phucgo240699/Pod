@@ -103,12 +103,12 @@ void SunnyVC::viewDidRender()
 		if (giftBrick != NULL) {
 			giftBrick->Draw(map->getTexture());
 		}
-		if (scoreBoard != NULL) {
-			scoreBoard->Draw();
-		}
-
 		if (mario != NULL) {
 			mario->Draw();
+		}
+
+		if (scoreBoard != NULL) {
+			scoreBoard->Draw();
 		}
 
 		spriteHandler->End();

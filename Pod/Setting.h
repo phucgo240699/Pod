@@ -26,7 +26,7 @@ private:
 	ScreenMode screenMode = window;
 	Color* defaultBackgroundColorViewController = new Color(black);
 	bool debugMode = false;
-	SceneName sceneName = WorldScene;
+	SceneName sceneName = SunnyScene;
 
 
 public:
