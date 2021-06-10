@@ -4,7 +4,7 @@
 
 class StaticAnim
 {
-private:
+protected:
 	Animation* animation;
 	vector<RECT>* frames;
 public:
@@ -16,7 +16,7 @@ public:
 
 	// Setter
 
-	void Update(float _dt);
-	void Draw(LPDIRECT3DTEXTURE9 _texture);
+	virtual void Update(float _dt);
+	virtual void Draw(LPDIRECT3DTEXTURE9 _texture);
 };
 

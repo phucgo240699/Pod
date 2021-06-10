@@ -4,6 +4,7 @@
 #include "StaticAnim.h"
 #include "WMario.h"
 #include "ScoreBoard.h"
+#include "WTurtle.h"
 
 class WorldVC : public ViewController
 {
@@ -12,6 +13,7 @@ private:
 	StaticAnim* grasses;
 	StaticAnim* helpLabel;
 	WMario* wMario;
+	WTurtle* wTurtle;
 
 	ScoreBoard* scoreBoard;
 public:

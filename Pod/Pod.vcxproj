@@ -177,6 +177,7 @@
     <ClCompile Include="WMario.cpp" />
     <ClCompile Include="WorldMap.cpp" />
     <ClCompile Include="WorldVC.cpp" />
+    <ClCompile Include="WTurtle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -211,6 +212,7 @@
     <ClInclude Include="WMarioState.h" />
     <ClInclude Include="WorldMap.h" />
     <ClInclude Include="WorldVC.h" />
+    <ClInclude Include="WTurtle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

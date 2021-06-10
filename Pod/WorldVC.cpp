@@ -20,6 +20,7 @@ void WorldVC::viewDidLoad()
 	grasses = new StaticAnim();
 	helpLabel = new StaticAnim();
 	wMario = new WMario(0, 0, 0, 0, 0, 0);
+	wTurtle = new WTurtle(0, 0, 0, 0, 0, 0);
 	scoreBoard = new ScoreBoard(ImagePath::getInstance()->board, D3DCOLOR_XRGB(255, 0, 255));
 
 	this->adaptData();
@@ -41,6 +42,10 @@ void WorldVC::viewWillUpdate(float _dt)
 
 	if (scoreBoard != NULL) {
 		scoreBoard->Update(_dt);
+	}
+
+	if (wTurtle != NULL) {
+		wTurtle->Update(_dt);
 	}
 
 	if (wMario != NULL) {
@@ -70,6 +75,10 @@ void WorldVC::viewDidRender()
 
 		if (scoreBoard != NULL) {
 			scoreBoard->Draw();
+		}
+
+		if (wTurtle != NULL) {
+			wTurtle->Draw(map->getTexture());
 		}
 
 		if (wMario != NULL) {
@@ -193,6 +202,22 @@ void WorldVC::adaptData()
 		else if (line == "</ScoreBoard>") {
 			section = SECTION_NONE;
 		}
+		else if (line == "<WTurtleInfo>") {
+			section = SECTION_WTURTLE_INFO;
+			continue;
+		}
+		else if (line == "</WTurtleInfo>") {
+			section = SECTION_NONE;
+		}
+		else if (line == "<WTurtleAnimation>") {
+			section = SECTION_WTURTLE_ANIMATION;
+			continue;
+		}
+		else if (line == "</WTurtleAnimation>") {
+			wTurtle->loadAnimation(data, '>', ',');
+			data.clear();
+			section = SECTION_NONE;
+		}
 
 
 		switch (section)
@@ -231,6 +256,12 @@ void WorldVC::adaptData()
 			break;
 		case SECTION_SCORE_BOARD:
 			scoreBoard->loadPosition(line, ',');
+			break;
+		case SECTION_WTURTLE_INFO:
+			wTurtle->loadInfo(line, ',');
+			break;
+		case SECTION_WTURTLE_ANIMATION:
+			data.push_back(line);
 			break;
 		default:
 			break;

@@ -124,6 +124,12 @@
     <Filter Include="Source Files\Components\Map\StaticAnim">
       <UniqueIdentifier>{07bdd801-a343-447e-bfa4-97a0972b070b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\Map\WTurle">
+      <UniqueIdentifier>{dd4ee038-8d45-4402-81df-a2cd711c827f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Map\WTurtle">
+      <UniqueIdentifier>{436a8860-c8f8-4000-ae47-e91db17ef73e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -203,6 +209,9 @@
     </ClCompile>
     <ClCompile Include="StaticAnim.cpp">
       <Filter>Source Files\Components\Map\StaticAnim</Filter>
+    </ClCompile>
+    <ClCompile Include="WTurtle.cpp">
+      <Filter>Source Files\Components\Map\WTurtle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -301,6 +310,9 @@
     </ClInclude>
     <ClInclude Include="StaticAnim.h">
       <Filter>Header Files\Components\Map\StaticAnim</Filter>
+    </ClInclude>
+    <ClInclude Include="WTurtle.h">
+      <Filter>Header Files\Components\Map\WTurle</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
