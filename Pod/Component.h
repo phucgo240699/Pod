@@ -52,6 +52,7 @@ public:
 
 	virtual void Update(float _dt);
 	virtual void Draw();
+	virtual void Draw(LPDIRECT3DTEXTURE9 _texture);
 	virtual RECT getBounds();
 	virtual float getWidth();
 	virtual float getHeight();

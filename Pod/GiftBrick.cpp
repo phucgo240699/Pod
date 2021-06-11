@@ -5,9 +5,17 @@ Animation* GiftBrick::getAnimation()
 	return this->animation;
 }
 
+GiftBrick::GiftBrick(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY) : Component(_x, _y, _vx, _vy, _limitX, _limitY)
+{
+}
+
+GiftBrick::GiftBrick(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY) : Component(_position, _vx, _vy, _limitX, _limitY)
+{
+}
+
 void GiftBrick::loadAnimation(vector<string> data)
 {
-	int animDelay;
+	int animDelay = 0;
 	vector<RECT>* arr = new vector<RECT>();
 	for (int i = 0; i < data.size(); ++i) {
 		if (data[i][0] == '>') {
@@ -26,36 +34,25 @@ void GiftBrick::loadAnimation(vector<string> data)
 	animation = new Animation(0, 0, animDelay, arr);
 }
 
-void GiftBrick::loadFrames(vector<string> data)
+void GiftBrick::loadInfo(string line, char seperator)
 {
-	this->frames = new vector<RECT>();
-	for (int i = 0; i < data.size(); ++i) {
-		RECT r = RECT();
-		vector<int> frame = Tool::splitToVectorIntegerFrom(data[i], ',');
-		r.left = frame[0];
-		r.top = frame[1];
-		r.right = frame[0] + frame[2];
-		r.bottom = frame[1] + frame[3];
-		this->frames->push_back(r);
-	}
+	vector<int> v = Tool::splitToVectorIntegerFrom(line, seperator);
+
+	this->setX(v[0]);
+	this->setY(v[1]);
+	this->setVx(v[2]);
+	this->setVy(v[3]);
 }
+
+
 
 void GiftBrick::Update(float _dt)
 {
-	if (this->animation == NULL) return;
 	this->animation->Update(_dt);
 }
 
 void GiftBrick::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
-	if (this->animation == NULL) return;
-	
-	D3DXVECTOR3 position;
-
-	for (int i = 0; i < this->frames->size(); ++i) {
-		if (Camera::getInstance()->isColliding(this->frames->at(i))) {
-			position = D3DXVECTOR3(this->frames->at(i).left - Camera::getInstance()->getX(), this->frames->at(i).top - Camera::getInstance()->getY(), 0);
-			Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), NULL, &position);
-		}
-	}
+	D3DXVECTOR3 position = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->getY() - Camera::getInstance()->getY(), 0);
+	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), &position);
 }

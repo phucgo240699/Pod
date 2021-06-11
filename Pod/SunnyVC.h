@@ -6,6 +6,7 @@
 #include "GiftBrick.h"
 #include "SunnyMap.h"
 #include "ScoreBoard.h"
+#include "StaticAnim.h"
 
 class SunnyVC : public ViewController
 {
@@ -17,6 +18,7 @@ private:
 
 	GiftBrick* giftBrick;
 	ScoreBoard* scoreBoard;
+	StaticAnim* goldenBrickAnim;
 
 
 	tuple<bool, float, vector<CollisionEdge>> mario_ground_collision;

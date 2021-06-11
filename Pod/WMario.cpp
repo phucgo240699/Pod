@@ -116,12 +116,12 @@ void WMario::Update(float _dt)
 	}
 	
 
-	if (this->getState() == WMARIO_STANDING) {
+	/*if (this->getState() == WMARIO_STANDING) {
 		animation->setCurrentIndexFrame(0);
 	}
-	else {
+	else {*/
 		animation->Update(_dt);
-	}
+	//}
 }
 
 void WMario::Draw(LPDIRECT3DTEXTURE9 _texture)

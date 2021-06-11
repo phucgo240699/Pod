@@ -145,6 +145,10 @@ void Component::Draw()
 {
 }
 
+void Component::Draw(LPDIRECT3DTEXTURE9 _texture)
+{
+}
+
 RECT Component::getBounds()
 {
 	RECT r = RECT();

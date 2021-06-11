@@ -2,14 +2,16 @@
 #include "Component.h"
 #include "Camera.h"
 
-class GiftBrick
+class GiftBrick : public Component
 {
 private:
 	Animation* animation;
-	vector<RECT>* frames;
 public:
+	GiftBrick(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY);
+	GiftBrick(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY);
+
 	void loadAnimation(vector<string> data);
-	void loadFrames(vector<string> data);
+	void loadInfo(string line, char seperator);
 
 	// Getter
 	Animation* getAnimation();

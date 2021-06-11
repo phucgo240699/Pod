@@ -5,8 +5,9 @@ void SunnyVC::viewDidLoad()
 	mario = new Mario(0, 0, 0, 0, 0, 0, ImagePath::getInstance()->mario, D3DCOLOR_XRGB(255, 0, 255), DROPPING);
 	map = new SunnyMap(ImagePath::getInstance()->sunny_map, D3DCOLOR_XRGB(255, 0, 255));
 	grounds = new vector<Ground*>();
-	giftBrick = new GiftBrick();
+	giftBrick = new GiftBrick(0,0,0,0,0,0);
 	scoreBoard = new ScoreBoard(ImagePath::getInstance()->board, D3DCOLOR_XRGB(255, 0, 255));
+	goldenBrickAnim = new StaticAnim();
 
 	this->adaptData();
 }
@@ -33,6 +34,9 @@ void SunnyVC::viewWillUpdate(float _dt)
 	}
 	if (giftBrick != NULL) {
 		giftBrick->Update(_dt);
+	}
+	if (goldenBrickAnim != NULL) {
+		goldenBrickAnim->Update(_dt);
 	}
 	if (scoreBoard != NULL) {
 		scoreBoard->Update(_dt);
@@ -102,6 +106,9 @@ void SunnyVC::viewDidRender()
 		}
 		if (giftBrick != NULL) {
 			giftBrick->Draw(map->getTexture());
+		}
+		if (goldenBrickAnim != NULL) {
+			goldenBrickAnim->Draw(map->getTexture());
 		}
 		if (mario != NULL) {
 			mario->Draw();
@@ -202,8 +209,6 @@ void SunnyVC::adaptData()
 			continue;
 		}
 		else if (line == "</GiftBrickFrames>") {
-			giftBrick->loadFrames(data);
-			data.clear();
 			section = SECTION_NONE;
 		}
 		else if (line == "<GiftBrickAnimation>") {
@@ -220,6 +225,24 @@ void SunnyVC::adaptData()
 			continue;
 		}
 		else if (line == "</ScoreBoard>") {
+			section = SECTION_NONE;
+		}
+		else if (line == "<GoldenBrickAnimation>") {
+			section = SECTION_GIFT_BRICK_ANIMATION;
+			continue;
+		}
+		else if (line == "</GoldenBrickAnimation>") {
+			goldenBrickAnim->loadAnimation(data, '>', ',');
+			data.clear();
+			section = SECTION_NONE;
+		}
+		else if (line == "<GoldenBrickFrames>") {
+			section = SECTION_GOLDEN_BRICK_FRAMES;
+			continue;
+		}
+		else if (line == "</GoldenBrickFrames>") {
+			goldenBrickAnim->loadFrames(data, ',');
+			data.clear();
 			section = SECTION_NONE;
 		}
 
@@ -246,13 +269,19 @@ void SunnyVC::adaptData()
 			data.push_back(line);
 			break;
 		case SECTION_GIFT_BRICK_FRAMES:
-			data.push_back(line);
+			giftBrick->loadInfo(line, ',');
 			break;
 		case SECTION_GIFT_BRICK_ANIMATION:
 			data.push_back(line);
 			break;
 		case SECTION_SCORE_BOARD:
 			scoreBoard->loadPosition(line, ',');
+			break;
+		case SECTION_GOLDEN_BRICK_ANIMATION:
+			data.push_back(line);
+			break;
+		case SECTION_GOLDEN_BRICK_FRAMES:
+			data.push_back(line);
 			break;
 		default:
 			break;
