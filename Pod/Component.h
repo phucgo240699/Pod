@@ -18,32 +18,36 @@ protected:
 	//float currentVx, currentVy;
 	float limitX, limitY;
 	float width, height;
+	int id;
+	int cellX, cellY;
 public:	
 	// Init
-	Component(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY);
-	Component(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY);
+	Component(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id = 0, int _cellX = 0, int _cellY = 0);
+	Component(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY, int _id = 0, int _cellX = 0, int _cellY = 0);
 
 	// Getter
 	D3DXVECTOR3* getPosition();
 	float getX();
 	float getY();
-	//float getVx();
-	//float getVy();
 	float getVx();
 	float getVy();
 	float getLimitX();
 	float getLimitY();
+	int getId();
+	int getCellX();
+	int getCellY();
 
 	// Settter
 	void setPosition(D3DXVECTOR3* _position);
 	void setX(float _x);
 	void setY(float _y);
-	//void setVx(float _vx);
-	//void setVy(float _vy);
 	void setVx(float _vx);
 	void setVy(float _vy);
 	void setLimitX(float _limitX);
 	void setLimitY(float _limitY);
+	void setId(int _id);
+	void setCellX(int _cellX);
+	void setCellY(int _cellY);
 
 	void plusX(float _x);
 	void plusY(float _y);

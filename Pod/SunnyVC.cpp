@@ -10,6 +10,7 @@ void SunnyVC::viewDidLoad()
 	goldenBrickAnim = new StaticAnim();
 
 	this->adaptData();
+	this->adaptToGrid();
 }
 
 void SunnyVC::viewReceiveKeyUp()
@@ -32,6 +33,7 @@ void SunnyVC::viewWillUpdate(float _dt)
 	if (map != NULL) {
 		map->Update(_dt);
 	}
+	
 	if (giftBrick != NULL) {
 		giftBrick->Update(_dt);
 	}
@@ -49,44 +51,64 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 void SunnyVC::viewDidUpdate(float _dt)
 {
-	// Collision: MainCharacter and Ground
-	for (int i = 0; i < this->grounds->size(); ++i) {
-		
-			mario_ground_collision = this->mario->sweptAABB(this->grounds->at(i), _dt);
-			if (get<0>(mario_ground_collision) == true) {
-				for (int j = 0; j < get<2>(mario_ground_collision).size(); ++j) {
-					CollisionEdge edge = get<2>(mario_ground_collision)[j];
-					if (edge == topEdge) {
-						currentGroundIndex = i;
-						mario->setY(this->grounds->at(i)->getY() - mario->getCurrentAnimation()->getCurrentFrameHeight());
-						mario->setState(MarioState::STANDING);
-					}
-					else if (edge == bottomEdge) {
-						currentGroundIndex = i;
-						mario->setY(this->grounds->at(i)->getY() - mario->getCurrentAnimation()->getCurrentFrameHeight());
-						mario->setState(MarioState::STANDING);
-					}
-					else if (edge == leftEdge) {
-						mario->setSubState(MarioSubState::PUSHING);
-					}
-					else if (edge == rightEdge) {
-						mario->setSubState(MarioSubState::PUSHING);
-					}
+
+	// Check by cell in grid
+	int startRow = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight());
+	int endRow = ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
+	int startCol = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth());
+	int endCol = ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth());
+	for (int i = startRow; i < endRow; ++i) {
+		for (int j = startCol; j < endCol; ++j) {
+			if (Grid::getInstance()->getCells()[i][j].size() == 0) continue;
+
+			unordered_set<Component*> components = Grid::getInstance()->getCells()[i][j];
+			unordered_set<Component*> ::iterator itr;
+			for (itr = components.begin(); itr != components.end(); ++itr) {
+				if ((*itr)->getId() == 0) {
+					this->handleMarioGroundCollision((*itr), _dt);
 				}
 			}
-			else {
-				// if mario walk out of ground top surface, it will drop
-				if (mario->getState() == WALKING || mario->getState() == STANDING) {
-					if (mario->getBounds().right < this->grounds->at(currentGroundIndex)->getX() || mario->getX() > this->grounds->at(currentGroundIndex)->getBounds().right) { // this is check which ground that mario is standing on
-						if (mario->getBounds().bottom <= this->grounds->at(currentGroundIndex)->getY()) {
-							mario->setState(MarioState::DROPPING);
-						}
-					}
-					//mario->setState(MarioState::DROPPING);
-				}
-			}
-		
+		}
 	}
+
+	//// Collision: MainCharacter and Ground
+	//for (int i = 0; i < this->grounds->size(); ++i) {
+	//	
+	//		mario_ground_collision = this->mario->sweptAABB(this->grounds->at(i), _dt);
+	//		if (get<0>(mario_ground_collision) == true) {
+	//			for (int j = 0; j < get<2>(mario_ground_collision).size(); ++j) {
+	//				CollisionEdge edge = get<2>(mario_ground_collision)[j];
+	//				if (edge == topEdge) {
+	//					currentGroundIndex = i;
+	//					mario->setY(this->grounds->at(i)->getY() - mario->getCurrentAnimation()->getCurrentFrameHeight());
+	//					mario->setState(MarioState::STANDING);
+	//				}
+	//				else if (edge == bottomEdge) {
+	//					currentGroundIndex = i;
+	//					mario->setY(this->grounds->at(i)->getY() - mario->getCurrentAnimation()->getCurrentFrameHeight());
+	//					mario->setState(MarioState::STANDING);
+	//				}
+	//				else if (edge == leftEdge) {
+	//					mario->setSubState(MarioSubState::PUSHING);
+	//				}
+	//				else if (edge == rightEdge) {
+	//					mario->setSubState(MarioSubState::PUSHING);
+	//				}
+	//			}
+	//		}
+	//		else {
+	//			// if mario walk out of ground top surface, it will drop
+	//			if (mario->getState() == WALKING || mario->getState() == STANDING) {
+	//				if (mario->getBounds().right < this->grounds->at(currentGroundIndex)->getX() || mario->getX() > this->grounds->at(currentGroundIndex)->getBounds().right) { // this is check which ground that mario is standing on
+	//					if (mario->getBounds().bottom <= this->grounds->at(currentGroundIndex)->getY()) {
+	//						mario->setState(MarioState::DROPPING);
+	//					}
+	//				}
+	//				//mario->setState(MarioState::DROPPING);
+	//			}
+	//		}
+	//	
+	//}
 }
 
 void SunnyVC::viewWillRender()
@@ -245,6 +267,13 @@ void SunnyVC::adaptData()
 			data.clear();
 			section = SECTION_NONE;
 		}
+		else if (line == "<GridInfo>") {
+			section = SECTION_GRID_INFO;
+			continue;
+		}
+		else if (line == "</GridInfo>") {
+			section = SECTION_NONE;
+		}
 
 		switch (section)
 		{
@@ -283,10 +312,55 @@ void SunnyVC::adaptData()
 		case SECTION_GOLDEN_BRICK_FRAMES:
 			data.push_back(line);
 			break;
+		case SECTION_GRID_INFO:
+			Grid::getInstance()->loadInfo(line, ',');
+			break;
 		default:
 			break;
 		}
 	}
 
 	fs.close();
+}
+
+void SunnyVC::adaptToGrid()
+{
+	for (int i = 0; i < this->grounds->size(); ++i) {
+		Grid::getInstance()->add(this->grounds->at(i));
+	}
+}
+
+void SunnyVC::handleMarioGroundCollision(Component* _ground, float _dt)
+{
+	mario_ground_collision = this->mario->sweptAABB(_ground, _dt);
+	if (get<0>(mario_ground_collision) == true) {
+		for (int j = 0; j < get<2>(mario_ground_collision).size(); ++j) {
+			CollisionEdge edge = get<2>(mario_ground_collision)[j];
+			if (edge == topEdge) {
+				mario->setY(_ground->getY() - mario->getCurrentAnimation()->getCurrentFrameHeight());
+				mario->setState(MarioState::STANDING);
+			}
+			else if (edge == bottomEdge) {
+				mario->setY(_ground->getY() - mario->getCurrentAnimation()->getCurrentFrameHeight());
+				mario->setState(MarioState::STANDING);
+			}
+			else if (edge == leftEdge) {
+				mario->setSubState(MarioSubState::PUSHING);
+			}
+			else if (edge == rightEdge) {
+				mario->setSubState(MarioSubState::PUSHING);
+			}
+		}
+	}
+	//else {
+	//	// if mario walk out of ground top surface, it will drop
+	//	if (mario->getState() == WALKING || mario->getState() == STANDING) {
+	//		if (mario->getBounds().right < this->grounds->at(currentGroundIndex)->getX() || mario->getX() > this->grounds->at(currentGroundIndex)->getBounds().right) { // this is check which ground that mario is standing on
+	//			if (mario->getBounds().bottom <= this->grounds->at(currentGroundIndex)->getY()) {
+	//				mario->setState(MarioState::DROPPING);
+	//			}
+	//		}
+	//		//mario->setState(MarioState::DROPPING);
+	//	}
+	//}
 }

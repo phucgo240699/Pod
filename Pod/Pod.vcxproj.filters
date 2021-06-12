@@ -130,6 +130,12 @@
     <Filter Include="Source Files\Components\Map\WTurtle">
       <UniqueIdentifier>{436a8860-c8f8-4000-ae47-e91db17ef73e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\System\Grid">
+      <UniqueIdentifier>{9ec7b60a-6e33-4ede-aecf-aee125b51242}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\System\Grid">
+      <UniqueIdentifier>{829eb96d-7ac9-47a2-9c84-c2c690b7c3b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -212,6 +218,9 @@
     </ClCompile>
     <ClCompile Include="WTurtle.cpp">
       <Filter>Source Files\Components\Map\WTurtle</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Source Files\System\Grid</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -313,6 +322,9 @@
     </ClInclude>
     <ClInclude Include="WTurtle.h">
       <Filter>Header Files\Components\Map\WTurle</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Header Files\System\Grid</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

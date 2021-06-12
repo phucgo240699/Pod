@@ -126,7 +126,8 @@ void WMario::Update(float _dt)
 
 void WMario::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
-	this->animation->Draw(_texture, this->animation->getCurrentFrame() , this->getPosition());
+	D3DXVECTOR3 pos = D3DXVECTOR3(this->getX() + this->borderWidth, this->getY() + this->borderWidth, 0);
+	this->animation->Draw(_texture, this->animation->getCurrentFrame(), &pos);
 }
 
 void WMario::onKeyDown(vector<KeyType> _keyTypes)
@@ -176,6 +177,7 @@ void WMario::loadInfo(string line, char seperator)
 	this->col = v[6];
 	this->startRowMove = v[5];
 	this->startColMove = v[6];
+	this->borderWidth = v[7];
 	this->setX(this->col * this->tileSize);
 	this->setY(this->row * this->tileSize);
 }

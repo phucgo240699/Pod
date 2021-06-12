@@ -5,6 +5,7 @@
 #include "KeyType.h"
 #include "Camera.h"
 #include "Map.h"
+#include "Grid.h"
 
 class ViewController
 {

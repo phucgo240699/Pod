@@ -34,4 +34,8 @@ public:
 	void viewWillRelease();
 
 	void adaptData();
+	void adaptToGrid();
+
+
+	void handleMarioGroundCollision(Component* _ground, float _dt);
 };

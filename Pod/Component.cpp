@@ -1,31 +1,28 @@
 #include "Component.h"
 
-Component::Component(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY)
+Component::Component(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id, int _cellX, int _cellY)
 {
 	this->position = new D3DXVECTOR3(_x, _y, 0);
 	this->vx = round(_vx);
 	this->vy = round(_vy);
-	/*this->currentVx = _vx;
-	this->currentVy = _vy;*/
 	this->limitX = _limitX;
 	this->limitY = _limitY;
+	this->id = _id;
+	this->cellX = _cellX;
+	this->cellY = _cellY;
 }
 
-Component::Component(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY)
+Component::Component(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY, int _id, int _cellX, int _cellY)
 {
 	this->position = _position;
 	this->vx = round(_vx);
 	this->vy = round(_vy);
-	/*this->currentVx = _vx;
-	this->currentVy = _vy;*/
 	this->limitX = _limitX;
 	this->limitY = _limitY;
+	this->id = _id;
+	this->cellX = _cellX;
+	this->cellY = _cellY;
 }
-
-//Component::~Component()
-//{
-//	delete position;
-//}
 
 D3DXVECTOR3* Component::getPosition()
 {
@@ -41,16 +38,6 @@ float Component::getY()
 {
 	return this->position->y;
 }
-
-//float Component::getVx()
-//{
-//	return this->vx;
-//}
-//
-//float Component::getVy()
-//{
-//	return this->vy;
-//}
 
 float Component::getVx()
 {
@@ -72,6 +59,36 @@ float Component::getLimitY()
 	return this->limitY;
 }
 
+void Component::setId(int _id)
+{
+	this->id = _id;
+}
+
+void Component::setCellX(int _cellX)
+{
+	this->cellX = _cellX;
+}
+
+void Component::setCellY(int _cellY)
+{
+	this->cellY = _cellY;
+}
+
+int Component::getId()
+{
+	return this->id;
+}
+
+int Component::getCellX()
+{
+	return this->cellX;
+}
+
+int Component::getCellY()
+{
+	return this->cellY;
+}
+
 void Component::setPosition(D3DXVECTOR3* _position)
 {
 	this->position = _position;
@@ -86,16 +103,6 @@ void Component::setY(float _y)
 {
 	this->position->y = _y;
 }
-
-//void Component::setVx(float _vx)
-//{
-//	this->vx = _vx;
-//}
-//
-//void Component::setVy(float _vy)
-//{
-//	this->vy = _vy;
-//}
 
 void Component::setVx(float _vx)
 {

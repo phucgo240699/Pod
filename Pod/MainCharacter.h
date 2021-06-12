@@ -2,7 +2,7 @@
 #include "Component.h"
 class MainCharacter : public Component
 {
-private:
+protected:
 	float accelerationX = 0, accelerationY = 0;
 	float targetVx = 0, targetVy = 0;
 public:

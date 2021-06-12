@@ -1,11 +1,11 @@
 <Settings>
 #(dt,fps,width,height,isFullScreen,backBufferColor,debugMode)
-1.0,30,224,176,0,black,0
+1.0,30,236,188,0,black,0
 </Settings>
 
 <Camera>
 #(x,y,vX,vY,width,height,limitX,limitY)
-0,0,0,0,224,176,224,144
+-6,-6,0,0,236,188,224,144
 </Camera>
 
 <MapInfo>
@@ -121,8 +121,8 @@
 </HelpLabelFrame>
 
 <WMarioInfo>
-#(vX, vY, limitX, limitY, tileSize, startRowIndex, startColumnIndex)
-0,0,224,144,16,2,1
+#(vX, vY, limitX, limitY, tileSize, startRowIndex, startColumnIndex,borderWidth)
+0,0,224,144,16,2,1,6
 </WMarioInfo>
 
 <WMarioAnimation>
@@ -146,7 +146,7 @@ X X X 5 - O - 6 X X X X X X
 
 <ScoreBoard>
 # (x, y)
-0,144 
+0,150
 </ScoreBoard>
 
 <WTurtleInfo>

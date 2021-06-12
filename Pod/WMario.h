@@ -9,7 +9,7 @@ private:
 	vector<vector<char>> movingMatrix;
 	WMarioState state = WMARIO_STANDING;
 
-	int tileSize, row, col;
+	int tileSize, row, col, borderWidth;
 	int startRowMove, startColMove;
 	bool isMoving = false;
 	char limitScenceId = 'A';

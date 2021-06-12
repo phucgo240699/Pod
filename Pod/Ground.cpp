@@ -23,13 +23,13 @@ Ground::~Ground()
 
 void Ground::load(string line, char seperator)
 {
-	vector<float> v = Tool::splitToVectorFloatFrom(line, seperator);
+	vector<int> v = Tool::splitToVectorIntegerFrom(line, seperator);
+
 	this->setX(v[0]);
 	this->setY(v[1]);
 	this->setWidth(v[2]);
 	this->setHeight(v[3]);
-	this->setVx(v[4]);
-	this->setVy(v[5]);
-	this->setLimitX(v[6]);
-	this->setLimitY(v[7]);
+	this->setId(v[4]);
+	this->setCellX(v[5]);
+	this->setCellY(v[6]);
 }
