@@ -14,7 +14,9 @@ void GoldenBrick::loadInfo(string line, char seperator)
 
 	this->setX(v[0]);
 	this->setY(v[1]);
-	this->setId(v[2]);
+	this->setWidth(v[2]);
+	this->setHeight(v[3]);
+	this->setId(v[4]);
 }
 
 void GoldenBrick::loadAnimation(vector<string> data, char endSeperator, char seperator)
@@ -36,17 +38,11 @@ void GoldenBrick::loadAnimation(vector<string> data, char endSeperator, char sep
 	}
 
 	animation = new Animation(0, 0, animDelay, arr);
-	if (animation->getTotalFrames() > 0) {
-		this->setWidth(this->animation->getCurrentFrameWidth());
-		this->setHeight(this->animation->getCurrentFrameHeight());
-	}
 }
 
 void GoldenBrick::Update(float _dt)
 {
 	animation->Update(_dt);
-	this->setWidth(this->animation->getCurrentFrameWidth());
-	this->setHeight(this->animation->getCurrentFrameHeight());
 }
 
 void GoldenBrick::Draw(LPDIRECT3DTEXTURE9 _texture)

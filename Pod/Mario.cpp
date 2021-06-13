@@ -68,6 +68,11 @@ float Mario::getHeight()
 	return this->currentAnimation->getCurrentFrameHeight();
 }
 
+bool Mario::getIsStandOnSurface()
+{
+	return this->isStandOnSurface;
+}
+
 void Mario::Update(float _dt)
 {
 	if (currentAnimation == NULL) {
@@ -177,6 +182,11 @@ void Mario::setSubState(MarioSubState _subState)
 		break;
 	}
 	this->subState = _subState;
+}
+
+void Mario::setIsStandOnSurface(bool _isStandOnSurface)
+{
+	this->isStandOnSurface = _isStandOnSurface;
 }
 
 void Mario::updateVelocity()

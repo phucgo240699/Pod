@@ -20,6 +20,8 @@ private:
 	vector<Animation*>* animations;
 	Animation* currentAnimation;
 
+	bool isStandOnSurface = false;
+
 	//void setUpAnimations();
 
 public:
@@ -36,12 +38,14 @@ public:
 	bool getIsFlip();
 	float getWidth();
 	float getHeight();
+	bool getIsStandOnSurface();
 
 
 	// Setter
 	void setIsFlip(bool _isFlip);
 	void setState(MarioState _state);
 	void setSubState(MarioSubState _subState);
+	void setIsStandOnSurface(bool _isStandOnSurface);
 	void updateVelocity();
 
 	// Inherit
