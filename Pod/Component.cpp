@@ -282,7 +282,15 @@ tuple<bool, float, vector<CollisionEdge>> Component::sweptAABB(Component* other,
 		// calculate collided surface
 		if (txEntry > tyEntry)
 		{
-			if (dxEntry > 0.0f)
+			/*if (dxEntry > 0.0f)
+			{
+				get<2>(result).push_back(CollisionEdge::rightEdge);
+			}
+			else
+			{
+				get<2>(result).push_back(CollisionEdge::leftEdge);
+			}*/
+			if (this->getVx() > 0)
 			{
 				get<2>(result).push_back(CollisionEdge::rightEdge);
 			}
@@ -293,12 +301,18 @@ tuple<bool, float, vector<CollisionEdge>> Component::sweptAABB(Component* other,
 		}
 		else
 		{
-			if (dyEntry > 0.0f)
+			/*if (dyEntry > 0.0f)
 			{
 				get<2>(result).push_back(CollisionEdge::topEdge);
 			}
 			else
 			{
+				get<2>(result).push_back(CollisionEdge::bottomEdge);
+			}*/
+			if (this->getVy() < 0) {
+				get<2>(result).push_back(CollisionEdge::topEdge);
+			}
+			else {
 				get<2>(result).push_back(CollisionEdge::bottomEdge);
 			}
 		} // return the time of collisionreturn entryTime; 

@@ -14,7 +14,7 @@ private:
 	Mario* mario;
 	Map* map;
 	vector<Ground*>* grounds;
-	int currentGroundIndex = 0; // this is the ground that mario is standing on
+	int componentIdStanded = 0; // this is the component that mario is standing on
 
 	GiftBrick* giftBrick;
 	ScoreBoard* scoreBoard;
