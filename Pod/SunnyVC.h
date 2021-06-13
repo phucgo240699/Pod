@@ -7,6 +7,7 @@
 #include "SunnyMap.h"
 #include "ScoreBoard.h"
 #include "StaticAnim.h"
+#include "GoldenBrick.h"
 
 class SunnyVC : public ViewController
 {
@@ -14,11 +15,11 @@ private:
 	Mario* mario;
 	Map* map;
 	vector<Ground*>* grounds;
+	vector<GoldenBrick*>* goldenBricks;
 	int componentIdStanded = 0; // this is the component that mario is standing on
 
 	GiftBrick* giftBrick;
 	ScoreBoard* scoreBoard;
-	StaticAnim* goldenBrickAnim;
 
 
 	tuple<bool, float, vector<CollisionEdge>> mario_ground_collision;
@@ -38,4 +39,5 @@ public:
 
 
 	void handleMarioGroundCollision(Component* _ground, float _dt);
+	void handleMarioGoldenBrickCollision(Component* _goldenBrick, float _dt);
 };

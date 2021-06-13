@@ -136,6 +136,12 @@
     <Filter Include="Source Files\System\Grid">
       <UniqueIdentifier>{829eb96d-7ac9-47a2-9c84-c2c690b7c3b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\Map\GoldenBrick">
+      <UniqueIdentifier>{2cc5af35-0620-4ccb-b0d6-48032836c279}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Map\GoldenBrick">
+      <UniqueIdentifier>{57c2e720-5097-4074-bfc3-5971150dacf7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -221,6 +227,9 @@
     </ClCompile>
     <ClCompile Include="Grid.cpp">
       <Filter>Source Files\System\Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="GoldenBrick.cpp">
+      <Filter>Source Files\Components\Map\GoldenBrick</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -325,6 +334,9 @@
     </ClInclude>
     <ClInclude Include="Grid.h">
       <Filter>Header Files\System\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="GoldenBrick.h">
+      <Filter>Header Files\Components\Map\GoldenBrick</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
