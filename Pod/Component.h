@@ -19,11 +19,11 @@ protected:
 	float limitX, limitY;
 	float width, height;
 	int id;
-	int cellX, cellY;
+
 public:	
 	// Init
-	Component(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id = 0, int _cellX = 0, int _cellY = 0);
-	Component(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY, int _id = 0, int _cellX = 0, int _cellY = 0);
+	Component(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id = 0);
+	Component(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY, int _id = 0);
 
 	// Getter
 	D3DXVECTOR3* getPosition();
@@ -34,8 +34,6 @@ public:
 	float getLimitX();
 	float getLimitY();
 	int getId();
-	int getCellX();
-	int getCellY();
 
 	// Settter
 	void setPosition(D3DXVECTOR3* _position);
@@ -46,8 +44,6 @@ public:
 	void setLimitX(float _limitX);
 	void setLimitY(float _limitY);
 	void setId(int _id);
-	void setCellX(int _cellX);
-	void setCellY(int _cellY);
 
 	void plusX(float _x);
 	void plusY(float _y);

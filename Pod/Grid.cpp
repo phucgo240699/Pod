@@ -44,8 +44,46 @@ void Grid::loadInfo(string line, char seperator)
 	}
 }
 
+void Grid::loadMatrixId(vector<string> data, char beginSeperator, char pairSeperator, char seperator)
+{
+	bool isReadingCell = false;
+	int currentID = 0;
+	vector<string> pairsStr;
+	vector<pair<int, int>> pairs;
+
+	for (int i = 0; i < data.size(); ++i) {
+		if (data[i][0] == beginSeperator) {
+			isReadingCell = true;
+			currentID = stoi(data[i].substr(2, data[i].length() - 2));
+			continue;
+		}
+
+		if (isReadingCell == true) {
+			// every element in pairs is a pair of cellX, cellY
+			pairsStr = Tool::splitToVectorStringFrom(data[i], pairSeperator);
+			pairs = vector<pair<int, int>>();
+			for (int k = 0; k < pairsStr.size(); ++k) {
+				pairs.push_back(Tool::splitToPairIntIntFrom(pairsStr[k], seperator));
+			}
+
+			this->matrixId[currentID] = pairs;
+
+			pairsStr.clear();
+			pairs.clear();
+			isReadingCell = false;
+		}
+	}
+}
+
 void Grid::add(Component* _component)
 {
-	this->cells.at(_component->getCellY()).at(_component->getCellX()).insert(_component);
+	vector<pair<int, int>> pairs = this->matrixId[_component->getId()];
+
+	for (int i = 0; i < pairs.size(); ++i) {
+		int y = pairs[i].second;
+		int x = pairs[i].first;
+
+		this->cells[y][x].insert(_component);
+	}
 }
 

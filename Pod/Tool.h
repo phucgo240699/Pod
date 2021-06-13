@@ -108,6 +108,19 @@ public:
 		return vector;
 	}
 
+	static pair<int, int> splitToPairIntIntFrom(string s, char seperator) {
+		pair<int, int> p;
+
+		int fromIndex = 0;
+		for (int i = 0; i < s.length(); ++i) {
+			if (s[i] == seperator) {
+				p.first = stoi(s.substr(0, i));
+				p.second = stoi(s.substr(i + 1, s.length() - i - 1));
+			}
+		}
+		return p;
+	}
+
 	static vector<vector<int>> getMatrixFrom(vector<string> data, char seperator) {
 		vector<vector<int>> result = vector<vector<int>>();
 

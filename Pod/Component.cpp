@@ -1,6 +1,6 @@
 #include "Component.h"
 
-Component::Component(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id, int _cellX, int _cellY)
+Component::Component(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id)
 {
 	this->position = new D3DXVECTOR3(_x, _y, 0);
 	this->vx = round(_vx);
@@ -8,11 +8,9 @@ Component::Component(float _x, float _y, float _vx, float _vy, float _limitX, fl
 	this->limitX = _limitX;
 	this->limitY = _limitY;
 	this->id = _id;
-	this->cellX = _cellX;
-	this->cellY = _cellY;
 }
 
-Component::Component(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY, int _id, int _cellX, int _cellY)
+Component::Component(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY, int _id)
 {
 	this->position = _position;
 	this->vx = round(_vx);
@@ -20,8 +18,6 @@ Component::Component(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX
 	this->limitX = _limitX;
 	this->limitY = _limitY;
 	this->id = _id;
-	this->cellX = _cellX;
-	this->cellY = _cellY;
 }
 
 D3DXVECTOR3* Component::getPosition()
@@ -64,29 +60,9 @@ void Component::setId(int _id)
 	this->id = _id;
 }
 
-void Component::setCellX(int _cellX)
-{
-	this->cellX = _cellX;
-}
-
-void Component::setCellY(int _cellY)
-{
-	this->cellY = _cellY;
-}
-
 int Component::getId()
 {
 	return this->id;
-}
-
-int Component::getCellX()
-{
-	return this->cellX;
-}
-
-int Component::getCellY()
-{
-	return this->cellY;
 }
 
 void Component::setPosition(D3DXVECTOR3* _position)

@@ -54,9 +54,9 @@ void SunnyVC::viewDidUpdate(float _dt)
 
 	// Check by cell in grid
 	int startRow = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight());
-	int endRow = ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
+	int endRow = floor((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
 	int startCol = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth());
-	int endCol = ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth());
+	int endCol = floor((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth());
 	for (int i = startRow; i < endRow; ++i) {
 		for (int j = startCol; j < endCol; ++j) {
 			if (Grid::getInstance()->getCells()[i][j].size() == 0) continue;
@@ -64,7 +64,7 @@ void SunnyVC::viewDidUpdate(float _dt)
 			unordered_set<Component*> components = Grid::getInstance()->getCells()[i][j];
 			unordered_set<Component*> ::iterator itr;
 			for (itr = components.begin(); itr != components.end(); ++itr) {
-				if ((*itr)->getId() == 0) {
+				if (0 <= (*itr)->getId() <= 17) {
 					this->handleMarioGroundCollision((*itr), _dt);
 				}
 			}
@@ -175,7 +175,6 @@ void SunnyVC::adaptData()
 		}
 		else if (line == "</Camera>") {
 			section = SECTION_NONE;
-			continue;
 		}
 		else if (line == "<MapInfo>") {
 			section = SECTION_MAP_INFO;
@@ -183,7 +182,6 @@ void SunnyVC::adaptData()
 		}
 		else if (line == "</MapInfo>") {
 			section = SECTION_NONE;
-			continue;
 		}
 		else if (line == "<MapIndexes>") {
 			section = SECTION_MAP_INDEXES;
@@ -191,9 +189,7 @@ void SunnyVC::adaptData()
 		}
 		else if (line == "</MapIndexes>") {
 			map->loadIndexes(data, ' ');
-			data.clear();
 			section = SECTION_NONE;
-			continue;
 		}
 		else if (line == "<MarioInfo>") {
 			section = SECTION_MARIO_INFO;
@@ -201,7 +197,6 @@ void SunnyVC::adaptData()
 		}
 		else if (line == "</MarioInfo>") {
 			section = SECTION_NONE;
-			continue;
 		}
 		else if (line == "<MarioAnimations>") {
 			section = SECTION_MARIO_ANIMATIONS;
@@ -209,7 +204,6 @@ void SunnyVC::adaptData()
 		}
 		else if (line == "</MarioAnimations>") {
 			mario->loadAnimations(data, '>', ',');
-			data.clear();
 			continue;
 		}
 		else if (line == "<Grounds>") {
@@ -222,9 +216,7 @@ void SunnyVC::adaptData()
 				ground->load(data[i], ',');
 				this->grounds->push_back(ground);
 			}
-			data.clear();
 			section = SECTION_NONE;
-			continue;
 		}
 		else if (line == "<GiftBrickFrames>") {
 			section = SECTION_GIFT_BRICK_FRAMES;
@@ -239,7 +231,6 @@ void SunnyVC::adaptData()
 		}
 		else if (line == "</GiftBrickAnimation>") {
 			giftBrick->loadAnimation(data);
-			data.clear();
 			section = SECTION_NONE;
 		}
 		else if (line == "<ScoreBoard>") {
@@ -255,7 +246,6 @@ void SunnyVC::adaptData()
 		}
 		else if (line == "</GoldenBrickAnimation>") {
 			goldenBrickAnim->loadAnimation(data, '>', ',');
-			data.clear();
 			section = SECTION_NONE;
 		}
 		else if (line == "<GoldenBrickFrames>") {
@@ -264,7 +254,6 @@ void SunnyVC::adaptData()
 		}
 		else if (line == "</GoldenBrickFrames>") {
 			goldenBrickAnim->loadFrames(data, ',');
-			data.clear();
 			section = SECTION_NONE;
 		}
 		else if (line == "<GridInfo>") {
@@ -274,10 +263,19 @@ void SunnyVC::adaptData()
 		else if (line == "</GridInfo>") {
 			section = SECTION_NONE;
 		}
+		else if (line == "<GridMatrixId>") {
+			section = SECTION_GRID_MATRIX_ID;
+			continue;
+		}
+		else if (line == "</GridMatrixId>") {
+			Grid::getInstance()->loadMatrixId(data, '>', '_', ',');
+			section = SECTION_NONE;
+		}
 
 		switch (section)
 		{
 		case SECTION_NONE:
+			data.clear();
 			break;
 		case SECTION_CAMERA:
 			camera->load(line, ',');
@@ -315,6 +313,8 @@ void SunnyVC::adaptData()
 		case SECTION_GRID_INFO:
 			Grid::getInstance()->loadInfo(line, ',');
 			break;
+		case SECTION_GRID_MATRIX_ID:
+			data.push_back(line);
 		default:
 			break;
 		}

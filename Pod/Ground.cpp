@@ -30,6 +30,4 @@ void Ground::load(string line, char seperator)
 	this->setWidth(v[2]);
 	this->setHeight(v[3]);
 	this->setId(v[4]);
-	this->setCellX(v[5]);
-	this->setCellY(v[6]);
 }
