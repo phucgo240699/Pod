@@ -62,6 +62,7 @@ void Camera::setPositionBy(Component* _target)
 
 void Camera::follow(Component* _target, float _dt)
 {
+	
 	// still have problem
 	// If target not in safe area, and new location of camera not outside of map
 	if (_target->getX() > this->getWidth() / 2 &&
@@ -95,6 +96,7 @@ void Camera::follow(Component* _target, float _dt)
 			this->setY(this->getLimitY() - this->getHeight());
 		}
 	}
+	
 }
 
 //void Camera::load()

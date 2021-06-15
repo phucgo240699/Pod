@@ -57,6 +57,11 @@ SceneName Setting::getSceneName()
 	return this->sceneName;
 }
 
+float Setting::getCollisionSafeSpace()
+{
+	return this->collisionSafeSpace;
+}
+
 void Setting::setScreenMode(ScreenMode _screenMode)
 {
 	this->screenMode = _screenMode;
@@ -95,6 +100,11 @@ void Setting::setSceneName(SceneName _sceneName)
 void Setting::toggleDebugMode()
 {
 	this->debugMode = !(this->debugMode);
+}
+
+void Setting::setCollisionSafeSpace(float _value)
+{
+	this->collisionSafeSpace = _value;
 }
 
 void Setting::load()

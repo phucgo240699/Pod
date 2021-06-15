@@ -27,6 +27,7 @@ private:
 	Color* defaultBackgroundColorViewController = new Color(black);
 	bool debugMode = false;
 	SceneName sceneName = SunnyScene;
+	float collisionSafeSpace = 1;
 
 
 public:
@@ -44,6 +45,7 @@ public:
 	Color* getDefaultBackgroundColorViewController();
 	bool getDebugMode();
 	SceneName getSceneName();
+	float getCollisionSafeSpace();
 
 	// Setter
 	void setDt(float _dt);
@@ -54,8 +56,8 @@ public:
 	void setDefaultBackgroundColorViewController(Color* _color);
 	void setDebugMode(bool _debugMode);
 	void setSceneName(SceneName _sceneName);
-
 	void toggleDebugMode();
+	void setCollisionSafeSpace(float _value);
 
 	// Others
 	//void save();

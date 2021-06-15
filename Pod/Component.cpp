@@ -82,12 +82,12 @@ void Component::setY(float _y)
 
 void Component::setVx(float _vx)
 {
-	this->vx = _vx;
+	this->vx = round(_vx);
 }
 
 void Component::setVy(float _vy)
 {
-	this->vy = _vy;
+	this->vy = round(_vy);
 }
 
 void Component::setLimitX(float _limitX)

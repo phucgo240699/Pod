@@ -46,9 +46,9 @@ RECT Mario::getBounds()
 {
 	RECT r = RECT();
 	r.top = this->getY();
-	r.bottom = r.top + this->currentAnimation->getCurrentFrameHeight();
+	r.bottom = r.top + this->getHeight();
 	r.left = this->getX();
-	r.right = r.left + this->currentAnimation->getCurrentFrameWidth();
+	r.right = r.left + this->getWidth();
 
 	return r;
 }
@@ -65,7 +65,7 @@ float Mario::getWidth()
 
 float Mario::getHeight()
 {
-	return this->currentAnimation->getCurrentFrameHeight();
+	return this->currentAnimation->getCurrentFrameHeight() - Setting::getInstance()->getCollisionSafeSpace();
 }
 
 bool Mario::getIsStandOnSurface()
@@ -106,6 +106,7 @@ void Mario::Draw()
 	}
 
 	this->currentAnimation->Draw(this->texture, this->getPosition(), D3DXVECTOR2(translateX, translateY), this->getIsFlip(), D3DCOLOR_XRGB(255, 255, 255));
+
 	if (debugMode == Setting::getInstance()->getDebugMode()) {
 		Drawing::getInstance()->drawDebugBox(this->getBounds(), NULL, this->getPosition(), D3DXVECTOR2(translateX, translateY), false, D3DCOLOR_ARGB(128, 255, 255, 255));
 	}
