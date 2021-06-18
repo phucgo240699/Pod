@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="AnimationBundle.cpp" />
     <ClCompile Include="AppConfig.cpp" />
     <ClCompile Include="AppController.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -183,6 +184,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="AnimationBundle.h" />
     <ClInclude Include="AppConfig.h" />
     <ClInclude Include="AppController.h" />
     <ClInclude Include="Camera.h" />
@@ -194,6 +196,7 @@
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="FilePath.h" />
     <ClInclude Include="GiftBrick.h" />
+    <ClInclude Include="GiftBrickState.h" />
     <ClInclude Include="GoldenBrick.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="StaticAnim.h" />

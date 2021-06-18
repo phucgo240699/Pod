@@ -1,9 +1,9 @@
 #include "GiftBrick.h"
 
-Animation* GiftBrick::getAnimation()
-{
-	return this->animation;
-}
+//Animation* GiftBrick::getAnimation()
+//{
+//	return this->animation;
+//}
 
 GiftBrick::GiftBrick(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY) : Component(_x, _y, _vx, _vy, _limitX, _limitY)
 {
@@ -13,25 +13,9 @@ GiftBrick::GiftBrick(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX
 {
 }
 
-void GiftBrick::loadAnimation(vector<string> data)
+void GiftBrick::setAnimation(Animation* _animaiton)
 {
-	int animDelay = 0;
-	vector<RECT>* arr = new vector<RECT>();
-	for (int i = 0; i < data.size(); ++i) {
-		if (data[i][0] == '>') {
-			animDelay = stoi(data[i].substr(2, 1));
-			continue;
-		}
-		RECT r = RECT();
-		vector<int> frame = Tool::splitToVectorIntegerFrom(data[i], ',');
-		r.left = frame[0];
-		r.top = frame[1];
-		r.right = frame[0] + frame[2];
-		r.bottom = frame[1] + frame[3];
-		arr->push_back(r);
-	}
-
-	animation = new Animation(0, 0, animDelay, arr);
+	this->animation = new Animation(*_animaiton);
 }
 
 void GiftBrick::loadInfo(string line, char seperator)
@@ -44,7 +28,17 @@ void GiftBrick::loadInfo(string line, char seperator)
 	this->setVy(v[3]);
 }
 
+GiftBrickState GiftBrick::getState()
+{
+	return this->state;
+}
 
+
+
+void GiftBrick::setState(GiftBrickState _state)
+{
+	this->state = _state;
+}
 
 void GiftBrick::Update(float _dt)
 {

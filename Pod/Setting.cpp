@@ -109,22 +109,8 @@ void Setting::setCollisionSafeSpace(float _value)
 
 void Setting::load()
 {
-	string filePath = "";
-
-	switch (this->sceneName)
-	{
-	case WorldScene:
-		filePath = FilePath::getInstance()->world_map;
-		break;
-	case SunnyScene:
-		filePath = FilePath::getInstance()->sunny_map;
-		break;
-	default:
-		break;
-	}
-
 	fstream fs;
-	fs.open(filePath, ios::in);
+	fs.open(FilePath::getInstance()->settings, ios::in);
 	string line;
 	SectionFileType section = SECTION_NONE;
 	vector<string> v;
@@ -133,28 +119,23 @@ void Setting::load()
 		getline(fs, line);
 
 		if (line == "" || line[0] == '#') continue;
-		if (line == "<Settings>") {
-			section = SECTION_SETTING;
-			continue;
+
+		v = Tool::splitToVectorStringFrom(line, ',');
+
+		this->setDt(stof(v[0]));
+		this->setFPS(stof(v[1]));
+		this->setScreenWidth(stoi(v[2]));
+		this->setScreenHeight(stoi(v[3]));
+		this->setScreenMode(v[4] == "0" ? window : fullScreen);
+		this->setDefaultBackgroundColorViewController(new Color(Tool::getColorFromString(v[5])));
+		this->setDebugMode(v[6] == "1" ? true : false);
+		this->setCollisionSafeSpace(stoi(v[7]));
+
+		if (v[8] == "SunnyScene") {
+			setSceneName(SceneName::SunnyScene);
 		}
-		else if (line == "</Settings>") return;
-
-		switch (section)
-		{
-		case SECTION_SETTING:
-			v = Tool::splitToVectorStringFrom(line, ',');
-
-			this->setDt(stof(v[0]));
-			this->setFPS(stof(v[1]));
-			this->setScreenWidth(stoi(v[2]));
-			this->setScreenHeight(stoi(v[3]));
-			this->setScreenMode(v[4] == "0" ? window : fullScreen);
-			this->setDefaultBackgroundColorViewController(new Color(Tool::getColorFromString(v[5])));
-			this->setDebugMode(v[6] == "1" ? true : false);
-			
-			break;
-		default:
-			break;
+		else {
+			setSceneName(SceneName::WorldScene);
 		}
 	}
 

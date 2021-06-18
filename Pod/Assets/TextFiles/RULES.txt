@@ -1,2 +1,0 @@
-ID's Components in Grid
-0: Ground

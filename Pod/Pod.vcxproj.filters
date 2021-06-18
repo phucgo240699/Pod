@@ -231,6 +231,9 @@
     <ClCompile Include="GoldenBrick.cpp">
       <Filter>Source Files\Components\Map\GoldenBrick</Filter>
     </ClCompile>
+    <ClCompile Include="AnimationBundle.cpp">
+      <Filter>Source Files\System\Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tool.h">
@@ -337,6 +340,12 @@
     </ClInclude>
     <ClInclude Include="GoldenBrick.h">
       <Filter>Header Files\Components\Map\GoldenBrick</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationBundle.h">
+      <Filter>Header Files\System\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="GiftBrickState.h">
+      <Filter>Header Files\Components\Map\GiftBrick</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

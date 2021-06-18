@@ -10,6 +10,7 @@ void SunnyVC::viewDidLoad()
 	scoreBoard = new ScoreBoard(ImagePath::getInstance()->board, D3DCOLOR_XRGB(255, 0, 255));
 
 	this->adaptData();
+	this->adaptAnimationBundle();
 	this->adaptToGrid();
 }
 
@@ -302,14 +303,6 @@ void SunnyVC::adaptData()
 		else if (line == "</GiftBrickFrames>") {
 			section = SECTION_NONE;
 		}
-		else if (line == "<GiftBrickAnimation>") {
-			section = SECTION_GIFT_BRICK_ANIMATION;
-			continue;
-		}
-		else if (line == "</GiftBrickAnimation>") {
-			giftBrick->loadAnimation(data);
-			section = SECTION_NONE;
-		}
 		else if (line == "<ScoreBoard>") {
 			section = SECTION_SCORE_BOARD;
 			continue;
@@ -330,6 +323,14 @@ void SunnyVC::adaptData()
 		}
 		else if (line == "</GridMatrixId>") {
 			Grid::getInstance()->loadMatrixId(data, '>', '_', ',');
+			section = SECTION_NONE;
+		}
+		else if (line == "<AnimationBundle>") {
+			section = SECTION_ANIMATION_BUNDLE;
+			continue;
+		}
+		else if (line == "</AnimationBundle>") {
+			AnimationBundle::getInstance()->loadAnimations(data, '>', ',');
 			section = SECTION_NONE;
 		}
 
@@ -359,9 +360,6 @@ void SunnyVC::adaptData()
 		case SECTION_GIFT_BRICK_FRAMES:
 			giftBrick->loadInfo(line, ',');
 			break;
-		case SECTION_GIFT_BRICK_ANIMATION:
-			data.push_back(line);
-			break;
 		case SECTION_SCORE_BOARD:
 			scoreBoard->loadPosition(line, ',');
 			break;
@@ -376,12 +374,19 @@ void SunnyVC::adaptData()
 			break;
 		case SECTION_GRID_MATRIX_ID:
 			data.push_back(line);
+		case SECTION_ANIMATION_BUNDLE:
+			data.push_back(line);
 		default:
 			break;
 		}
 	}
 
 	fs.close();
+}
+
+void SunnyVC::adaptAnimationBundle()
+{
+	giftBrick->setAnimation(AnimationBundle::getInstance()->getAnimationAt(0));
 }
 
 void SunnyVC::adaptToGrid()

@@ -26,8 +26,8 @@ private:
 	ScreenMode screenMode = window;
 	Color* defaultBackgroundColorViewController = new Color(black);
 	bool debugMode = false;
-	SceneName sceneName = SunnyScene;
 	float collisionSafeSpace = 1;
+	SceneName sceneName = SunnyScene;
 
 
 public:
@@ -44,8 +44,8 @@ public:
 	ScreenMode getScreenMode();
 	Color* getDefaultBackgroundColorViewController();
 	bool getDebugMode();
-	SceneName getSceneName();
 	float getCollisionSafeSpace();
+	SceneName getSceneName();
 
 	// Setter
 	void setDt(float _dt);
@@ -55,9 +55,9 @@ public:
 	void setScreenMode(ScreenMode _screenMode);
 	void setDefaultBackgroundColorViewController(Color* _color);
 	void setDebugMode(bool _debugMode);
-	void setSceneName(SceneName _sceneName);
 	void toggleDebugMode();
 	void setCollisionSafeSpace(float _value);
+	void setSceneName(SceneName _sceneName);
 
 	// Others
 	//void save();

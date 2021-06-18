@@ -8,6 +8,7 @@
 #include "ScoreBoard.h"
 #include "StaticAnim.h"
 #include "GoldenBrick.h"
+#include "AnimationBundle.h"
 
 class SunnyVC : public ViewController
 {
@@ -35,6 +36,7 @@ public:
 	void viewWillRelease();
 
 	void adaptData();
+	void adaptAnimationBundle();
 	void adaptToGrid();
 
 
