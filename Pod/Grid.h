@@ -13,7 +13,7 @@ private:
 
 	// first vector layer is rows
 	// section vector layer is cols
-	vector<vector<unordered_set<Component*>>> cells;
+	vector<vector<vector<Component*>>> cells;
 
 	// id, (cellX1, cellY1, cellX2, cellY2, ...)
 	unordered_map<int, vector<pair<int, int>>> matrixId; // indicate which id in which cell;
@@ -23,7 +23,8 @@ public:
 	static Grid* getInstance();	  // 4. public function for client code usage
 
 	// Getter
-	vector<vector<unordered_set<Component*>>> getCells();
+	vector<vector<vector<Component*>>> getCells();
+	vector<Component*> getCell(int row, int col);
 	int getCellWidth();
 	int getCellHeight();
 

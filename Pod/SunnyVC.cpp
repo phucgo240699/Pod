@@ -35,9 +35,23 @@ void SunnyVC::viewWillUpdate(float _dt)
 		map->Update(_dt);
 	}
 	
-	if (giftBrick != NULL) {
+	/*if (giftBrick != NULL) {
 		giftBrick->Update(_dt);
+	}*/
+
+	// Check by cell in grid	
+	for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
+		for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+			if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
+
+			for (int k = 0; k < Grid::getInstance()->getCell(i, j).size(); ++k) {
+				if (13 <= Grid::getInstance()->getCell(i, j)[k]->getId() && Grid::getInstance()->getCell(i, j)[k]->getId() <= 31) {
+					Grid::getInstance()->getCell(i, j)[k]->Update(_dt);
+				}
+			}
+		}
 	}
+
 	if (scoreBoard != NULL) {
 		scoreBoard->Update(_dt);
 	}
@@ -51,24 +65,21 @@ void SunnyVC::viewDidUpdate(float _dt)
 {
 
 	// Check by cell in grid
-	int startRow = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight());
-	int endRow = floor((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
-	int startCol = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth());
-	int endCol = floor((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth());
-	this->mario->setIsStandOnSurface(false);
 
-	for (int i = startRow; i < endRow; ++i) {
-		for (int j = startCol; j < endCol; ++j) {
-			if (Grid::getInstance()->getCells()[i][j].size() == 0) continue;
+	if (this->mario->getIsStandOnSurface() == true) {
+		this->mario->setIsStandOnSurface(false);
+	}
 
-			unordered_set<Component*> components = Grid::getInstance()->getCells()[i][j];
-			unordered_set<Component*> ::iterator itr;
-			for (itr = components.begin(); itr != components.end(); ++itr) {
-				if (0 <= (*itr)->getId() && (*itr)->getId() <= 12) {
-					this->handleMarioGroundCollision((*itr), _dt);
+	for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
+		for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+			if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
+
+			for (int k = 0; k < Grid::getInstance()->getCell(i, j).size(); ++k) {
+				if (0 <= Grid::getInstance()->getCell(i, j)[k]->getId() && Grid::getInstance()->getCell(i, j)[k]->getId() <= 12) {
+					this->handleMarioGroundCollision(Grid::getInstance()->getCell(i, j)[k], _dt);
 				}
-				else {
-					this->handleMarioGoldenBrickCollision((*itr), _dt);
+				else if (13 <= Grid::getInstance()->getCell(i, j)[k]->getId() && Grid::getInstance()->getCell(i, j)[k]->getId() <= 31) {
+					this->handleMarioGoldenBrickCollision(Grid::getInstance()->getCell(i, j)[k], _dt);
 				}
 			}
 		}
@@ -94,12 +105,23 @@ void SunnyVC::viewDidRender()
 		if (map != NULL) {
 			map->Draw();
 		}
-		if (giftBrick != NULL) {
+		/*if (giftBrick != NULL) {
 			giftBrick->Draw(map->getTexture());
+		}*/
+		
+
+		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
+			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
+
+				for (int k = 0; k < Grid::getInstance()->getCell(i, j).size(); ++k) {
+					if (13 <= Grid::getInstance()->getCell(i, j)[k]->getId() && Grid::getInstance()->getCell(i, j)[k]->getId() <= 31) {
+						Grid::getInstance()->getCell(i, j)[k]->Draw(map->getTexture());
+					}
+				}
+			}
 		}
-		for (int i = 0; i < this->goldenBricks->size(); ++i) {
-			this->goldenBricks->at(i)->Draw(map->getTexture());
-		}
+
 		if (mario != NULL) {
 			mario->Draw();
 		}
@@ -196,14 +218,14 @@ void SunnyVC::handleMarioGoldenBrickCollision(Component* _goldenBrick, float _dt
 	else {
 		// if mario walk out of ground's top surface, it will drop
 		if (mario->getState() == WALKING || mario->getState() == STANDING) {
-				if (mario->getIsStandOnSurface() == false) {
-					if ((_goldenBrick->getX() <= mario->getBounds().right && mario->getBounds().right <= _goldenBrick->getBounds().right)
-						|| (_goldenBrick->getX() <= mario->getX() && mario->getX() <= _goldenBrick->getBounds().right)) { // this is check which ground that mario is standing on
-						if (mario->getBounds().bottom == _goldenBrick->getY() - Setting::getInstance()->getCollisionSafeSpace()) {
-							mario->setIsStandOnSurface(true);
-						}
+			if (mario->getIsStandOnSurface() == false) {
+				if ((_goldenBrick->getX() <= mario->getBounds().right && mario->getBounds().right <= _goldenBrick->getBounds().right)
+					|| (_goldenBrick->getX() <= mario->getX() && mario->getX() <= _goldenBrick->getBounds().right)) { // this is check which ground that mario is standing on
+					if (mario->getBounds().bottom == _goldenBrick->getY() - Setting::getInstance()->getCollisionSafeSpace()) {
+						mario->setIsStandOnSurface(true);
 					}
 				}
+			}
 		}
 	}
 }
@@ -386,7 +408,7 @@ void SunnyVC::adaptData()
 
 void SunnyVC::adaptAnimationBundle()
 {
-	giftBrick->setAnimation(AnimationBundle::getInstance()->getAnimationAt(0));
+	//giftBrick->setState(GiftBrickState::POPUP);
 }
 
 void SunnyVC::adaptToGrid()

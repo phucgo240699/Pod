@@ -2,12 +2,15 @@
 #include "Component.h"
 #include "Camera.h"
 #include "GiftBrickState.h"
+#include "AnimationBundle.h"
 
 class GiftBrick : public Component
 {
 private:
 	GiftBrickState state = FULL;
 	Animation* animation;
+
+	int topAnchor = 0;
 public:
 	GiftBrick(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY);
 	GiftBrick(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY);

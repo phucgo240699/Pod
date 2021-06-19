@@ -10,9 +10,14 @@ Grid* Grid::getInstance()
 	return instance;
 }
 
-vector<vector<unordered_set<Component*>>> Grid::getCells()
+vector<vector<vector<Component*>>> Grid::getCells()
 {
 	return this->cells;
+}
+
+vector<Component*> Grid::getCell(int row, int col)
+{
+	return this->cells[row][col];
 }
 
 int Grid::getCellWidth()
@@ -34,12 +39,12 @@ void Grid::loadInfo(string line, char seperator)
 	this->cellHeight = v[2];
 	this->cellWidth = v[3];
 
-	this->cells = vector<vector<unordered_set<Component*>>>();
+	this->cells = vector<vector<vector<Component*>>>();
 
 	for (int i = 0; i < this->totalRow; ++i) {
-		this->cells.push_back(vector<unordered_set<Component*>>());
+		this->cells.push_back(vector<vector<Component*>>());
 		for (int j = 0; j < this->totalCol; ++j) {
-			this->cells[i].push_back(unordered_set<Component*>());
+			this->cells[i].push_back(vector<Component*>());
 		}
 	}
 }
@@ -83,7 +88,7 @@ void Grid::add(Component* _component)
 		int y = pairs[i].second;
 		int x = pairs[i].first;
 
-		this->cells[y][x].insert(_component);
+		this->cells[y][x].push_back(_component);
 	}
 }
 

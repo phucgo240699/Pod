@@ -26,6 +26,7 @@ void GiftBrick::loadInfo(string line, char seperator)
 	this->setY(v[1]);
 	this->setVx(v[2]);
 	this->setVy(v[3]);
+	this->topAnchor = this->getY() - 12;
 }
 
 GiftBrickState GiftBrick::getState()
@@ -38,15 +39,61 @@ GiftBrickState GiftBrick::getState()
 void GiftBrick::setState(GiftBrickState _state)
 {
 	this->state = _state;
+	switch (_state)
+	{
+	case FULL:
+		this->animation = new Animation(*AnimationBundle::getInstance()->getAnimationAt(0));
+		break;
+	case POPUP:
+	case EMPTY:
+		this->animation = new Animation(*AnimationBundle::getInstance()->getAnimationAt(1));
+		break;
+	default:
+		break;
+	}
 }
 
 void GiftBrick::Update(float _dt)
 {
-	this->animation->Update(_dt);
+	//switch (state)
+	//{
+	//case FULL:
+	//	this->animation->Update(_dt);
+	//	break;
+	//case POPUP:
+	//	if (this->getY() - 1 >= topAnchor) {
+	//		this->plusY(-1);
+	//	}
+	//	/*if (this->animation->getCurrentIndexFrame() == this->animation->getTotalFrames() - 1) {
+	//		this->setState(GiftBrickState::EMPTY);
+	//	}*/
+	//	break;
+	//case EMPTY:
+	//	this->animation->Update(_dt);
+	//	break;
+	//default:
+	//	break;
+	//}
 }
 
 void GiftBrick::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
-	D3DXVECTOR3 position = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->getY() - Camera::getInstance()->getY(), 0);
-	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), &position);
+
+	//switch (state)
+	//{
+	//case FULL:
+	//	/*D3DXVECTOR3 position = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->getY() - Camera::getInstance()->getY(), 0);
+	//	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), &position);
+	//	break;*/
+	//case POPUP:
+	//	D3DXVECTOR3 position = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->getY() - Camera::getInstance()->getY(), 0);
+	//	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), &position);
+	//	break;
+	//case EMPTY:
+	//	break;
+	//default:
+	//	break;
+	//}
+	/*D3DXVECTOR3 position = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->getY() - Camera::getInstance()->getY(), 0);
+	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), &position);*/
 }
