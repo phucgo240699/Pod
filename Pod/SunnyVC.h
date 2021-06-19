@@ -15,11 +15,16 @@ class SunnyVC : public ViewController
 private:
 	Mario* mario;
 	Map* map;
+
+	int beginGroundId = 0, endGroundId = 12;
 	vector<Ground*>* grounds;
+
+	int beginGoldenBrickId = 13, endGoldenBrickId = 31;
 	vector<GoldenBrick*>* goldenBricks;
 	int componentIdStanded = 0; // this is the component that mario is standing on
 
-	GiftBrick* giftBrick;
+	int beginGiftBrickId = 32, endGiftBrickId = 35;
+	vector<GiftBrick*>* giftBricks;
 	ScoreBoard* scoreBoard;
 
 
@@ -42,4 +47,5 @@ public:
 
 	void handleMarioGroundCollision(Component* _ground, float _dt);
 	void handleMarioGoldenBrickCollision(Component* _goldenBrick, float _dt);
+	void handleMarioGiftBrickCollision(GiftBrick* _goldenBrick, float _dt);
 };

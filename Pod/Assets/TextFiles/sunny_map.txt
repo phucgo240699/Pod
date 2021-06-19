@@ -62,7 +62,7 @@
 
 <MarioInfo>
 #(x,y,limitX,limitY,state)
-0,0,2816,470,DROPPING
+100,0,2816,470,DROPPING
 </MarioInfo>
 
 <Grounds>
@@ -125,7 +125,12 @@
 </GoldenBrickAnimation>
 
 <GiftBrickFrames>
-176,352,16,16
+# (x, y, width, height, id)
+176,352,16,16,32
+192,352,16,16,33
+
+224,304,16,16,34
+240,304,16,16,35
 </GiftBrickFrames>
 
 <ScoreBoard>
@@ -236,6 +241,18 @@
 
 > 31
 16,3
+
+> 32
+1,3
+
+> 33
+1,3
+
+> 34
+1,3
+
+> 35
+1,3
 </GridMatrixId>
 
 <AnimationBundle>
@@ -245,7 +262,7 @@
 187,0,16,16
 204,0,16,16
 221,0,16,16
-> 0 0 2
+> 0 0 4
 
 # GiftBrick empty box
 238,0,16,16
@@ -256,7 +273,7 @@
 255,17,16,16
 255,34,16,16
 255,51,16,16
-> 2 0 2
+> 2 0 4
 
 # GiftBrick 100 coins
 102,34,16,16

@@ -1,21 +1,10 @@
 #include "Mario.h"
 
-//void Mario::setUpAnimations()
-//{
-//	this->animations = new vector<Animation*>();
-//
-//	this->animations->push_back(new Animation(0, 0, 2, FilePath::getInstance()->mario_standing));
-//	this->animations->push_back(new Animation(0, 0, 2, FilePath::getInstance()->mario_running));
-//	this->animations->push_back(new Animation(0, 0, 2, FilePath::getInstance()->mario_jumping_dropping));
-//}
-
 Mario::Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state) : MainCharacter(_x, _y, _vx, _vy, _limitX, _limitY)
 {
 	MainCharacter::MainCharacter(_x, _y, _vx, _vy, _limitX, _limitY);
 
 	this->texture = LoadTextureFromImage(_imagePath, _transcolor);
-	/*this->state = _state;
-	this->setState(_state);*/
 }
 
 Mario::Mario(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state) : MainCharacter(_position, _vx, _vy, _limitX, _limitY)
@@ -23,8 +12,6 @@ Mario::Mario(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float 
 	MainCharacter::MainCharacter(_position, _vx, _vy, _limitX, _limitY);
 
 	this->texture = LoadTextureFromImage(_imagePath, _transcolor);
-	/*this->state = _state;
-	this->setState(_state);*/
 }
 
 Animation* Mario::getCurrentAnimation()
@@ -152,15 +139,15 @@ void Mario::setState(MarioState _state)
 			this->currentAnimation = this->animations->at(2);
 			this->setTargetVy(0);
 			this->setVy(-5);
-			this->setAccelerationY(0.2);
+			this->setAccelerationY(0.14);
 		}
 
 		break;
 	case DROPPING:
 		if (this->getState() != DROPPING || this->currentAnimation == NULL) {
 			this->currentAnimation = this->animations->at(2);
-			this->setTargetVy(8);
-			this->setAccelerationY(0.4);
+			this->setTargetVy(6);
+			this->setAccelerationY(0.34);
 		}
 		break;
 	default:

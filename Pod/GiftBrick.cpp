@@ -13,10 +13,10 @@ GiftBrick::GiftBrick(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX
 {
 }
 
-void GiftBrick::setAnimation(Animation* _animaiton)
-{
-	this->animation = new Animation(*_animaiton);
-}
+//void GiftBrick::setAnimation(Animation* _animaiton)
+//{
+//	this->animation = new Animation(*_animaiton);
+//}
 
 void GiftBrick::loadInfo(string line, char seperator)
 {
@@ -24,8 +24,9 @@ void GiftBrick::loadInfo(string line, char seperator)
 
 	this->setX(v[0]);
 	this->setY(v[1]);
-	this->setVx(v[2]);
-	this->setVy(v[3]);
+	this->setWidth(v[2]);
+	this->setHeight(v[3]);
+	this->setId(v[4]);
 	this->topAnchor = this->getY() - 12;
 }
 
@@ -74,6 +75,7 @@ void GiftBrick::Update(float _dt)
 	//default:
 	//	break;
 	//}
+	this->animation->Update(_dt);
 }
 
 void GiftBrick::Draw(LPDIRECT3DTEXTURE9 _texture)
@@ -94,6 +96,6 @@ void GiftBrick::Draw(LPDIRECT3DTEXTURE9 _texture)
 	//default:
 	//	break;
 	//}
-	/*D3DXVECTOR3 position = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->getY() - Camera::getInstance()->getY(), 0);
-	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), &position);*/
+	D3DXVECTOR3 position = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->getY() - Camera::getInstance()->getY(), 0);
+	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), &position);
 }
