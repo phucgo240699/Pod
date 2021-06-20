@@ -378,6 +378,14 @@ void SunnyVC::adaptData()
 		else if (line == "</ScoreBoard>") {
 			section = SECTION_NONE;
 		}
+		else if (line == "<ScoreBoardFrames>") {
+			section = SECTION_sCORE_BOARD_FRAMES;
+			continue;
+		}
+		else if (line == "</ScoreBoardFrames>") {
+			scoreBoard->loadFrames(data, '-', ',');
+			section = SECTION_NONE;
+		}
 		else if (line == "<GridInfo>") {
 			section = SECTION_GRID_INFO;
 			continue;
@@ -430,6 +438,9 @@ void SunnyVC::adaptData()
 			break;
 		case SECTION_SCORE_BOARD:
 			scoreBoard->loadPosition(line, ',');
+			break;
+		case SECTION_sCORE_BOARD_FRAMES:
+			data.push_back(line);
 			break;
 		case SECTION_GOLDEN_BRICK_ANIMATION:
 			data.push_back(line);

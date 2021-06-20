@@ -134,8 +134,26 @@
 </GiftBrickFrames>
 
 <ScoreBoard>
-0,150
+# (x, y, moneyX, moneyY, pointX, pointY, timeX, timeY)
+0,150,133,12,20,52,125,20
 </ScoreBoard>
+
+<ScoreBoardFrames>
+# Main board
+MB-0,0,236,38
+
+# Character
+0-0,39,8,7
+1-9,39,8,7
+2-18,39,8,7
+3-27,39,8,7
+4-36,39,8,7
+5-45,39,8,7
+6-54,39,8,7
+7-63,39,8,7
+8-72,39,8,7
+9-81,39,8,7
+</ScoreBoardFrames>
 
 <GridInfo>
 # (totalRow, totalCol, cellHeight, cellWidth)
