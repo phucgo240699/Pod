@@ -27,6 +27,7 @@ void GiftBrick::loadInfo(string line, char seperator)
 	this->setWidth(v[2]);
 	this->setHeight(v[3]);
 	this->setId(v[4]);
+	this->giftId = v[5];
 
 	// Box
 	this->endBoxJumpUp = this->getY() - 12;
@@ -39,6 +40,11 @@ void GiftBrick::loadInfo(string line, char seperator)
 
 	// Points
 	this->pointY = this->getY() - 16;
+}
+
+int GiftBrick::getGiftId()
+{
+	return this->giftId;
 }
 
 GiftBrickState GiftBrick::getState()

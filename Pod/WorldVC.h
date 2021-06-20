@@ -15,11 +15,11 @@ private:
 	WMario* wMario;
 	WTurtle* wTurtle;
 
-	ScoreBoard* scoreBoard;
 public:
 	void viewReceiveKeyDown(vector<KeyType> _keyTypes);
 	void viewDidLoad();
 	void viewWillUpdate(float _dt);
+	void viewWillRender();
 	void viewDidRender();
 
 	void adaptData();

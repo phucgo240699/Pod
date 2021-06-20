@@ -50,6 +50,13 @@ void WTurtle::loadAnimation(vector<string> data, char endSeperator, char seperat
 
 void WTurtle::Update(float _dt)
 {
+	if (GetTickCount() - startTime < (2000 / Setting::getInstance()->getFPS())) {
+		return;
+	}
+	else {
+		startTime = GetTickCount();
+	}
+
 	this->animation->Update(_dt);
 
 	if (this->isFlip == true) { // move to left

@@ -21,7 +21,6 @@ void WorldVC::viewDidLoad()
 	helpLabel = new StaticAnim();
 	wMario = new WMario(0, 0, 0, 0, 0, 0);
 	wTurtle = new WTurtle(0, 0, 0, 0, 0, 0);
-	scoreBoard = new ScoreBoard(ImagePath::getInstance()->board, D3DCOLOR_XRGB(255, 0, 255));
 
 	this->adaptData();
 }
@@ -40,9 +39,7 @@ void WorldVC::viewWillUpdate(float _dt)
 		helpLabel->Update(_dt);
 	}
 
-	if (scoreBoard != NULL) {
-		scoreBoard->Update(_dt);
-	}
+	ScoreBoard::getInstance()->Update(_dt);
 
 	if (wTurtle != NULL) {
 		wTurtle->Update(_dt);
@@ -53,7 +50,7 @@ void WorldVC::viewWillUpdate(float _dt)
 	}
 }
 
-void WorldVC::viewDidRender()
+void WorldVC::viewWillRender()
 {
 	if (d3ddev->BeginScene()) {
 		// Clear backbuffer
@@ -73,9 +70,7 @@ void WorldVC::viewDidRender()
 			helpLabel->Draw(map->getTexture());
 		}
 
-		if (scoreBoard != NULL) {
-			scoreBoard->Draw();
-		}
+		ScoreBoard::getInstance()->Draw();
 
 		if (wTurtle != NULL) {
 			wTurtle->Draw(map->getTexture());
@@ -91,6 +86,10 @@ void WorldVC::viewDidRender()
 	}
 
 	d3ddev->Present(NULL, NULL, NULL, NULL);
+}
+
+void WorldVC::viewDidRender()
+{
 }
 
 void WorldVC::adaptData()
@@ -202,6 +201,15 @@ void WorldVC::adaptData()
 		else if (line == "</ScoreBoard>") {
 			section = SECTION_NONE;
 		}
+		else if (line == "<ScoreBoardFrames>") {
+			section = SECTION_sCORE_BOARD_FRAMES;
+			continue;
+		}
+		else if (line == "</ScoreBoardFrames>") {
+			ScoreBoard::getInstance()->loadFrames(data, '-', ',');
+			data.clear();
+			section = SECTION_NONE;
+		}
 		else if (line == "<WTurtleInfo>") {
 			section = SECTION_WTURTLE_INFO;
 			continue;
@@ -255,7 +263,10 @@ void WorldVC::adaptData()
 			data.push_back(line);
 			break;
 		case SECTION_SCORE_BOARD:
-			scoreBoard->loadPosition(line, ',');
+			ScoreBoard::getInstance()->loadInfo(line, ',');
+			break;
+		case SECTION_sCORE_BOARD_FRAMES:
+			data.push_back(line);
 			break;
 		case SECTION_WTURTLE_INFO:
 			wTurtle->loadInfo(line, ',');

@@ -25,7 +25,6 @@ private:
 
 	int beginGiftBrickId = 32, endGiftBrickId = 35;
 	vector<GiftBrick*>* giftBricks;
-	ScoreBoard* scoreBoard;
 
 
 	tuple<bool, float, vector<CollisionEdge>> mario_ground_collision;

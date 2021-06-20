@@ -179,6 +179,17 @@ public:
 		return positions;
 	}
 
+	static string getStringNumberFrom(int number, int length) {
+		string result;
+		string strNumber = to_string(number);
+
+		for (int i = 0; i < length - strNumber.size(); ++i) {
+			result.append("0");
+		}
+
+		return result.append(strNumber);
+	}
+
 	static EnumColor getColorFromString(string str) {
 		if (str == "pinkFF00FF") return pinkFF00FF;
 		if (str == "black") return black;

@@ -72,12 +72,12 @@ void Component::setPosition(D3DXVECTOR3* _position)
 
 void Component::setX(float _x)
 {
-	this->position->x = _x;
+	this->position->x = round(_x);
 }
 
 void Component::setY(float _y)
 {
-	this->position->y = _y;
+	this->position->y = round(_y);
 }
 
 void Component::setVx(float _vx)

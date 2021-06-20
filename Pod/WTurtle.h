@@ -8,6 +8,7 @@ private:
 	float leftAnchor = 0, rightAnchor = 0;
 
 	Animation* animation;
+	long startTime = GetTickCount();
 public:
 	// Init
 	WTurtle(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY);

@@ -125,17 +125,20 @@
 </GoldenBrickAnimation>
 
 <GiftBrickFrames>
-# (x, y, width, height, id)
-176,352,16,16,32
-192,352,16,16,33
+# (x, y, width, height, id, giftId)
+# giftId:
+# 1: 100 points
+# 0: mush room
+176,352,16,16,32,1
+192,352,16,16,33,1
 
-224,304,16,16,34
-240,304,16,16,35
+224,304,16,16,34,1
+240,304,16,16,35,1
 </GiftBrickFrames>
 
 <ScoreBoard>
-# (x, y, moneyX, moneyY, pointX, pointY, timeX, timeY)
-0,150,133,12,20,52,125,20
+# (x, y, coinX, coinY, pointX, pointY, timeX, timeY, coin, point, time)
+0,150,133,12,52,20,125,20,0,0,300
 </ScoreBoard>
 
 <ScoreBoardFrames>

@@ -7,7 +7,6 @@ void SunnyVC::viewDidLoad()
 	grounds = new vector<Ground*>();
 	goldenBricks = new vector<GoldenBrick*>();
 	giftBricks = new vector<GiftBrick*>();
-	scoreBoard = new ScoreBoard(ImagePath::getInstance()->board, D3DCOLOR_XRGB(255, 0, 255));
 
 	this->adaptData();
 	this->adaptAnimationBundle();
@@ -48,9 +47,8 @@ void SunnyVC::viewWillUpdate(float _dt)
 		}
 	}
 
-	if (scoreBoard != NULL) {
-		scoreBoard->Update(_dt);
-	}
+	ScoreBoard::getInstance()->Update(_dt);
+
 	if (mario != NULL) {
 		mario->Update(_dt);
 		Camera::getInstance()->follow(mario, _dt);
@@ -92,10 +90,6 @@ void SunnyVC::viewDidUpdate(float _dt)
 
 void SunnyVC::viewWillRender()
 {
-}
-
-void SunnyVC::viewDidRender()
-{
 	if (d3ddev->BeginScene()) {
 		// Clear backbuffer
 		d3ddev->Clear(0, NULL, D3DCLEAR_TARGET, Setting::getInstance()->getDefaultBackgroundColorViewController()->toD3DColor(), 1.0f, 0);
@@ -122,9 +116,7 @@ void SunnyVC::viewDidRender()
 			mario->Draw();
 		}
 
-		if (scoreBoard != NULL) {
-			scoreBoard->Draw();
-		}
+		ScoreBoard::getInstance()->Draw();
 
 		spriteHandler->End();
 
@@ -132,6 +124,10 @@ void SunnyVC::viewDidRender()
 	}
 
 	d3ddev->Present(NULL, NULL, NULL, NULL);
+}
+
+void SunnyVC::viewDidRender()
+{
 }
 
 void SunnyVC::viewWillRelease()
@@ -238,7 +234,13 @@ void SunnyVC::handleMarioGiftBrickCollision(GiftBrick* _goldenBrick, float _dt)
 				mario->setVy(0);
 				this->mario->setIsStandOnSurface(true);
 				this->componentIdStanded = _goldenBrick->getId();
-				_goldenBrick->setState(GiftBrickState::POPUPGIFTBRICK);
+				if (_goldenBrick->getState() == FULLGIFTBRICK) {
+					_goldenBrick->setState(GiftBrickState::POPUPGIFTBRICK);
+					if (_goldenBrick->getGiftId() == 1) {
+						ScoreBoard::getInstance()->plusCoin(1);
+						ScoreBoard::getInstance()->plusPoint(100);
+					}
+				}
 			}
 			else if (edge == bottomEdge) {
 				mario->setState(MarioState::STANDING);
@@ -383,7 +385,7 @@ void SunnyVC::adaptData()
 			continue;
 		}
 		else if (line == "</ScoreBoardFrames>") {
-			scoreBoard->loadFrames(data, '-', ',');
+			ScoreBoard::getInstance()->loadFrames(data, '-', ',');
 			section = SECTION_NONE;
 		}
 		else if (line == "<GridInfo>") {
@@ -437,7 +439,7 @@ void SunnyVC::adaptData()
 			data.push_back(line);
 			break;
 		case SECTION_SCORE_BOARD:
-			scoreBoard->loadPosition(line, ',');
+			ScoreBoard::getInstance()->loadInfo(line, ',');
 			break;
 		case SECTION_sCORE_BOARD_FRAMES:
 			data.push_back(line);
