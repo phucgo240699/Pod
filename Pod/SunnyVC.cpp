@@ -238,7 +238,7 @@ void SunnyVC::handleMarioGiftBrickCollision(GiftBrick* _goldenBrick, float _dt)
 				mario->setVy(0);
 				this->mario->setIsStandOnSurface(true);
 				this->componentIdStanded = _goldenBrick->getId();
-				_goldenBrick->setState(GiftBrickState::EMPTY);
+				_goldenBrick->setState(GiftBrickState::POPUPGIFTBRICK);
 			}
 			else if (edge == bottomEdge) {
 				mario->setState(MarioState::STANDING);
@@ -471,7 +471,7 @@ void SunnyVC::adaptToGrid()
 
 	// Gift Bricks
 	for (int i = 0; i < this->giftBricks->size(); ++i) {
-		this->giftBricks->at(i)->setState(GiftBrickState::FULL);
+		this->giftBricks->at(i)->setState(GiftBrickState::FULLGIFTBRICK);
 		Grid::getInstance()->add(this->giftBricks->at(i));
 	}
 }

@@ -138,7 +138,7 @@ void Mario::setState(MarioState _state)
 		if (this->getState() != JUMPING || this->currentAnimation == NULL) {
 			this->currentAnimation = this->animations->at(2);
 			this->setTargetVy(0);
-			this->setVy(-5);
+			this->setVy(-5.4);
 			this->setAccelerationY(0.14);
 		}
 

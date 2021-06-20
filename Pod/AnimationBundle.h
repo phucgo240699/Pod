@@ -7,7 +7,7 @@ private:
 	AnimationBundle() = default; // 1.Don't public constructor function
 	static AnimationBundle* instance; // 2. static private instance
 
-	vector<Animation*>* animations;
+	vector<Animation>* animations;
 
 public:
 	AnimationBundle(const AnimationBundle&) = delete; // 3. delete copy constructor
@@ -16,6 +16,6 @@ public:
 
 	void loadAnimations(vector<string> data, char endSperator, char seperator);
 
-	Animation* getAnimationAt(int index);
+	Animation getAnimationAt(int index);
 };
 

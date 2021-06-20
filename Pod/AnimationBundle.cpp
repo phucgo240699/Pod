@@ -15,16 +15,17 @@ void AnimationBundle::loadAnimations(vector<string> data, char endSperator, char
 	int id = 0;
 	int startIndexFrame = 0;
 	int animDelay = 0;
-	this->animations = new vector<Animation*>();
+	this->animations = new vector<Animation>();
 	vector<RECT>* frames = new vector<RECT>();
 
 	for (int i = 0; i < data.size(); ++i) {
 		if (data[i][0] == '>') {
-			id = stoi(data[i].substr(2, 1));
-			startIndexFrame = stoi(data[i].substr(4, 1));
-			animDelay = stoi(data[i].substr(6, 1));
+			vector<string> v = Tool::splitToVectorStringFrom(data[i], ' ');
+			id = stoi(v[1]);
+			startIndexFrame = stoi(v[2]);
+			animDelay = stoi(v[3]);
 
-			this->animations->push_back(new Animation(id, startIndexFrame, animDelay, frames));
+			this->animations->push_back(Animation(id, startIndexFrame, animDelay, frames));
 			frames = new vector<RECT>();
 
 			continue;
@@ -33,7 +34,7 @@ void AnimationBundle::loadAnimations(vector<string> data, char endSperator, char
 	}
 }
 
-Animation* AnimationBundle::getAnimationAt(int index)
+Animation AnimationBundle::getAnimationAt(int index)
 {
 	return this->animations->at(index);
 }

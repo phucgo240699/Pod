@@ -27,7 +27,18 @@ void GiftBrick::loadInfo(string line, char seperator)
 	this->setWidth(v[2]);
 	this->setHeight(v[3]);
 	this->setId(v[4]);
-	this->topAnchor = this->getY() - 12;
+
+	// Box
+	this->endBoxJumpUp = this->getY() - 12;
+	this->beginBoxJumpUp = this->getY();
+
+	// Coin
+	this->coinY = this->getY() - 16;
+	this->beginCoinJumpUp = this->getY() - 16;
+	this->endCoinJumpUp = this->getY() - 48;
+
+	// Points
+	this->pointY = this->getY() - 16;
 }
 
 GiftBrickState GiftBrick::getState()
@@ -39,15 +50,29 @@ GiftBrickState GiftBrick::getState()
 
 void GiftBrick::setState(GiftBrickState _state)
 {
-	this->state = _state;
 	switch (_state)
 	{
-	case FULL:
-		this->animation = new Animation(*AnimationBundle::getInstance()->getAnimationAt(0));
+	case FULLGIFTBRICK:
+		if (this->getState() != FULLGIFTBRICK || this->boxAnimation == NULL) {
+			this->boxAnimation = new Animation(AnimationBundle::getInstance()->getAnimationAt(0));
+			this->state = _state;
+		}
 		break;
-	case POPUP:
-	case EMPTY:
-		this->animation = new Animation(*AnimationBundle::getInstance()->getAnimationAt(1));
+	case POPUPGIFTBRICK:
+		if (this->getState() == FULLGIFTBRICK) {
+			this->boxAnimation = new Animation(AnimationBundle::getInstance()->getAnimationAt(1));
+			this->coinAnimation = new Animation(AnimationBundle::getInstance()->getAnimationAt(2));
+			this->pointAnimation = new Animation(AnimationBundle::getInstance()->getAnimationAt(3));
+			this->state = _state;
+		}
+		break;
+	case EMPTYGIFTBRICK:
+		if (this->getState() == POPUPGIFTBRICK) {
+			this->boxAnimation = new Animation(AnimationBundle::getInstance()->getAnimationAt(1));
+			this->coinAnimation = NULL;
+			this->pointAnimation = NULL;
+			this->state = _state;
+		}
 		break;
 	default:
 		break;
@@ -56,46 +81,83 @@ void GiftBrick::setState(GiftBrickState _state)
 
 void GiftBrick::Update(float _dt)
 {
-	//switch (state)
-	//{
-	//case FULL:
-	//	this->animation->Update(_dt);
-	//	break;
-	//case POPUP:
-	//	if (this->getY() - 1 >= topAnchor) {
-	//		this->plusY(-1);
-	//	}
-	//	/*if (this->animation->getCurrentIndexFrame() == this->animation->getTotalFrames() - 1) {
-	//		this->setState(GiftBrickState::EMPTY);
-	//	}*/
-	//	break;
-	//case EMPTY:
-	//	this->animation->Update(_dt);
-	//	break;
-	//default:
-	//	break;
-	//}
-	this->animation->Update(_dt);
+	this->boxAnimation->Update(_dt);
+
+	if (this->getState() == POPUPGIFTBRICK) {
+		this->coinAnimation->Update(_dt);
+
+		// Box
+		if (isBoxDropDown == false) {
+			if (this->getY() - 2 >= endBoxJumpUp) {
+				this->plusY(-2);
+
+			}
+			else {
+				isBoxDropDown = true;
+				this->setY(endBoxJumpUp);
+			}
+		}
+		else {
+			if (this->getY() + 2 <= beginBoxJumpUp) {
+				this->plusY(2);
+			}
+			else {
+				if (this->getY() != beginBoxJumpUp) {
+					this->setY(beginBoxJumpUp);
+				}
+			}
+		}
+
+		// Coin
+		if (isCoinDropDown == false) {
+			if (this->coinY - 4 >= endCoinJumpUp) {
+				this->coinY -= 4;
+			}
+			else {
+				isCoinDropDown = true;
+				this->coinY = endCoinJumpUp;
+			}
+		}
+		else {
+			if (this->coinY + 4 <= beginCoinJumpUp) {
+				this->coinY += 4;
+			}
+			else {
+				if (this->coinY != beginCoinJumpUp) {
+					this->coinY = beginCoinJumpUp;
+				}
+				this->isPointsStartPopUp = true;
+			}
+		}
+
+		if (isPointsStartPopUp) {
+			if (this->pointY - 2 >= this->endCoinJumpUp) {
+				this->pointY -= 2;
+			}
+			else {
+				isPointsStartPopUp = false;
+				this->pointY = endCoinJumpUp;
+				this->setState(GiftBrickState::EMPTYGIFTBRICK);
+			}
+		}
+	}
+
+	
 }
 
 void GiftBrick::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
-
-	//switch (state)
-	//{
-	//case FULL:
-	//	/*D3DXVECTOR3 position = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->getY() - Camera::getInstance()->getY(), 0);
-	//	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), &position);
-	//	break;*/
-	//case POPUP:
-	//	D3DXVECTOR3 position = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->getY() - Camera::getInstance()->getY(), 0);
-	//	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), &position);
-	//	break;
-	//case EMPTY:
-	//	break;
-	//default:
-	//	break;
-	//}
 	D3DXVECTOR3 position = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->getY() - Camera::getInstance()->getY(), 0);
-	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), &position);
+	Drawing::getInstance()->draw(_texture, this->boxAnimation->getCurrentFrame(), &position);
+
+	if (this->getState() == POPUPGIFTBRICK) {
+		if (isPointsStartPopUp == false) {
+			D3DXVECTOR3 position = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->coinY - Camera::getInstance()->getY(), 0);
+			Drawing::getInstance()->draw(_texture, this->coinAnimation->getCurrentFrame(), &position);
+		}
+		else {
+			D3DXVECTOR3 position = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->pointY - Camera::getInstance()->getY(), 0);
+			Drawing::getInstance()->draw(_texture, this->pointAnimation->getCurrentFrame(), &position);
+		}
+	}
 }

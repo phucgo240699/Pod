@@ -1,5 +1,5 @@
 #pragma once
 
 enum GiftBrickState {
-	FULL, POPUP, EMPTY,
+	FULLGIFTBRICK, POPUPGIFTBRICK, EMPTYGIFTBRICK,
 };

@@ -7,16 +7,18 @@
 class GiftBrick : public Component
 {
 private:
-	GiftBrickState state = FULL;
-	Animation* animation;
+	GiftBrickState state = FULLGIFTBRICK;
+	Animation* boxAnimation, * coinAnimation, * pointAnimation;
 
-	int topAnchor = 0;
+	int beginBoxJumpUp, endBoxJumpUp;
+	int beginCoinJumpUp, endCoinJumpUp, coinY, pointY;
+	bool isBoxDropDown = false, isCoinDropDown = false, isPointsStartPopUp = false;	
 public:
 	GiftBrick(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY);
 	GiftBrick(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY);
 
 	//void loadAnimation(vector<string> data);
-	void setAnimation(Animation* _animaiton);
+	//void setAnimation(Animation* _animaiton);
 	void loadInfo(string line, char seperator);
 
 	// Getter
