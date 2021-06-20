@@ -153,14 +153,12 @@
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AnimationBundle.cpp" />
-    <ClCompile Include="AppConfig.cpp" />
     <ClCompile Include="AppController.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Drawing.cpp" />
     <ClCompile Include="dxgraphics.cpp" />
-    <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="FilePath.cpp" />
     <ClCompile Include="GiftBrick.cpp" />
     <ClCompile Include="GoldenBrick.cpp" />
@@ -185,7 +183,6 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AnimationBundle.h" />
-    <ClInclude Include="AppConfig.h" />
     <ClInclude Include="AppController.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CollisionEdge.h" />
@@ -193,7 +190,6 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="Drawing.h" />
     <ClInclude Include="dxgraphics.h" />
-    <ClInclude Include="FileManager.h" />
     <ClInclude Include="FilePath.h" />
     <ClInclude Include="GiftBrick.h" />
     <ClInclude Include="GiftBrickState.h" />

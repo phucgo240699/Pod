@@ -1,5 +1,4 @@
 #pragma once
-#include "FileManager.h"
 #include "Drawing.h"
 
 using namespace std;
@@ -14,7 +13,6 @@ public:
 	// Init
 	Animation(int _id, int _indexFrame, int _animDelay);
 	Animation(int _id, int _indexFrame, int _animDelay, vector<RECT>* _frames);
-	Animation(int _id, int _indexFrame, int _animDelay, string filePath);
 
 	// Getter
 	int getId();

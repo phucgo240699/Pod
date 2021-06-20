@@ -15,7 +15,7 @@ class Component {
 protected:
 	D3DXVECTOR3* position;
 	float vx, vy;
-	//float currentVx, currentVy;
+
 	float limitX, limitY;
 	float width, height;
 	int id;

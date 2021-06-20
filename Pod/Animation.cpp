@@ -18,15 +18,6 @@ Animation::Animation(int _id, int _indexFrame, int _animDelay, vector<RECT>* _fr
 	this->frames = _frames;
 }
 
-Animation::Animation(int _id, int _indexFrame, int _animDelay, string filePath)
-{
-	this->id = _id;
-	this->currentIndexFrame = _indexFrame;
-	this->animDelay = _animDelay;
-	this->animCount = 0;
-	this->frames = FileManager::getInstance()->getFramesFrom(filePath, ',');
-}
-
 int Animation::getId()
 {
 	return this->id;

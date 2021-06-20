@@ -1,5 +1,4 @@
-	#pragma once
-#include <vector>
+#pragma once
 #include "Setting.h"
 #include "MainCharacter.h"
 #include "KeyType.h"

@@ -6,6 +6,7 @@ Setting* Setting::getInstance()
 {
 	if (Setting::instance == nullptr) {
 		instance = new Setting();
+		instance->load();
 	}
 	return instance;
 }
@@ -141,46 +142,3 @@ void Setting::load()
 
 	fs.close();
 }
-
-//void Setting::load(string line, char seperator)
-//{
-//	vector<string> settings = Tool::splitToVectorStringFrom(line, seperator);
-//	this->dt = stof(settings[0]);
-//	this->fps = stoi(settings[1]);
-//	this->screenWidth = stoi(settings[2]);
-//	this->screenHeight = stoi(settings[3]);
-//	this->screenMode = settings[4] == "0" ? window : fullScreen;
-//	this->defaultBackgroundColorViewController = new Color(Tool::getColorFromString(settings[5]));
-//	this->debugMode = settings[6] == "1" ? true : false;
-//}
-
-//void Setting::save()
-//{
-//	string settingsStr = "";
-//	settingsStr += to_string(this->dt);
-//	settingsStr += ',';
-//	settingsStr += to_string(this->fps);
-//	settingsStr += ",";
-//	settingsStr += to_string(this->screenWidth);
-//	settingsStr += ",";
-//	settingsStr += to_string(this->screenHeight);
-//	settingsStr += (',' + string((this->screenMode == window) ? "0" : "1")); // 0: window		1: fullscreen
-//	settingsStr += (',' + Tool::getStringFromColor(this->defaultBackgroundColorViewController->getValue()));
-//
-//	FileManager::getInstance()->writeStringToTextFile(FilePath::getInstance()->setting, settingsStr);
-//}
-
-//void Setting::setRootImagesFolder(string _path)
-//{
-//	this->rootImagesFolder = _path;
-//}
-//
-//void Setting::setRootSoundsFolder(string _path)
-//{
-//	this->rootSoundsFolder = _path;
-//}
-//
-//void Setting::setRootTextFilesFolder(string _path)
-//{
-//	this->rootTextFileFolder = _path;
-//}

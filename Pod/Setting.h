@@ -1,9 +1,10 @@
 #pragma once
 #include "Tool.h"
-#include "FileManager.h"
 #include "string"
 #include "SectionFile.h"
 #include "SceneName.h"
+#include "FilePath.h"
+#include <fstream>
 
 using namespace std;
 

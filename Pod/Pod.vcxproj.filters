@@ -150,9 +150,6 @@
     <ClCompile Include="Color.cpp">
       <Filter>Source Files\System\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="FileManager.cpp">
-      <Filter>Source Files\System\Utilities</Filter>
-    </ClCompile>
     <ClCompile Include="Component.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
@@ -163,9 +160,6 @@
       <Filter>Source Files\ViewController</Filter>
     </ClCompile>
     <ClCompile Include="AppController.cpp">
-      <Filter>Source Files\System\AppController</Filter>
-    </ClCompile>
-    <ClCompile Include="AppConfig.cpp">
       <Filter>Source Files\System\AppController</Filter>
     </ClCompile>
     <ClCompile Include="Mario.cpp">
@@ -245,9 +239,6 @@
     <ClInclude Include="Color.h">
       <Filter>Header Files\System\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="FileManager.h">
-      <Filter>Header Files\System\Utilities</Filter>
-    </ClInclude>
     <ClInclude Include="Component.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
@@ -255,9 +246,6 @@
       <Filter>Header Files\ViewController</Filter>
     </ClInclude>
     <ClInclude Include="AppController.h">
-      <Filter>Header Files\System\AppController</Filter>
-    </ClInclude>
-    <ClInclude Include="AppConfig.h">
       <Filter>Header Files\System\AppController</Filter>
     </ClInclude>
     <ClInclude Include="Mario.h">

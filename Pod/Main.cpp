@@ -1,10 +1,10 @@
 // source code Windows
 
-#include"AppConfig.h"
+#include "AppController.h"
 
-AppConfig* appConfig = new AppConfig();
-AppController* appController = appConfig->appController;
-Setting* setting = appConfig->setting;
+//AppConfig* appConfig = new AppConfig();
+AppController* appController = new AppController();
+Setting* setting = Setting::getInstance();
 
 LPCWSTR APP_TITLE = L"Pod";
 

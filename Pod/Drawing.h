@@ -1,5 +1,6 @@
 #pragma once
 #include "dxgraphics.h"
+#include "ImagePath.h"
 
 
 // Singleton
