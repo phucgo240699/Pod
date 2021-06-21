@@ -32,7 +32,7 @@ void ScoreBoard::setTime(int _time)
 void ScoreBoard::loadInfo(string line, char seperator)
 {
 	vector<int> v = Tool::splitToVectorIntegerFrom(line, seperator);
-	this->position = new D3DXVECTOR3(v[0], v[1], 0);
+	this->position = D3DXVECTOR3(v[0], v[1], 0);
 	this->coinX = v[2];
 	this->coinY = v[3];
 	this->pointX = v[4];
@@ -56,10 +56,37 @@ void ScoreBoard::Update(float _dt)
 
 void ScoreBoard::Draw()
 {
- 	Drawing::getInstance()->draw(this->texture, this->getFrame("MB"), this->position);
+ 	Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame("MB"), this->position);
 	this->DrawCoin();
 	this->DrawPoint();
 	this->DrawTime();
+}
+
+void ScoreBoard::DrawCoin()
+{
+	string str = Tool::getStringNumberFrom(coin, 2);
+
+	for (int i = 0; i < str.size(); ++i) {
+		Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame(str.substr(i, 1)), D3DXVECTOR3(this->position.x + coinX + i * 8, this->position.y + coinY, 0));
+	}
+}
+
+void ScoreBoard::DrawPoint()
+{
+	string str = Tool::getStringNumberFrom(point, 7);
+
+	for (int i = 0; i < str.size(); ++i) {
+		Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame(str.substr(i, 1)), D3DXVECTOR3(this->position.x + pointX + i * 8, this->position.y + pointY, 0));
+	}
+}
+
+void ScoreBoard::DrawTime()
+{
+	string str = Tool::getStringNumberFrom(time, 3);
+
+	for (int i = 0; i < str.size(); ++i) {
+		Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame(str.substr(i, 1)), D3DXVECTOR3(this->position.x + timeX + i * 8, this->position.y + timeY, 0));
+	}
 }
 
 RECT ScoreBoard::getFrame(string keyword)
@@ -72,15 +99,6 @@ void ScoreBoard::loadFrames(vector<string> data, char keywordSeperator, char sep
 	for (int i = 0; i < data.size(); ++i) {
 		vector<string> portion = Tool::splitToVectorStringFrom(data[i], keywordSeperator);
 		frames[portion[0]] = Tool::getRECT(portion[1], seperator);
-	}
-}
-
-void ScoreBoard::DrawCoin()
-{
-	string str = Tool::getStringNumberFrom(coin, 2);
-
-	for (int i = 0; i < str.size(); ++i) {
-		Drawing::getInstance()->draw(this->texture, this->getFrame(str.substr(i, 1)), new D3DXVECTOR3(this->position->x + coinX + i * 8, this->position->y + coinY, 0));
 	}
 }
 
@@ -98,22 +116,4 @@ void ScoreBoard::plusCoin(int _value)
 		throw "Value must be greater than or equal than zero";
 	}
 	this->coin += _value;
-}
-
-void ScoreBoard::DrawPoint()
-{
-	string str = Tool::getStringNumberFrom(point, 7);
-
-	for (int i = 0; i < str.size(); ++i) {
-		Drawing::getInstance()->draw(this->texture, this->getFrame(str.substr(i, 1)), new D3DXVECTOR3(this->position->x + pointX + i * 8, this->position->y + pointY, 0));
-	}
-}
-
-void ScoreBoard::DrawTime()
-{
-	string str = Tool::getStringNumberFrom(time, 3);
-
-	for (int i = 0; i < str.size(); ++i) {
-		Drawing::getInstance()->draw(this->texture, this->getFrame(str.substr(i, 1)), new D3DXVECTOR3(this->position->x + timeX + i * 8, this->position->y + timeY, 0));
-	}
 }

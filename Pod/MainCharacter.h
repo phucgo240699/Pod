@@ -9,7 +9,7 @@ public:
 
 	// Init
 	MainCharacter(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY);
-	MainCharacter(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY);
+	MainCharacter(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _limitY);
 
 	// De Init
 	~MainCharacter();

@@ -10,7 +10,7 @@ private:
 	static ScoreBoard* instance; // 2. static private instance
 
 	LPDIRECT3DTEXTURE9 texture;
-	D3DXVECTOR3* position;
+	D3DXVECTOR3 position;
 	unordered_map<string, RECT> frames;
 
 	long startTime;

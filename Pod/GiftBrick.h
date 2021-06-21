@@ -17,7 +17,7 @@ private:
 	int giftId;
 public:
 	GiftBrick(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY);
-	GiftBrick(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY);
+	GiftBrick(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _limitY);
 
 	int getGiftId();
 

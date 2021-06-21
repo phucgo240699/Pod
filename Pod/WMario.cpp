@@ -5,7 +5,7 @@ WMario::WMario(float _x, float _y, float _vx, float _vy, float _limitX, float _l
 	
 }
 
-WMario::WMario(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY) : MainCharacter(_position, _vx, _vy, _limitX, _limitY)
+WMario::WMario(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _limitY) : MainCharacter(_position, _vx, _vy, _limitX, _limitY)
 {
 }
 
@@ -127,7 +127,7 @@ void WMario::Update(float _dt)
 void WMario::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
 	D3DXVECTOR3 pos = D3DXVECTOR3(this->getX() + this->borderWidth, this->getY() + this->borderWidth, 0);
-	this->animation->Draw(_texture, this->animation->getCurrentFrame(), &pos);
+	this->animation->DrawWithoutCamera(_texture, this->animation->getCurrentFrame(), pos);
 }
 
 void WMario::onKeyDown(vector<KeyType> _keyTypes)

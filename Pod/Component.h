@@ -1,6 +1,5 @@
 #pragma once
 #include "Color.h"
-#include "Drawing.h"
 #include "KeyType.h"
 #include "CollisionEdge.h"
 #include "MarioState.h"
@@ -13,7 +12,7 @@ using namespace std;
 
 class Component {
 protected:
-	D3DXVECTOR3* position;
+	D3DXVECTOR3 position;
 	float vx, vy;
 
 	float limitX, limitY;
@@ -23,10 +22,10 @@ protected:
 public:	
 	// Init
 	Component(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id = 0);
-	Component(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY, int _id = 0);
+	Component(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _limitY, int _id = 0);
 
 	// Getter
-	D3DXVECTOR3* getPosition();
+	D3DXVECTOR3 getPosition();
 	float getX();
 	float getY();
 	float getVx();
@@ -36,7 +35,7 @@ public:
 	int getId();
 
 	// Settter
-	void setPosition(D3DXVECTOR3* _position);
+	void setPosition(D3DXVECTOR3 _position);
 	void setX(float _x);
 	void setY(float _y);
 	void setVx(float _vx);

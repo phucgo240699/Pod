@@ -4,7 +4,7 @@ GoldenBrick::GoldenBrick(float _x, float _y, float _vx, float _vy, float _limitX
 {
 }
 
-GoldenBrick::GoldenBrick(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY, int _id) : Component(_position, _vx, _vy, _limitX, _limitY)
+GoldenBrick::GoldenBrick(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _limitY, int _id) : Component(_position, _vx, _vy, _limitX, _limitY)
 {
 }
 
@@ -47,6 +47,8 @@ void GoldenBrick::Update(float _dt)
 
 void GoldenBrick::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
-	D3DXVECTOR3 position = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->getY() - Camera::getInstance()->getY(), 0);
-	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), &position);
+	/*D3DXVECTOR3 position = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->getY() - Camera::getInstance()->getY(), 0);
+	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), &position);*/
+
+	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), this->getPosition());
 }

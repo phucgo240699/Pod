@@ -17,5 +17,12 @@ public:
 	void loadAnimations(vector<string> data, char endSperator, char seperator);
 
 	Animation getAnimationAt(int index);
+	Animation getFullGiftBrick();
+	Animation getEmptyGiftBrick();
+	Animation getCoin();
+	Animation get100Points();
+	Animation getGoombaMoving();
+	Animation getTrampledGoomba();
+
 };
 

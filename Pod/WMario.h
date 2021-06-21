@@ -16,7 +16,7 @@ private:
 	char limitSceneMoving = '1';
 public:
 	WMario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY);
-	WMario(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY);
+	WMario(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _limitY);
 
 	// Getter
 	float getWidth();

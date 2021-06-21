@@ -4,7 +4,7 @@ WTurtle::WTurtle(float _x, float _y, float _vx, float _vy, float _limitX, float 
 {
 }
 
-WTurtle::WTurtle(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY) : Component(_position, _vx, _vy, _limitX, _limitY)
+WTurtle::WTurtle(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _limitY) : Component(_position, _vx, _vy, _limitX, _limitY)
 {
 }
 
@@ -80,5 +80,5 @@ void WTurtle::Update(float _dt)
 
 void WTurtle::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
-	Drawing::getInstance()->draw(_texture, animation->getCurrentFrame(), NULL, this->getPosition(), D3DXVECTOR2(0,0), isFlip);
+	Drawing::getInstance()->drawWithoutCamera(_texture, animation->getCurrentFrame(), NULL, this->getPosition(), D3DXVECTOR2(0,0), isFlip);
 }

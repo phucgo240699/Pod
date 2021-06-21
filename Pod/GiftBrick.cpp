@@ -1,22 +1,12 @@
 #include "GiftBrick.h"
 
-//Animation* GiftBrick::getAnimation()
-//{
-//	return this->animation;
-//}
-
 GiftBrick::GiftBrick(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY) : Component(_x, _y, _vx, _vy, _limitX, _limitY)
 {
 }
 
-GiftBrick::GiftBrick(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY) : Component(_position, _vx, _vy, _limitX, _limitY)
+GiftBrick::GiftBrick(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _limitY) : Component(_position, _vx, _vy, _limitX, _limitY)
 {
 }
-
-//void GiftBrick::setAnimation(Animation* _animaiton)
-//{
-//	this->animation = new Animation(*_animaiton);
-//}
 
 void GiftBrick::loadInfo(string line, char seperator)
 {
@@ -60,15 +50,15 @@ void GiftBrick::setState(GiftBrickState _state)
 	{
 	case FULLGIFTBRICK:
 		if (this->getState() != FULLGIFTBRICK || this->boxAnimation == NULL) {
-			this->boxAnimation = new Animation(AnimationBundle::getInstance()->getAnimationAt(0));
+			this->boxAnimation = new Animation(AnimationBundle::getInstance()->getFullGiftBrick());
 			this->state = _state;
 		}
 		break;
 	case POPUPGIFTBRICK:
 		if (this->getState() == FULLGIFTBRICK) {
-			this->boxAnimation = new Animation(AnimationBundle::getInstance()->getAnimationAt(1));
-			this->coinAnimation = new Animation(AnimationBundle::getInstance()->getAnimationAt(2));
-			this->pointAnimation = new Animation(AnimationBundle::getInstance()->getAnimationAt(3));
+			this->boxAnimation = new Animation(AnimationBundle::getInstance()->getEmptyGiftBrick());
+			this->coinAnimation = new Animation(AnimationBundle::getInstance()->getCoin());
+			this->pointAnimation = new Animation(AnimationBundle::getInstance()->get100Points());
 			this->state = _state;
 		}
 		break;
@@ -153,7 +143,7 @@ void GiftBrick::Update(float _dt)
 
 void GiftBrick::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
-	D3DXVECTOR3 position = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->getY() - Camera::getInstance()->getY(), 0);
+	/*D3DXVECTOR3 position = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->getY() - Camera::getInstance()->getY(), 0);
 	Drawing::getInstance()->draw(_texture, this->boxAnimation->getCurrentFrame(), &position);
 
 	if (this->getState() == POPUPGIFTBRICK) {
@@ -164,6 +154,17 @@ void GiftBrick::Draw(LPDIRECT3DTEXTURE9 _texture)
 		else {
 			D3DXVECTOR3 position = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->pointY - Camera::getInstance()->getY(), 0);
 			Drawing::getInstance()->draw(_texture, this->pointAnimation->getCurrentFrame(), &position);
+		}
+	}*/
+
+	Drawing::getInstance()->draw(_texture, this->boxAnimation->getCurrentFrame(), this->getPosition());
+
+	if (this->getState() == POPUPGIFTBRICK) {
+		if (isPointsStartPopUp == false) {
+			Drawing::getInstance()->draw(_texture, this->coinAnimation->getCurrentFrame(), D3DXVECTOR3(this->getX(), this->coinY, 0));
+		}
+		else {
+			Drawing::getInstance()->draw(_texture, this->pointAnimation->getCurrentFrame(), D3DXVECTOR3(this->getX(), this->pointY, 0));
 		}
 	}
 }

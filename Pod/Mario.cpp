@@ -7,7 +7,7 @@ Mario::Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _lim
 	this->texture = LoadTextureFromImage(_imagePath, _transcolor);
 }
 
-Mario::Mario(D3DXVECTOR3* _position, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state) : MainCharacter(_position, _vx, _vy, _limitX, _limitY)
+Mario::Mario(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state) : MainCharacter(_position, _vx, _vy, _limitX, _limitY)
 {
 	MainCharacter::MainCharacter(_position, _vx, _vy, _limitX, _limitY);
 
@@ -92,7 +92,7 @@ void Mario::Draw()
 		translateY = -(camera->getY());
 	}
 
-	this->currentAnimation->Draw(this->texture, this->getPosition(), D3DXVECTOR2(translateX, translateY), this->getIsFlip(), D3DCOLOR_XRGB(255, 255, 255));
+	this->currentAnimation->DrawWithoutCamera(this->texture, this->getPosition(), D3DXVECTOR2(translateX, translateY), this->getIsFlip(), D3DCOLOR_XRGB(255, 255, 255));
 
 	if (debugMode == Setting::getInstance()->getDebugMode()) {
 		Drawing::getInstance()->drawDebugBox(this->getBounds(), NULL, this->getPosition(), D3DXVECTOR2(translateX, translateY), false, D3DCOLOR_ARGB(128, 255, 255, 255));

@@ -149,10 +149,10 @@ void Map::Draw()
 
 			//position = D3DXVECTOR3(j * tileSize - camera->getX(), i * tileSize - camera->getY(), 0);
 
-			position.x = round(j * tileSize - camera->getX());
-			position.y = round(i * tileSize - camera->getY());
+			position.x = round(j * tileSize);
+			position.y = round(i * tileSize);
 
-			drawing->draw(texture, rect, NULL, &position);
+			drawing->draw(texture, rect, NULL, position);
 		}
 	}
 }

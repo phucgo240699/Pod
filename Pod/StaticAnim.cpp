@@ -32,7 +32,7 @@ void StaticAnim::Update(float _dt)
 
 void StaticAnim::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
-	if (this->animation == NULL) return;
+	/*if (this->animation == NULL) return;
 
 	D3DXVECTOR3 position;
 
@@ -40,6 +40,16 @@ void StaticAnim::Draw(LPDIRECT3DTEXTURE9 _texture)
 		if (Camera::getInstance()->isColliding(this->frames->at(i))) {
 			position = D3DXVECTOR3(this->frames->at(i).left - Camera::getInstance()->getX(), this->frames->at(i).top - Camera::getInstance()->getY(), 0);
 			Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), NULL, &position);
+		}
+	}*/
+
+	if (this->animation == NULL) return;
+
+	for (int i = 0; i < this->frames->size(); ++i) {
+		if (Camera::getInstance()->isColliding(this->frames->at(i))) {
+			drawingPosition.x = this->frames->at(i).left;
+			drawingPosition.y = this->frames->at(i).top;
+			Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), NULL, drawingPosition);
 		}
 	}
 }

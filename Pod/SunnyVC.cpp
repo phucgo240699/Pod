@@ -7,6 +7,7 @@ void SunnyVC::viewDidLoad()
 	grounds = new vector<Ground*>();
 	goldenBricks = new vector<GoldenBrick*>();
 	giftBricks = new vector<GiftBrick*>();
+	goombas = new vector<Goomba*>();
 
 	this->adaptData();
 	this->adaptAnimationBundle();
@@ -40,7 +41,7 @@ void SunnyVC::viewWillUpdate(float _dt)
 			if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
 			for (int k = 0; k < Grid::getInstance()->getCell(i, j).size(); ++k) {
-				if (beginGoldenBrickId <= Grid::getInstance()->getCell(i, j)[k]->getId() && Grid::getInstance()->getCell(i, j)[k]->getId() <= endGiftBrickId) {
+				if (beginGoldenBrickId <= Grid::getInstance()->getCell(i, j)[k]->getId() && Grid::getInstance()->getCell(i, j)[k]->getId() <= endGoombaId) {
 					Grid::getInstance()->getCell(i, j)[k]->Update(_dt);
 				}
 			}
@@ -105,7 +106,7 @@ void SunnyVC::viewWillRender()
 				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
 				for (int k = 0; k < Grid::getInstance()->getCell(i, j).size(); ++k) {
-					if (beginGoldenBrickId <= Grid::getInstance()->getCell(i, j)[k]->getId() && Grid::getInstance()->getCell(i, j)[k]->getId() <= endGiftBrickId) {
+					if (beginGoldenBrickId <= Grid::getInstance()->getCell(i, j)[k]->getId() && Grid::getInstance()->getCell(i, j)[k]->getId() <= endGoombaId) {
 						Grid::getInstance()->getCell(i, j)[k]->Draw(map->getTexture());
 					}
 				}
@@ -373,6 +374,18 @@ void SunnyVC::adaptData()
 			}
 			section = SECTION_NONE;
 		}
+		else if (line == "<GoombaFrames>") {
+			section = SECTION_GOOMBA_FRAMES;
+			continue;
+		}
+		else if (line == "</GoombaFrames>") {
+			for (int i = 0; i < data.size(); ++i) {
+				Goomba* goomba = new Goomba(0, 0, 0, 0, 0, 0, 0);
+				goomba->loadInfo(data[i], ',');
+				goombas->push_back(goomba);
+			}
+			section = SECTION_NONE;
+		}
 		else if (line == "<ScoreBoard>") {
 			section = SECTION_SCORE_BOARD;
 			continue;
@@ -450,6 +463,9 @@ void SunnyVC::adaptData()
 		case SECTION_GOLDEN_BRICK_FRAMES:
 			data.push_back(line);
 			break;
+		case SECTION_GOOMBA_FRAMES:
+			data.push_back(line);
+			break;
 		case SECTION_GRID_INFO:
 			Grid::getInstance()->loadInfo(line, ',');
 			break;
@@ -486,5 +502,15 @@ void SunnyVC::adaptToGrid()
 	for (int i = 0; i < this->giftBricks->size(); ++i) {
 		this->giftBricks->at(i)->setState(GiftBrickState::FULLGIFTBRICK);
 		Grid::getInstance()->add(this->giftBricks->at(i));
+	}
+
+	///
+	/// Enemies
+	///
+	
+	// Goombas
+	for (int i = 0; i < this->goombas->size(); ++i) {
+		this->goombas->at(i)->setState(GoombaState::GOOMBA_MOVING);
+		Grid::getInstance()->add(this->goombas->at(i));
 	}
 }

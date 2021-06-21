@@ -38,3 +38,33 @@ Animation AnimationBundle::getAnimationAt(int index)
 {
 	return this->animations->at(index);
 }
+
+Animation AnimationBundle::getFullGiftBrick()
+{
+	return this->animations->at(0);
+}
+
+Animation AnimationBundle::getEmptyGiftBrick()
+{
+	return this->animations->at(1);
+}
+
+Animation AnimationBundle::getCoin()
+{
+	return this->animations->at(2);
+}
+
+Animation AnimationBundle::get100Points()
+{
+	return this->animations->at(3);
+}
+
+Animation AnimationBundle::getGoombaMoving()
+{
+	return this->animations->at(4);
+}
+
+Animation AnimationBundle::getTrampledGoomba()
+{
+	return this->animations->at(5);
+}

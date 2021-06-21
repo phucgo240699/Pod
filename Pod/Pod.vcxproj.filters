@@ -142,6 +142,18 @@
     <Filter Include="Source Files\Components\Map\GoldenBrick">
       <UniqueIdentifier>{57c2e720-5097-4074-bfc3-5971150dacf7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\Enemies">
+      <UniqueIdentifier>{a7ccc6ac-7e53-4535-b549-a16831c5d269}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Enemies\Goomba">
+      <UniqueIdentifier>{136fff21-a92c-466a-af74-fd3614f02394}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Enemies">
+      <UniqueIdentifier>{1371253e-42f1-4073-89c8-f75721d3faba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Enemies\Goomba">
+      <UniqueIdentifier>{2add903e-c05f-462a-9937-f4f5992e4aae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -227,6 +239,12 @@
     </ClCompile>
     <ClCompile Include="AnimationBundle.cpp">
       <Filter>Source Files\System\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Source Files\Components\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Goomba.cpp">
+      <Filter>Source Files\Components\Enemies\Goomba</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -334,6 +352,12 @@
     </ClInclude>
     <ClInclude Include="GiftBrickState.h">
       <Filter>Header Files\Components\Map\GiftBrick</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Header Files\Components\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Goomba.h">
+      <Filter>Header Files\Components\Enemies\Goomba</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

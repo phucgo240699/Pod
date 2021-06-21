@@ -56,7 +56,7 @@ void WorldMap::Draw()
 			position.x = round(j * tileSize - camera->getX());
 			position.y = round(i * tileSize - camera->getY());
 
-			drawing->draw(texture, rect, NULL, &position);
+			drawing->draw(texture, rect, NULL, position);
 		}
 	}
 }

@@ -9,10 +9,12 @@
 #include "StaticAnim.h"
 #include "GoldenBrick.h"
 #include "AnimationBundle.h"
+#include "Goomba.h"
 
 class SunnyVC : public ViewController
 {
 private:
+	int componentIdStanded = 0; // this is the component that mario is standing on
 	Mario* mario;
 	Map* map;
 
@@ -21,10 +23,13 @@ private:
 
 	int beginGoldenBrickId = 13, endGoldenBrickId = 31;
 	vector<GoldenBrick*>* goldenBricks;
-	int componentIdStanded = 0; // this is the component that mario is standing on
 
 	int beginGiftBrickId = 32, endGiftBrickId = 35;
 	vector<GiftBrick*>* giftBricks;
+
+	// Enemies
+	int beginGoombaId = 36, endGoombaId = 37;
+	vector<Goomba*>* goombas;
 
 
 	tuple<bool, float, vector<CollisionEdge>> mario_ground_collision;

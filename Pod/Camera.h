@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "Drawing.h"
 
 // Singleton
 class Camera : public Component
@@ -11,6 +12,10 @@ public:
 	Camera(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY);
 	static Camera* getInstance();	  // . public function for client code usage
 
+	void setX(float _x);
+	void setY(float _y);
+	void plusX(float _x);
+	void plusY(float _y);
 	void setPositionBy(Component* _target);
 	void follow(Component* _target, float _dt);
 

@@ -7,7 +7,7 @@ Ground::Ground(float _x, float _y, float _width, float _height, float _vx, float
 	this->height = _height;
 }
 
-Ground::Ground(D3DXVECTOR3* _position, float _width, float _height, float _vx, float _vy, float _limitX, float _limitY) : Component(_position, _vx, _vy, _limitX, _limitY)
+Ground::Ground(D3DXVECTOR3 _position, float _width, float _height, float _vx, float _vy, float _limitX, float _limitY) : Component(_position, _vx, _vy, _limitX, _limitY)
 {
 	Component::Component(_position, _vx, _vy, _limitX, _limitY);
 	this->width = _width;
