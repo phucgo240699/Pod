@@ -38,11 +38,14 @@ void SunnyVC::viewWillUpdate(float _dt)
 	// Check by cell in grid	
 	for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
 		for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+
 			if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
-			for (int k = 0; k < Grid::getInstance()->getCell(i, j).size(); ++k) {
-				if (beginGoldenBrickId <= Grid::getInstance()->getCell(i, j)[k]->getId() && Grid::getInstance()->getCell(i, j)[k]->getId() <= endGoombaId) {
-					Grid::getInstance()->getCell(i, j)[k]->Update(_dt);
+			unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
+			unordered_set<Component*> ::iterator itr;
+			for (itr = cell.begin(); itr != cell.end(); ++itr) {
+				if (beginGoldenBrickId <= (*itr)->getId() && (*itr)->getId() <= endGoombaId) {
+					(*itr)->Update(_dt);
 				}
 			}
 		}
@@ -67,18 +70,20 @@ void SunnyVC::viewDidUpdate(float _dt)
 
 	for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
 		for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+
 			if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
-			for (int k = 0; k < Grid::getInstance()->getCell(i, j).size(); ++k) {
-				if (beginGroundId <= Grid::getInstance()->getCell(i, j)[k]->getId() && Grid::getInstance()->getCell(i, j)[k]->getId() <= endGroundId) {
-					this->handleMarioGroundCollision(Grid::getInstance()->getCell(i, j)[k], _dt);
+			unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
+			unordered_set<Component*> ::iterator itr;
+			for (itr = cell.begin(); itr != cell.end(); ++itr) {
+				if (beginGroundId <= (*itr)->getId() && (*itr)->getId() <= endGroundId) {
+					this->handleMarioGroundCollision((*itr), _dt);
 				}
-				else if (beginGoldenBrickId <= Grid::getInstance()->getCell(i, j)[k]->getId() && Grid::getInstance()->getCell(i, j)[k]->getId() <= endGoldenBrickId) {
-					this->handleMarioGoldenBrickCollision(Grid::getInstance()->getCell(i, j)[k], _dt);
+				else if (beginGoldenBrickId <= (*itr)->getId() && (*itr)->getId() <= endGoldenBrickId) {
+					this->handleMarioGoldenBrickCollision((*itr), _dt);
 				}
-				else if (beginGiftBrickId <= Grid::getInstance()->getCell(i, j)[k]->getId() && Grid::getInstance()->getCell(i, j)[k]->getId() <= endGiftBrickId) {
-					this->handleMarioGiftBrickCollision(static_cast<GiftBrick*>(Grid::getInstance()->getCell(i, j)[k]), _dt);
-					//static_cast<GiftBrick*>(Grid::getInstance()->getCell(i, j)[k])->setState(GiftBrickState::EMPTY);
+				else if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
+					this->handleMarioGiftBrickCollision(static_cast<GiftBrick*>((*itr)), _dt);
 				}
 			}
 		}
@@ -105,9 +110,11 @@ void SunnyVC::viewWillRender()
 			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
 				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
-				for (int k = 0; k < Grid::getInstance()->getCell(i, j).size(); ++k) {
-					if (beginGoldenBrickId <= Grid::getInstance()->getCell(i, j)[k]->getId() && Grid::getInstance()->getCell(i, j)[k]->getId() <= endGoombaId) {
-						Grid::getInstance()->getCell(i, j)[k]->Draw(map->getTexture());
+				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
+				unordered_set<Component*> ::iterator itr;
+				for (itr = cell.begin(); itr != cell.end(); ++itr) {
+					if (beginGoldenBrickId <= (*itr)->getId() && (*itr)->getId() <= endGoombaId) {
+						(*itr)->Draw(map->getTexture());
 					}
 				}
 			}

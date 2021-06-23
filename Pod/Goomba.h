@@ -3,6 +3,7 @@
 #include "GoombaState.h"
 #include "AnimationBundle.h"
 #include "Camera.h"
+#include "Grid.h"
 
 class Goomba : public Enemy
 {

@@ -10,12 +10,12 @@ Grid* Grid::getInstance()
 	return instance;
 }
 
-vector<vector<vector<Component*>>> Grid::getCells()
+vector<vector<unordered_set<Component*>>> Grid::getCells()
 {
 	return this->cells;
 }
 
-vector<Component*> Grid::getCell(int row, int col)
+unordered_set<Component*> Grid::getCell(int row, int col)
 {
 	return this->cells[row][col];
 }
@@ -39,12 +39,12 @@ void Grid::loadInfo(string line, char seperator)
 	this->cellHeight = v[2];
 	this->cellWidth = v[3];
 
-	this->cells = vector<vector<vector<Component*>>>();
+	this->cells = vector<vector<unordered_set<Component*>>>();
 
 	for (int i = 0; i < this->totalRow; ++i) {
-		this->cells.push_back(vector<vector<Component*>>());
+		this->cells.push_back(vector<unordered_set<Component*>>());
 		for (int j = 0; j < this->totalCol; ++j) {
-			this->cells[i].push_back(vector<Component*>());
+			this->cells[i].push_back(unordered_set<Component*>());
 		}
 	}
 }
@@ -85,10 +85,45 @@ void Grid::add(Component* _component)
 	vector<pair<int, int>> pairs = this->matrixId[_component->getId()];
 
 	for (int i = 0; i < pairs.size(); ++i) {
-		int y = pairs[i].second;
-		int x = pairs[i].first;
+		int col = pairs[i].first;
+		int row = pairs[i].second;
 
-		this->cells[y][x].push_back(_component);
+		this->cells[row][col].insert(_component);
 	}
 }
 
+void Grid::add(Component* _component, int row, int col)
+{
+	this->cells[row][col].insert(_component);
+}
+
+void Grid::updateCellOf(Component* _component)
+{
+	vector<pair<int, int>> pairs = this->matrixId[_component->getId()];
+	RECT r = RECT();
+
+	for (int i = 0; i < pairs.size(); ++i) {
+		int col = pairs[i].first;
+		int row = pairs[i].second;
+
+		r.top = row * this->cellHeight;
+		r.bottom = r.top + this->cellHeight;
+		r.left = col * this->cellWidth;
+		r.right = r.left + this->cellWidth;
+
+		if (_component->isColliding(r) == false) { // if no longer in this cell, remove it from this cell, and add it to new cell
+			this->cells[row][col].erase(_component);
+			int newCol = _component->getX() / this->cellWidth;
+			int newRow = _component->getY() / this->cellHeight;
+			
+			if (col != newCol) {
+				this->matrixId[_component->getId()][i].first = newCol;
+			}
+			if (row != newRow) {
+				this->matrixId[_component->getId()][i].second = newRow;
+			}
+
+			this->add(_component, newRow, newCol);
+		}
+	}
+}

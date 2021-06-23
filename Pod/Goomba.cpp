@@ -49,7 +49,11 @@ void Goomba::setState(GoombaState _state)
 void Goomba::Update(float _dt)
 {
 	this->plusX(this->getVx() * _dt);
-	//this->plusY(this->getVy() * _dt);
+	this->plusY(this->getVy() * _dt);
+
+	// update which cell in grid that it's belongs to
+	Grid::getInstance()->updateCellOf(this);
+
 	this->animation->Update(_dt);
 }
 
