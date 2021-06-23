@@ -68,3 +68,13 @@ Animation AnimationBundle::getTrampledGoomba()
 {
 	return this->animations->at(5);
 }
+
+Animation AnimationBundle::getGreenPipe3Floor()
+{
+	return this->animations->at(6);
+}
+
+Animation AnimationBundle::getGreenPipe2Floor()
+{
+	return this->animations->at(7);
+}

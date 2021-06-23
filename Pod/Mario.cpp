@@ -138,7 +138,7 @@ void Mario::setState(MarioState _state)
 		if (this->getState() != JUMPING || this->currentAnimation == NULL) {
 			this->currentAnimation = this->animations->at(2);
 			this->setTargetVy(0);
-			this->setVy(-5.4);
+			this->setVy(-4.5);
 			this->setAccelerationY(0.14);
 		}
 
@@ -381,5 +381,144 @@ void Mario::loadAnimations(vector<string> data, char seperatorRow, char seperato
 		r.right = r.left + frame[2];
 		r.bottom = r.top + frame[3];
 		frames->push_back(r);
+	}
+}
+
+void Mario::handleGroundCollision(Ground* _ground, float _dt)
+{
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABB(_ground, _dt);
+	if (get<0>(collisionResult) == true) {
+		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+			CollisionEdge edge = get<2>(collisionResult)[j];
+			if (edge == topEdge) {
+				this->setState(MarioState::DROPPING);
+				this->setY(_ground->getBounds().bottom);
+				this->setVy(0);
+				this->setIsStandOnSurface(true);
+				this->componentIdStanded = _ground->getId();
+			}
+			else if (edge == bottomEdge) {
+				this->setState(MarioState::STANDING);
+				this->setY(_ground->getY() - this->getHeight() - Setting::getInstance()->getCollisionSafeSpace());
+				this->setIsStandOnSurface(true);
+				this->componentIdStanded = _ground->getId();
+			}
+			else if (edge == leftEdge) {
+				this->setX(_ground->getBounds().right + Setting::getInstance()->getCollisionSafeSpace());
+				this->setSubState(MarioSubState::PUSHING);
+			}
+			else if (edge == rightEdge) {
+				this->setX(_ground->getBounds().left - this->getWidth() - Setting::getInstance()->getCollisionSafeSpace());
+				this->setSubState(MarioSubState::PUSHING);
+			}
+		}
+	}
+	else {
+		// if mario walk out of ground's top surface, it will drop
+		if (this->getState() == WALKING || this->getState() == STANDING) {
+			if (this->getIsStandOnSurface() == false) {
+				if ((_ground->getX() <= this->getBounds().right && this->getBounds().right <= _ground->getBounds().right)
+					|| (_ground->getX() <= this->getX() && this->getX() <= _ground->getBounds().right)) { // this is check which ground that mario is standing on
+					if (this->getBounds().bottom == _ground->getY() - Setting::getInstance()->getCollisionSafeSpace()) {
+						this->setIsStandOnSurface(true);
+					}
+				}
+			}
+		}
+	}
+}
+
+void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
+{
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABB(_goldenBrick, _dt);
+	if (get<0>(collisionResult) == true) {
+		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+			CollisionEdge edge = get<2>(collisionResult)[j];
+			if (edge == topEdge) {
+				this->setState(MarioState::DROPPING);
+				this->setY(_goldenBrick->getBounds().bottom);
+				this->setVy(0);
+				this->setIsStandOnSurface(true);
+				this->componentIdStanded = _goldenBrick->getId();
+			}
+			else if (edge == bottomEdge) {
+				this->setState(MarioState::STANDING);
+				this->setY(_goldenBrick->getY() - this->getHeight() - Setting::getInstance()->getCollisionSafeSpace());
+				this->setIsStandOnSurface(true);
+				this->componentIdStanded = _goldenBrick->getId();
+			}
+			else if (edge == leftEdge) {
+				this->setX(_goldenBrick->getBounds().right + Setting::getInstance()->getCollisionSafeSpace());
+				this->setSubState(MarioSubState::PUSHING);
+			}
+			else if (edge == rightEdge) {
+				this->setX(_goldenBrick->getBounds().left - this->getWidth() - Setting::getInstance()->getCollisionSafeSpace());
+				this->setSubState(MarioSubState::PUSHING);
+			}
+		}
+	}
+	else {
+		// if mario walk out of ground's top surface, it will drop
+		if (this->getState() == WALKING || this->getState() == STANDING) {
+			if (this->getIsStandOnSurface() == false) {
+				if ((_goldenBrick->getX() <= this->getBounds().right && this->getBounds().right <= _goldenBrick->getBounds().right)
+					|| (_goldenBrick->getX() <= this->getX() && this->getX() <= _goldenBrick->getBounds().right)) { // this is check which ground that mario is standing on
+					if (this->getBounds().bottom == _goldenBrick->getY() - Setting::getInstance()->getCollisionSafeSpace()) {
+						this->setIsStandOnSurface(true);
+					}
+				}
+			}
+		}
+	}
+}
+
+void Mario::handleGiftBrickCollision(GiftBrick* _goldenBrick, float _dt)
+{
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABB(_goldenBrick, _dt);
+	if (get<0>(collisionResult) == true) {
+		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+			CollisionEdge edge = get<2>(collisionResult)[j];
+			if (edge == topEdge) {
+				this->setState(MarioState::DROPPING);
+				this->setY(_goldenBrick->getBounds().bottom);
+				this->setVy(0);
+				this->setIsStandOnSurface(true);
+				this->componentIdStanded = _goldenBrick->getId();
+				if (_goldenBrick->getState() == FULLGIFTBRICK) {
+					_goldenBrick->setState(GiftBrickState::POPUPGIFTBRICK);
+					if (_goldenBrick->getGiftId() == 1) {
+						ScoreBoard::getInstance()->plusCoin(1);
+						ScoreBoard::getInstance()->plusPoint(100);
+					}
+				}
+			}
+			else if (edge == bottomEdge) {
+				this->setState(MarioState::STANDING);
+				this->setY(_goldenBrick->getY() - this->getHeight() - Setting::getInstance()->getCollisionSafeSpace());
+				this->setIsStandOnSurface(true);
+				this->componentIdStanded = _goldenBrick->getId();
+			}
+			else if (edge == leftEdge) {
+				this->setX(_goldenBrick->getBounds().right + Setting::getInstance()->getCollisionSafeSpace());
+				this->setSubState(MarioSubState::PUSHING);
+			}
+			else if (edge == rightEdge) {
+				this->setX(_goldenBrick->getBounds().left - this->getWidth() - Setting::getInstance()->getCollisionSafeSpace());
+				this->setSubState(MarioSubState::PUSHING);
+			}
+		}
+	}
+	else {
+		// if mario walk out of ground's top surface, it will drop
+		if (this->getState() == WALKING || this->getState() == STANDING) {
+			if (this->getIsStandOnSurface() == false) {
+				if ((_goldenBrick->getX() <= this->getBounds().right && this->getBounds().right <= _goldenBrick->getBounds().right)
+					|| (_goldenBrick->getX() <= this->getX() && this->getX() <= _goldenBrick->getBounds().right)) { // this is check which ground that mario is standing on
+					if (this->getBounds().bottom == _goldenBrick->getY() - Setting::getInstance()->getCollisionSafeSpace()) {
+						this->setIsStandOnSurface(true);
+					}
+				}
+			}
+		}
 	}
 }

@@ -154,6 +154,12 @@
     <Filter Include="Source Files\Components\Enemies\Goomba">
       <UniqueIdentifier>{2add903e-c05f-462a-9937-f4f5992e4aae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Components\Map\GreenPipe">
+      <UniqueIdentifier>{5c80023a-b49e-4bf0-8754-a325418d9e4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Map\GreenPipe">
+      <UniqueIdentifier>{bc0d5232-0fea-431f-bf98-7725e5f0142e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -245,6 +251,9 @@
     </ClCompile>
     <ClCompile Include="Goomba.cpp">
       <Filter>Source Files\Components\Enemies\Goomba</Filter>
+    </ClCompile>
+    <ClCompile Include="GreenPipe.cpp">
+      <Filter>Source Files\Components\Map\GreenPipe</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -358,6 +367,9 @@
     </ClInclude>
     <ClInclude Include="Goomba.h">
       <Filter>Header Files\Components\Enemies\Goomba</Filter>
+    </ClInclude>
+    <ClInclude Include="GreenPipe.h">
+      <Filter>Header Files\Components\Map\GreenPipe</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

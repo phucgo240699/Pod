@@ -7,10 +7,10 @@ void SunnyVC::viewDidLoad()
 	grounds = new vector<Ground*>();
 	goldenBricks = new vector<GoldenBrick*>();
 	giftBricks = new vector<GiftBrick*>();
+	greenPipes = new vector<GreenPipe*>();
 	goombas = new vector<Goomba*>();
 
 	this->adaptData();
-	this->adaptAnimationBundle();
 	this->adaptToGrid();
 }
 
@@ -75,15 +75,24 @@ void SunnyVC::viewDidUpdate(float _dt)
 
 			unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
 			unordered_set<Component*> ::iterator itr;
+			unordered_set<Component*> ::iterator itr2;
+
 			for (itr = cell.begin(); itr != cell.end(); ++itr) {
 				if (beginGroundId <= (*itr)->getId() && (*itr)->getId() <= endGroundId) {
-					this->handleMarioGroundCollision((*itr), _dt);
+					this->mario->handleGroundCollision(static_cast<Ground*>(*itr), _dt);
 				}
 				else if (beginGoldenBrickId <= (*itr)->getId() && (*itr)->getId() <= endGoldenBrickId) {
-					this->handleMarioGoldenBrickCollision((*itr), _dt);
+					this->mario->handleGoldenBrickCollision(static_cast<GoldenBrick*>(*itr), _dt);
 				}
 				else if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
-					this->handleMarioGiftBrickCollision(static_cast<GiftBrick*>((*itr)), _dt);
+					this->mario->handleGiftBrickCollision(static_cast<GiftBrick*>(*itr), _dt);
+				}
+				else if (beginGoombaId <= (*itr)->getId() && (*itr)->getId() <= endGoombaId) {
+					for (itr2 = cell.begin(); itr2 != cell.end(); ++itr2) {
+						if (beginGroundId <= (*itr2)->getId() && (*itr2)->getId() <= endGreenPipe) {
+							static_cast<Goomba*>(*itr)->handleGroundCollision((*itr2), _dt);
+						}
+					}
 				}
 			}
 		}
@@ -140,145 +149,6 @@ void SunnyVC::viewDidRender()
 
 void SunnyVC::viewWillRelease()
 {
-}
-
-void SunnyVC::handleMarioGroundCollision(Component* _ground, float _dt)
-{
-	mario_ground_collision = this->mario->sweptAABB(_ground, _dt);
-	if (get<0>(mario_ground_collision) == true) {
-		for (int j = 0; j < get<2>(mario_ground_collision).size(); ++j) {
-			CollisionEdge edge = get<2>(mario_ground_collision)[j];
-			if (edge == topEdge) {
-				mario->setState(MarioState::DROPPING);
-				mario->setY(_ground->getBounds().bottom);
-				mario->setVy(0);
-				this->mario->setIsStandOnSurface(true);
-				this->componentIdStanded = _ground->getId();
-			}
-			else if (edge == bottomEdge) {
-				mario->setState(MarioState::STANDING);
-				mario->setY(_ground->getY() - mario->getHeight() - Setting::getInstance()->getCollisionSafeSpace());
-				this->mario->setIsStandOnSurface(true);
-				this->componentIdStanded = _ground->getId();
-			}
-			else if (edge == leftEdge) {
-				mario->setX(_ground->getBounds().right + Setting::getInstance()->getCollisionSafeSpace());
-				mario->setSubState(MarioSubState::PUSHING);
-			}
-			else if (edge == rightEdge) {
-				mario->setX(_ground->getBounds().left - mario->getWidth() - Setting::getInstance()->getCollisionSafeSpace());
-				mario->setSubState(MarioSubState::PUSHING);
-			}
-		}
-	}
-	else {
-		// if mario walk out of ground's top surface, it will drop
-		if (mario->getState() == WALKING || mario->getState() == STANDING) {
-			if (mario->getIsStandOnSurface() == false) {
-				if ((_ground->getX() <= mario->getBounds().right && mario->getBounds().right <= _ground->getBounds().right)
-					|| (_ground->getX() <= mario->getX() && mario->getX() <= _ground->getBounds().right)) { // this is check which ground that mario is standing on
-					if (mario->getBounds().bottom == _ground->getY() - Setting::getInstance()->getCollisionSafeSpace()) {
-						mario->setIsStandOnSurface(true);
-					}
-				}
-			}
-		}
-	}
-}
-
-void SunnyVC::handleMarioGoldenBrickCollision(Component* _goldenBrick, float _dt)
-{
-	tuple<bool, float, vector<CollisionEdge>> mario_golden_brick_collision = this->mario->sweptAABB(_goldenBrick, _dt);
-	if (get<0>(mario_golden_brick_collision) == true) {
-		for (int j = 0; j < get<2>(mario_golden_brick_collision).size(); ++j) {
-			CollisionEdge edge = get<2>(mario_golden_brick_collision)[j];
-			if (edge == topEdge) {
-				mario->setState(MarioState::DROPPING);
-				mario->setY(_goldenBrick->getBounds().bottom);
-				mario->setVy(0);
-				this->mario->setIsStandOnSurface(true);
-				this->componentIdStanded = _goldenBrick->getId();
-			}
-			else if (edge == bottomEdge) {
-				mario->setState(MarioState::STANDING);
-				mario->setY(_goldenBrick->getY() - mario->getHeight() - Setting::getInstance()->getCollisionSafeSpace());
-				this->mario->setIsStandOnSurface(true);
-				this->componentIdStanded = _goldenBrick->getId();
-			}
-			else if (edge == leftEdge) {
-				mario->setX(_goldenBrick->getBounds().right + Setting::getInstance()->getCollisionSafeSpace());
-				mario->setSubState(MarioSubState::PUSHING);
-			}
-			else if (edge == rightEdge) {
-				mario->setX(_goldenBrick->getBounds().left - mario->getWidth() - Setting::getInstance()->getCollisionSafeSpace());
-				mario->setSubState(MarioSubState::PUSHING);
-			}
-		}
-	}
-	else {
-		// if mario walk out of ground's top surface, it will drop
-		if (mario->getState() == WALKING || mario->getState() == STANDING) {
-			if (mario->getIsStandOnSurface() == false) {
-				if ((_goldenBrick->getX() <= mario->getBounds().right && mario->getBounds().right <= _goldenBrick->getBounds().right)
-					|| (_goldenBrick->getX() <= mario->getX() && mario->getX() <= _goldenBrick->getBounds().right)) { // this is check which ground that mario is standing on
-					if (mario->getBounds().bottom == _goldenBrick->getY() - Setting::getInstance()->getCollisionSafeSpace()) {
-						mario->setIsStandOnSurface(true);
-					}
-				}
-			}
-		}
-	}
-}
-
-void SunnyVC::handleMarioGiftBrickCollision(GiftBrick* _goldenBrick, float _dt)
-{
-	mario_ground_collision = this->mario->sweptAABB(_goldenBrick, _dt);
-	if (get<0>(mario_ground_collision) == true) {
-		for (int j = 0; j < get<2>(mario_ground_collision).size(); ++j) {
-			CollisionEdge edge = get<2>(mario_ground_collision)[j];
-			if (edge == topEdge) {
-				mario->setState(MarioState::DROPPING);
-				mario->setY(_goldenBrick->getBounds().bottom);
-				mario->setVy(0);
-				this->mario->setIsStandOnSurface(true);
-				this->componentIdStanded = _goldenBrick->getId();
-				if (_goldenBrick->getState() == FULLGIFTBRICK) {
-					_goldenBrick->setState(GiftBrickState::POPUPGIFTBRICK);
-					if (_goldenBrick->getGiftId() == 1) {
-						ScoreBoard::getInstance()->plusCoin(1);
-						ScoreBoard::getInstance()->plusPoint(100);
-					}
-				}
-			}
-			else if (edge == bottomEdge) {
-				mario->setState(MarioState::STANDING);
-				mario->setY(_goldenBrick->getY() - mario->getHeight() - Setting::getInstance()->getCollisionSafeSpace());
-				this->mario->setIsStandOnSurface(true);
-				this->componentIdStanded = _goldenBrick->getId();
-			}
-			else if (edge == leftEdge) {
-				mario->setX(_goldenBrick->getBounds().right + Setting::getInstance()->getCollisionSafeSpace());
-				mario->setSubState(MarioSubState::PUSHING);
-			}
-			else if (edge == rightEdge) {
-				mario->setX(_goldenBrick->getBounds().left - mario->getWidth() - Setting::getInstance()->getCollisionSafeSpace());
-				mario->setSubState(MarioSubState::PUSHING);
-			}
-		}
-	}
-	else {
-		// if mario walk out of ground's top surface, it will drop
-		if (mario->getState() == WALKING || mario->getState() == STANDING) {
-			if (mario->getIsStandOnSurface() == false) {
-				if ((_goldenBrick->getX() <= mario->getBounds().right && mario->getBounds().right <= _goldenBrick->getBounds().right)
-					|| (_goldenBrick->getX() <= mario->getX() && mario->getX() <= _goldenBrick->getBounds().right)) { // this is check which ground that mario is standing on
-					if (mario->getBounds().bottom == _goldenBrick->getY() - Setting::getInstance()->getCollisionSafeSpace()) {
-						mario->setIsStandOnSurface(true);
-					}
-				}
-			}
-		}
-	}
 }
 
 void SunnyVC::adaptData()
@@ -381,6 +251,18 @@ void SunnyVC::adaptData()
 			}
 			section = SECTION_NONE;
 		}
+		else if (line == "<GreenPipeFrames>") {
+			section = SECTION_GREEN_PIPE_FRAMES;
+			continue;
+		}
+		else if (line == "</GreenPipeFrames>") {
+			for (int i = 0; i < data.size(); ++i) {
+				GreenPipe* greenPipe = new GreenPipe(0, 0, 0, 0, 0, 0, 0);
+				greenPipe->loadInfo(data[i], ',');
+				greenPipes->push_back(greenPipe);
+			}
+			section = SECTION_NONE;
+		}
 		else if (line == "<GoombaFrames>") {
 			section = SECTION_GOOMBA_FRAMES;
 			continue;
@@ -470,6 +352,9 @@ void SunnyVC::adaptData()
 		case SECTION_GOLDEN_BRICK_FRAMES:
 			data.push_back(line);
 			break;
+		case SECTION_GREEN_PIPE_FRAMES:
+			data.push_back(line);
+			break;
 		case SECTION_GOOMBA_FRAMES:
 			data.push_back(line);
 			break;
@@ -488,11 +373,6 @@ void SunnyVC::adaptData()
 	fs.close();
 }
 
-void SunnyVC::adaptAnimationBundle()
-{
-	/*giftBrick->setState(GiftBrickState::FULL);*/
-}
-
 void SunnyVC::adaptToGrid()
 {
 	// Grounds
@@ -509,6 +389,12 @@ void SunnyVC::adaptToGrid()
 	for (int i = 0; i < this->giftBricks->size(); ++i) {
 		this->giftBricks->at(i)->setState(GiftBrickState::FULLGIFTBRICK);
 		Grid::getInstance()->add(this->giftBricks->at(i));
+	}
+
+	// Green Pipes
+	for (int i = 0; i < this->greenPipes->size(); ++i) {
+		this->greenPipes->at(i)->setup();
+		Grid::getInstance()->add(this->greenPipes->at(i));
 	}
 
 	///

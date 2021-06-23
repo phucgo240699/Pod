@@ -164,6 +164,7 @@
     <ClCompile Include="GiftBrick.cpp" />
     <ClCompile Include="GoldenBrick.cpp" />
     <ClCompile Include="Goomba.cpp" />
+    <ClCompile Include="GreenPipe.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="StaticAnim.cpp" />
     <ClCompile Include="Ground.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="GiftBrickState.h" />
     <ClInclude Include="GoldenBrick.h" />
     <ClInclude Include="Goomba.h" />
+    <ClInclude Include="GreenPipe.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="StaticAnim.h" />
     <ClInclude Include="Ground.h" />

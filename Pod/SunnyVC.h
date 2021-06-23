@@ -1,15 +1,12 @@
 #pragma once
 #include "ViewController.h"
-#include "Ground.h"
 #include "Mario.h"
 #include "SectionFile.h"
-#include "GiftBrick.h"
 #include "SunnyMap.h"
-#include "ScoreBoard.h"
 #include "StaticAnim.h"
-#include "GoldenBrick.h"
 #include "AnimationBundle.h"
 #include "Goomba.h"
+#include "GreenPipe.h"
 
 class SunnyVC : public ViewController
 {
@@ -27,10 +24,12 @@ private:
 	int beginGiftBrickId = 32, endGiftBrickId = 35;
 	vector<GiftBrick*>* giftBricks;
 
-	// Enemies
-	int beginGoombaId = 36, endGoombaId = 37;
-	vector<Goomba*>* goombas;
+	int beginGreenPipe = 36, endGreenPipe = 39;
+	vector<GreenPipe*>* greenPipes;
 
+	// Enemies
+	int beginGoombaId = 40, endGoombaId = 41;
+	vector<Goomba*>* goombas;
 
 	tuple<bool, float, vector<CollisionEdge>> mario_ground_collision;
 public:
@@ -45,11 +44,5 @@ public:
 	void viewWillRelease();
 
 	void adaptData();
-	void adaptAnimationBundle();
 	void adaptToGrid();
-
-
-	void handleMarioGroundCollision(Component* _ground, float _dt);
-	void handleMarioGoldenBrickCollision(Component* _goldenBrick, float _dt);
-	void handleMarioGiftBrickCollision(GiftBrick* _goldenBrick, float _dt);
 };

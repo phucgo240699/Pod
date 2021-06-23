@@ -61,3 +61,32 @@ void Goomba::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
 	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), this->getPosition());
 }
+
+void Goomba::handleGroundCollision(Component* _ground, float _dt)
+{
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABB(_ground, _dt);
+	if (get<0>(collisionResult) == true) {
+		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+			CollisionEdge edge = get<2>(collisionResult)[j];
+			if (edge == leftEdge) {
+				this->setVx(abs(this->getVx()));
+			}
+			else if (edge == rightEdge) {
+				this->setVx(abs(this->getVx()) * -1);
+			}
+		}
+	}
+	//else {
+	//	// if mario walk out of ground's top surface, it will drop
+	//	if (this->getState() == WALKING || this->getState() == STANDING) {
+	//		if (this->getIsStandOnSurface() == false) {
+	//			if ((_ground->getX() <= this->getBounds().right && this->getBounds().right <= _ground->getBounds().right)
+	//				|| (_ground->getX() <= this->getX() && this->getX() <= _ground->getBounds().right)) { // this is check which ground that mario is standing on
+	//				if (this->getBounds().bottom == _ground->getY() - Setting::getInstance()->getCollisionSafeSpace()) {
+	//					this->setIsStandOnSurface(true);
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
+}

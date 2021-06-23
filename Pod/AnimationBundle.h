@@ -23,6 +23,8 @@ public:
 	Animation get100Points();
 	Animation getGoombaMoving();
 	Animation getTrampledGoomba();
+	Animation getGreenPipe3Floor();
+	Animation getGreenPipe2Floor();
 
 };
 

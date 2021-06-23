@@ -4,6 +4,10 @@
 #include "Camera.h"
 #include "Animation.h"
 #include "MainCharacter.h"
+#include "Ground.h"
+#include "GoldenBrick.h"
+#include "GiftBrick.h"
+#include "ScoreBoard.h"
 #include <unordered_map>
 
 using namespace std;
@@ -22,7 +26,7 @@ private:
 
 	bool isStandOnSurface = false;
 
-	//void setUpAnimations();
+	int componentIdStanded;
 
 public:
 	float startdrop = 0;
@@ -59,5 +63,10 @@ public:
 
 	void loadInfo(string line, char seperator);
 	void loadAnimations(vector<string> data, char seperatorRow, char seperatorCol);
+
+
+	void handleGroundCollision(Ground* _ground, float _dt);
+	void handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt);
+	void handleGiftBrickCollision(GiftBrick* _goldenBrick, float _dt);
 };
 
