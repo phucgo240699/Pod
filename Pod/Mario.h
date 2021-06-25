@@ -9,6 +9,7 @@
 #include "GiftBrick.h"
 #include "ScoreBoard.h"
 #include "Goomba.h"
+#include "Block.h"
 #include <unordered_map>
 
 using namespace std;
@@ -69,6 +70,7 @@ public:
 
 
 	void handleGroundCollision(Ground* _ground, float _dt);
+	void handleBlockCollision(Block* _block, float _dt);
 	void handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt);
 	void handleGiftBrickCollision(GiftBrick* _goldenBrick, float _dt);
 	void handleGoombaCollision(Goomba* _goomba, float _dt);

@@ -160,6 +160,18 @@
     <Filter Include="Header Files\Components\Map\GreenPipe">
       <UniqueIdentifier>{bc0d5232-0fea-431f-bf98-7725e5f0142e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\Map\Block">
+      <UniqueIdentifier>{e48fcafc-d669-42f3-bfaf-1df583e730ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Map\Block">
+      <UniqueIdentifier>{75810460-47ee-4924-ad3d-ec7c14d19a38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Map\Ground">
+      <UniqueIdentifier>{b3168f97-3abc-4e9a-9ef6-a0fc5732a523}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Map\Ground">
+      <UniqueIdentifier>{a17b9bd3-d262-4881-9712-2ebf5cc911b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -197,9 +209,6 @@
     </ClCompile>
     <ClCompile Include="Drawing.cpp">
       <Filter>Source Files\System\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Ground.cpp">
-      <Filter>Source Files\Components\Map</Filter>
     </ClCompile>
     <ClCompile Include="FilePath.cpp">
       <Filter>Source Files\System\Utilities</Filter>
@@ -255,6 +264,12 @@
     <ClCompile Include="GreenPipe.cpp">
       <Filter>Source Files\Components\Map\GreenPipe</Filter>
     </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>Source Files\Components\Map\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="Ground.cpp">
+      <Filter>Source Files\Components\Map\Ground</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tool.h">
@@ -301,9 +316,6 @@
     </ClInclude>
     <ClInclude Include="KeyType.h">
       <Filter>Header Files\System\Enums</Filter>
-    </ClInclude>
-    <ClInclude Include="Ground.h">
-      <Filter>Header Files\Components\Map</Filter>
     </ClInclude>
     <ClInclude Include="FilePath.h">
       <Filter>Header Files\System\Utilities</Filter>
@@ -370,6 +382,12 @@
     </ClInclude>
     <ClInclude Include="GreenPipe.h">
       <Filter>Header Files\Components\Map\GreenPipe</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>Header Files\Components\Map\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Ground.h">
+      <Filter>Header Files\Components\Map\Ground</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

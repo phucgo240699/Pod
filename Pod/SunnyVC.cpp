@@ -9,6 +9,7 @@ void SunnyVC::viewDidLoad()
 	giftBricks = new vector<GiftBrick*>();
 	greenPipes = new vector<GreenPipe*>();
 	goombas = new unordered_set<Goomba*>();
+	blocks = new vector<Block*>();
 
 	this->adaptData();
 	this->adaptToGrid();
@@ -62,6 +63,8 @@ void SunnyVC::viewWillUpdate(float _dt)
 void SunnyVC::viewDidUpdate(float _dt)
 {
 	// Check by cell in grid
+	int x = this->mario->getX();
+	int y = this->mario->getY();
 
 	if (this->mario->getIsStandOnSurface() == true) {
 		this->mario->setIsStandOnSurface(false);
@@ -80,6 +83,9 @@ void SunnyVC::viewDidUpdate(float _dt)
 				if (beginGroundId <= (*itr)->getId() && (*itr)->getId() <= endGroundId) {
 					this->mario->handleGroundCollision(static_cast<Ground*>(*itr), _dt);
 				}
+				if (beginBlockId <= (*itr)->getId() && (*itr)->getId() <= endBlockId) {
+					this->mario->handleBlockCollision(static_cast<Block*>(*itr), _dt);
+				}
 				else if (beginGoldenBrickId <= (*itr)->getId() && (*itr)->getId() <= endGoldenBrickId) {
 					this->mario->handleGoldenBrickCollision(static_cast<GoldenBrick*>(*itr), _dt);
 				}
@@ -90,6 +96,7 @@ void SunnyVC::viewDidUpdate(float _dt)
 					if (static_cast<Goomba*>(*itr)->getState() == DEAD_GOOMBA) {
 						Grid::getInstance()->remove(*itr, i, j);
 						this->goombas->erase(static_cast<Goomba*>(*itr));
+						return;
 					}
 					this->mario->handleGoombaCollision(static_cast<Goomba*>(*itr), _dt);
 					for (itr2 = cell.begin(); itr2 != cell.end(); ++itr2) {
@@ -221,6 +228,18 @@ void SunnyVC::adaptData()
 			}
 			section = SECTION_NONE;
 		}
+		else if (line == "<BlockFrames>") {
+			section = SECTION_BLOCK_FRAMES;
+			continue;
+		}
+		else if (line == "</BlockFrames>") {
+			for (int i = 0; i < data.size(); ++i) {
+				Block* block = new Block(0, 0, 0, 0, 0, 0, 0, 0);
+				block->load(data[i], ',');
+				blocks->push_back(block);
+			}
+			section = SECTION_NONE;
+		}
 		else if (line == "<GoldenBrickFrames>") {
 			section = SECTION_GOLDEN_BRICK_FRAMES;
 			continue;
@@ -341,6 +360,9 @@ void SunnyVC::adaptData()
 		case SECTION_GROUNDS:
 			data.push_back(line);
 			break;
+		case SECTION_BLOCK_FRAMES:
+			data.push_back(line);
+			break;
 		case SECTION_GIFT_BRICK_FRAMES:
 			data.push_back(line);
 			break;
@@ -382,6 +404,11 @@ void SunnyVC::adaptToGrid()
 	// Grounds
 	for (int i = 0; i < this->grounds->size(); ++i) {
 		Grid::getInstance()->add(this->grounds->at(i));
+	}
+
+	// Blocks
+	for (int i = 0; i < this->blocks->size(); ++i) {
+		Grid::getInstance()->add(this->blocks->at(i));
 	}
 
 	// Golden Bricks

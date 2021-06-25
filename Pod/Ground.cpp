@@ -14,13 +14,6 @@ Ground::Ground(D3DXVECTOR3 _position, float _width, float _height, float _vx, fl
 	this->height = _height;
 }
 
-Ground::~Ground()
-{
-	Component::~Component();
-	delete& width;
-	delete& height;
-}
-
 void Ground::load(string line, char seperator)
 {
 	vector<int> v = Tool::splitToVectorIntegerFrom(line, seperator);

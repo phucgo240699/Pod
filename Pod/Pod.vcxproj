@@ -154,6 +154,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AnimationBundle.cpp" />
     <ClCompile Include="AppController.cpp" />
+    <ClCompile Include="Block.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AnimationBundle.h" />
     <ClInclude Include="AppController.h" />
+    <ClInclude Include="Block.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CollisionEdge.h" />
     <ClInclude Include="Color.h" />
