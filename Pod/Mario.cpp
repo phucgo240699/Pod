@@ -138,8 +138,8 @@ void Mario::setState(MarioState _state)
 		if (this->getState() != JUMPING || this->currentAnimation == NULL) {
 			this->currentAnimation = this->animations->at(2);
 			this->setTargetVy(0);
-			this->setVy(-4.5);
-			this->setAccelerationY(0.14);
+			this->setVy(-4.4);
+			this->setAccelerationY(0.11);
 		}
 
 		break;
@@ -518,6 +518,22 @@ void Mario::handleGiftBrickCollision(GiftBrick* _goldenBrick, float _dt)
 						this->setIsStandOnSurface(true);
 					}
 				}
+			}
+		}
+	}
+}
+
+void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
+{
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABB(_goomba, _dt);
+	if (get<0>(collisionResult) == true) {
+		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+			CollisionEdge edge = get<2>(collisionResult)[j];
+			if (edge == bottomEdge) {
+				this->setState(MarioState::JUMPING);
+				this->plusY(get<1>(collisionResult) * _dt + (_goomba->getHeight() / 2));
+				_goomba->setState(GoombaState::TRAMPLED_GOOMBA);
+				ScoreBoard::getInstance()->plusPoint(100);
 			}
 		}
 	}

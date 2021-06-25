@@ -32,6 +32,7 @@ public:
 	void loadMatrixId(vector<string> data, char beginSeperator, char pairSeperator, char seperator);
 	void add(Component* _component);
 	void add(Component* _component, int row, int col);
+	void remove(Component* _component, int row, int col);
 	void updateCellOf(Component* _component);
 };
 

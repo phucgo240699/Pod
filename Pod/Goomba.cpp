@@ -10,15 +10,18 @@ Goomba::Goomba(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float
 
 void Goomba::loadInfo(string line, char seperator)
 {
-	vector<int> v = Tool::splitToVectorIntegerFrom(line, seperator);
+	vector<float> v = Tool::splitToVectorFloatFrom(line, seperator);
 
 	this->setX(v[0]);
 	this->setY(v[1]);
-	this->setVx(0.5);
-	this->setVy(0);
 	this->setWidth(v[2]);
 	this->setHeight(v[3]);
-	this->setId(v[4]);
+	this->setVx(v[4]);
+	this->setVy(v[5]);
+	this->setId(v[6]);
+
+	this->pointY = this->getY() - 16;
+	this->endPointJumpUp = this->getY() - 48;
 }
 
 GoombaState Goomba::getState()
@@ -38,8 +41,15 @@ void Goomba::setState(GoombaState _state)
 	case TRAMPLED_GOOMBA:
 		if (this->getState() == GOOMBA_MOVING) {
 			this->animation = new Animation(AnimationBundle::getInstance()->getTrampledGoomba());
+			this->pointAnimation = new Animation(AnimationBundle::getInstance()->get100Points());
 		}
 		break;
+
+	case DEAD_GOOMBA:
+		if (this->getState() == TRAMPLED_GOOMBA) {
+			this->animation = NULL;
+			this->pointAnimation = NULL;
+		}
 	default:
 		break;
 	}
@@ -48,18 +58,44 @@ void Goomba::setState(GoombaState _state)
 
 void Goomba::Update(float _dt)
 {
+	if (this->getState() == DEAD_GOOMBA) return;
+
 	this->plusX(this->getVx() * _dt);
 	this->plusY(this->getVy() * _dt);
 
 	// update which cell in grid that it's belongs to
 	Grid::getInstance()->updateCellOf(this);
 
-	this->animation->Update(_dt);
+	if (this->animation != NULL) {
+		this->animation->Update(_dt);
+	}
+	if (this->getState() == TRAMPLED_GOOMBA && this->pointAnimation != NULL) {
+		this->pointAnimation->Update(_dt);
+
+		
+			if (this->pointY - 2 >= this->endPointJumpUp) {
+				this->pointY -= 2;
+			}
+			else {
+				this->pointY = this->endPointJumpUp;
+				this->setState(GoombaState::DEAD_GOOMBA);
+			}
+		
+	}
 }
 
 void Goomba::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
-	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), this->getPosition());
+	if (this->getState() == DEAD_GOOMBA) return;
+	if (this->getState() == TRAMPLED_GOOMBA && this->pointAnimation != NULL) {
+		Drawing::getInstance()->draw(_texture, this->pointAnimation->getCurrentFrame(), D3DXVECTOR3(this->getX(), this->pointY, 0));
+		if (this->pointY <= this->endPointJumpUp && this->animation != NULL) {
+			this->animation = NULL;
+		}
+	}
+	if (this->animation != NULL) {
+		Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), this->getPosition());
+	}
 }
 
 void Goomba::handleGroundCollision(Component* _ground, float _dt)
@@ -76,17 +112,4 @@ void Goomba::handleGroundCollision(Component* _ground, float _dt)
 			}
 		}
 	}
-	//else {
-	//	// if mario walk out of ground's top surface, it will drop
-	//	if (this->getState() == WALKING || this->getState() == STANDING) {
-	//		if (this->getIsStandOnSurface() == false) {
-	//			if ((_ground->getX() <= this->getBounds().right && this->getBounds().right <= _ground->getBounds().right)
-	//				|| (_ground->getX() <= this->getX() && this->getX() <= _ground->getBounds().right)) { // this is check which ground that mario is standing on
-	//				if (this->getBounds().bottom == _ground->getY() - Setting::getInstance()->getCollisionSafeSpace()) {
-	//					this->setIsStandOnSurface(true);
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
 }

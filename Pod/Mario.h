@@ -8,6 +8,7 @@
 #include "GoldenBrick.h"
 #include "GiftBrick.h"
 #include "ScoreBoard.h"
+#include "Goomba.h"
 #include <unordered_map>
 
 using namespace std;
@@ -27,6 +28,8 @@ private:
 	bool isStandOnSurface = false;
 
 	int componentIdStanded;
+
+
 
 public:
 	float startdrop = 0;
@@ -68,5 +71,6 @@ public:
 	void handleGroundCollision(Ground* _ground, float _dt);
 	void handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt);
 	void handleGiftBrickCollision(GiftBrick* _goldenBrick, float _dt);
+	void handleGoombaCollision(Goomba* _goomba, float _dt);
 };
 

@@ -8,7 +8,7 @@ void SunnyVC::viewDidLoad()
 	goldenBricks = new vector<GoldenBrick*>();
 	giftBricks = new vector<GiftBrick*>();
 	greenPipes = new vector<GreenPipe*>();
-	goombas = new vector<Goomba*>();
+	goombas = new unordered_set<Goomba*>();
 
 	this->adaptData();
 	this->adaptToGrid();
@@ -61,7 +61,6 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 void SunnyVC::viewDidUpdate(float _dt)
 {
-
 	// Check by cell in grid
 
 	if (this->mario->getIsStandOnSurface() == true) {
@@ -88,6 +87,11 @@ void SunnyVC::viewDidUpdate(float _dt)
 					this->mario->handleGiftBrickCollision(static_cast<GiftBrick*>(*itr), _dt);
 				}
 				else if (beginGoombaId <= (*itr)->getId() && (*itr)->getId() <= endGoombaId) {
+					if (static_cast<Goomba*>(*itr)->getState() == DEAD_GOOMBA) {
+						Grid::getInstance()->remove(*itr, i, j);
+						this->goombas->erase(static_cast<Goomba*>(*itr));
+					}
+					this->mario->handleGoombaCollision(static_cast<Goomba*>(*itr), _dt);
 					for (itr2 = cell.begin(); itr2 != cell.end(); ++itr2) {
 						if (beginGroundId <= (*itr2)->getId() && (*itr2)->getId() <= endGreenPipe) {
 							static_cast<Goomba*>(*itr)->handleGroundCollision((*itr2), _dt);
@@ -271,7 +275,7 @@ void SunnyVC::adaptData()
 			for (int i = 0; i < data.size(); ++i) {
 				Goomba* goomba = new Goomba(0, 0, 0, 0, 0, 0, 0);
 				goomba->loadInfo(data[i], ',');
-				goombas->push_back(goomba);
+				goombas->insert(goomba);
 			}
 			section = SECTION_NONE;
 		}
@@ -400,10 +404,11 @@ void SunnyVC::adaptToGrid()
 	///
 	/// Enemies
 	///
-	
+
 	// Goombas
-	for (int i = 0; i < this->goombas->size(); ++i) {
-		this->goombas->at(i)->setState(GoombaState::GOOMBA_MOVING);
-		Grid::getInstance()->add(this->goombas->at(i));
+	unordered_set<Goomba*> ::iterator itr;
+	for (itr = this->goombas->begin(); itr != this->goombas->end(); ++itr) {
+		(*itr)->setState(GoombaState::GOOMBA_MOVING);
+		Grid::getInstance()->add(*itr);
 	}
 }

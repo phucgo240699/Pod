@@ -8,8 +8,11 @@
 class Goomba : public Enemy
 {
 private:
-	Animation* animation;
+	Animation* animation, *pointAnimation;
 	GoombaState state;
+
+	int endPointJumpUp, pointY;
+	//bool isPointJumpUp = false;
 
 public:
 	// Init
@@ -28,7 +31,5 @@ public:
 	void Draw(LPDIRECT3DTEXTURE9 _texture);
 
 	void handleGroundCollision(Component* _ground, float _dt);
-	/*void handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt);
-	void handleGiftBrickCollision(GiftBrick* _goldenBrick, float _dt);*/
 };
 

@@ -28,8 +28,8 @@ private:
 	vector<GreenPipe*>* greenPipes;
 
 	// Enemies
-	int beginGoombaId = 40, endGoombaId = 41;
-	vector<Goomba*>* goombas;
+	int beginGoombaId = 40, endGoombaId = 40;
+	unordered_set<Goomba*>* goombas;
 
 	tuple<bool, float, vector<CollisionEdge>> mario_ground_collision;
 public:

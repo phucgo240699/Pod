@@ -97,6 +97,11 @@ void Grid::add(Component* _component, int row, int col)
 	this->cells[row][col].insert(_component);
 }
 
+void Grid::remove(Component* _component, int row, int col)
+{
+	this->cells[row][col].erase(_component);
+}
+
 void Grid::updateCellOf(Component* _component)
 {
 	vector<pair<int, int>> pairs = this->matrixId[_component->getId()];

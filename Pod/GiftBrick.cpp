@@ -143,20 +143,6 @@ void GiftBrick::Update(float _dt)
 
 void GiftBrick::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
-	/*D3DXVECTOR3 position = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->getY() - Camera::getInstance()->getY(), 0);
-	Drawing::getInstance()->draw(_texture, this->boxAnimation->getCurrentFrame(), &position);
-
-	if (this->getState() == POPUPGIFTBRICK) {
-		if (isPointsStartPopUp == false) {
-			D3DXVECTOR3 position = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->coinY - Camera::getInstance()->getY(), 0);
-			Drawing::getInstance()->draw(_texture, this->coinAnimation->getCurrentFrame(), &position);
-		}
-		else {
-			D3DXVECTOR3 position = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->pointY - Camera::getInstance()->getY(), 0);
-			Drawing::getInstance()->draw(_texture, this->pointAnimation->getCurrentFrame(), &position);
-		}
-	}*/
-
 	Drawing::getInstance()->draw(_texture, this->boxAnimation->getCurrentFrame(), this->getPosition());
 
 	if (this->getState() == POPUPGIFTBRICK) {
