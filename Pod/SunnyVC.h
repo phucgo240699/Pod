@@ -5,9 +5,6 @@
 #include "SunnyMap.h"
 #include "StaticAnim.h"
 #include "AnimationBundle.h"
-#include "Goomba.h"
-#include "GreenPipe.h"
-#include "Block.h"
 
 class SunnyVC : public ViewController
 {
@@ -16,23 +13,23 @@ private:
 	Mario* mario;
 	Map* map;
 
-	int beginGroundId = 0, endGroundId = 12;
+	int beginGroundId = 0, endGroundId = 14;
 	vector<Ground*>* grounds;
 
-	int beginBlockId = 13, endBlockId = 23;
+	int beginBlockId = 15, endBlockId = 25;
 	vector<Block*>* blocks;
 
-	int beginGoldenBrickId = 24, endGoldenBrickId = 42;
+	int beginGoldenBrickId = 26, endGoldenBrickId = 44;
 	vector<GoldenBrick*>* goldenBricks;
 
-	int beginGiftBrickId = 43, endGiftBrickId = 46;
+	int beginGiftBrickId = 45, endGiftBrickId = 48;
 	vector<GiftBrick*>* giftBricks;
 
-	int beginGreenPipe = 47, endGreenPipe = 50;
+	int beginGreenPipeId = 49, endGreenPipeId = 52;
 	vector<GreenPipe*>* greenPipes;
 
 	// Enemies
-	int beginGoombaId = 51, endGoombaId = 51;
+	int beginGoombaId = 53, endGoombaId = 53;
 	unordered_set<Goomba*>* goombas;
 
 	tuple<bool, float, vector<CollisionEdge>> mario_ground_collision;

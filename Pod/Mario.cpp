@@ -552,6 +552,50 @@ void Mario::handleGiftBrickCollision(GiftBrick* _goldenBrick, float _dt)
 	}
 }
 
+void Mario::handleGreenPipeCollision(GreenPipe* _greenPipe, float _dt)
+{
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABB(_greenPipe, _dt);
+	if (get<0>(collisionResult) == true) {
+		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+			CollisionEdge edge = get<2>(collisionResult)[j];
+			if (edge == topEdge) {
+				this->setState(MarioState::DROPPING);
+				this->setY(_greenPipe->getBounds().bottom);
+				this->setVy(0);
+				this->setIsStandOnSurface(true);
+				this->componentIdStanded = _greenPipe->getId();
+			}
+			else if (edge == bottomEdge) {
+				this->setState(MarioState::STANDING);
+				this->setY(_greenPipe->getY() - this->getHeight() - Setting::getInstance()->getCollisionSafeSpace());
+				this->setIsStandOnSurface(true);
+				this->componentIdStanded = _greenPipe->getId();
+			}
+			else if (edge == leftEdge) {
+				this->setX(_greenPipe->getBounds().right + Setting::getInstance()->getCollisionSafeSpace());
+				this->setSubState(MarioSubState::PUSHING);
+			}
+			else if (edge == rightEdge) {
+				this->setX(_greenPipe->getBounds().left - this->getWidth() - Setting::getInstance()->getCollisionSafeSpace());
+				this->setSubState(MarioSubState::PUSHING);
+			}
+		}
+	}
+	else {
+		// if mario walk out of ground's top surface, it will drop
+		if (this->getState() == WALKING || this->getState() == STANDING) {
+			if (this->getIsStandOnSurface() == false) {
+				if ((_greenPipe->getX() <= this->getBounds().right && this->getBounds().right <= _greenPipe->getBounds().right)
+					|| (_greenPipe->getX() <= this->getX() && this->getX() <= _greenPipe->getBounds().right)) { // this is check which ground that mario is standing on
+					if (this->getBounds().bottom == _greenPipe->getY() - Setting::getInstance()->getCollisionSafeSpace()) {
+						this->setIsStandOnSurface(true);
+					}
+				}
+			}
+		}
+	}
+}
+
 void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 {
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABB(_goomba, _dt);

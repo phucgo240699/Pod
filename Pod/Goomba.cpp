@@ -40,6 +40,8 @@ void Goomba::setState(GoombaState _state)
 		break;
 	case TRAMPLED_GOOMBA:
 		if (this->getState() == GOOMBA_MOVING) {
+			this->setVx(0);
+			this->setVy(0);
 			this->animation = new Animation(AnimationBundle::getInstance()->getTrampledGoomba());
 			this->pointAnimation = new Animation(AnimationBundle::getInstance()->get100Points());
 		}
@@ -47,6 +49,8 @@ void Goomba::setState(GoombaState _state)
 
 	case DEAD_GOOMBA:
 		if (this->getState() == TRAMPLED_GOOMBA) {
+			this->setVx(0);
+			this->setVy(0);
 			this->animation = NULL;
 			this->pointAnimation = NULL;
 		}
@@ -59,28 +63,29 @@ void Goomba::setState(GoombaState _state)
 void Goomba::Update(float _dt)
 {
 	if (this->getState() == DEAD_GOOMBA) return;
+	if (this->getX() + this->getVx() * _dt >= 0
+		&& this->getX() + this->getWidth() + this->getVx() * _dt <= Camera::getInstance()->getLimitX()
+		&& this->getY() + this->getVy() * _dt >= 0
+		&& this->getY() + this->getHeight() + this->getVy() * _dt <= Camera::getInstance()->getLimitY()) {
+		this->plusX(this->getVx() * _dt);
+		this->plusY(this->getVy() * _dt);
 
-	this->plusX(this->getVx() * _dt);
-	this->plusY(this->getVy() * _dt);
-
-	// update which cell in grid that it's belongs to
-	Grid::getInstance()->updateCellOf(this);
+		// update which cell in grid that it's belongs to
+		Grid::getInstance()->updateCellOf(this);
+	}
 
 	if (this->animation != NULL) {
 		this->animation->Update(_dt);
 	}
 	if (this->getState() == TRAMPLED_GOOMBA && this->pointAnimation != NULL) {
 		this->pointAnimation->Update(_dt);
-
-		
-			if (this->pointY - 2 >= this->endPointJumpUp) {
-				this->pointY -= 2;
-			}
-			else {
-				this->pointY = this->endPointJumpUp;
-				this->setState(GoombaState::DEAD_GOOMBA);
-			}
-		
+		if (this->pointY - 2 >= this->endPointJumpUp) {
+			this->pointY -= 2;
+		}
+		else {
+			this->pointY = this->endPointJumpUp;
+			this->setState(GoombaState::DEAD_GOOMBA);
+		}
 	}
 }
 

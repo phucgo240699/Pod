@@ -76,8 +76,8 @@ void SunnyVC::viewDidUpdate(float _dt)
 			if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
 			unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
-			unordered_set<Component*> ::iterator itr;
-			unordered_set<Component*> ::iterator itr2;
+			unordered_set<Component*> ::iterator itr; // mario to others
+			unordered_set<Component*> ::iterator itr2; // goomba to others
 
 			for (itr = cell.begin(); itr != cell.end(); ++itr) {
 				if (beginGroundId <= (*itr)->getId() && (*itr)->getId() <= endGroundId) {
@@ -92,6 +92,9 @@ void SunnyVC::viewDidUpdate(float _dt)
 				else if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
 					this->mario->handleGiftBrickCollision(static_cast<GiftBrick*>(*itr), _dt);
 				}
+				else if (beginGreenPipeId <= (*itr)->getId() && (*itr)->getId() <= endGreenPipeId) {
+					this->mario->handleGreenPipeCollision(static_cast<GreenPipe*>(*itr), _dt);
+				}
 				else if (beginGoombaId <= (*itr)->getId() && (*itr)->getId() <= endGoombaId) {
 					if (static_cast<Goomba*>(*itr)->getState() == DEAD_GOOMBA) {
 						Grid::getInstance()->remove(*itr, i, j);
@@ -100,7 +103,8 @@ void SunnyVC::viewDidUpdate(float _dt)
 					}
 					this->mario->handleGoombaCollision(static_cast<Goomba*>(*itr), _dt);
 					for (itr2 = cell.begin(); itr2 != cell.end(); ++itr2) {
-						if (beginGroundId <= (*itr2)->getId() && (*itr2)->getId() <= endGreenPipe) {
+						if ((beginGroundId <= (*itr2)->getId() && (*itr2)->getId() <= endGroundId)
+							|| (beginGoldenBrickId <= (*itr2)->getId() && (*itr2)->getId() <= endGoldenBrickId)) {
 							static_cast<Goomba*>(*itr)->handleGroundCollision((*itr2), _dt);
 						}
 					}
