@@ -46,5 +46,6 @@ public:
 	void viewWillRelease();
 
 	void adaptData();
+	void adaptAnimation();
 	void adaptToGrid();
 };

@@ -6,10 +6,10 @@ Animation::Animation(int _id, int _indexFrame, int _animDelay)
 	this->currentIndexFrame = _indexFrame;
 	this->animDelay = _animDelay;
 	this->animCount = 0;
-	this->frames = new vector<RECT>();
+	this->frames = new vector<pair<RECT, RECT>>();
 }
 
-Animation::Animation(int _id, int _indexFrame, int _animDelay, vector<RECT>* _frames)
+Animation::Animation(int _id, int _indexFrame, int _animDelay, vector<pair<RECT, RECT>>* _frames)
 {
 	this->id = _id;
 	this->currentIndexFrame = _indexFrame;
@@ -40,7 +40,7 @@ int Animation::getAnimCount()
 
 RECT Animation::getCurrentFrame()
 {
-	return this->frames->at(currentIndexFrame);
+	return this->frames->at(currentIndexFrame).second;
 }
 
 int Animation::getTotalFrames()

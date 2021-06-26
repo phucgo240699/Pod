@@ -12,6 +12,7 @@ void SunnyVC::viewDidLoad()
 	blocks = new vector<Block*>();
 
 	this->adaptData();
+	this->adaptAnimation();
 	this->adaptToGrid();
 }
 
@@ -221,14 +222,6 @@ void SunnyVC::adaptData()
 		else if (line == "</MarioInfo>") {
 			section = SECTION_NONE;
 		}
-		else if (line == "<MarioAnimations>") {
-			section = SECTION_MARIO_ANIMATIONS;
-			continue;
-		}
-		else if (line == "</MarioAnimations>") {
-			mario->loadAnimations(data, '>', ',');
-			continue;
-		}
 		else if (line == "<Grounds>") {
 			section = SECTION_GROUNDS;
 			continue;
@@ -262,16 +255,6 @@ void SunnyVC::adaptData()
 				GoldenBrick* goldenBrick = new GoldenBrick(0, 0, 0, 0, 0, 0, 0);
 				goldenBrick->loadInfo(data[i], ',');
 				this->goldenBricks->push_back(goldenBrick);
-			}
-			section = SECTION_NONE;
-		}
-		else if (line == "<GoldenBrickAnimation>") {
-			section = SECTION_GOLDEN_BRICK_ANIMATION;
-			continue;
-		}
-		else if (line == "</GoldenBrickAnimation>") {
-			for (int i = 0; i < this->goldenBricks->size(); ++i) {
-				this->goldenBricks->at(i)->loadAnimation(data, '>', ',');
 			}
 			section = SECTION_NONE;
 		}
@@ -311,21 +294,6 @@ void SunnyVC::adaptData()
 			}
 			section = SECTION_NONE;
 		}
-		/*else if (line == "<ScoreBoard>") {
-			section = SECTION_SCORE_BOARD;
-			continue;
-		}
-		else if (line == "</ScoreBoard>") {
-			section = SECTION_NONE;
-		}
-		else if (line == "<ScoreBoardFrames>") {
-			section = SECTION_SCORE_BOARD_FRAMES;
-			continue;
-		}
-		else if (line == "</ScoreBoardFrames>") {
-			ScoreBoard::getInstance()->loadFrames(data, '-', ',');
-			section = SECTION_NONE;
-		}*/
 		else if (line == "<GridInfo>") {
 			section = SECTION_GRID_INFO;
 			continue;
@@ -367,9 +335,6 @@ void SunnyVC::adaptData()
 		case SECTION_MARIO_INFO:
 			mario->loadInfo(line, ',');
 			break;
-		case SECTION_MARIO_ANIMATIONS:
-			data.push_back(line);
-			break;
 		case SECTION_GROUNDS:
 			data.push_back(line);
 			break;
@@ -377,15 +342,6 @@ void SunnyVC::adaptData()
 			data.push_back(line);
 			break;
 		case SECTION_GIFT_BRICK_FRAMES:
-			data.push_back(line);
-			break;
-		/*case SECTION_SCORE_BOARD:
-			ScoreBoard::getInstance()->loadInfo(line, ',');
-			break;
-		case SECTION_SCORE_BOARD_FRAMES:
-			data.push_back(line);
-			break;*/
-		case SECTION_GOLDEN_BRICK_ANIMATION:
 			data.push_back(line);
 			break;
 		case SECTION_GOLDEN_BRICK_FRAMES:
@@ -412,6 +368,31 @@ void SunnyVC::adaptData()
 	fs.close();
 }
 
+void SunnyVC::adaptAnimation()
+{
+	// Gift Bricks
+	for (int i = 0; i < this->giftBricks->size(); ++i) {
+		this->giftBricks->at(i)->setState(GiftBrickState::FULLGIFTBRICK);
+	}
+
+	// Green Pipes
+	for (int i = 0; i < this->greenPipes->size(); ++i) {
+		this->greenPipes->at(i)->setup();
+	}
+
+	///
+	/// --------------------------- Enemies ---------------------------
+	///
+
+	// Goombas
+	unordered_set<Goomba*> ::iterator itr;
+	for (itr = this->goombas->begin(); itr != this->goombas->end(); ++itr) {
+		(*itr)->setState(GoombaState::GOOMBA_MOVING);
+	}
+
+	this->mario->setState(MarioState::DROPPING);
+}
+
 void SunnyVC::adaptToGrid()
 {
 	// Grounds
@@ -431,18 +412,16 @@ void SunnyVC::adaptToGrid()
 
 	// Gift Bricks
 	for (int i = 0; i < this->giftBricks->size(); ++i) {
-		this->giftBricks->at(i)->setState(GiftBrickState::FULLGIFTBRICK);
 		Grid::getInstance()->add(this->giftBricks->at(i));
 	}
 
 	// Green Pipes
 	for (int i = 0; i < this->greenPipes->size(); ++i) {
-		this->greenPipes->at(i)->setup();
 		Grid::getInstance()->add(this->greenPipes->at(i));
 	}
 
 	///
-	/// Enemies
+	/// --------------------------- Enemies ---------------------------
 	///
 
 	// Goombas

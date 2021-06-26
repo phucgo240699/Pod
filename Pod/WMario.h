@@ -1,6 +1,7 @@
 #pragma once
 #include "MainCharacter.h"
 #include "WMarioState.h"
+#include "AnimationBundle.h"
 
 class WMario : public MainCharacter
 {
@@ -34,7 +35,7 @@ public:
 	void onKeyDown(vector<KeyType> _keyTypes);
 
 	void loadInfo(string line, char seperator);
-	void loadAnimations(vector<string> data, char seperatorRow, char seperatorCol);
+	void loadAnimations();
 	void loadMovingMatrix(vector<string> data, char seperator);
 
 	// Check methods

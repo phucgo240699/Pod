@@ -16,7 +16,21 @@ public:
 
 	void loadAnimations(vector<string> data, char endSperator, char seperator);
 
-	Animation getAnimationAt(int index);
+	//Animation getAnimationAt(int index);
+
+	// World Scene
+	Animation getWMario();
+	Animation getGrasses();
+	Animation getHelpLabel();
+	Animation getWTurtle();
+
+	// Sunny Scene
+	Animation getMarioStanding();
+	Animation getMarioWalking();
+	Animation getMarioDropping();
+	Animation getMarioJumping();
+	Animation getMarioDie();
+	Animation getGoldenBrick();
 	Animation getFullGiftBrick();
 	Animation getEmptyGiftBrick();
 	Animation getCoin();

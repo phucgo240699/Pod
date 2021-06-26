@@ -145,7 +145,7 @@ void Mario::setState(MarioState _state)
 	{
 	case STANDING:
 		if (this->getState() != STANDING || this->currentAnimation == NULL) {
-			this->currentAnimation = this->animations->at(0);
+			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioStanding());
 			this->setTargetVx(0);
 			this->setTargetVy(0);
 			this->setAccelerationY(0);
@@ -165,14 +165,14 @@ void Mario::setState(MarioState _state)
 		break;
 	case WALKING:
 		if (this->getState() != WALKING || this->currentAnimation == NULL) {
-			this->currentAnimation = this->animations->at(1);
+			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioWalking());
 		}
 		
 		break;
 	case JUMPING:
 		if (this->getState() != JUMPING || this->currentAnimation == NULL) {
 			if (this->getState() != DROPPING) {
-				this->currentAnimation = this->animations->at(2);
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioJumping());
 			}
 			this->setTargetVy(0);
 			this->setVy(-4.4);
@@ -183,7 +183,7 @@ void Mario::setState(MarioState _state)
 	case DROPPING:
 		if (this->getState() != DROPPING || this->currentAnimation == NULL) {
 			if (this->getState() != JUMPING) {
-				this->currentAnimation = this->animations->at(2);
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioDropping());
 			}
 			this->setTargetVy(6);
 			this->setAccelerationY(0.34);
@@ -191,7 +191,7 @@ void Mario::setState(MarioState _state)
 		break;
 	case DIE:
 		if (this->getState() != DIE || this->currentAnimation == NULL) {
-			this->currentAnimation = this->animations->at(3);
+			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioDie());
 			this->setTargetVx(0);
 			this->setTargetVy(0);
 			this->setAccelerationX(0);
@@ -203,7 +203,7 @@ void Mario::setState(MarioState _state)
 	case DIE_JUMPING:
 		if (this->getState() != DIE_JUMPING || this->currentAnimation == NULL) {
 			if (this->getState() != DIE) {
-				this->currentAnimation = this->animations->at(3);
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioDie());
 			}
 			this->setTargetVx(0);
 			this->setTargetVy(0);
@@ -216,7 +216,7 @@ void Mario::setState(MarioState _state)
 	case DIE_DROPPING:
 		if (this->getState() != DIE_DROPPING || this->currentAnimation == NULL) {
 			if (this->getState() != DIE && this->getState() != DIE_JUMPING) {
-				this->currentAnimation = this->animations->at(3);
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioDie());
 			}
 			this->setTargetVx(0);
 			this->setTargetVy(6);
@@ -438,34 +438,7 @@ void Mario::loadInfo(string line, char seperator)
 	this->setY(stof(v[1]));
 	this->setLimitX(stof(v[2]));
 	this->setLimitY(stof(v[3]));
-	this->setState(Tool::getMarioStateFromString(v[4]));
-}
-
-void Mario::loadAnimations(vector<string> data, char seperatorRow, char seperatorCol)
-{
-	this->animations = new vector<Animation*>();
-	vector<RECT>* frames = new vector<RECT>();
-	vector<int> frame;
-	RECT r;
-	int id = 0;
-
-	for (int i = 0; i < data.size(); ++i) {
-		if (data[i].at(0) == seperatorRow) {
-			this->animations->push_back(new Animation(0, 0, stoi(data[i].substr(2,1)), frames));
-			++id;
-			frame.clear();
-			frames = new vector<RECT>();
-			continue;
-		};
-
-		frame = Tool::splitToVectorIntegerFrom(data[i], seperatorCol);
-		r = RECT();
-		r.left = frame[0];
-		r.top = frame[1];
-		r.right = r.left + frame[2];
-		r.bottom = r.top + frame[3];
-		frames->push_back(r);
-	}
+	//this->setState(Tool::getMarioStateFromString(v[4]));
 }
 
 void Mario::handleGroundCollision(Ground* _ground, float _dt)

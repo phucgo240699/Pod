@@ -116,12 +116,7 @@ void WMario::Update(float _dt)
 	}
 	
 
-	/*if (this->getState() == WMARIO_STANDING) {
-		animation->setCurrentIndexFrame(0);
-	}
-	else {*/
-		animation->Update(_dt);
-	//}
+	animation->Update(_dt);
 }
 
 void WMario::Draw(LPDIRECT3DTEXTURE9 _texture)
@@ -166,8 +161,6 @@ void WMario::loadInfo(string line, char seperator)
 {
 	vector<int> v = Tool::splitToVectorIntegerFrom(line, seperator);
 
-	//this->setX(v[0]);
-	//this->setY(v[1]);
 	this->setVx(v[0]);
 	this->setVx(v[1]);
 	this->setLimitX(v[2]);
@@ -182,19 +175,9 @@ void WMario::loadInfo(string line, char seperator)
 	this->setY(this->row * this->tileSize);
 }
 
-void WMario::loadAnimations(vector<string> data, char seperatorRow, char seperatorCol)
+void WMario::loadAnimations()
 {
-	vector<RECT>* frames = new vector<RECT>();
-
-	for (int i = 0; i < data.size(); ++i) {
-		if (data[i][0] == seperatorRow) {
-			this->animation = new Animation(0, 0, stoi(data[i].substr(2, 1)), frames);
-			return;
-		}
-		else {
-			frames->push_back(Tool::getRECT(data[i], seperatorCol));
-		}
-	}
+	this->animation = new Animation(AnimationBundle::getInstance()->getWMario());
 }
 
 void WMario::loadMovingMatrix(vector<string> data, char seperator)

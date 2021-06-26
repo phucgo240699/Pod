@@ -17,6 +17,7 @@ public:
 	Animation* getAnimation();
 
 	// Setter
+	void setAnimation(Animation* _animation);
 
 	virtual void Update(float _dt);
 	virtual void Draw(LPDIRECT3DTEXTURE9 _texture);

@@ -3,13 +3,13 @@
 void StaticAnim::loadAnimation(vector<string> data, char endSeperator, char seperator)
 {
 	int animDelay = 0;
-	vector<RECT>* arr = new vector<RECT>();
+	vector<pair<RECT, RECT>>* arr = new vector<pair<RECT, RECT>>();
 	for (int i = 0; i < data.size(); ++i) {
 		if (data[i][0] == endSeperator) {
 			animDelay = stoi(data[i].substr(2, data[i].size()));
 			continue;
 		}
-		arr->push_back(Tool::getRECT(data[i], seperator));
+		arr->push_back(pair<RECT, RECT>(RECT(), Tool::getRECT(data[i], seperator)));
 	}
 
 	animation = new Animation(0, 0, animDelay, arr);
@@ -23,6 +23,11 @@ void StaticAnim::loadFrames(vector<string> data, char seperator)
 Animation* StaticAnim::getAnimation()
 {
 	return this->animation;
+}
+
+void StaticAnim::setAnimation(Animation* _animation)
+{
+	return this->animation = _animation;
 }
 
 void StaticAnim::Update(float _dt)

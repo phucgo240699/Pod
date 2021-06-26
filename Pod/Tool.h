@@ -215,6 +215,10 @@ public:
 		if (str == "DROPPING") return MarioState::DROPPING;
 		else if (str == "JUMPING") return MarioState::JUMPING;
 		else if (str == "STANDING") return MarioState::STANDING;
+		else if (str == "WALKING") return MarioState::WALKING;
+		else if (str == "DIE") return MarioState::DIE;
+		else if (str == "DIE_JUMPING") return MarioState::DIE_JUMPING;
+		else if (str == "DIE_DROPPING") return MarioState::DIE_DROPPING;
 		else return MarioState::WALKING;
 	}
 };

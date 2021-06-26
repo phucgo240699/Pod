@@ -133,7 +133,7 @@ void WorldVC::adaptData()
 			data.clear();
 			section = SECTION_NONE;
 		}
-		else if (line == "<GrassAnimation>") {
+		/*else if (line == "<GrassAnimation>") {
 			section = SECTION_GRASS_ANIMATION;
 			continue;
 		}
@@ -141,7 +141,7 @@ void WorldVC::adaptData()
 			grasses->loadAnimation(data, '>', ',');
 			data.clear();
 			section = SECTION_NONE;
-		}
+		}*/
 		else if (line == "<GrassFrames>") {
 			section = SECTION_GRASS_FRAMES;
 			continue;
@@ -151,7 +151,7 @@ void WorldVC::adaptData()
 			data.clear();
 			section = SECTION_NONE;
 		}
-		else if (line == "<HelpLabelAnimation>") {
+		/*else if (line == "<HelpLabelAnimation>") {
 			section = SECTION_HELP_LABEL_ANIMATION;
 			continue;
 		}
@@ -159,7 +159,7 @@ void WorldVC::adaptData()
 			helpLabel->loadAnimation(data, '>', ',');
 			data.clear();
 			section = SECTION_NONE;
-		}
+		}*/
 		else if (line == "<HelpLabelFrame>") {
 			section = SECTION_HELP_LABEL_FRAME;
 			continue;
@@ -176,7 +176,7 @@ void WorldVC::adaptData()
 		else if (line == "</WMarioInfo>") {
 			section = SECTION_NONE;
 		}
-		else if (line == "<WMarioAnimation>") {
+		/*else if (line == "<WMarioAnimation>") {
 			section = SECTION_WMARIO_ANIMATION;
 			continue;
 		}
@@ -184,7 +184,7 @@ void WorldVC::adaptData()
 			wMario->loadAnimations(data, '>', ',');
 			data.clear();
 			section = SECTION_NONE;
-		}
+		}*/
 		else if (line == "<WMarioMovingMatrix>") {
 			section = SECTION_WMARIO_MOVING_MATRIX;
 			continue;
@@ -194,22 +194,6 @@ void WorldVC::adaptData()
 			data.clear();
 			section = SECTION_NONE;
 		}
-		/*else if (line == "<ScoreBoard>") {
-			section = SECTION_SCORE_BOARD;
-			continue;
-		}
-		else if (line == "</ScoreBoard>") {
-			section = SECTION_NONE;
-		}
-		else if (line == "<ScoreBoardFrames>") {
-			section = SECTION_SCORE_BOARD_FRAMES;
-			continue;
-		}
-		else if (line == "</ScoreBoardFrames>") {
-			ScoreBoard::getInstance()->loadFrames(data, '-', ',');
-			data.clear();
-			section = SECTION_NONE;
-		}*/
 		else if (line == "<WTurtleInfo>") {
 			section = SECTION_WTURTLE_INFO;
 			continue;
@@ -217,7 +201,7 @@ void WorldVC::adaptData()
 		else if (line == "</WTurtleInfo>") {
 			section = SECTION_NONE;
 		}
-		else if (line == "<WTurtleAnimation>") {
+		/*else if (line == "<WTurtleAnimation>") {
 			section = SECTION_WTURTLE_ANIMATION;
 			continue;
 		}
@@ -225,7 +209,7 @@ void WorldVC::adaptData()
 			wTurtle->loadAnimation(data, '>', ',');
 			data.clear();
 			section = SECTION_NONE;
-		}
+		}*/
 
 
 		switch (section)
@@ -241,43 +225,45 @@ void WorldVC::adaptData()
 		case SECTION_MAP_INDEXES:
 			data.push_back(line);
 			break;
-		case SECTION_GRASS_ANIMATION:
+		/*case SECTION_GRASS_ANIMATION:
 			data.push_back(line);
-			break;
+			break;*/
 		case SECTION_GRASS_FRAMES:
 			data.push_back(line);
 			break;
-		case SECTION_HELP_LABEL_ANIMATION:
+		/*case SECTION_HELP_LABEL_ANIMATION:
 			data.push_back(line);
-			break;
+			break;*/
 		case SECTION_HELP_LABEL_FRAME:
 			data.push_back(line);
 			break;
 		case SECTION_WMARIO_INFO:
 			wMario->loadInfo(line, ',');
 			break;
-		case SECTION_WMARIO_ANIMATION:
+		/*case SECTION_WMARIO_ANIMATION:
 			data.push_back(line);
-			break;
+			break;*/
 		case SECTION_WMARIO_MOVING_MATRIX:
 			data.push_back(line);
 			break;
-		/*case SECTION_SCORE_BOARD:
-			ScoreBoard::getInstance()->loadInfo(line, ',');
-			break;
-		case SECTION_SCORE_BOARD_FRAMES:
-			data.push_back(line);
-			break;*/
 		case SECTION_WTURTLE_INFO:
 			wTurtle->loadInfo(line, ',');
 			break;
-		case SECTION_WTURTLE_ANIMATION:
+		/*case SECTION_WTURTLE_ANIMATION:
 			data.push_back(line);
-			break;
+			break;*/
 		default:
 			break;
 		}
 	}
 
 	fs.close();
+}
+
+void WorldVC::adaptAnimation()
+{
+	this->wMario->loadAnimations();
+	this->grasses->setAnimation(new Animation(AnimationBundle::getInstance()->getGrasses()));
+	this->helpLabel->setAnimation(new Animation(AnimationBundle::getInstance()->getHelpLabel()));
+	this->wTurtle->loadAnimation(new Animation(AnimationBundle::getInstance()->getWTurtle()));
 }

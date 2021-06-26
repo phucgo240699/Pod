@@ -7,12 +7,12 @@ class Animation
 {
 private:
 	int id, currentIndexFrame, animDelay, animCount;
-	vector<RECT>* frames;
+	vector<pair<RECT, RECT>>* frames;
 
 public:
 	// Init
 	Animation(int _id, int _indexFrame, int _animDelay);
-	Animation(int _id, int _indexFrame, int _animDelay, vector<RECT>* _frames);
+	Animation(int _id, int _indexFrame, int _animDelay, vector<pair<RECT, RECT>>* _frames);
 
 	// Getter
 	int getId();

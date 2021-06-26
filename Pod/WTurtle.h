@@ -19,7 +19,7 @@ public:
 	float getHeight();
 
 	void loadInfo(string line, char seperator);
-	void loadAnimation(vector<string> data, char endSeperator, char seperator);
+	void loadAnimation(Animation* _animation);
 	void Update(float _dt);
 	void Draw(LPDIRECT3DTEXTURE9 _texture);
 

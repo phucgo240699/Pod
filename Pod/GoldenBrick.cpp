@@ -17,27 +17,12 @@ void GoldenBrick::loadInfo(string line, char seperator)
 	this->setWidth(v[2]);
 	this->setHeight(v[3]);
 	this->setId(v[4]);
+	this->loadAnimation();
 }
 
-void GoldenBrick::loadAnimation(vector<string> data, char endSeperator, char seperator)
+void GoldenBrick::loadAnimation()
 {
-	int animDelay = 0;
-	vector<RECT>* arr = new vector<RECT>();
-	for (int i = 0; i < data.size(); ++i) {
-		if (data[i][0] == endSeperator) {
-			animDelay = stoi(data[i].substr(2, 1));
-			continue;
-		}
-		RECT r = RECT();
-		vector<int> frame = Tool::splitToVectorIntegerFrom(data[i], seperator);
-		r.left = frame[0];
-		r.top = frame[1];
-		r.right = frame[0] + frame[2];
-		r.bottom = frame[1] + frame[3];
-		arr->push_back(r);
-	}
-
-	animation = new Animation(0, 0, animDelay, arr);
+	this->animation = new Animation(AnimationBundle::getInstance()->getGoldenBrick());
 }
 
 void GoldenBrick::Update(float _dt)

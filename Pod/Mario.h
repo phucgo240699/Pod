@@ -29,7 +29,6 @@ private:
 	bool isFlip; // false: Left side - true: Right side. Default is false
 	bool debugMode = true;
 
-	vector<Animation*>* animations;
 	Animation* currentAnimation;
 
 	bool isStandOnSurface = false;
@@ -71,7 +70,6 @@ public:
 	void onKeyDown(vector<KeyType> _keyTypes);
 
 	void loadInfo(string line, char seperator);
-	void loadAnimations(vector<string> data, char seperatorRow, char seperatorCol);
 
 
 	void handleGroundCollision(Ground* _ground, float _dt);

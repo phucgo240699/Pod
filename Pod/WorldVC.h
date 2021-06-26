@@ -23,5 +23,6 @@ public:
 	void viewDidRender();
 
 	void adaptData();
+	void adaptAnimation();
 };
 

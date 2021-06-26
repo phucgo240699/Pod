@@ -33,19 +33,9 @@ void WTurtle::loadInfo(string line, char seperator)
 	this->isFlip = v[6] == "true" ? true : false;
 }
 
-void WTurtle::loadAnimation(vector<string> data, char endSeperator, char seperator)
+void WTurtle::loadAnimation(Animation* _animation);
 {
-	int animDelay = 0;
-	vector<RECT>* arr = new vector<RECT>();
-	for (int i = 0; i < data.size(); ++i) {
-		if (data[i][0] == endSeperator) {
-			animDelay = stoi(data[i].substr(2, data[i].size()));
-			continue;
-		}
-		arr->push_back(Tool::getRECT(data[i], seperator));
-	}
-
-	animation = new Animation(0, 0, animDelay, arr);
+	this->animation = _animation;
 }
 
 void WTurtle::Update(float _dt)
