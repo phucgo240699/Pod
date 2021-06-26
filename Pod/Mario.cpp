@@ -95,9 +95,14 @@ void Mario::Update(float _dt)
 	if (currentAnimation == NULL) {
 		return;
 	}
-
-
 	this->currentAnimation->Update(_dt);
+	if (this->getState() == DIE) {
+		if (this->currentAnimation->getCurrentIndexFrame() == this->currentAnimation->getTotalFrames() - 1
+		&& this->currentAnimation->getAnimCount() >= this->currentAnimation->getAnimDelay()) {
+			this->setState(MarioState::DIE_JUMPING);
+		}
+	}
+
 	this->updateVelocity();
 	if (this->getX() + round(this->getVx() * _dt) >= 0 && this->getX() + this->getWidth() + round(this->getVx() * _dt) <= this->getLimitX()) {
 		this->plusX(round(this->getVx() * _dt));
@@ -166,7 +171,9 @@ void Mario::setState(MarioState _state)
 		break;
 	case JUMPING:
 		if (this->getState() != JUMPING || this->currentAnimation == NULL) {
-			this->currentAnimation = this->animations->at(2);
+			if (this->getState() != DROPPING) {
+				this->currentAnimation = this->animations->at(2);
+			}
 			this->setTargetVy(0);
 			this->setVy(-4.4);
 			this->setAccelerationY(0.11);
@@ -175,7 +182,9 @@ void Mario::setState(MarioState _state)
 		break;
 	case DROPPING:
 		if (this->getState() != DROPPING || this->currentAnimation == NULL) {
-			this->currentAnimation = this->animations->at(2);
+			if (this->getState() != JUMPING) {
+				this->currentAnimation = this->animations->at(2);
+			}
 			this->setTargetVy(6);
 			this->setAccelerationY(0.34);
 		}
@@ -187,6 +196,32 @@ void Mario::setState(MarioState _state)
 			this->setTargetVy(0);
 			this->setAccelerationX(0);
 			this->setAccelerationY(0);
+			this->setVx(0);
+			this->setVy(0);
+		}
+		break;
+	case DIE_JUMPING:
+		if (this->getState() != DIE_JUMPING || this->currentAnimation == NULL) {
+			if (this->getState() != DIE) {
+				this->currentAnimation = this->animations->at(3);
+			}
+			this->setTargetVx(0);
+			this->setTargetVy(0);
+			this->setAccelerationX(0);
+			this->setAccelerationY(0.11);
+			this->setVx(0);
+			this->setVy(-4.4);
+		}
+		break;
+	case DIE_DROPPING:
+		if (this->getState() != DIE_DROPPING || this->currentAnimation == NULL) {
+			if (this->getState() != DIE && this->getState() != DIE_JUMPING) {
+				this->currentAnimation = this->animations->at(3);
+			}
+			this->setTargetVx(0);
+			this->setTargetVy(6);
+			this->setAccelerationX(0);
+			this->setAccelerationY(0.34);
 			this->setVx(0);
 			this->setVy(0);
 		}
@@ -261,6 +296,14 @@ void Mario::updateVelocity()
 			}
 			else {
 				this->setState(MarioState::DROPPING);
+			}
+		}
+		else if (this->getState() == DIE_JUMPING) {
+			if (this->getVy() + this->getAccelerationY() < 0) {
+				this->plusVy(this->getAccelerationY());
+			}
+			else {
+				this->setState(MarioState::DIE_DROPPING);
 			}
 		}
 	}

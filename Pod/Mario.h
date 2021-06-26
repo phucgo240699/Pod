@@ -33,9 +33,7 @@ private:
 	Animation* currentAnimation;
 
 	bool isStandOnSurface = false;
-
 	int componentIdStanded;
-
 
 
 public:

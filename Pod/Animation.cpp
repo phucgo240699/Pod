@@ -70,9 +70,9 @@ void Animation::setAnimCount(int _animCount)
 
 void Animation::Update(float _dt)
 {
-	if (this->getAnimCount() == this->getAnimDelay()) {
+	if (this->getAnimCount() >= this->getAnimDelay()) {
 		this->setAnimCount(0);
-		if (this->getTotalFrames() - 1 == 0) {
+		if (this->getTotalFrames() - 1 <= 0) {
 			return;
 		}
 		

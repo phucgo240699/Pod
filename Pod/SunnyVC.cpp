@@ -17,19 +17,19 @@ void SunnyVC::viewDidLoad()
 
 void SunnyVC::viewReceiveKeyUp()
 {
-	if (this->mario->getState() == DIE) return;
+	if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING) return;
 	mario->onKeyUp();
 }
 
 void SunnyVC::viewReceiveKeyUp(vector<KeyType> _keyTypes)
 {
-	if (this->mario->getState() == DIE) return;
+	if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING) return;
 	mario->onKeyUp(_keyTypes);
 }
 
 void SunnyVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 {
-	if (this->mario->getState() == DIE) return;
+	if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING) return;
 	mario->onKeyDown(_keyTypes);
 }
 
@@ -48,7 +48,7 @@ void SunnyVC::viewWillUpdate(float _dt)
 			unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
 			unordered_set<Component*> ::iterator itr;
 			for (itr = cell.begin(); itr != cell.end(); ++itr) {
-				if (this->mario->getState() == DIE) {
+				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING) {
 					if ((*itr)->getId() < beginGiftBrickId || (*itr)->getId() > endGiftBrickId) continue;
 				}
 				if (beginGoldenBrickId <= (*itr)->getId() && (*itr)->getId() <= endGoombaId) {
@@ -70,7 +70,7 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 void SunnyVC::viewDidUpdate(float _dt)
 {
-	if (this->mario->getState() == DIE) return;
+	if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING) return;
 	// Check by cell in grid
 	if (this->mario->getIsStandOnSurface() == true) {
 		this->mario->setIsStandOnSurface(false);

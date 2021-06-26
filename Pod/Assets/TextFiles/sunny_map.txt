@@ -55,9 +55,9 @@
 32,0,16,16
 > 2
 
-#Die
+#Die & Die Jumping
 48,0,16,16
-> 2
+> 16
 
 </MarioAnimations>
 
