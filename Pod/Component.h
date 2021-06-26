@@ -52,6 +52,7 @@ public:
 	virtual void Update(float _dt);
 	virtual void Draw();
 	virtual void Draw(LPDIRECT3DTEXTURE9 _texture);
+	virtual RECT getFrame();
 	virtual RECT getBounds();
 	virtual float getWidth();
 	virtual float getHeight();
@@ -64,10 +65,17 @@ public:
 	virtual void onKeyDown(vector<KeyType> _keyTypes);
 
 
-	// Collision
-	bool isColliding(RECT other);
 	bool isColliding(RECT object, RECT other);
-	RECT getSweptBroadphaseRect();
-	tuple<bool, float, vector<CollisionEdge>> sweptAABB(Component* other, float _dt);
+
+
+	// Collision by frame
+	bool isCollidingByFrame(RECT other);
+	RECT getSweptBroadphaseRectByFrame();
+	tuple<bool, float, vector<CollisionEdge>> sweptAABBByFrame(Component* other, float _dt);
+
+	// Collision by bounds
+	bool isCollidingByBounds(RECT other);
+	RECT getSweptBroadphaseRectByBounds();
+	tuple<bool, float, vector<CollisionEdge>> sweptAABBByBounds(Component* other, float _dt);
 
 };

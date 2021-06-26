@@ -118,7 +118,7 @@ void Grid::updateCellOf(Component* _component)
 		r.left = col * this->cellWidth;
 		r.right = r.left + this->cellWidth;
 
-		if (_component->isColliding(r) == false) { // if no longer in this cell, remove it from this cell, and add it to new cell
+		if (_component->isCollidingByFrame(r) == false) { // if no longer in this cell, remove it from this cell, and add it to new cell
 			this->cells[row][col].erase(_component);
 			int newCol = _component->getX() / this->cellWidth;
 			int newRow = _component->getY() / this->cellHeight;

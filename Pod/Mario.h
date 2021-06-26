@@ -48,6 +48,7 @@ public:
 	Animation* getCurrentAnimation();
 	MarioSubState getSubState();
 	MarioState getState();
+	RECT getFrame();
 	RECT getBounds();
 	bool getIsFlip();
 	float getWidth();

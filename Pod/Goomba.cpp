@@ -110,7 +110,7 @@ void Goomba::Draw(LPDIRECT3DTEXTURE9 _texture)
 
 void Goomba::handleGroundCollision(Component* _ground, float _dt)
 {
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABB(_ground, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_ground, _dt);
 	if (get<0>(collisionResult) == true) {
 		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
@@ -126,18 +126,18 @@ void Goomba::handleGroundCollision(Component* _ground, float _dt)
 
 void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 {
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABB(_mario, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
 	if (get<0>(collisionResult) == true) {
 		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == leftEdge) {
 				_mario->setState(MarioState::DIE);
-				this->plusX(get<1>(collisionResult) * _dt);
+				this->plusX(get<1>(collisionResult) * this->getVx());
 				this->setState(GoombaState::GOOMBA_STANDING);
 			}
 			else if (edge == rightEdge) {
 				_mario->setState(MarioState::DIE);
-				this->plusX(get<1>(collisionResult) * _dt);
+				this->plusX(get<1>(collisionResult) * this->getVx());
 				this->setState(GoombaState::GOOMBA_STANDING);
 			}
 		}
