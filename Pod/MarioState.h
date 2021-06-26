@@ -1,7 +1,7 @@
 #pragma once
 
 enum MarioState {
-	DROPPING, JUMPING, STANDING, WALKING,
+	DROPPING, JUMPING, STANDING, WALKING, DIE,
 };
 
 enum MarioSubState {

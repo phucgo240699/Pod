@@ -14,8 +14,8 @@ private:
 	unordered_map<string, RECT> frames;
 
 	long startTime;
-	int time, point, coin;
-	int coinX, coinY, pointX, pointY, timeX, timeY;
+	int time, point, coin, marioLife;
+	int marioLifeX, marioLifeY, coinX, coinY, pointX, pointY, timeX, timeY;
 public:
 	ScoreBoard(const ScoreBoard&) = delete; // 3. delete copy constructor
 	static ScoreBoard* getInstance();	  // 4. public function for client code usage
@@ -33,11 +33,13 @@ public:
 
 	RECT getFrame(string keyword);
 
+	void load();
 	void loadInfo(string line, char seperator);
 	void loadFrames(vector<string> data, char keywordSeperator, char seperator);
 
 	void Update(float _dt);
 	void Draw();
+	void DrawMarioLife();
 	void DrawCoin();
 	void DrawPoint();
 	void DrawTime();

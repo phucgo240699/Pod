@@ -14,18 +14,9 @@ public:
 	// Map
 	string sunny_map = "./Assets/TextFiles/sunny_map.txt";
 	string world_map = "./Assets/TextFiles/world_map.txt";
-	/*string map_indexes_man1 = "./Assets/TextFiles/Map/Man1/indexes.txt";
-	string map_info_man1 = "./Assets/TextFiles/Map/Man1/info.txt";
-	string ground_man1 = "./Assets/TextFiles/Map/Man1/ground.txt";*/
 
-	// Mario
-	/*string mario_info = "./Assets/TextFiles/Mario/mario_info.txt";
-	string mario_running = "./Assets/TextFiles/Mario/running.txt";
-	string mario_standing = "./Assets/TextFiles/Mario/standing.txt";
-	string mario_jumping_dropping = "./Assets/TextFiles/Mario/jumping_dropping.txt";*/
-
-	// Camera
-	//string camera = "./Assets/TextFiles/Camera/camera.txt";
+	// Scoreboard
+	string score_board = "./Assets/TextFiles/score_board.txt";
 
 	// Setting
 	string settings = "./Assets/TextFiles/settings.txt";

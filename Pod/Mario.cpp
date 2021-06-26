@@ -1,4 +1,5 @@
 #include "Mario.h"
+#include "Goomba.h"
 
 Mario::Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state) : MainCharacter(_x, _y, _vx, _vy, _limitX, _limitY)
 {
@@ -148,6 +149,17 @@ void Mario::setState(MarioState _state)
 			this->currentAnimation = this->animations->at(2);
 			this->setTargetVy(6);
 			this->setAccelerationY(0.34);
+		}
+		break;
+	case DIE:
+		if (this->getState() == DIE || this->currentAnimation == NULL) {
+			this->currentAnimation = this->animations->at(3);
+			this->setTargetVx(0);
+			this->setTargetVy(0);
+			this->setAccelerationX(0);
+			this->setAccelerationY(0);
+			this->setVx(0);
+			this->setVy(0);
 		}
 		break;
 	default:
@@ -607,6 +619,16 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 				this->plusY(get<1>(collisionResult) * _dt + (_goomba->getHeight() / 2));
 				_goomba->setState(GoombaState::TRAMPLED_GOOMBA);
 				ScoreBoard::getInstance()->plusPoint(100);
+			}
+			else if (edge == leftEdge) {
+				this->setState(MarioState::DIE);
+				this->plusX(get<1>(collisionResult) * _dt);
+				_goomba->setState(GoombaState::GOOMBA_STANDING);
+			}
+			else if (edge == rightEdge) {
+				this->setState(MarioState::DIE);
+				this->plusX(get<1>(collisionResult) * _dt);
+				_goomba->setState(GoombaState::GOOMBA_STANDING);
 			}
 		}
 	}

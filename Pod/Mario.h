@@ -1,4 +1,7 @@
 #pragma once
+#ifndef MARIO_H
+#define MARIO_H
+
 #include "MarioState.h"
 #include "KeyType.h"
 #include "Camera.h"
@@ -8,12 +11,14 @@
 #include "GoldenBrick.h"
 #include "GiftBrick.h"
 #include "ScoreBoard.h"
-#include "Goomba.h"
+//#include "Goomba.h"
 #include "Block.h"
 #include "GreenPipe.h"
 #include <unordered_map>
 
 using namespace std;
+
+class Goomba; // Say Mario exists without defining it.
 
 class Mario : public MainCharacter
 {
@@ -78,3 +83,4 @@ public:
 	void handleGoombaCollision(Goomba* _goomba, float _dt);
 };
 
+#endif // !MARIO_H

@@ -139,28 +139,6 @@ X X X - X X X - X X X X X X
 X X X 5 - O - 6 X X X X X X
 </WMarioMovingMatrix>
 
-<ScoreBoard>
-# (x, y, coinX, coinY, pointX, pointY, timeX, timeY, coin, point, time)
-0,150,133,12,52,20,125,20,0,0,0
-</ScoreBoard>
-
-<ScoreBoardFrames>
-# Main board
-MB-0,0,236,38
-
-# Character
-0-0,39,8,7
-1-9,39,8,7
-2-18,39,8,7
-3-27,39,8,7
-4-36,39,8,7
-5-45,39,8,7
-6-54,39,8,7
-7-63,39,8,7
-8-72,39,8,7
-9-81,39,8,7
-</ScoreBoardFrames>
-
 <WTurtleInfo>
 # (x, y, vx, vy, leftAnchor, rightAnchor, isFlip)
 144,96,0.5,0,144,168,false

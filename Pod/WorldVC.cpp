@@ -194,7 +194,7 @@ void WorldVC::adaptData()
 			data.clear();
 			section = SECTION_NONE;
 		}
-		else if (line == "<ScoreBoard>") {
+		/*else if (line == "<ScoreBoard>") {
 			section = SECTION_SCORE_BOARD;
 			continue;
 		}
@@ -202,14 +202,14 @@ void WorldVC::adaptData()
 			section = SECTION_NONE;
 		}
 		else if (line == "<ScoreBoardFrames>") {
-			section = SECTION_sCORE_BOARD_FRAMES;
+			section = SECTION_SCORE_BOARD_FRAMES;
 			continue;
 		}
 		else if (line == "</ScoreBoardFrames>") {
 			ScoreBoard::getInstance()->loadFrames(data, '-', ',');
 			data.clear();
 			section = SECTION_NONE;
-		}
+		}*/
 		else if (line == "<WTurtleInfo>") {
 			section = SECTION_WTURTLE_INFO;
 			continue;
@@ -262,12 +262,12 @@ void WorldVC::adaptData()
 		case SECTION_WMARIO_MOVING_MATRIX:
 			data.push_back(line);
 			break;
-		case SECTION_SCORE_BOARD:
+		/*case SECTION_SCORE_BOARD:
 			ScoreBoard::getInstance()->loadInfo(line, ',');
 			break;
-		case SECTION_sCORE_BOARD_FRAMES:
+		case SECTION_SCORE_BOARD_FRAMES:
 			data.push_back(line);
-			break;
+			break;*/
 		case SECTION_WTURTLE_INFO:
 			wTurtle->loadInfo(line, ',');
 			break;

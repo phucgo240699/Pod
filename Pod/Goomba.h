@@ -1,9 +1,14 @@
 #pragma once
+#ifndef GOOMBA_H
+#define GOOMBA_H
+
 #include "Enemy.h"
 #include "GoombaState.h"
 #include "AnimationBundle.h"
 #include "Camera.h"
 #include "Grid.h"
+
+class Mario; // Say Goomba exists without defining it.
 
 class Goomba : public Enemy
 {
@@ -12,7 +17,6 @@ private:
 	GoombaState state;
 
 	int endPointJumpUp, pointY;
-	//bool isPointJumpUp = false;
 
 public:
 	// Init
@@ -31,5 +35,7 @@ public:
 	void Draw(LPDIRECT3DTEXTURE9 _texture);
 
 	void handleGroundCollision(Component* _ground, float _dt);
+	void handleMarioCollision(Mario* _mario, float _dt);
 };
 
+#endif // !GOOMBA_H

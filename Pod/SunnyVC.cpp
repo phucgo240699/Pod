@@ -17,16 +17,19 @@ void SunnyVC::viewDidLoad()
 
 void SunnyVC::viewReceiveKeyUp()
 {
+	if (this->mario->getState() == DIE) return;
 	mario->onKeyUp();
 }
 
 void SunnyVC::viewReceiveKeyUp(vector<KeyType> _keyTypes)
 {
+	if (this->mario->getState() == DIE) return;
 	mario->onKeyUp(_keyTypes);
 }
 
 void SunnyVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 {
+	if (this->mario->getState() == DIE) return;
 	mario->onKeyDown(_keyTypes);
 }
 
@@ -45,6 +48,9 @@ void SunnyVC::viewWillUpdate(float _dt)
 			unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
 			unordered_set<Component*> ::iterator itr;
 			for (itr = cell.begin(); itr != cell.end(); ++itr) {
+				if (this->mario->getState() == DIE) {
+					if ((*itr)->getId() < beginGiftBrickId || (*itr)->getId() > endGiftBrickId) continue;
+				}
 				if (beginGoldenBrickId <= (*itr)->getId() && (*itr)->getId() <= endGoombaId) {
 					(*itr)->Update(_dt);
 				}
@@ -52,7 +58,9 @@ void SunnyVC::viewWillUpdate(float _dt)
 		}
 	}
 
-	ScoreBoard::getInstance()->Update(_dt);
+	if (this->mario->getState() != DIE) {
+		ScoreBoard::getInstance()->Update(_dt);
+	}
 
 	if (mario != NULL) {
 		mario->Update(_dt);
@@ -62,10 +70,8 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 void SunnyVC::viewDidUpdate(float _dt)
 {
+	if (this->mario->getState() == DIE) return;
 	// Check by cell in grid
-	int x = this->mario->getX();
-	int y = this->mario->getY();
-
 	if (this->mario->getIsStandOnSurface() == true) {
 		this->mario->setIsStandOnSurface(false);
 	}
@@ -101,7 +107,10 @@ void SunnyVC::viewDidUpdate(float _dt)
 						this->goombas->erase(static_cast<Goomba*>(*itr));
 						return;
 					}
+
 					this->mario->handleGoombaCollision(static_cast<Goomba*>(*itr), _dt);
+					static_cast<Goomba*>(*itr)->handleMarioCollision(this->mario, _dt);
+
 					for (itr2 = cell.begin(); itr2 != cell.end(); ++itr2) {
 						if ((beginGroundId <= (*itr2)->getId() && (*itr2)->getId() <= endGroundId)
 							|| (beginGoldenBrickId <= (*itr2)->getId() && (*itr2)->getId() <= endGoldenBrickId)) {
@@ -302,7 +311,7 @@ void SunnyVC::adaptData()
 			}
 			section = SECTION_NONE;
 		}
-		else if (line == "<ScoreBoard>") {
+		/*else if (line == "<ScoreBoard>") {
 			section = SECTION_SCORE_BOARD;
 			continue;
 		}
@@ -310,13 +319,13 @@ void SunnyVC::adaptData()
 			section = SECTION_NONE;
 		}
 		else if (line == "<ScoreBoardFrames>") {
-			section = SECTION_sCORE_BOARD_FRAMES;
+			section = SECTION_SCORE_BOARD_FRAMES;
 			continue;
 		}
 		else if (line == "</ScoreBoardFrames>") {
 			ScoreBoard::getInstance()->loadFrames(data, '-', ',');
 			section = SECTION_NONE;
-		}
+		}*/
 		else if (line == "<GridInfo>") {
 			section = SECTION_GRID_INFO;
 			continue;
@@ -370,12 +379,12 @@ void SunnyVC::adaptData()
 		case SECTION_GIFT_BRICK_FRAMES:
 			data.push_back(line);
 			break;
-		case SECTION_SCORE_BOARD:
+		/*case SECTION_SCORE_BOARD:
 			ScoreBoard::getInstance()->loadInfo(line, ',');
 			break;
-		case SECTION_sCORE_BOARD_FRAMES:
+		case SECTION_SCORE_BOARD_FRAMES:
 			data.push_back(line);
-			break;
+			break;*/
 		case SECTION_GOLDEN_BRICK_ANIMATION:
 			data.push_back(line);
 			break;

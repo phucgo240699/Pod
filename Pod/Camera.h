@@ -1,6 +1,5 @@
 #pragma once
 #include "Component.h"
-#include "Drawing.h"
 
 // Singleton
 class Camera : public Component
@@ -21,4 +20,3 @@ public:
 
 	void load(string line, char seperator);
 };
-

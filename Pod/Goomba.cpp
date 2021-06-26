@@ -1,4 +1,5 @@
 #include "Goomba.h"
+#include "Mario.h"
 
 Goomba::Goomba(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id) : Enemy(_x, _y, _vx, _vy, _limitX, _limitY)
 {
@@ -54,6 +55,10 @@ void Goomba::setState(GoombaState _state)
 			this->animation = NULL;
 			this->pointAnimation = NULL;
 		}
+	case GOOMBA_STANDING:
+		this->setVx(0);
+		this->setVy(0);
+		break;
 	default:
 		break;
 	}
@@ -114,6 +119,26 @@ void Goomba::handleGroundCollision(Component* _ground, float _dt)
 			}
 			else if (edge == rightEdge) {
 				this->setVx(abs(this->getVx()) * -1);
+			}
+		}
+	}
+}
+
+void Goomba::handleMarioCollision(Mario* _mario, float _dt)
+{
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABB(_mario, _dt);
+	if (get<0>(collisionResult) == true) {
+		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+			CollisionEdge edge = get<2>(collisionResult)[j];
+			if (edge == leftEdge) {
+				_mario->setState(MarioState::DIE);
+				this->plusX(get<1>(collisionResult) * _dt);
+				this->setState(GoombaState::GOOMBA_STANDING);
+			}
+			else if (edge == rightEdge) {
+				_mario->setState(MarioState::DIE);
+				this->plusX(get<1>(collisionResult) * _dt);
+				this->setState(GoombaState::GOOMBA_STANDING);
 			}
 		}
 	}
