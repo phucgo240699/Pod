@@ -5,7 +5,7 @@ void WorldVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 	for (int i = 0; i < _keyTypes.size(); ++i) {
 		if (_keyTypes[i] == enter) {
 			if (wMario->getCurrentSceneId() == '1') {
-				Setting::getInstance()->isTransfering = true;
+				Setting::getInstance()->setIsTransfering(true);
 				Setting::getInstance()->setSceneName(SceneName::SunnyScene);
 				return;
 			}
@@ -21,6 +21,8 @@ void WorldVC::viewDidLoad()
 	helpLabel = new StaticAnim();
 	wMario = new WMario(0, 0, 0, 0, 0, 0);
 	wTurtle = new WTurtle(0, 0, 0, 0, 0, 0);
+	
+	ScoreBoard::getInstance()->resetTimeToZero();
 
 	this->adaptData();
 	this->adaptAnimation();
@@ -39,8 +41,6 @@ void WorldVC::viewWillUpdate(float _dt)
 	if (helpLabel != NULL) {
 		helpLabel->Update(_dt);
 	}
-
-	ScoreBoard::getInstance()->Update(_dt);
 
 	if (wTurtle != NULL) {
 		wTurtle->Update(_dt);

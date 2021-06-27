@@ -181,3 +181,18 @@ void ScoreBoard::plusCoin(int _value)
 	}
 	this->coin += _value;
 }
+
+void ScoreBoard::minusMarioLife()
+{
+	--this->marioLife;
+}
+
+void ScoreBoard::resetTimeToZero()
+{
+	this->time = 0;
+}
+
+void ScoreBoard::resetTimeTo300()
+{
+	this->time = 300;
+}

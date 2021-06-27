@@ -45,8 +45,6 @@ public:
 	Animation* getCurrentAnimation();
 	MarioSubState getSubState();
 	MarioState getState();
-	RECT getFrame();
-	RECT getBounds();
 	bool getIsFlip();
 	float getWidth();
 	float getHeight();
@@ -68,6 +66,7 @@ public:
 	void onKeyUp();
 	void onKeyUp(vector<KeyType> _keyTypes);
 	void onKeyDown(vector<KeyType> _keyTypes);
+
 
 	void loadInfo(string line, char seperator);
 

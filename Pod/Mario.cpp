@@ -30,46 +30,6 @@ MarioState Mario::getState()
 	return this->state;
 }
 
-RECT Mario::getFrame()
-{
-	RECT r = RECT();
-	r.top = this->getY();
-	r.bottom = r.top + this->getHeight();
-	r.left = this->getX();
-	r.right = r.left + this->getWidth();
-
-	return r;
-}
-
-RECT Mario::getBounds()
-{
-	RECT r = RECT();
-	r.top = this->getY();
-	r.bottom = r.top + this->getHeight();
-	r.left = this->getX();
-	r.right = r.left + this->getWidth();
-
-	switch (this->getState())
-	{
-	case DROPPING:
-	case JUMPING:
-	case DIE:
-		break;
-	case STANDING:
-		r.top -= 1;
-		r.left += 2;
-		r.right -= 2;
-		break;
-	case WALKING:
-		r.right -= 1;
-		break;
-	default:
-		break;
-	}
-
-	return r;
-}
-
 bool Mario::getIsFlip()
 {
 	return this->isFlip;
@@ -109,6 +69,12 @@ void Mario::Update(float _dt)
 	}
 	
 	this->plusY(round(this->getVy() * _dt));
+
+	if (this->getY() >= this->getLimitY() + 200) {
+		Setting::getInstance()->setIsTransfering(true);
+		Setting::getInstance()->setSceneName(SceneName::WorldScene);
+		ScoreBoard::getInstance()->minusMarioLife();
+	}
 }
 
 void Mario::Draw()
@@ -232,6 +198,7 @@ void Mario::setState(MarioState _state)
 
 	this->state = _state;
 }
+
 void Mario::setSubState(MarioSubState _subState)
 {
 	switch (_subState)

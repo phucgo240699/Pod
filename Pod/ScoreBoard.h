@@ -30,6 +30,9 @@ public:
 	void setTime(int _time);
 	void plusPoint(int _value);
 	void plusCoin(int _value);
+	void minusMarioLife(); // it will minus mario's life to 1
+	void resetTimeToZero();
+	void resetTimeTo300();
 
 	RECT getFrame(string keyword);
 

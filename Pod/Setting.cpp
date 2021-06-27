@@ -58,6 +58,11 @@ SceneName Setting::getSceneName()
 	return this->sceneName;
 }
 
+bool Setting::getIsTransfering()
+{
+	return this->isTransfering;
+}
+
 float Setting::getCollisionSafeSpace()
 {
 	return this->collisionSafeSpace;
@@ -96,6 +101,11 @@ void Setting::setDebugMode(bool _debugMode)
 void Setting::setSceneName(SceneName _sceneName)
 {
 	this->sceneName = _sceneName;
+}
+
+void Setting::setIsTransfering(int _isTransfering)
+{
+	this->isTransfering = _isTransfering;
 }
 
 void Setting::toggleDebugMode()

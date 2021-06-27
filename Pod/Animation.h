@@ -7,7 +7,7 @@ class Animation
 {
 private:
 	int id, currentIndexFrame, animDelay, animCount;
-	vector<pair<RECT, RECT>>* frames;
+	vector<pair<RECT, RECT>>* frames; // First element in pair is bounds. Second element in pair is frame
 
 public:
 	// Init

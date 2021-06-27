@@ -30,7 +30,32 @@ void AnimationBundle::loadAnimations(vector<string> data, char endSperator, char
 
 			continue;
 		}
-		frames->push_back(pair<RECT, RECT>(RECT(), Tool::getRECT(data[i], seperator)));
+		
+		vector<float> v = Tool::splitToVectorFloatFrom(data[i], seperator);
+		if (v.size() == 8) {
+			RECT rectBounds = RECT();
+			rectBounds.left = v[0];
+			rectBounds.top = v[1];
+			rectBounds.right = rectBounds.left + v[2];
+			rectBounds.bottom = rectBounds.top + v[3];
+
+			RECT rectFrame = RECT();
+			rectFrame.left = v[4];
+			rectFrame.top = v[5];
+			rectFrame.right = rectFrame.left + v[6];
+			rectFrame.bottom = rectFrame.top + v[7];
+
+			frames->push_back(pair<RECT, RECT>(rectBounds, rectFrame));
+		}
+		else {
+			RECT rectFrame = RECT();
+			rectFrame.left = v[0];
+			rectFrame.top = v[1];
+			rectFrame.right = rectFrame.left + v[2];
+			rectFrame.bottom = rectFrame.top + v[3];
+
+			frames->push_back(pair<RECT, RECT>(rectFrame, rectFrame));
+		}
 	}
 }
 

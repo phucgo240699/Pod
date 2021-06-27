@@ -314,23 +314,24 @@
 
 <AnimationBundle>
 # > id, startIndexFrame, animationDelay
-
+# if has 4 numbers in line => just get frame
+# if has 8 numbers in line => get bounds then get frame 
 # Mario Stading
-0,0,16,16
+2,0,12,15,0,0,16,16
 > 0 0 2
 
 # Mario Running
-0,0,16,16
-16,0,16,16
+2,0,12,15,0,0,16,16
+16,0,15,16,16,0,16,16
 > 1 0 2
 
 # Mario: Jumping & Dropping
 32,0,16,16
 > 2 0 2
 
-# Mario: Die & Die Jumping
+# Mario: Die & Die Jumping & Die Dropping
 48,0,16,16
-> 3 0 16
+> 3 0 20
 
 # GoldenBrickAnimation
 # (x, y, width, height)

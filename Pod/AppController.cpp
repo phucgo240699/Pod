@@ -1,11 +1,5 @@
 #include"AppController.h"
 
-
-AppController::~AppController()
-{
-	delete rootViewController;
-}
-
 ViewController* AppController::getRootViewController()
 {
 	return this->rootViewController;
@@ -16,10 +10,17 @@ void AppController::setRootViewController(SceneName _sceneName)
 	switch (Setting::getInstance()->getSceneName())
 	{
 	case WorldScene:
-		this->rootViewController = worldVC;
+		if (this->worldVC == NULL) {
+			this->worldVC = new WorldVC();
+		}
+		this->rootViewController = this->worldVC;
+		this->rootViewController->viewDidLoad();
 		break;
 	case SunnyScene:
-		this->rootViewController = new SunnyVC();
+		if (this->sunnyVC == NULL) {
+			this->sunnyVC = new SunnyVC();
+		}
+		this->rootViewController = sunnyVC;
 		this->rootViewController->viewDidLoad();
 		break;
 	default:
@@ -30,14 +31,13 @@ void AppController::setRootViewController(SceneName _sceneName)
 int AppController::Game_Init(HWND hwnd)
 {
 	this->setRootViewController(Setting::getInstance()->getSceneName());
-	this->getRootViewController()->viewDidLoad();
 	return 1;
 }
 
 void AppController::Game_Run(HWND hwnd, float _dt)
 {
-	if (Setting::getInstance()->isTransfering == true) {
-		Setting::getInstance()->isTransfering = false;
+	if (Setting::getInstance()->getIsTransfering() == true) {
+		Setting::getInstance()->setIsTransfering(false);
 		this->setRootViewController(Setting::getInstance()->getSceneName());
 	}
 

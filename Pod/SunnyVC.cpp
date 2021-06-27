@@ -11,6 +11,8 @@ void SunnyVC::viewDidLoad()
 	goombas = new unordered_set<Goomba*>();
 	blocks = new vector<Block*>();
 
+	ScoreBoard::getInstance()->resetTimeTo300();
+
 	this->adaptData();
 	this->adaptAnimation();
 	this->adaptToGrid();
@@ -59,14 +61,16 @@ void SunnyVC::viewWillUpdate(float _dt)
 		}
 	}
 
-	if (this->mario->getState() != DIE) {
-		ScoreBoard::getInstance()->Update(_dt);
-	}
-
 	if (mario != NULL) {
 		mario->Update(_dt);
 		Camera::getInstance()->follow(mario, _dt);
 	}
+	if (this->mario->getState() == DIE
+	|| this->mario->getState() == DIE_JUMPING
+	|| this->mario->getState() == DIE_DROPPING) {
+		return;
+	}
+	ScoreBoard::getInstance()->Update(_dt);
 }
 
 void SunnyVC::viewDidUpdate(float _dt)

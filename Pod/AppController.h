@@ -23,11 +23,10 @@ class AppController {
 	// Name of program
 private:
 	ViewController* rootViewController;
-	WorldVC* worldVC = new WorldVC();
-public:
 
-	// De Init
-	~AppController();
+	WorldVC* worldVC;
+	SunnyVC* sunnyVC;
+public:
 
 	// Getter
 	ViewController* getRootViewController();

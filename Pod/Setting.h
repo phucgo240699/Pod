@@ -31,11 +31,11 @@ private:
 	SceneName sceneName = SunnyScene;
 
 
+	bool isTransfering = false;
 public:
 	Setting(const Setting&) = delete; // 3. delete copy constructor
 	static Setting* getInstance();	  // 4. public function for client code usage
 
-	bool isTransfering = false;
 
 	// Getter
 	float getDt();
@@ -47,6 +47,8 @@ public:
 	bool getDebugMode();
 	float getCollisionSafeSpace();
 	SceneName getSceneName();
+
+	bool getIsTransfering();
 
 	// Setter
 	void setDt(float _dt);
@@ -60,8 +62,8 @@ public:
 	void setCollisionSafeSpace(float _value);
 	void setSceneName(SceneName _sceneName);
 
+	void setIsTransfering(int _isTransfering);
+
 	// Others
-	//void save();
 	void load();
-	//void load(string line, char seperator);
 };
