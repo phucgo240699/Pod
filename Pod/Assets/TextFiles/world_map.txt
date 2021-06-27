@@ -20,34 +20,6 @@
 0 37 37 26 40 8 40 27 36 31 31 31 35 0
 </MapIndexes>
 
-<AnimationBundle>
-# (x, y, width, height)
-# > id, startIndexFrame, animationDelay
-
-# WMario
-136,51,16,16
-153,51,16,16
-> 0 0 3
-
-# Grasses
-0,17,16,16
-17,17,16,16
-34,17,16,16
-51,17,16,16
-> 1 0 8
-
-# Help Label
-17,0,16,16
-0,51,16,16
-> 2 0 15
-
-# WTurtle
-102,17,16,16
-119,17,16,16
-> 3 0 2
-
-</AnimationBundle>
-
 <GrassFrames>
 # (x, y, width, height)
 # row 1
@@ -148,3 +120,31 @@ X X X 5 - O - 6 X X X X X X
 # (x, y, vx, vy, leftAnchor, rightAnchor, isFlip)
 144,96,0.5,0,144,168,false
 </WTurtleInfo>
+
+<AnimationBundle>
+# (x, y, width, height)
+# > id, startIndexFrame, animationDelay
+
+# WMario
+136,51,16,16
+153,51,16,16
+> 0 0 3
+
+# Grasses
+0,17,16,16
+17,17,16,16
+34,17,16,16
+51,17,16,16
+> 1 0 8
+
+# Help Label
+17,0,16,16
+0,51,16,16
+> 2 0 15
+
+# WTurtle
+102,17,16,16
+119,17,16,16
+> 3 0 2
+
+</AnimationBundle>

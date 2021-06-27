@@ -38,75 +38,6 @@
 4 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 6 20 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 22 37 37 37 37 4 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 6 37 37 4 5 5 5 6 37 37 37 4 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 6 37 4 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 6
 </MapIndexes>
 
-<AnimationBundle>
-# > id, startIndexFrame, animationDelay
-
-# Mario Stading
-0,0,16,16
-> 0 0 2
-
-# Mario Running
-0,0,16,16
-16,0,16,16
-> 1 0 2
-
-# Mario: Jumping & Dropping
-32,0,16,16
-> 2 0 2
-
-# Mario: Die & Die Jumping
-48,0,16,16
-> 3 0 16
-
-# GoldenBrickAnimation
-# (x, y, width, height)
-204,119,16,16
-221,119,16,16
-238,119,16,16
-255,119,16,16
-> 4 0 4
-
-# GiftBrick secret animation
-170,0,16,16
-187,0,16,16
-204,0,16,16
-221,0,16,16
-> 5 0 4
-
-# GiftBrick empty box
-238,0,16,16
-> 6 0 10
-
-# GiftBrick coin animation
-255,0,16,16
-255,17,16,16
-255,34,16,16
-255,51,16,16
-> 7 0 4
-
-# GiftBrick 100 coins
-102,34,16,16
-> 8 0 10
-
-# Goomba Moving
-0,136,16,16
-17,136,16,16
-> 9 0 3
-
-# Trampled Goomba
-34,136,16,16
-> 10 0 3
-
-# Green Pipe 3 floors
-0,153,32,48
-> 11 0 10
-
-# Green Pipe 2 floors
-33,153,32,32
-> 12 0 10
-</AnimationBundle>
-
-
 <MarioInfo>
 #(x,y,limitX,limitY,state)
 100,0,2816,470,DROPPING
@@ -380,3 +311,71 @@
 > 54
 0,4
 </GridMatrixId>
+
+<AnimationBundle>
+# > id, startIndexFrame, animationDelay
+
+# Mario Stading
+0,0,16,16
+> 0 0 2
+
+# Mario Running
+0,0,16,16
+16,0,16,16
+> 1 0 2
+
+# Mario: Jumping & Dropping
+32,0,16,16
+> 2 0 2
+
+# Mario: Die & Die Jumping
+48,0,16,16
+> 3 0 16
+
+# GoldenBrickAnimation
+# (x, y, width, height)
+204,119,16,16
+221,119,16,16
+238,119,16,16
+255,119,16,16
+> 4 0 4
+
+# GiftBrick secret animation
+170,0,16,16
+187,0,16,16
+204,0,16,16
+221,0,16,16
+> 5 0 4
+
+# GiftBrick empty box
+238,0,16,16
+> 6 0 10
+
+# GiftBrick coin animation
+255,0,16,16
+255,17,16,16
+255,34,16,16
+255,51,16,16
+> 7 0 4
+
+# GiftBrick 100 coins
+102,34,16,16
+> 8 0 10
+
+# Goomba Moving
+0,136,16,16
+17,136,16,16
+> 9 0 3
+
+# Trampled Goomba
+34,136,16,16
+> 10 0 3
+
+# Green Pipe 3 floors
+0,153,32,48
+> 11 0 10
+
+# Green Pipe 2 floors
+33,153,32,32
+> 12 0 10
+</AnimationBundle>

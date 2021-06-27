@@ -358,8 +358,10 @@ void SunnyVC::adaptData()
 			break;
 		case SECTION_GRID_MATRIX_ID:
 			data.push_back(line);
+			break;
 		case SECTION_ANIMATION_BUNDLE:
 			data.push_back(line);
+			break;
 		default:
 			break;
 		}
@@ -370,6 +372,11 @@ void SunnyVC::adaptData()
 
 void SunnyVC::adaptAnimation()
 {
+	// Golden Bricks
+	for (int i = 0; i < this->goldenBricks->size(); ++i) {
+		this->goldenBricks->at(i)->setAnimation(new Animation(AnimationBundle::getInstance()->getGoldenBrick()));
+	}
+
 	// Gift Bricks
 	for (int i = 0; i < this->giftBricks->size(); ++i) {
 		this->giftBricks->at(i)->setState(GiftBrickState::FULLGIFTBRICK);
@@ -377,7 +384,7 @@ void SunnyVC::adaptAnimation()
 
 	// Green Pipes
 	for (int i = 0; i < this->greenPipes->size(); ++i) {
-		this->greenPipes->at(i)->setup();
+		this->greenPipes->at(i)->setupAnimation();
 	}
 
 	///

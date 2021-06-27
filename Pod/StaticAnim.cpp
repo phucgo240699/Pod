@@ -27,7 +27,7 @@ Animation* StaticAnim::getAnimation()
 
 void StaticAnim::setAnimation(Animation* _animation)
 {
-	return this->animation = _animation;
+	this->animation = _animation;
 }
 
 void StaticAnim::Update(float _dt)

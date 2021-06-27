@@ -175,9 +175,9 @@ void WMario::loadInfo(string line, char seperator)
 	this->setY(this->row * this->tileSize);
 }
 
-void WMario::loadAnimations()
+void WMario::setAnimation(Animation* _animation)
 {
-	this->animation = new Animation(AnimationBundle::getInstance()->getWMario());
+	this->animation = _animation;
 }
 
 void WMario::loadMovingMatrix(vector<string> data, char seperator)

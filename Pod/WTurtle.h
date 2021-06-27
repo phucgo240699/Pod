@@ -18,8 +18,10 @@ public:
 	float getWidth();
 	float getHeight();
 
+	// Setter
+	void setAnimation(Animation* _animation);
+
 	void loadInfo(string line, char seperator);
-	void loadAnimation(Animation* _animation);
 	void Update(float _dt);
 	void Draw(LPDIRECT3DTEXTURE9 _texture);
 

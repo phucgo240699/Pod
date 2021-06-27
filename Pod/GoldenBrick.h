@@ -13,7 +13,7 @@ public:
 	GoldenBrick(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _limitY, int _id = 0);
 
 	void loadInfo(string line, char seperator);
-	void loadAnimation();
+	void setAnimation(Animation* _animation);
 	void Update(float _dt);
 	void Draw(LPDIRECT3DTEXTURE9 _texture);
 };

@@ -17,12 +17,11 @@ void GoldenBrick::loadInfo(string line, char seperator)
 	this->setWidth(v[2]);
 	this->setHeight(v[3]);
 	this->setId(v[4]);
-	this->loadAnimation();
 }
 
-void GoldenBrick::loadAnimation()
+void GoldenBrick::setAnimation(Animation* _animation)
 {
-	this->animation = new Animation(AnimationBundle::getInstance()->getGoldenBrick());
+	this->animation = _animation;
 }
 
 void GoldenBrick::Update(float _dt)

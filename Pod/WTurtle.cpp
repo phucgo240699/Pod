@@ -33,7 +33,7 @@ void WTurtle::loadInfo(string line, char seperator)
 	this->isFlip = v[6] == "true" ? true : false;
 }
 
-void WTurtle::loadAnimation(Animation* _animation);
+void WTurtle::setAnimation(Animation* _animation)
 {
 	this->animation = _animation;
 }

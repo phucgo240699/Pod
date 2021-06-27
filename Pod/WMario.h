@@ -27,6 +27,7 @@ public:
 
 	// Setter
 	void setState(WMarioState _state);
+	void setAnimation(Animation* _animation);
 
 	// Inherit
 	void Update(float _dt);
@@ -35,7 +36,6 @@ public:
 	void onKeyDown(vector<KeyType> _keyTypes);
 
 	void loadInfo(string line, char seperator);
-	void loadAnimations();
 	void loadMovingMatrix(vector<string> data, char seperator);
 
 	// Check methods

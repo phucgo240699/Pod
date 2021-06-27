@@ -9,7 +9,7 @@ GreenPipe::GreenPipe(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX,
 {
 }
 
-void GreenPipe::setup()
+void GreenPipe::setupAnimation()
 {
 	if (this->floorNumber == 2) {
 		this->animation = new Animation(AnimationBundle::getInstance()->getGreenPipe2Floor());
