@@ -44,5 +44,7 @@ public:
 	Animation getSuperMarioWalking();
 	Animation getSuperMarioDropping();
 	Animation getSuperMarioJumping();
+	Animation getMarioScalingUp();
+	Animation getMarioScalingDown();
 };
 

@@ -1,5 +1,6 @@
 #include "SuperMushroom.h"
 #include "Block.h"
+#include "Mario.h"
 
 //SuperMushroom::SuperMushroom(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id) : Component(_x, _y, _vx, _vy, _limitX, _limitY)
 //{
@@ -221,4 +222,9 @@ void SuperMushroom::handleBlockCollision(Block* _block, float _dt)
 			return;
 		}
 	}
+}
+
+bool SuperMushroom::isCollideMario(Mario* _mario, float _dt)
+{
+	return get<0>(this->sweptAABBByBounds(_mario, _dt));
 }

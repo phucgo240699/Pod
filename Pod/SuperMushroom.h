@@ -1,10 +1,15 @@
 #pragma once
+#ifndef SUPERMUSHROOM_H
+#define SUPERMUSHROOM_H
+
 #include "Component.h"
 #include "SuperMushroomState.h"
 #include "AnimationBundle.h"
 #include "Grid.h"
 #include "Block.h"
 #include "Camera.h"
+
+class Mario;
 
 class SuperMushroom : public Component
 {
@@ -40,4 +45,6 @@ public:
 	// Collision
 	void handleHardComponentCollision(Component* _component, float _dt);
 	void handleBlockCollision(Block* _block, float _dt);
+	bool isCollideMario(Mario* _mario, float _dt);
 };
+#endif // !SUPERMUSHROOM_H

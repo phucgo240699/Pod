@@ -30,6 +30,11 @@ MarioState Mario::getState()
 	return this->state;
 }
 
+MarioState Mario::getPressureState()
+{
+	return this->pressureState;
+}
+
 bool Mario::getIsFlip()
 {
 	return this->isFlip;
@@ -50,6 +55,11 @@ bool Mario::getIsStandOnSurface()
 	return this->isStandOnSurface;
 }
 
+bool Mario::getIsSuperMode()
+{
+	return this->isSuperMode;
+}
+
 void Mario::Update(float _dt)
 {
 	if (currentAnimation == NULL) {
@@ -57,6 +67,13 @@ void Mario::Update(float _dt)
 	}
 	// Update animation frame
 	this->currentAnimation->Update(_dt);
+
+	if (this->getState() == SCALING_UP) {
+		if (this->currentAnimation->getCurrentIndexFrame() == this->currentAnimation->getTotalFrames() - 1
+			&& this->currentAnimation->getAnimCount() >= this->currentAnimation->getAnimDelay()) {
+			this->setState(this->getPressureState());
+		}
+	}
 
 	// Change from DIE to DIE_JUMPING
 	if (this->getState() == DIE) {
@@ -111,11 +128,21 @@ void Mario::setIsFlip(bool _isFlip)
 
 void Mario::setState(MarioState _state)
 {
+ 	if (currentAnimation != NULL) {
+		this->oldFrameWidth = this->currentAnimation->getCurrentFrameWidth();
+		this->oldFrameHeight = this->currentAnimation->getCurrentFrameHeight();
+	}
+
 	switch (_state)
 	{
 	case STANDING:
 		if (this->getState() != STANDING || this->currentAnimation == NULL) {
-			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioStanding());
+			if (this->getIsSuperMode()) {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioStanding());
+			}
+			else {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioStanding());
+			}
 			this->setTargetVx(0);
 			this->setTargetVy(0);
 			this->setAccelerationY(0);
@@ -131,21 +158,30 @@ void Mario::setState(MarioState _state)
 				this->setAccelerationX(0);
 			}
 		}
-		
 		break;
 	case WALKING:
 		if (this->getState() != WALKING || this->currentAnimation == NULL) {
-			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioWalking());
+			if (this->getIsSuperMode()) {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioWalking());
+			}
+			else {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioWalking());
+			}
 		}
 		
 		break;
 	case JUMPING:
 		if (this->getState() != JUMPING || this->currentAnimation == NULL) {
 			if (this->getState() != DROPPING) {
-				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioJumping());
+				if (this->getIsSuperMode()) {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioJumping());
+				}
+				else {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioJumping());
+				}
 			}
 			this->setTargetVy(0);
-			this->setVy(-4.4);
+			this->setVy(this->getIsSuperMode() ? -4.4 : -4.0);
 			this->setAccelerationY(0.11);
 		}
 
@@ -153,10 +189,15 @@ void Mario::setState(MarioState _state)
 	case DROPPING:
 		if (this->getState() != DROPPING || this->currentAnimation == NULL) {
 			if (this->getState() != JUMPING) {
-				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioDropping());
+				if (this->getIsSuperMode()) {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioDropping());
+				}
+				else {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioDropping());
+				}
 			}
 			this->setTargetVy(6);
-			this->setAccelerationY(0.34);
+			this->setAccelerationY(0.25);
 		}
 		break;
 	case DIE:
@@ -196,11 +237,49 @@ void Mario::setState(MarioState _state)
 			this->setVy(0);
 		}
 		break;
+	case SCALING_UP:
+		if (this->getState() != SCALING_UP || this->currentAnimation == NULL) {
+			// Store old state to pressureState variable
+			this->setIsSuperMode(true);
+			this->setPressureState(MarioState(this->getState()));
+			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioScalingUp());
+			this->setTargetVx(0);
+			this->setTargetVy(0);
+			this->setAccelerationX(0);
+			this->setAccelerationY(0);
+			this->setVx(0);
+			this->setVy(0);
+		}
+		break;
+	case SCALING_DOWN:
+		if (this->getState() != SCALING_DOWN || this->currentAnimation == NULL) {
+			// Store old state to pressureState variable
+			this->setIsSuperMode(false);
+			this->setPressureState(MarioState(this->getState()));
+			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioScalingDown());
+		}
+		break;
 	default:
 		break;
 	}
 
 	this->state = _state;
+
+	this->newFrameWidth = this->currentAnimation->getCurrentFrameWidth();
+	this->newFrameHeight = this->currentAnimation->getCurrentFrameHeight();
+
+	if (oldFrameWidth != newFrameWidth) {
+		this->plusX(oldFrameWidth - newFrameWidth);
+
+	}
+	if (oldFrameHeight != newFrameHeight) {
+		this->plusY(oldFrameHeight - newFrameHeight);
+	}
+}
+
+void Mario::setPressureState(MarioState _pressureState)
+{
+	this->pressureState = _pressureState;
 }
 
 void Mario::setSubState(MarioSubState _subState)
@@ -222,6 +301,11 @@ void Mario::setSubState(MarioSubState _subState)
 void Mario::setIsStandOnSurface(bool _isStandOnSurface)
 {
 	this->isStandOnSurface = _isStandOnSurface;
+}
+
+void Mario::setIsSuperMode(bool _isSuperMode)
+{
+	this->isSuperMode = _isSuperMode;
 }
 
 void Mario::updateVelocity()
@@ -287,10 +371,10 @@ void Mario::onKeyUp()
 	}
 	else if (this->getState() == DROPPING) {
 		if (this->getVx() < 0) {
-			this->setAccelerationX(0.6);
+			this->setAccelerationX(0.2);
 		}
 		else if (this->getVx() > 0) {
-			this->setAccelerationX(-0.6);
+			this->setAccelerationX(-0.2);
 		}
 		if (this->getTargetVx() != 0) {
 			this->setTargetVx(0);
@@ -335,20 +419,20 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 			if (!hasKeyLeft) {
 				this->setIsFlip(false);
 				if (this->getState() == DROPPING) {
-					this->setTargetVx(1.6);
+					this->setTargetVx(1.2);
 				}
 				else {
-					this->setTargetVx(2.4);
+					this->setTargetVx(1.6);
 				}
 				this->setAccelerationX(0.4);
 			}
 			else {
 				this->setTargetVx(0);
 				if (this->getVx() > this->getTargetVx()) {
-					this->setAccelerationX(-0.6);
+					this->setAccelerationX(-0.2);
 				}
 				else if (this->getVx() < this->getTargetVx()) {
-					this->setAccelerationX(0.6);
+					this->setAccelerationX(0.2);
 				}
 				else {
 					this->setAccelerationX(0);
@@ -364,20 +448,20 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 			if (!hasKeyRight) {
 				this->setIsFlip(true);
 				if (this->getState() == DROPPING) {
-					this->setTargetVx(-1.6);
+					this->setTargetVx(-1.2);
 				}
 				else {
-					this->setTargetVx(-2.4);
+					this->setTargetVx(-1.6);
 				}
 				this->setAccelerationX(-0.4);
 			}
 			else {
 				this->setTargetVx(0);
 				if (this->getVx() > this->getTargetVx()) {
-					this->setAccelerationX(-0.6);
+					this->setAccelerationX(-0.2);
 				}
 				else if (this->getVx() < this->getTargetVx()) {
-					this->setAccelerationX(0.6);
+					this->setAccelerationX(0.2);
 				}
 				else {
 					this->setAccelerationX(0);
@@ -648,4 +732,9 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 			}
 		}
 	}
+}
+
+bool Mario::isCollide(Component* _component, float _dt)
+{
+	return get<0>(this->sweptAABBByBounds(_component, _dt));
 }

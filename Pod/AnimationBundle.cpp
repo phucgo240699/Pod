@@ -178,3 +178,15 @@ Animation AnimationBundle::getSuperMarioJumping()
 {
 	return this->animations->at(16);
 }
+
+
+
+Animation AnimationBundle::getMarioScalingUp()
+{
+	return this->animations->at(17);
+}
+
+Animation AnimationBundle::getMarioScalingDown()
+{
+	return this->animations->at(18);
+}

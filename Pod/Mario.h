@@ -25,14 +25,16 @@ class Mario : public MainCharacter
 private:
 	LPDIRECT3DTEXTURE9 texture;
 	MarioState state;
+	MarioState pressureState; // Hold state of mario before scaling up or scaling down
 	MarioSubState subState;
 	bool isFlip; // false: Left side - true: Right side. Default is false
 	bool debugMode = true;
 
 	Animation* currentAnimation;
 
-	bool isStandOnSurface = false;
-	//int componentIdStanded;
+	bool isStandOnSurface = false, isSuperMode = false;
+	int oldFrameHeight, oldFrameWidth;
+	int newFrameHeight, newFrameWidth;
 
 public:
 	float startdrop = 0;
@@ -44,17 +46,21 @@ public:
 	Animation* getCurrentAnimation();
 	MarioSubState getSubState();
 	MarioState getState();
+	MarioState getPressureState(); // Hold state of mario before scaling up or scaling down
 	bool getIsFlip();
 	float getWidth();
 	float getHeight();
 	bool getIsStandOnSurface();
+	bool getIsSuperMode();
 
 
 	// Setter
 	void setIsFlip(bool _isFlip);
 	void setState(MarioState _state);
+	void setPressureState(MarioState _pressureState);
 	void setSubState(MarioSubState _subState);
 	void setIsStandOnSurface(bool _isStandOnSurface);
+	void setIsSuperMode(bool _isSuperMode);
 	void updateVelocity();
 
 	// Inherit
@@ -70,12 +76,15 @@ public:
 	void loadInfo(string line, char seperator);
 
 
+	// Collision
 	void handleGroundCollision(Ground* _ground, float _dt);
 	void handleBlockCollision(Block* _block, float _dt);
 	void handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt);
 	void handleGiftBrickCollision(GiftBrick* _goldenBrick, float _dt);
 	void handleGreenPipeCollision(GreenPipe* _greenPipe, float _dt);
 	void handleGoombaCollision(Goomba* _goomba, float _dt);
+
+	bool isCollide(Component* _component, float _dt);
 };
 
 #endif // !MARIO_H

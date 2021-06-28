@@ -63,19 +63,34 @@ void SunnyVC::viewDidLoad()
 
 void SunnyVC::viewReceiveKeyUp()
 {
-	if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING) return;
+	if (this->mario->getState() == DIE
+		|| this->mario->getState() == DIE_JUMPING
+		|| this->mario->getState() == DIE_DROPPING
+		|| this->mario->getState() == SCALING_UP) {
+		return;
+	}
 	mario->onKeyUp();
 }
 
 void SunnyVC::viewReceiveKeyUp(vector<KeyType> _keyTypes)
 {
-	if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING) return;
+	if (this->mario->getState() == DIE
+		|| this->mario->getState() == DIE_JUMPING
+		|| this->mario->getState() == DIE_DROPPING
+		|| this->mario->getState() == SCALING_UP) {
+		return;
+	}
 	mario->onKeyUp(_keyTypes);
 }
 
 void SunnyVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 {
-	if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING) return;
+	if (this->mario->getState() == DIE
+		|| this->mario->getState() == DIE_JUMPING
+		|| this->mario->getState() == DIE_DROPPING
+		|| this->mario->getState() == SCALING_UP) {
+		return;
+	}
 	mario->onKeyDown(_keyTypes);
 }
 
@@ -95,8 +110,11 @@ void SunnyVC::viewWillUpdate(float _dt)
 			unordered_set<Component*> ::iterator itr;
 			for (itr = cell.begin(); itr != cell.end(); ++itr) {
 				// Gift Brick
-				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING) {
-					if ((*itr)->getId() < beginGiftBrickId || (*itr)->getId() > endGiftBrickId) continue;
+				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP) {
+					/*if ((*itr)->getId() < beginGiftBrickId || (*itr)->getId() > endGiftBrickId) continue;*/
+					if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
+						(*itr)->Update(_dt);
+					}
 				}
 
 				// Golden Brick
@@ -122,6 +140,7 @@ void SunnyVC::viewWillUpdate(float _dt)
 					(*itr)->Update(_dt);
 				}
 
+				// Goomba
 				else if (beginGoombaId <= (*itr)->getId() && (*itr)->getId() <= endGoombaId) {
 					(*itr)->Update(_dt);
 
@@ -143,7 +162,8 @@ void SunnyVC::viewWillUpdate(float _dt)
 	}
 	if (this->mario->getState() == DIE
 	|| this->mario->getState() == DIE_JUMPING
-	|| this->mario->getState() == DIE_DROPPING) {
+	|| this->mario->getState() == DIE_DROPPING
+	|| this->mario->getState() == SCALING_UP) {
 		return;
 	}
 	ScoreBoard::getInstance()->Update(_dt);
@@ -151,7 +171,14 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 void SunnyVC::viewDidUpdate(float _dt)
 {
-	if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING) return;
+	if (this->mario->getState() == DIE
+		|| this->mario->getState() == DIE_JUMPING
+		|| this->mario->getState() == DIE_DROPPING
+		|| this->mario->getState() == SCALING_UP)
+	{
+		return;
+	}
+
 	if (this->mario->getIsStandOnSurface() == true) {
 		this->mario->setIsStandOnSurface(false);
 	}
@@ -185,6 +212,12 @@ void SunnyVC::viewDidUpdate(float _dt)
 				// Super Mushroom
 				else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= endSuperMushroomId) {
 					// Super Mushroom collide to others
+					if (static_cast<SuperMushroom*>(*itr)->isCollideMario(mario, _dt) || this->mario->isCollide(*itr, _dt)) {
+						Grid::getInstance()->remove(*itr, i, j);
+						this->mario->setState(MarioState::SCALING_UP);
+						return;
+					}
+
 					for (int r = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); r < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++r) {
 						for (int c = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); c < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++c) {
 							unordered_set<Component*> superMushroomCell = Grid::getInstance()->getCell(r, c);
