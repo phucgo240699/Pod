@@ -46,6 +46,8 @@ public:
 
 	void plusX(float _x);
 	void plusY(float _y);
+	void plusXNoRound(float _x);
+	void plusYNoRound(float _y);
 	void plusVx(float _vx);
 	void plusVy(float _vy);
 

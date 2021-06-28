@@ -32,8 +32,7 @@ private:
 	Animation* currentAnimation;
 
 	bool isStandOnSurface = false;
-	int componentIdStanded;
-
+	//int componentIdStanded;
 
 public:
 	float startdrop = 0;

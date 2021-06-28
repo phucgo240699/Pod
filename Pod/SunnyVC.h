@@ -23,13 +23,13 @@ private:
 	int beginGoldenBrickId = 27, endGoldenBrickId = 45;
 	vector<GoldenBrick*>* goldenBricks;
 
-	int beginGiftBrickId = 46, endGiftBrickId = 49;
+	int beginSuperMushroomId = 46, endSuperMushroomId = 46;
+	int beginGiftBrickId = 47, endGiftBrickId = 50;
 	vector<GiftBrick*>* giftBricks;
 
-	int beginGreenPipeId = 50, endGreenPipeId = 53;
+	int beginGreenPipeId = 51, endGreenPipeId = 54;
 	vector<GreenPipe*>* greenPipes;
 
-	int beginSuperMushroomId = 54, endSuperMushroomId = 54;
 
 	// Enemies
 	int beginGoombaId = 55, endGoombaId = 55;

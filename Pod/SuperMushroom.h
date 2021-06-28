@@ -3,6 +3,8 @@
 #include "SuperMushroomState.h"
 #include "AnimationBundle.h"
 #include "Grid.h"
+#include "Block.h"
+#include "Camera.h"
 
 class SuperMushroom : public Component
 {
@@ -37,5 +39,5 @@ public:
 
 	// Collision
 	void handleHardComponentCollision(Component* _component, float _dt);
-	//void handleBlockCollision(Block* _block, float _dt);
+	void handleBlockCollision(Block* _block, float _dt);
 };

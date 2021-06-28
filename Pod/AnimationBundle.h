@@ -40,5 +40,9 @@ public:
 	Animation getGreenPipe3Floor();
 	Animation getGreenPipe2Floor();
 	Animation getSuperMushroom();
+	Animation getSuperMarioStanding();
+	Animation getSuperMarioWalking();
+	Animation getSuperMarioDropping();
+	Animation getSuperMarioJumping();
 };
 

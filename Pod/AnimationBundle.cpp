@@ -158,3 +158,23 @@ Animation AnimationBundle::getSuperMushroom()
 {
 	return this->animations->at(13);
 }
+
+Animation AnimationBundle::getSuperMarioStanding()
+{
+	return this->animations->at(14);
+}
+
+Animation AnimationBundle::getSuperMarioWalking()
+{
+	return this->animations->at(15);
+}
+
+Animation AnimationBundle::getSuperMarioDropping()
+{
+	return this->animations->at(16);
+}
+
+Animation AnimationBundle::getSuperMarioJumping()
+{
+	return this->animations->at(16);
+}

@@ -10,7 +10,7 @@ GiftBrick::GiftBrick(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX,
 
 void GiftBrick::loadInfo(string line, char seperator)
 {
-	vector<int> v = Tool::splitToVectorIntegerFrom(line, seperator);
+	vector <float> v = Tool::splitToVectorFloatFrom(line, seperator);
 
 	this->setX(v[0]);
 	this->setY(v[1]);

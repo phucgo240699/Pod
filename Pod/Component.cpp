@@ -82,12 +82,12 @@ void Component::setY(float _y)
 
 void Component::setVx(float _vx)
 {
-	this->vx = round(_vx);
+	this->vx = _vx;
 }
 
 void Component::setVy(float _vy)
 {
-	this->vy = round(_vy);
+	this->vy = _vy;
 }
 
 void Component::setLimitX(float _limitX)
@@ -108,6 +108,16 @@ void Component::plusX(float _x)
 void Component::plusY(float _y)
 {
 	this->position.y += round(_y);
+}
+
+void Component::plusXNoRound(float _x)
+{
+	this->position.x += _x;
+}
+
+void Component::plusYNoRound(float _y)
+{
+	this->position.y += _y;
 }
 
 void Component::plusVx(float _vx)

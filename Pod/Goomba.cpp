@@ -74,9 +74,6 @@ void Goomba::Update(float _dt)
 		&& this->getY() + this->getHeight() + this->getVy() * _dt <= Camera::getInstance()->getLimitY()) {
 		this->plusX(this->getVx() * _dt);
 		this->plusY(this->getVy() * _dt);
-
-		// update which cell in grid that it's belongs to
-		Grid::getInstance()->updateCellOf(this);
 	}
 
 	if (this->animation != NULL) {

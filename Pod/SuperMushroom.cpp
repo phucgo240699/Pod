@@ -41,22 +41,21 @@ void SuperMushroom::setState(SuperMushroomState _state)
 	switch (_state)
 	{
 	case SUPER_MUSHROOM_GROWING_UP:
-		this->setVx(0);
 		this->setVy(-1 * abs(this->getVy()));
 		break;
 	case SUPER_MUSHROOM_MOVING_LEFT:
-		this->setVx(-1 * abs(this->getVy()));
+		this->setVx(-1 * abs(this->getVx()));
 		break;
 	case SUPER_MUSHROOM_MOVING_RIGHT:
-		this->setVx(abs(this->getVy()));
+		this->setVx(abs(this->getVx()));
 		break;
 	case SUPER_MUSHROOM_DROPPING_LEFT:
-		this->setVx(-1 * abs(this->getVy()));
-		this->setVy(abs(this->getVy()) * 0.5);
+		this->setVx(-abs(this->getVx()));
+		this->setVy(abs(this->getVy()));
 		break;
 	case SUPER_MUSHROOM_DROPPING_RIGHT:
-		this->setVx(abs(this->getVy()));
-		this->setVy(abs(this->getVy()) * 0.5);
+		this->setVx(abs(this->getVx()));
+		this->setVy(abs(this->getVy()));
 		break;
 	default:
 		break;
@@ -111,17 +110,15 @@ void SuperMushroom::Update(float _dt)
 		this->plusX(this->getVx() * _dt);
 	}
 	else if (this->getState() == SUPER_MUSHROOM_DROPPING_LEFT || this->getState() == SUPER_MUSHROOM_DROPPING_RIGHT) {
-		this->plusX(this->getVx() * _dt);
-		this->plusY(this->getVy() * _dt);
+		this->plusXNoRound(0.5 * this->getVx() * _dt);
+		this->plusYNoRound(1.5 * this->getVy() * _dt);
 	}
-
-	// update which cell in grid that it's belongs to
-	Grid::getInstance()->updateCellOf(this);
 }
 
 void SuperMushroom::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
-	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), this->getPosition());
+
+	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), D3DXVECTOR3(round(this->getX()), round(this->getY()), 0));
 }
 
 void SuperMushroom::handleHardComponentCollision(Component* _component, float _dt)
@@ -149,9 +146,11 @@ void SuperMushroom::handleHardComponentCollision(Component* _component, float _d
 			else if (edge == bottomEdge) {
 				this->setIsStandOnSurface(true);
 				if (this->getState() == SUPER_MUSHROOM_DROPPING_LEFT) {
+					this->setY(_component->getY() - this->getHeight());
 					this->setState(SuperMushroomState::SUPER_MUSHROOM_MOVING_LEFT);
 				}
 				else if (this->getState() == SUPER_MUSHROOM_DROPPING_RIGHT) {
+					this->setY(_component->getY() - this->getHeight());
 					this->setState(SuperMushroomState::SUPER_MUSHROOM_MOVING_RIGHT);
 				}
 			}
@@ -164,6 +163,49 @@ void SuperMushroom::handleHardComponentCollision(Component* _component, float _d
 				if ((_component->getX() <= this->getFrame().right && this->getFrame().right <= _component->getFrame().right)
 					|| (_component->getX() <= this->getX() && this->getX() <= _component->getFrame().right)) { // this is check which ground that mario is standing on
 					if (this->getFrame().bottom <= _component->getY()) {
+						this->setIsStandOnSurface(true);
+					}
+				}
+			}
+		}
+
+		if (this->getIsStandOnSurface() == false && this->getState() == SUPER_MUSHROOM_MOVING_LEFT) {
+			this->setState(SuperMushroomState::SUPER_MUSHROOM_DROPPING_LEFT);
+			return;
+		}
+		else if (this->getIsStandOnSurface() == false && this->getState() == SUPER_MUSHROOM_MOVING_RIGHT) {
+			this->setState(SuperMushroomState::SUPER_MUSHROOM_DROPPING_RIGHT);
+			return;
+		}
+	}
+}
+
+void SuperMushroom::handleBlockCollision(Block* _block, float _dt)
+{
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_block, _dt);
+	if (get<0>(collisionResult) == true) {
+		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+			CollisionEdge edge = get<2>(collisionResult)[j];
+			if (edge == bottomEdge) {
+				this->setIsStandOnSurface(true);
+				if (this->getState() == SUPER_MUSHROOM_DROPPING_LEFT) {
+					this->setY(_block->getY() - this->getHeight());
+					this->setState(SuperMushroomState::SUPER_MUSHROOM_MOVING_LEFT);
+				}
+				else if (this->getState() == SUPER_MUSHROOM_DROPPING_RIGHT) {
+					this->setY(_block->getY() - this->getHeight());
+					this->setState(SuperMushroomState::SUPER_MUSHROOM_MOVING_RIGHT);
+				}
+			}
+		}
+	}
+	else {
+		// if mario walk out of ground's top surface, it will drop
+		if (this->getState() == WALKING || this->getState() == STANDING) {
+			if (this->getIsStandOnSurface() == false) {
+				if ((_block->getX() <= this->getFrame().right && this->getFrame().right <= _block->getFrame().right)
+					|| (_block->getX() <= this->getX() && this->getX() <= _block->getFrame().right)) { // this is check which ground that mario is standing on
+					if (this->getFrame().bottom == _block->getY() - Setting::getInstance()->getCollisionSafeSpace()) {
 						this->setIsStandOnSurface(true);
 					}
 				}
