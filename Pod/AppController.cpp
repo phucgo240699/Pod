@@ -13,13 +13,26 @@ void AppController::setRootViewController(SceneName _sceneName)
 		if (this->worldVC == NULL) {
 			this->worldVC = new WorldVC();
 		}
+
+		if (this->sunnyVC != NULL) {
+			this->sunnyVC->~SunnyVC();
+		}
+		//delete sunnyVC;
+
 		this->rootViewController = this->worldVC;
 		this->rootViewController->viewDidLoad();
 		break;
 	case SunnyScene:
 		if (this->sunnyVC == NULL) {
 			this->sunnyVC = new SunnyVC();
+			this->sunnyVC->viewDidLoad();
 		}
+
+		if (this->worldVC != NULL) {
+			this->worldVC->~WorldVC();
+		}
+		//delete worldVC;
+
 		this->rootViewController = sunnyVC;
 		this->rootViewController->viewDidLoad();
 		break;

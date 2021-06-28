@@ -39,6 +39,6 @@ public:
 	Animation getTrampledGoomba();
 	Animation getGreenPipe3Floor();
 	Animation getGreenPipe2Floor();
-
+	Animation getSuperMushroom();
 };
 

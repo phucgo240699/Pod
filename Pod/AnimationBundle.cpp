@@ -153,3 +153,8 @@ Animation AnimationBundle::getGreenPipe2Floor()
 {
 	return this->animations->at(12);
 }
+
+Animation AnimationBundle::getSuperMushroom()
+{
+	return this->animations->at(13);
+}

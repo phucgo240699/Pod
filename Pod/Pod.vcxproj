@@ -178,6 +178,7 @@
     <ClCompile Include="Setting.cpp" />
     <ClCompile Include="SunnyMap.cpp" />
     <ClCompile Include="SunnyVC.cpp" />
+    <ClCompile Include="SuperMushroom.cpp" />
     <ClCompile Include="ViewController.cpp" />
     <ClCompile Include="WMario.cpp" />
     <ClCompile Include="WorldMap.cpp" />
@@ -199,6 +200,7 @@
     <ClInclude Include="FilePath.h" />
     <ClInclude Include="GiftBrick.h" />
     <ClInclude Include="GiftBrickState.h" />
+    <ClInclude Include="GiftType.h" />
     <ClInclude Include="GoldenBrick.h" />
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="GreenPipe.h" />
@@ -217,6 +219,8 @@
     <ClInclude Include="Setting.h" />
     <ClInclude Include="SunnyMap.h" />
     <ClInclude Include="SunnyVC.h" />
+    <ClInclude Include="SuperMushroom.h" />
+    <ClInclude Include="SuperMushroomState.h" />
     <ClInclude Include="Tool.h" />
     <ClInclude Include="ViewController.h" />
     <ClInclude Include="WMario.h" />

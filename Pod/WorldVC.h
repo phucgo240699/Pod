@@ -16,6 +16,9 @@ private:
 	WTurtle* wTurtle;
 
 public:
+	// De init
+	~WorldVC();
+
 	void viewReceiveKeyDown(vector<KeyType> _keyTypes);
 	void viewDidLoad();
 	void viewWillUpdate(float _dt);

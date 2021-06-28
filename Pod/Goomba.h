@@ -34,7 +34,7 @@ public:
 	void Update(float _dt);
 	void Draw(LPDIRECT3DTEXTURE9 _texture);
 
-	void handleGroundCollision(Component* _ground, float _dt);
+	void handleHardComponentCollision(Component* _component, float _dt);
 	void handleMarioCollision(Mario* _mario, float _dt);
 };
 

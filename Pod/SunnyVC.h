@@ -29,12 +29,15 @@ private:
 	int beginGreenPipeId = 50, endGreenPipeId = 53;
 	vector<GreenPipe*>* greenPipes;
 
-	// Enemies
-	int beginGoombaId = 54, endGoombaId = 54;
-	unordered_set<Goomba*>* goombas;
+	int beginSuperMushroomId = 54, endSuperMushroomId = 54;
 
-	tuple<bool, float, vector<CollisionEdge>> mario_ground_collision;
+	// Enemies
+	int beginGoombaId = 55, endGoombaId = 55;
+	unordered_set<Goomba*>* goombas;
 public:
+	// De init
+	~SunnyVC();
+
 	void viewDidLoad();
 	void viewReceiveKeyUp();
 	void viewReceiveKeyUp(vector<KeyType> _keyTypes);

@@ -1,5 +1,14 @@
 #include "WorldVC.h"
 
+WorldVC::~WorldVC()
+{
+	delete map;
+	delete grasses;
+	delete helpLabel;
+	delete wMario;
+	delete wTurtle;
+}
+
 void WorldVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 {
 	for (int i = 0; i < _keyTypes.size(); ++i) {

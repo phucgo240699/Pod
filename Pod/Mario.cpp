@@ -55,7 +55,10 @@ void Mario::Update(float _dt)
 	if (currentAnimation == NULL) {
 		return;
 	}
+	// Update animation frame
 	this->currentAnimation->Update(_dt);
+
+	// Change from DIE to DIE_JUMPING
 	if (this->getState() == DIE) {
 		if (this->currentAnimation->getCurrentIndexFrame() == this->currentAnimation->getTotalFrames() - 1
 		&& this->currentAnimation->getAnimCount() >= this->currentAnimation->getAnimDelay()) {
@@ -63,13 +66,14 @@ void Mario::Update(float _dt)
 		}
 	}
 
+	// Update position, velocity
 	this->updateVelocity();
 	if (this->getX() + round(this->getVx() * _dt) >= 0 && this->getX() + this->getWidth() + round(this->getVx() * _dt) <= this->getLimitX()) {
 		this->plusX(round(this->getVx() * _dt));
 	}
-	
 	this->plusY(round(this->getVy() * _dt));
 
+	// Navigate to WorldVC when Mario drop out of map to far
 	if (this->getY() >= this->getLimitY() + 200) {
 		Setting::getInstance()->setIsTransfering(true);
 		Setting::getInstance()->setSceneName(SceneName::WorldScene);
@@ -418,14 +422,14 @@ void Mario::handleGroundCollision(Ground* _ground, float _dt)
 				this->setState(MarioState::DROPPING);
 				this->setY(_ground->getFrame().bottom);
 				this->setVy(0);
-				this->setIsStandOnSurface(true);
-				this->componentIdStanded = _ground->getId();
+				//this->setIsStandOnSurface(true);
+				//this->componentIdStanded = _ground->getId();
 			}
 			else if (edge == bottomEdge) {
 				this->setState(MarioState::STANDING);
 				this->setY(_ground->getY() - this->getHeight() - Setting::getInstance()->getCollisionSafeSpace());
 				this->setIsStandOnSurface(true);
-				this->componentIdStanded = _ground->getId();
+				//this->componentIdStanded = _ground->getId();
 			}
 			else if (edge == leftEdge) {
 				this->setX(_ground->getFrame().right + Setting::getInstance()->getCollisionSafeSpace());
@@ -462,7 +466,7 @@ void Mario::handleBlockCollision(Block* _block, float _dt)
 				this->setState(MarioState::STANDING);
 				this->setY(_block->getY() - this->getHeight() - Setting::getInstance()->getCollisionSafeSpace());
 				this->setIsStandOnSurface(true);
-				this->componentIdStanded = _block->getId();
+				//this->componentIdStanded = _block->getId();
 			}
 		}
 	}
@@ -491,14 +495,14 @@ void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 				this->setState(MarioState::DROPPING);
 				this->setY(_goldenBrick->getFrame().bottom);
 				this->setVy(0);
-				this->setIsStandOnSurface(true);
-				this->componentIdStanded = _goldenBrick->getId();
+				//this->setIsStandOnSurface(true);
+				//this->componentIdStanded = _goldenBrick->getId();
 			}
 			else if (edge == bottomEdge) {
 				this->setState(MarioState::STANDING);
 				this->setY(_goldenBrick->getY() - this->getHeight() - Setting::getInstance()->getCollisionSafeSpace());
 				this->setIsStandOnSurface(true);
-				this->componentIdStanded = _goldenBrick->getId();
+				//this->componentIdStanded = _goldenBrick->getId();
 			}
 			else if (edge == leftEdge) {
 				this->setX(_goldenBrick->getFrame().right + Setting::getInstance()->getCollisionSafeSpace());
@@ -535,11 +539,11 @@ void Mario::handleGiftBrickCollision(GiftBrick* _goldenBrick, float _dt)
 				this->setState(MarioState::DROPPING);
 				this->setY(_goldenBrick->getFrame().bottom);
 				this->setVy(0);
-				this->setIsStandOnSurface(true);
-				this->componentIdStanded = _goldenBrick->getId();
+				//this->setIsStandOnSurface(true);
+				//this->componentIdStanded = _goldenBrick->getId();
 				if (_goldenBrick->getState() == FULLGIFTBRICK) {
 					_goldenBrick->setState(GiftBrickState::POPUPGIFTBRICK);
-					if (_goldenBrick->getGiftId() == 1) {
+					if (_goldenBrick->getGiftType() == Point100Gift) {
 						ScoreBoard::getInstance()->plusCoin(1);
 						ScoreBoard::getInstance()->plusPoint(100);
 					}
@@ -549,7 +553,7 @@ void Mario::handleGiftBrickCollision(GiftBrick* _goldenBrick, float _dt)
 				this->setState(MarioState::STANDING);
 				this->setY(_goldenBrick->getY() - this->getHeight() - Setting::getInstance()->getCollisionSafeSpace());
 				this->setIsStandOnSurface(true);
-				this->componentIdStanded = _goldenBrick->getId();
+				//this->componentIdStanded = _goldenBrick->getId();
 			}
 			else if (edge == leftEdge && (this->getState() == JUMPING || this->getState() == DROPPING)) {
 				this->setX(_goldenBrick->getFrame().right + Setting::getInstance()->getCollisionSafeSpace());
@@ -586,14 +590,14 @@ void Mario::handleGreenPipeCollision(GreenPipe* _greenPipe, float _dt)
 				this->setState(MarioState::DROPPING);
 				this->setY(_greenPipe->getFrame().bottom);
 				this->setVy(0);
-				this->setIsStandOnSurface(true);
-				this->componentIdStanded = _greenPipe->getId();
+				//this->setIsStandOnSurface(true);
+				//this->componentIdStanded = _greenPipe->getId();
 			}
 			else if (edge == bottomEdge) {
 				this->setState(MarioState::STANDING);
 				this->setY(_greenPipe->getY() - this->getHeight() - Setting::getInstance()->getCollisionSafeSpace());
 				this->setIsStandOnSurface(true);
-				this->componentIdStanded = _greenPipe->getId();
+				//this->componentIdStanded = _greenPipe->getId();
 			}
 			else if (edge == leftEdge) {
 				this->setX(_greenPipe->getFrame().right + Setting::getInstance()->getCollisionSafeSpace());

@@ -113,15 +113,15 @@
 </GoldenBrickFrames>
 
 <GiftBrickFrames>
-# (x, y, width, height, id, giftId)
-# giftId:
+# (x, y, width, height, id, giftCode, giftWidth, giftHeight, griftVx, giftVy, giftId)
+# giftCode:
+# 0: mush room. Only giftbrick has mush => has 11 numbers
 # 1: 100 points
-# 0: mush room
 176,352,16,16,46,1
 192,352,16,16,47,1
 
 224,304,16,16,48,1
-240,304,16,16,49,1
+240,304,16,16,49,0,16,16,1,1,54
 </GiftBrickFrames>
 
 <GreenPipeFrames>
@@ -134,7 +134,7 @@
 </GreenPipeFrames>
 
 <GoombaFrames>
-300,400,16,16,-1,0,54
+300,400,16,16,-1,0,55
 </GoombaFrames>
 
 <GridInfo>
@@ -309,6 +309,9 @@
 18,4
 
 > 54
+1,3
+
+> 55
 0,4
 </GridMatrixId>
 
@@ -379,4 +382,9 @@
 # Green Pipe 2 floors
 33,153,32,32
 > 12 0 10
+
+# Super Mushroom
+238,17,16,16
+> 13 0 4
+
 </AnimationBundle>

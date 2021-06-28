@@ -1,5 +1,6 @@
 // source code Windows
-
+#include <cstdlib>
+#include <ctime>
 #include "AppController.h"
 
 //AppConfig* appConfig = new AppConfig();

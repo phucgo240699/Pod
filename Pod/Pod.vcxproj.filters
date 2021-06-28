@@ -172,6 +172,12 @@
     <Filter Include="Source Files\Components\Map\Ground">
       <UniqueIdentifier>{a17b9bd3-d262-4881-9712-2ebf5cc911b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\Map\Super Mushroom">
+      <UniqueIdentifier>{3fd7bb99-c419-4ff6-8542-628965b1c2be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Map\Super Mushroom">
+      <UniqueIdentifier>{48a6df27-c119-482c-93d4-26f318a65aa9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -269,6 +275,9 @@
     </ClCompile>
     <ClCompile Include="Ground.cpp">
       <Filter>Source Files\Components\Map\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="SuperMushroom.cpp">
+      <Filter>Source Files\Components\Map\Super Mushroom</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -388,6 +397,15 @@
     </ClInclude>
     <ClInclude Include="Ground.h">
       <Filter>Header Files\Components\Map\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="SuperMushroom.h">
+      <Filter>Header Files\Components\Map\Super Mushroom</Filter>
+    </ClInclude>
+    <ClInclude Include="SuperMushroomState.h">
+      <Filter>Header Files\System\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="GiftType.h">
+      <Filter>Header Files\System\Enums</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

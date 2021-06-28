@@ -17,11 +17,17 @@ void GiftBrick::loadInfo(string line, char seperator)
 	this->setWidth(v[2]);
 	this->setHeight(v[3]);
 	this->setId(v[4]);
-	this->giftId = v[5];
+	this->setGiftType(v[5]);
 
 	// Box
 	this->endBoxJumpUp = this->getY() - 12;
 	this->beginBoxJumpUp = this->getY();
+
+	// Super mushroom
+	if (this->getGiftType() == SuperMushroomGift) {
+		superMushroom = new SuperMushroom(this->getX(), this->getY(), v[6], v[7], v[8], v[9], v[10], this->getY() - this->getHeight());
+		return;
+	}
 
 	// Coin
 	this->coinY = this->getY() - 16;
@@ -32,17 +38,20 @@ void GiftBrick::loadInfo(string line, char seperator)
 	this->pointY = this->getY() - 16;
 }
 
-int GiftBrick::getGiftId()
-{
-	return this->giftId;
-}
-
 GiftBrickState GiftBrick::getState()
 {
 	return this->state;
 }
 
+GiftType GiftBrick::getGiftType()
+{
+	return this->giftType;
+}
 
+void GiftBrick::setSuperMushroomState(SuperMushroomState _state)
+{
+	this->superMushroom->setState(_state);
+}
 
 void GiftBrick::setState(GiftBrickState _state)
 {
@@ -57,8 +66,10 @@ void GiftBrick::setState(GiftBrickState _state)
 	case POPUPGIFTBRICK:
 		if (this->getState() == FULLGIFTBRICK) {
 			this->boxAnimation = new Animation(AnimationBundle::getInstance()->getEmptyGiftBrick());
-			this->coinAnimation = new Animation(AnimationBundle::getInstance()->getCoin());
-			this->pointAnimation = new Animation(AnimationBundle::getInstance()->get100Points());
+			if (this->getGiftType() == Point100Gift) {
+				this->coinAnimation = new Animation(AnimationBundle::getInstance()->getCoin());
+				this->pointAnimation = new Animation(AnimationBundle::getInstance()->get100Points());
+			}
 			this->state = _state;
 		}
 		break;
@@ -75,18 +86,26 @@ void GiftBrick::setState(GiftBrickState _state)
 	}
 }
 
+void GiftBrick::setGiftType(int _giftCode)
+{
+	if (_giftCode == 0) {
+		this->giftType = GiftType::SuperMushroomGift;
+	}
+	else {
+		this->giftType = GiftType::Point100Gift;
+	}
+}
+
 void GiftBrick::Update(float _dt)
 {
+	// Box
 	this->boxAnimation->Update(_dt);
-
 	if (this->getState() == POPUPGIFTBRICK) {
-		this->coinAnimation->Update(_dt);
 
 		// Box
 		if (isBoxDropDown == false) {
 			if (this->getY() - 2 >= endBoxJumpUp) {
 				this->plusY(-2);
-
 			}
 			else {
 				isBoxDropDown = true;
@@ -101,10 +120,20 @@ void GiftBrick::Update(float _dt)
 				if (this->getY() != beginBoxJumpUp) {
 					this->setY(beginBoxJumpUp);
 				}
+
+				if (this->getGiftType() == SuperMushroomGift) {
+					this->setState(GiftBrickState::EMPTYGIFTBRICK);
+					Grid::getInstance()->add(this->superMushroom);
+					return;
+				}
 			}
 		}
 
+		if (this->getGiftType() == SuperMushroomGift) return;
+
 		// Coin
+		this->coinAnimation->Update(_dt);
+
 		if (isCoinDropDown == false) {
 			if (this->coinY - 4 >= endCoinJumpUp) {
 				this->coinY -= 4;
@@ -126,6 +155,7 @@ void GiftBrick::Update(float _dt)
 			}
 		}
 
+		// Point
 		if (isPointsStartPopUp) {
 			if (this->pointY - 2 >= this->endCoinJumpUp) {
 				this->pointY -= 2;
@@ -137,20 +167,20 @@ void GiftBrick::Update(float _dt)
 			}
 		}
 	}
-
-	
 }
 
 void GiftBrick::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
 	Drawing::getInstance()->draw(_texture, this->boxAnimation->getCurrentFrame(), this->getPosition());
-
+	
 	if (this->getState() == POPUPGIFTBRICK) {
-		if (isPointsStartPopUp == false) {
-			Drawing::getInstance()->draw(_texture, this->coinAnimation->getCurrentFrame(), D3DXVECTOR3(this->getX(), this->coinY, 0));
-		}
-		else {
-			Drawing::getInstance()->draw(_texture, this->pointAnimation->getCurrentFrame(), D3DXVECTOR3(this->getX(), this->pointY, 0));
+		if (this->getGiftType() == Point100Gift) {
+			if (isPointsStartPopUp == false) {
+				Drawing::getInstance()->draw(_texture, this->coinAnimation->getCurrentFrame(), D3DXVECTOR3(this->getX(), this->coinY, 0));
+			}
+			else {
+				Drawing::getInstance()->draw(_texture, this->pointAnimation->getCurrentFrame(), D3DXVECTOR3(this->getX(), this->pointY, 0));
+			}
 		}
 	}
 }
