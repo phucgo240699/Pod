@@ -35,9 +35,30 @@ MarioState Mario::getPressureState()
 	return this->pressureState;
 }
 
+RECT Mario::getBounds()
+{
+	RECT r = RECT();
+	r.top = this->getY();
+	r.bottom = r.top + this->getBoundsHeight();
+	r.left = this->getX();
+	r.right = r.left + this->getBoundsWidth();
+
+	return r;
+}
+
 bool Mario::getIsFlip()
 {
 	return this->isFlip;
+}
+
+float Mario::getBoundsWidth()
+{
+	return this->currentAnimation->getCurrentBoundsWidth();
+}
+
+float Mario::getBoundsHeight()
+{
+	return this->currentAnimation->getCurrentBoundsHeight();
 }
 
 float Mario::getWidth()
@@ -371,10 +392,10 @@ void Mario::onKeyUp()
 	}
 	else if (this->getState() == DROPPING) {
 		if (this->getVx() < 0) {
-			this->setAccelerationX(0.2);
+			this->setAccelerationX(0.3);
 		}
 		else if (this->getVx() > 0) {
-			this->setAccelerationX(-0.2);
+			this->setAccelerationX(-0.3);
 		}
 		if (this->getTargetVx() != 0) {
 			this->setTargetVx(0);
@@ -422,17 +443,17 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 					this->setTargetVx(1.2);
 				}
 				else {
-					this->setTargetVx(1.6);
+					this->setTargetVx(1.5);
 				}
-				this->setAccelerationX(0.4);
+				this->setAccelerationX(0.3);
 			}
 			else {
 				this->setTargetVx(0);
 				if (this->getVx() > this->getTargetVx()) {
-					this->setAccelerationX(-0.2);
+					this->setAccelerationX(-0.1);
 				}
 				else if (this->getVx() < this->getTargetVx()) {
-					this->setAccelerationX(0.2);
+					this->setAccelerationX(0.1);
 				}
 				else {
 					this->setAccelerationX(0);
@@ -451,17 +472,17 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 					this->setTargetVx(-1.2);
 				}
 				else {
-					this->setTargetVx(-1.6);
+					this->setTargetVx(-1.5);
 				}
-				this->setAccelerationX(-0.4);
+				this->setAccelerationX(-0.3);
 			}
 			else {
 				this->setTargetVx(0);
 				if (this->getVx() > this->getTargetVx()) {
-					this->setAccelerationX(-0.2);
+					this->setAccelerationX(-0.1);
 				}
 				else if (this->getVx() < this->getTargetVx()) {
-					this->setAccelerationX(0.2);
+					this->setAccelerationX(0.1);
 				}
 				else {
 					this->setAccelerationX(0);
@@ -711,6 +732,7 @@ void Mario::handleGreenPipeCollision(GreenPipe* _greenPipe, float _dt)
 void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 {
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_goomba, _dt);
+	//RECT r = this->getBounds();
 	if (get<0>(collisionResult) == true) {
 		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
@@ -734,7 +756,7 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 	}
 }
 
-bool Mario::isCollide(Component* _component, float _dt)
+bool Mario::isCollideByBounds(Component* _component, float _dt)
 {
 	return get<0>(this->sweptAABBByBounds(_component, _dt));
 }

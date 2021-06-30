@@ -24,9 +24,7 @@ private:
 	int componentIdStanded;
 public:
 	// Init
-	//SuperMushroom(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id = 0);
 	SuperMushroom(float _x, float _y, float _width, float _height, float _vx, float _vy, int _id, int _endGrowupPoint);
-	//SuperMushroom(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _limitY, int _id = 0);
 
 	// Getter
 	SuperMushroomState getState();

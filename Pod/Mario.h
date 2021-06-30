@@ -47,7 +47,11 @@ public:
 	MarioSubState getSubState();
 	MarioState getState();
 	MarioState getPressureState(); // Hold state of mario before scaling up or scaling down
+	RECT getBounds();
+
 	bool getIsFlip();
+	float getBoundsWidth();
+	float getBoundsHeight();
 	float getWidth();
 	float getHeight();
 	bool getIsStandOnSurface();
@@ -84,7 +88,7 @@ public:
 	void handleGreenPipeCollision(GreenPipe* _greenPipe, float _dt);
 	void handleGoombaCollision(Goomba* _goomba, float _dt);
 
-	bool isCollide(Component* _component, float _dt);
+	bool isCollideByBounds(Component* _component, float _dt);
 };
 
 #endif // !MARIO_H

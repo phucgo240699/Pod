@@ -38,9 +38,24 @@ int Animation::getAnimCount()
 	return this->animCount;
 }
 
+RECT Animation::getCurrentBounds()
+{
+	return this->frames->at(currentIndexFrame).first;
+}
+
 RECT Animation::getCurrentFrame()
 {
 	return this->frames->at(currentIndexFrame).second;
+}
+
+float Animation::getCurrentBoundsWidth()
+{
+	return abs(this->getCurrentBounds().right - this->getCurrentBounds().left);
+}
+
+float Animation::getCurrentBoundsHeight()
+{
+	return abs(this->getCurrentBounds().bottom - this->getCurrentBounds().top);
 }
 
 int Animation::getTotalFrames()
@@ -50,12 +65,12 @@ int Animation::getTotalFrames()
 
 float Animation::getCurrentFrameWidth()
 {
-	return this->getCurrentFrame().right - this->getCurrentFrame().left;
+	return abs(this->getCurrentFrame().right - this->getCurrentFrame().left);
 }
 
 float Animation::getCurrentFrameHeight()
 {
-	return this->getCurrentFrame().bottom - this->getCurrentFrame().top;
+	return abs(this->getCurrentFrame().bottom - this->getCurrentFrame().top);
 }
 
 void Animation::setCurrentIndexFrame(int _indexFrame)

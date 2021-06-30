@@ -14,25 +14,25 @@ private:
 	Mario* mario;
 	Map* map;
 
-	int beginGroundId = 0, endGroundId = 14;
+	int beginGroundId, endGroundId;
 	vector<Ground*>* grounds;
 
-	int beginBlockId = 15, endBlockId = 26;
+	int beginBlockId, endBlockId;
 	vector<Block*>* blocks;
 
-	int beginGoldenBrickId = 27, endGoldenBrickId = 45;
+	int beginGoldenBrickId, endGoldenBrickId;
 	vector<GoldenBrick*>* goldenBricks;
 
-	int beginSuperMushroomId = 46, endSuperMushroomId = 46;
-	int beginGiftBrickId = 47, endGiftBrickId = 50;
+	int beginSuperMushroomId, endSuperMushroomId;
+	int beginGiftBrickId, endGiftBrickId;
 	vector<GiftBrick*>* giftBricks;
 
-	int beginGreenPipeId = 51, endGreenPipeId = 54;
+	int beginGreenPipeId, endGreenPipeId;
 	vector<GreenPipe*>* greenPipes;
 
 
 	// Enemies
-	int beginGoombaId = 55, endGoombaId = 55;
+	int beginGoombaId, endGoombaId;
 	unordered_set<Goomba*>* goombas;
 public:
 	// De init
@@ -48,6 +48,7 @@ public:
 	void viewDidRender();
 	void viewWillRelease();
 
+	void adaptRangeID(vector<string> data, char seperator);
 	void adaptData();
 	void adaptAnimation();
 	void adaptToGrid();

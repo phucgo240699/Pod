@@ -17,10 +17,16 @@ public:
 	// Getter
 	int getId();
 	int getCurrentIndexFrame();
+	int getTotalFrames();
+
 	int getAnimDelay();
 	int getAnimCount();
+
+	RECT getCurrentBounds();
 	RECT getCurrentFrame();
-	int getTotalFrames();
+
+	float getCurrentBoundsWidth();
+	float getCurrentBoundsHeight();
 	float getCurrentFrameWidth();
 	float getCurrentFrameHeight();
 

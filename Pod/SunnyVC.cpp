@@ -212,7 +212,7 @@ void SunnyVC::viewDidUpdate(float _dt)
 				// Super Mushroom
 				else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= endSuperMushroomId) {
 					// Super Mushroom collide to others
-					if (static_cast<SuperMushroom*>(*itr)->isCollideMario(mario, _dt) || this->mario->isCollide(*itr, _dt)) {
+					if (static_cast<SuperMushroom*>(*itr)->isCollideMario(mario, _dt) || this->mario->isCollideByBounds(*itr, _dt)) {
 						Grid::getInstance()->remove(*itr, i, j);
 						this->mario->setState(MarioState::SCALING_UP);
 						return;
@@ -351,6 +351,48 @@ void SunnyVC::viewWillRelease()
 {
 }
 
+void SunnyVC::adaptRangeID(vector<string> data, char seperator)
+{
+	vector<int> v;
+	for (int i = 0; i < data.size(); ++i) {
+		if (i == 0) {
+			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
+			this->beginGroundId = v[0];
+			this->endGroundId = v[1];
+		}
+		else if (i == 1) {
+			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
+			this->beginBlockId = v[0];
+			this->endBlockId = v[1];
+		}
+		else if (i == 2) {
+			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
+			this->beginGoldenBrickId = v[0];
+			this->endGoldenBrickId = v[1];
+		}
+		else if (i == 3) {
+			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
+			this->beginSuperMushroomId = v[0];
+			this->endSuperMushroomId = v[1];
+		}
+		else if (i == 4) {
+			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
+			this->beginGiftBrickId = v[0];
+			this->endGiftBrickId = v[1];
+		}
+		else if (i == 5) {
+			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
+			this->beginGreenPipeId = v[0];
+			this->endGreenPipeId = v[1];
+		}
+		else if (i == 6) {
+			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
+			this->beginGoombaId = v[0];
+			this->endGoombaId = v[1];
+		}
+	}
+}
+
 void SunnyVC::adaptData()
 {
 	Camera* camera = Camera::getInstance();
@@ -368,7 +410,15 @@ void SunnyVC::adaptData()
 		if (line[0] == '#') continue; // Comment
 		if (line == "") continue; // Empty
 
-		if (line == "<Camera>") {
+		if (line == "<SunnyVC>") {
+			section = SECTION_SUNNY_VC;
+			continue;
+		}
+		else if (line == "</SunnyVC>") {
+			this->adaptRangeID(data, ',');
+			section = SECTION_NONE;
+		}
+		else if (line == "<Camera>") {
 			section = SECTION_CAMERA;
 			continue;
 		}
@@ -497,6 +547,9 @@ void SunnyVC::adaptData()
 		{
 		case SECTION_NONE:
 			data.clear();
+			break;
+		case SECTION_SUNNY_VC:
+			data.push_back(line);
 			break;
 		case SECTION_CAMERA:
 			camera->load(line, ',');
