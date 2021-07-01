@@ -21,7 +21,7 @@ private:
 
 	// Collision
 	bool isStandOnSurface = false;
-	int componentIdStanded;
+
 public:
 	// Init
 	SuperMushroom(float _x, float _y, float _width, float _height, float _vx, float _vy, int _id, int _endGrowupPoint);

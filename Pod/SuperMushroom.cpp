@@ -2,10 +2,6 @@
 #include "Block.h"
 #include "Mario.h"
 
-//SuperMushroom::SuperMushroom(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id) : Component(_x, _y, _vx, _vy, _limitX, _limitY)
-//{
-//}
-
 SuperMushroom::SuperMushroom(float _x, float _y, float _width, float _height, float _vx, float _vy, int _id, int _endGrowupPoint) : Component(_x, _y, _vx, _vy, 0, 0)
 {
 	Component::Component(_x, _y, _vx, _vy, 0, 0);
@@ -14,10 +10,6 @@ SuperMushroom::SuperMushroom(float _x, float _y, float _width, float _height, fl
 	this->setHeight(_height);
 	this->endGrowupPoint = _endGrowupPoint;
 }
-
-//SuperMushroom::SuperMushroom(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _limitY, int _id) : Component(_position, _vx, _vy, _limitX, _limitY)
-//{
-//}
 
 SuperMushroomState SuperMushroom::getState()
 {
@@ -118,7 +110,6 @@ void SuperMushroom::Update(float _dt)
 
 void SuperMushroom::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
-
 	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), D3DXVECTOR3(round(this->getX()), round(this->getY()), 0));
 }
 

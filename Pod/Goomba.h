@@ -17,6 +17,10 @@ private:
 	GoombaState state;
 
 	int endPointJumpUp, pointY;
+	int originVx, originVy;
+
+	// Collision
+	bool isStandOnSurface = false;
 
 public:
 	// Init
@@ -27,14 +31,17 @@ public:
 
 	// Getter
 	GoombaState getState();
+	bool getIsStandOnSurface();
 
 	// Setter
 	void setState(GoombaState _state);
+	void setIsStandOnSurface(bool _isStandOnSurface);
 
 	void Update(float _dt);
 	void Draw(LPDIRECT3DTEXTURE9 _texture);
 
 	void handleHardComponentCollision(Component* _component, float _dt);
+	void handleBlockCollision(Component* _block, float _dt);
 	void handleMarioCollision(Mario* _mario, float _dt);
 };
 

@@ -148,7 +148,7 @@ void SunnyVC::viewWillUpdate(float _dt)
 					Grid::getInstance()->updateCellOf(*itr);
 
 					// Remove it when drop to far from map
-					if ((*itr)->getX() >= Camera::getInstance()->getLimitY()) {
+					if ((*itr)->getY() >= Camera::getInstance()->getLimitY()) {
 						Grid::getInstance()->remove(*itr, i, j);
 					}
 				}
@@ -211,13 +211,14 @@ void SunnyVC::viewDidUpdate(float _dt)
 
 				// Super Mushroom
 				else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= endSuperMushroomId) {
-					// Super Mushroom collide to others
+					// Mario vs SuperMushroom
 					if (static_cast<SuperMushroom*>(*itr)->isCollideMario(mario, _dt) || this->mario->isCollideByBounds(*itr, _dt)) {
 						Grid::getInstance()->remove(*itr, i, j);
 						this->mario->setState(MarioState::SCALING_UP);
 						return;
 					}
 
+					// Super Mushroom collide to others
 					for (int r = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); r < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++r) {
 						for (int c = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); c < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++c) {
 							unordered_set<Component*> superMushroomCell = Grid::getInstance()->getCell(r, c);
@@ -225,10 +226,10 @@ void SunnyVC::viewDidUpdate(float _dt)
 							for (superMushroomItr = superMushroomCell.begin(); superMushroomItr != superMushroomCell.end(); ++superMushroomItr) {
 								// Ground, GoldenBrick, GiftBrick, GreenPipe
 								if ((beginGroundId <= (*superMushroomItr)->getId() && (*superMushroomItr)->getId() <= endGroundId)
-									|| (beginGoldenBrickId <= (*superMushroomItr)->getId() && (*superMushroomItr)->getId() <= endGoldenBrickId)
-									|| (beginGiftBrickId <= (*superMushroomItr)->getId() && (*superMushroomItr)->getId() <= endGiftBrickId)
-									|| (beginGreenPipeId <= (*superMushroomItr)->getId() && (*superMushroomItr)->getId() <= endGreenPipeId)) {
-									static_cast<SuperMushroom*>(*itr)->handleHardComponentCollision((*superMushroomItr), _dt);
+								|| (beginGoldenBrickId <= (*superMushroomItr)->getId() && (*superMushroomItr)->getId() <= endGoldenBrickId)
+								|| (beginGiftBrickId <= (*superMushroomItr)->getId() && (*superMushroomItr)->getId() <= endGiftBrickId)
+								|| (beginGreenPipeId <= (*superMushroomItr)->getId() && (*superMushroomItr)->getId() <= endGreenPipeId)) {
+									static_cast<SuperMushroom*>(*itr)->handleHardComponentCollision(*superMushroomItr, _dt);
 								}
 								else if (beginBlockId <= (*superMushroomItr)->getId() && (*superMushroomItr)->getId() <= endBlockId) {
 									static_cast<SuperMushroom*>(*itr)->handleBlockCollision(static_cast<Block*>(*superMushroomItr), _dt);
@@ -256,18 +257,25 @@ void SunnyVC::viewDidUpdate(float _dt)
 						this->goombas->erase(static_cast<Goomba*>(*itr));
 						return;
 					}
+
+					// Mario vs Goomba
 					this->mario->handleGoombaCollision(static_cast<Goomba*>(*itr), _dt);
+					static_cast<Goomba*>(*itr)->handleMarioCollision(this->mario, _dt);
 
 					// Goomba to others
-					static_cast<Goomba*>(*itr)->handleMarioCollision(this->mario, _dt);
 					for (int r = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); r < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++r) {
 						for (int c = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); c < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++c) {
 							unordered_set<Component*> goombaCell = Grid::getInstance()->getCell(r, c);
 							unordered_set<Component*> ::iterator goombaItr;
 							for (goombaItr = goombaCell.begin(); goombaItr != goombaCell.end(); ++goombaItr) {
 								if ((beginGroundId <= (*goombaItr)->getId() && (*goombaItr)->getId() <= endGroundId)
-									|| (beginGoldenBrickId <= (*goombaItr)->getId() && (*goombaItr)->getId() <= endGoldenBrickId)) {
-									static_cast<Goomba*>(*itr)->handleHardComponentCollision((*goombaItr), _dt);
+								|| (beginGoldenBrickId <= (*goombaItr)->getId() && (*goombaItr)->getId() <= endGoldenBrickId)
+								|| (beginGiftBrickId <= (*goombaItr)->getId() && (*goombaItr)->getId() <= endGiftBrickId)
+								|| (beginGreenPipeId <= (*goombaItr)->getId() && (*goombaItr)->getId() <= endGreenPipeId)) {
+									static_cast<Goomba*>(*itr)->handleHardComponentCollision(*goombaItr, _dt);
+								}
+								else if (beginBlockId <= (*goombaItr)->getId() && (*goombaItr)->getId() <= endBlockId) {
+									static_cast<Goomba*>(*itr)->handleBlockCollision(*goombaItr, _dt);
 								}
 							}
 						}
@@ -625,10 +633,18 @@ void SunnyVC::adaptAnimation()
 	// Goombas
 	unordered_set<Goomba*> ::iterator itr;
 	for (itr = this->goombas->begin(); itr != this->goombas->end(); ++itr) {
-		(*itr)->setState(GoombaState::GOOMBA_MOVING);
+		if ((*itr)->getVx() > 0) {
+			(*itr)->setState(GoombaState::GOOMBA_MOVING_RIGHT);	
+		}
+		else if ((*itr)->getVx() < 0) {
+			(*itr)->setState(GoombaState::GOOMBA_MOVING_LEFT);
+		}
+		else {
+			(*itr)->setState(GoombaState::GOOMBA_STANDING);
+		}
 	}
 
-	this->mario->setState(MarioState::DROPPING);
+	//this->mario->setState(MarioState::DROPPING);
 }
 
 void SunnyVC::adaptToGrid()
@@ -665,7 +681,6 @@ void SunnyVC::adaptToGrid()
 	// Goombas
 	unordered_set<Goomba*> ::iterator itr;
 	for (itr = this->goombas->begin(); itr != this->goombas->end(); ++itr) {
-		(*itr)->setState(GoombaState::GOOMBA_MOVING);
 		Grid::getInstance()->add(*itr);
 	}
 }

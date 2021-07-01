@@ -18,7 +18,7 @@
 51,54
 
 # 6. beginGoombaId, endGoombaId
-55,55
+55,56
 
 </SunnyVC>
 
@@ -64,7 +64,7 @@
 
 <MarioInfo>
 #(x,y,limitX,limitY,state)
-100,0,2816,470,DROPPING
+96,400,2816,470,STANDING
 </MarioInfo>
 
 <Grounds>
@@ -158,7 +158,8 @@
 </GreenPipeFrames>
 
 <GoombaFrames>
-300,400,16,16,-1,0,55
+300,400,16,16,-1,1,55
+864,384,16,16,-1,1,56
 </GoombaFrames>
 
 <GridInfo>
@@ -337,6 +338,10 @@
 
 > 55
 0,4
+
+> 56
+6,4
+
 </GridMatrixId>
 
 <AnimationBundle>

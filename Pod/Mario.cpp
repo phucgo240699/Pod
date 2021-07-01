@@ -81,6 +81,16 @@ bool Mario::getIsSuperMode()
 	return this->isSuperMode;
 }
 
+void Mario::loadInfo(string line, char seperator)
+{
+	vector<string> v = Tool::splitToVectorStringFrom(line, seperator);
+	this->setX(stof(v[0]));
+	this->setY(stof(v[1]));
+	this->setLimitX(stof(v[2]));
+	this->setLimitY(stof(v[3]));
+	this->setState(Tool::getMarioStateFromString(v[4]));
+}
+
 void Mario::Update(float _dt)
 {
 	if (currentAnimation == NULL) {
@@ -507,16 +517,6 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 	}
 }
 
-void Mario::loadInfo(string line, char seperator)
-{
-	vector<string> v = Tool::splitToVectorStringFrom(line, seperator);
-	this->setX(stof(v[0]));
-	this->setY(stof(v[1]));
-	this->setLimitX(stof(v[2]));
-	this->setLimitY(stof(v[3]));
-	//this->setState(Tool::getMarioStateFromString(v[4]));
-}
-
 void Mario::handleGroundCollision(Ground* _ground, float _dt)
 {
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_ground, _dt);
@@ -734,8 +734,8 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_goomba, _dt);
 	//RECT r = this->getBounds();
 	if (get<0>(collisionResult) == true) {
-		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
-			CollisionEdge edge = get<2>(collisionResult)[j];
+		//for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+			CollisionEdge edge = get<2>(collisionResult)[0];
 			if (edge == bottomEdge) {
 				this->setState(MarioState::JUMPING);
 				this->plusY(get<1>(collisionResult) * _dt + (_goomba->getHeight() / 2));
@@ -752,7 +752,7 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 				this->plusX(get<1>(collisionResult) * this->getVx());
 				_goomba->setState(GoombaState::GOOMBA_STANDING);
 			}
-		}
+		//}
 	}
 }
 
