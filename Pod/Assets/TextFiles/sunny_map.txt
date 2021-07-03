@@ -20,6 +20,9 @@
 # 6. beginGoombaId, endGoombaId
 55,56
 
+# 7. beginKoopaId, endKoopaId
+57,57
+
 </SunnyVC>
 
 <Camera>
@@ -158,9 +161,15 @@
 </GreenPipeFrames>
 
 <GoombaFrames>
-300,400,16,16,-1,1,55
-864,384,16,16,-1,1,56
+# (x, y, width, height, vx, vy, defaultPoint, id)
+300,400,16,16,-1,1,100,55
+864,384,16,16,-1,1,100,56
 </GoombaFrames>
+
+<KoopaFrames>
+# (x, y, vx, vy, leftAnchor, rightAnchor, defaultPoint, id)
+512,357,0.4,1,512,608,100,57
+</KoopaFrames>
 
 <GridInfo>
 # (totalRow, totalCol, cellHeight, cellWidth)
@@ -342,6 +351,9 @@
 > 56
 6,4
 
+> 57
+4,3_4,4
+
 </GridMatrixId>
 
 <AnimationBundle>
@@ -378,7 +390,7 @@
 187,0,16,16
 204,0,16,16
 221,0,16,16
-> 5 0 4
+> 5 0 6
 
 # GiftBrick empty box
 238,0,16,16
@@ -448,5 +460,36 @@
 64,0,14,21
 0,0,16,16
 > 18 0 8
+
+# Koopa Moving
+66,158,16,27
+83,158,16,27
+> 19 0 16
+
+# Koopa Shrinkage
+32,186,16,16
+> 20 0 4
+
+# Koopa Shrinkage Moving
+49,186,16,16
+66,186,16,16
+83,186,16,16
+> 21 0 4
+
+# 200 Points
+238,51,16,16
+> 22 0 1
+
+# 400
+51,136,16,16
+> 23 0 1
+
+# 800
+68,136,16,16
+> 24 0 1
+
+# 1000 Points
+238,34,16,16
+> 25 0 10
 
 </AnimationBundle>

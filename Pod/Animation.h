@@ -37,7 +37,7 @@ public:
 
 
 	void Update(float _dt);
-	void Draw(LPDIRECT3DTEXTURE9 _texture, D3DXVECTOR3 _position, D3DXVECTOR2 _translation, bool _isFlip, D3DCOLOR _color = D3DCOLOR_XRGB(255, 255, 255));
+	//void Draw(LPDIRECT3DTEXTURE9 _texture, D3DXVECTOR3 _position, D3DXVECTOR2 _translation, bool _isFlip, D3DCOLOR _color = D3DCOLOR_XRGB(255, 255, 255));
 	void Draw(LPDIRECT3DTEXTURE9 _texture, RECT _srcRect, D3DXVECTOR3 _position);
 	void DrawWithoutCamera(LPDIRECT3DTEXTURE9 _texture, D3DXVECTOR3 _position, D3DXVECTOR2 _translation, bool _isFlip, D3DCOLOR _color = D3DCOLOR_XRGB(255, 255, 255));
 	void DrawWithoutCamera(LPDIRECT3DTEXTURE9 _texture, RECT _srcRect, D3DXVECTOR3 _position);

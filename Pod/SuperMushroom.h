@@ -14,10 +14,11 @@ class Mario;
 class SuperMushroom : public Component
 {
 private:
-	Animation* animation;
+	Animation* animation, * pointAnimation;
 	SuperMushroomState state;
 	bool moveLeftFirst;
 	int endGrowupPoint;
+	int endPointJumpUp, pointY;
 
 	// Collision
 	bool isStandOnSurface = false;
@@ -35,7 +36,7 @@ public:
 	void setState(SuperMushroomState _state);
 	void setIsStandOnSurface(bool _isStandOnSurface);
 
-	void loadInfo(int _x, int _y, int _width, int _height, int _vx, int _vy, int _id);
+	//void loadInfo(int _x, int _y, int _width, int _height, int _vx, int _vy, int _id);
 
 	void Update(float _dt);
 	void Draw(LPDIRECT3DTEXTURE9 _texture);
@@ -43,6 +44,6 @@ public:
 	// Collision
 	void handleHardComponentCollision(Component* _component, float _dt);
 	void handleBlockCollision(Block* _block, float _dt);
-	bool isCollideMario(Mario* _mario, float _dt);
+	void handleMarioCollision(Mario* _mario, float _dt);
 };
 #endif // !SUPERMUSHROOM_H

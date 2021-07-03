@@ -9,6 +9,12 @@ SuperMushroom::SuperMushroom(float _x, float _y, float _width, float _height, fl
 	this->setWidth(_width);
 	this->setHeight(_height);
 	this->endGrowupPoint = _endGrowupPoint;
+
+	// Random number
+	srand(time(NULL));
+
+	int randomNumber = rand() % 2 + 1;
+	this->moveLeftFirst = randomNumber == 1 ? true : false;
 }
 
 SuperMushroomState SuperMushroom::getState()
@@ -28,27 +34,46 @@ void SuperMushroom::setAnimation(Animation* _animation)
 
 void SuperMushroom::setState(SuperMushroomState _state)
 {
-	if (animation == NULL) {
-		this->animation = new Animation(AnimationBundle::getInstance()->getSuperMushroom());
-	}
 	switch (_state)
 	{
 	case SUPER_MUSHROOM_GROWING_UP:
+		if (animation == NULL) {
+			this->animation = new Animation(AnimationBundle::getInstance()->getSuperMushroom());
+		}
 		this->setVy(-1 * abs(this->getVy()));
 		break;
 	case SUPER_MUSHROOM_MOVING_LEFT:
+		if (animation == NULL) {
+			this->animation = new Animation(AnimationBundle::getInstance()->getSuperMushroom());
+		}
 		this->setVx(-1 * abs(this->getVx()));
 		break;
 	case SUPER_MUSHROOM_MOVING_RIGHT:
+		if (animation == NULL) {
+			this->animation = new Animation(AnimationBundle::getInstance()->getSuperMushroom());
+		}
 		this->setVx(abs(this->getVx()));
 		break;
 	case SUPER_MUSHROOM_DROPPING_LEFT:
+		if (animation == NULL) {
+			this->animation = new Animation(AnimationBundle::getInstance()->getSuperMushroom());
+		}
 		this->setVx(-abs(this->getVx()));
 		this->setVy(abs(this->getVy()));
 		break;
 	case SUPER_MUSHROOM_DROPPING_RIGHT:
+		if (animation == NULL) {
+			this->animation = new Animation(AnimationBundle::getInstance()->getSuperMushroom());
+		}
 		this->setVx(abs(this->getVx()));
 		this->setVy(abs(this->getVy()));
+		break;
+	case SUPER_MUSHROOM_BEING_EARNED:
+		this->animation = NULL;
+		this->pointAnimation = new Animation(AnimationBundle::getInstance()->get1000Points());
+
+		this->pointY = this->getY();
+		this->endPointJumpUp = this->getY() - 32;
 		break;
 	default:
 		break;
@@ -61,25 +86,29 @@ void SuperMushroom::setIsStandOnSurface(bool _isStandOnSurface)
 	this->isStandOnSurface = _isStandOnSurface;
 }
 
-void SuperMushroom::loadInfo(int _x, int _y, int _width, int _height, int _vx, int _vy, int _id)
-{
-	this->setX(_x);
-	this->setY(_y);
-	this->setWidth(_width);
-	this->setHeight(_height);
-	this->setVx(_vx);
-	this->setVy(_vy);
-	this->setId(_id);
-
-	// Random number
-	srand(time(NULL));
-
-	int randomNumber = rand() % 2 + 1;
-	this->moveLeftFirst = randomNumber == 1 ? true : false;
-}
+//void SuperMushroom::loadInfo(int _x, int _y, int _width, int _height, int _vx, int _vy, int _id)
+//{
+//	this->setX(_x);
+//	this->setY(_y);
+//	this->setWidth(_width);
+//	this->setHeight(_height);
+//	this->setVx(_vx);
+//	this->setVy(_vy);
+//	this->setId(_id);
+//
+//	this->pointY = this->getY() - 16;
+//	this->endPointJumpUp = this->getY() - 48;
+//
+//	// Random number
+//	srand(time(NULL));
+//
+//	int randomNumber = rand() % 2 + 1;
+//	this->moveLeftFirst = randomNumber == 1 ? true : false;
+//}
 
 void SuperMushroom::Update(float _dt)
 {
+	if (this->getState() == SUPER_MUSHROOM_DISAPPEARED) return;
 	if (this->getIsStandOnSurface() == true) {
 		this->setIsStandOnSurface(false);
 	}
@@ -98,19 +127,39 @@ void SuperMushroom::Update(float _dt)
 			}
 		}
 		this->plusY(this->getVy()* _dt);
+		this->animation->Update(_dt);
 	}
 	else if (this->getState() == SUPER_MUSHROOM_MOVING_LEFT || this->getState() == SUPER_MUSHROOM_MOVING_RIGHT) {
 		this->plusX(this->getVx() * _dt);
+		this->animation->Update(_dt);
 	}
 	else if (this->getState() == SUPER_MUSHROOM_DROPPING_LEFT || this->getState() == SUPER_MUSHROOM_DROPPING_RIGHT) {
 		this->plusXNoRound(0.5 * this->getVx() * _dt);
 		this->plusYNoRound(1.5 * this->getVy() * _dt);
+		this->animation->Update(_dt);
+	}
+
+	else if (this->getState() == SUPER_MUSHROOM_BEING_EARNED) {
+		this->pointAnimation->Update(_dt);
+		if (this->pointY - (2 * _dt) >= this->endPointJumpUp) {
+			this->pointY -= (2 * _dt);
+		}
+		else {
+			this->pointY = this->endPointJumpUp;
+			this->setState(SuperMushroomState::SUPER_MUSHROOM_DISAPPEARED);
+		}
 	}
 }
 
 void SuperMushroom::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
-	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), D3DXVECTOR3(round(this->getX()), round(this->getY()), 0));
+	if (this->getState() == SUPER_MUSHROOM_DISAPPEARED) return;
+	else if (this->getState() == SUPER_MUSHROOM_BEING_EARNED) {
+		Drawing::getInstance()->draw(_texture, this->pointAnimation->getCurrentFrame(), D3DXVECTOR3(this->getX(), this->pointY, 0));
+	}
+	else {
+		Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), D3DXVECTOR3(round(this->getX()), round(this->getY()), 0));
+	}
 }
 
 void SuperMushroom::handleHardComponentCollision(Component* _component, float _dt)
@@ -215,7 +264,19 @@ void SuperMushroom::handleBlockCollision(Block* _block, float _dt)
 	}
 }
 
-bool SuperMushroom::isCollideMario(Mario* _mario, float _dt)
+void SuperMushroom::handleMarioCollision(Mario* _mario, float _dt)
 {
-	return get<0>(this->sweptAABBByBounds(_mario, _dt));
+	if (this->getState() == SUPER_MUSHROOM_BEING_EARNED
+	|| this->getState() == SUPER_MUSHROOM_DISAPPEARED
+	|| _mario->getState() == SCALING_UP) return;
+
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
+
+	if (get<0>(collisionResult) == true) {
+		this->setState(SuperMushroomState::SUPER_MUSHROOM_BEING_EARNED);
+		_mario->setState(MarioState::SCALING_UP);
+		_mario->plusX(this->getVx() * get<1>(collisionResult));
+		_mario->plusY(this->getVy() * get<1>(collisionResult));
+		ScoreBoard::getInstance()->plusPoint(1000);
+	}
 }

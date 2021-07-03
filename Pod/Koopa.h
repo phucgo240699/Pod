@@ -1,44 +1,49 @@
 #pragma once
-#ifndef GOOMBA_H
-#define GOOMBA_H
+#ifndef KOOPA_H
+#define KOOPA_H
 
 #include "Enemy.h"
-#include "GoombaState.h"
+#include "KoopaState.h"
 #include "AnimationBundle.h"
 #include "Camera.h"
 #include "Grid.h"
 
 class Mario; // Say Goomba exists without defining it.
 
-class Goomba : public Enemy
+class Koopa : public Enemy
 {
 private:
-	Animation* animation, *pointAnimation;
-	GoombaState state;
+	Animation* animation, * pointAnimation;
+	KoopaState state;
+	float originVx, originVy;
 
-	int endPointJumpUp, pointY;
-	int originVx, originVy;
+	int leftAnchor, rightAnchor;
+	int endPointJumpUp, pointX, pointY;
 	int pointCoef;
 	int defaultPoint;
 
 	// Collision
-	bool isStandOnSurface = false;
+	bool isStandOnSurface = false, isFlip = false;
 
 public:
 	// Init
-	Goomba(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id = 0);
-	Goomba(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _limitY, int _id = 0);
+	Koopa(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id = 0);
+	Koopa(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _limitY, int _id = 0);
 
 	void loadInfo(string line, char seperator);
 
 	// Getter
-	GoombaState getState();
+	KoopaState getState();
+	float getWidth();
+	float getHeight();
+	bool getIsFlip();
 	bool getIsStandOnSurface();
 	int getPointCoef();
 	int getDefaultPoint();
 
 	// Setter
-	void setState(GoombaState _state);
+	void setState(KoopaState _state);
+	void setIsFlip(bool _isFlip);
 	void setIsStandOnSurface(bool _isStandOnSurface);
 	void setPointCoef(int _pointCoef);
 
@@ -51,4 +56,4 @@ public:
 	void handleMarioCollision(Mario* _mario, float _dt);
 };
 
-#endif // !GOOMBA_H
+#endif // !KOOPA

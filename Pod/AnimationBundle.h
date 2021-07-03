@@ -46,5 +46,13 @@ public:
 	Animation getSuperMarioJumping();
 	Animation getMarioScalingUp();
 	Animation getMarioScalingDown();
+	Animation getKoopaMoving();
+	Animation getKoopaShrinkage();
+	Animation getKoopaShrinkageMoving();
+	Animation get200Points();
+	Animation get400Points();
+	Animation get800Points();
+	Animation get1000Points();
+	Animation getPoints(int points);
 };
 

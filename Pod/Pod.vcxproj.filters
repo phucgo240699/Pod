@@ -178,6 +178,12 @@
     <Filter Include="Source Files\Components\Map\Super Mushroom">
       <UniqueIdentifier>{48a6df27-c119-482c-93d4-26f318a65aa9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\Enemies\Koopa">
+      <UniqueIdentifier>{08570594-70a2-4404-a4f2-99faf1aef91f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Enemies\Koopa">
+      <UniqueIdentifier>{d658a63e-a9b9-4421-9e88-68bd756688e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -278,6 +284,9 @@
     </ClCompile>
     <ClCompile Include="SuperMushroom.cpp">
       <Filter>Source Files\Components\Map\Super Mushroom</Filter>
+    </ClCompile>
+    <ClCompile Include="Koopa.cpp">
+      <Filter>Source Files\Components\Enemies\Koopa</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -405,6 +414,12 @@
       <Filter>Header Files\System\Enums</Filter>
     </ClInclude>
     <ClInclude Include="GiftType.h">
+      <Filter>Header Files\System\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Koopa.h">
+      <Filter>Header Files\Components\Enemies\Koopa</Filter>
+    </ClInclude>
+    <ClInclude Include="KoopaState.h">
       <Filter>Header Files\System\Enums</Filter>
     </ClInclude>
   </ItemGroup>

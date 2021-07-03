@@ -19,10 +19,9 @@ void Goomba::loadInfo(string line, char seperator)
 	this->setHeight(v[3]);
 	this->setVx(v[4]);
 	this->setVy(v[5]);
-	this->setId(v[6]);
+	this->setId(v[7]);
 
-	this->pointY = this->getY() - 16;
-	this->endPointJumpUp = this->getY() - 48;
+	this->defaultPoint = v[6];
 	this->originVx = abs(this->getVx());
 	this->originVy = abs(this->getVy());
 }
@@ -35,6 +34,16 @@ GoombaState Goomba::getState()
 bool Goomba::getIsStandOnSurface()
 {
 	return this->isStandOnSurface;
+}
+
+int Goomba::getPointCoef()
+{
+	return this->pointCoef;
+}
+
+int Goomba::getDefaultPoint()
+{
+	return this->defaultPoint;
 }
 
 void Goomba::setState(GoombaState _state)
@@ -84,9 +93,12 @@ void Goomba::setState(GoombaState _state)
 	case TRAMPLED_GOOMBA:
 		if (this->getState() == GOOMBA_MOVING_LEFT || GOOMBA_MOVING_RIGHT) {
 			this->animation = new Animation(AnimationBundle::getInstance()->getTrampledGoomba());
-			this->pointAnimation = new Animation(AnimationBundle::getInstance()->get100Points());
+			this->pointAnimation = new Animation(AnimationBundle::getInstance()->getPoints(this->defaultPoint * this->getPointCoef()));
 			this->setVx(0);
 			this->setVy(0);
+
+			this->pointY = this->getY() - this->pointAnimation->getCurrentFrameHeight();
+			this->endPointJumpUp = this->getY() - this->pointAnimation->getCurrentFrameHeight() - 32;
 		}
 		break;
 
@@ -107,6 +119,11 @@ void Goomba::setState(GoombaState _state)
 void Goomba::setIsStandOnSurface(bool _isStandOnSurface)
 {
 	this->isStandOnSurface = _isStandOnSurface;
+}
+
+void Goomba::setPointCoef(int _pointCoef)
+{
+	this->pointCoef = _pointCoef;
 }
 
 void Goomba::Update(float _dt)
@@ -130,32 +147,28 @@ void Goomba::Update(float _dt)
 			this->plusY(this->getVy() * _dt);
 		}
 	}
-	else if (this->getState() == TRAMPLED_GOOMBA && this->pointAnimation != NULL) {
+	else if (this->getState() == TRAMPLED_GOOMBA) {
 		this->pointAnimation->Update(_dt);
-		if (this->pointY - 2 >= this->endPointJumpUp) {
-			this->pointY -= 2;
+		if (this->pointY - (2 * _dt) >= this->endPointJumpUp) {
+			this->pointY -= (2 * _dt);
 		}
 		else {
 			this->pointY = this->endPointJumpUp;
 			this->setState(GoombaState::DEAD_GOOMBA);
+			return;
 		}
 	}
 
-	if (this->animation != NULL) {
-		this->animation->Update(_dt);
-	}
+	this->animation->Update(_dt);
 }
 
 void Goomba::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
 	if (this->getState() == DEAD_GOOMBA) return;
-	if (this->getState() == TRAMPLED_GOOMBA && this->pointAnimation != NULL) {
+	else if (this->getState() == TRAMPLED_GOOMBA) {
 		Drawing::getInstance()->draw(_texture, this->pointAnimation->getCurrentFrame(), D3DXVECTOR3(this->getX(), this->pointY, 0));
-		if (this->pointY <= this->endPointJumpUp && this->animation != NULL) {
-			this->animation = NULL;
-		}
 	}
-	if (this->animation != NULL) {
+	else {
 		Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), this->getPosition());
 	}
 }
@@ -264,6 +277,13 @@ void Goomba::handleBlockCollision(Component* _block, float _dt)
 
 void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 {
+	if (_mario->getState() == DIE
+		|| _mario->getState() == DIE_DROPPING
+		|| _mario->getState() == DIE_JUMPING
+		|| this->getState() == TRAMPLED_GOOMBA
+		|| this->getState() == DEAD_GOOMBA) {
+		return;
+	}
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
 	if (get<0>(collisionResult) == true) {
 		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
@@ -277,6 +297,21 @@ void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 				_mario->setState(MarioState::DIE);
 				this->plusX(get<1>(collisionResult) * this->getVx());
 				this->setState(GoombaState::GOOMBA_STANDING);
+			}
+			else if (edge == bottomEdge) {
+				_mario->setState(MarioState::DIE);
+				this->plusY(get<1>(collisionResult) * this->getVy());
+				this->setState(GoombaState::GOOMBA_STANDING);
+			}
+			else if (edge == topEdge && _mario->getState() == DROPPING) {
+				_mario->setState(MarioState::JUMPING);
+				_mario->plusY(get<1>(collisionResult) * _mario->getVy());
+				this->setState(GoombaState::TRAMPLED_GOOMBA);
+
+				// Calculate points
+				_mario->increasePointCoef();
+				this->setPointCoef(this->getPointCoef());
+				ScoreBoard::getInstance()->plusPoint(this->getDefaultPoint() * this->getPointCoef());
 			}
 		}
 	}

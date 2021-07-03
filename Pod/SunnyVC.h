@@ -6,6 +6,7 @@
 #include "StaticAnim.h"
 #include "AnimationBundle.h"
 #include "Goomba.h"
+#include "Koopa.h"
 
 class SunnyVC : public ViewController
 {
@@ -30,10 +31,18 @@ private:
 	int beginGreenPipeId, endGreenPipeId;
 	vector<GreenPipe*>* greenPipes;
 
-
+	//
 	// Enemies
+	//
+
+	// Goombas
 	int beginGoombaId, endGoombaId;
 	unordered_set<Goomba*>* goombas;
+
+	// Koopas
+	int beginKoopaId, endKoopaId;
+	unordered_set<Koopa*>* koopas;
+
 public:
 	// De init
 	~SunnyVC();

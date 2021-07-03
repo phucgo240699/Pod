@@ -12,6 +12,7 @@
 #include "GiftBrick.h"
 #include "ScoreBoard.h"
 //#include "Goomba.h"
+#include "Koopa.h"
 #include "Block.h"
 #include "GreenPipe.h"
 #include <unordered_map>
@@ -35,6 +36,7 @@ private:
 	bool isStandOnSurface = false, isSuperMode = false;
 	int oldFrameHeight, oldFrameWidth;
 	int newFrameHeight, newFrameWidth;
+	int pointCoef = 0;
 
 public:
 	float startdrop = 0;
@@ -48,7 +50,6 @@ public:
 	MarioState getState();
 	MarioState getPressureState(); // Hold state of mario before scaling up or scaling down
 	RECT getBounds();
-
 	bool getIsFlip();
 	float getBoundsWidth();
 	float getBoundsHeight();
@@ -56,6 +57,7 @@ public:
 	float getHeight();
 	bool getIsStandOnSurface();
 	bool getIsSuperMode();
+	int getPointCoef();
 
 
 	// Setter
@@ -66,6 +68,8 @@ public:
 	void setIsStandOnSurface(bool _isStandOnSurface);
 	void setIsSuperMode(bool _isSuperMode);
 	void updateVelocity();
+	void increasePointCoef(); // this method will add pointCoeft to 1.
+	void resetPointCoef(); // this method will set pointCoef to 0.
 
 	// Inherit
 	void Update(float _dt);
@@ -87,8 +91,8 @@ public:
 	void handleGiftBrickCollision(GiftBrick* _goldenBrick, float _dt);
 	void handleGreenPipeCollision(GreenPipe* _greenPipe, float _dt);
 	void handleGoombaCollision(Goomba* _goomba, float _dt);
-
-	bool isCollideByBounds(Component* _component, float _dt);
+	void handleKoopaCollision(Koopa* _koopa, float _dt);
+	void handleSuperMushroomCollision(SuperMushroom* _superMushroom, float _dt);
 };
 
 #endif // !MARIO_H

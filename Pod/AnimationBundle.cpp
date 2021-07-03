@@ -190,3 +190,57 @@ Animation AnimationBundle::getMarioScalingDown()
 {
 	return this->animations->at(18);
 }
+
+Animation AnimationBundle::getKoopaMoving()
+{
+	return this->animations->at(19);
+}
+
+Animation AnimationBundle::getKoopaShrinkage()
+{
+	return this->animations->at(20);
+}
+
+Animation AnimationBundle::getKoopaShrinkageMoving()
+{
+	return this->animations->at(21);
+}
+
+Animation AnimationBundle::get200Points()
+{
+	return this->animations->at(22);
+}
+
+Animation AnimationBundle::getPoints(int points)
+{	
+	if (points == 200) {
+		this->get200Points();
+	}
+	else if (points == 400) {
+		this->get400Points();
+	}
+	else if (points == 800) {
+		this->get800Points();
+	}
+	else if (points == 1000) {
+		this->get1000Points();
+	}
+	else {
+		return this->get100Points();
+	}
+}
+
+Animation AnimationBundle::get400Points()
+{
+	return this->animations->at(23);
+}
+
+Animation AnimationBundle::get800Points()
+{
+	return this->animations->at(24);
+}
+
+Animation AnimationBundle::get1000Points()
+{
+	return this->animations->at(25);
+}

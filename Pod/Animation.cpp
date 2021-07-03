@@ -102,10 +102,10 @@ void Animation::Update(float _dt)
 	}
 }
 
-void Animation::Draw(LPDIRECT3DTEXTURE9 _texture, D3DXVECTOR3 _position, D3DXVECTOR2 _translation, bool _isFlip, D3DCOLOR _color)
-{
-	Drawing::getInstance()->draw(_texture, this->getCurrentFrame(), NULL, _position, _translation, _isFlip, _color);
-}
+//void Animation::Draw(LPDIRECT3DTEXTURE9 _texture, D3DXVECTOR3 _position, D3DXVECTOR2 _translation, bool _isFlip, D3DCOLOR _color)
+//{
+//	Drawing::getInstance()->draw(_texture, this->getCurrentFrame(), NULL, _position, _translation, _isFlip, _color);
+//}
 
 void Animation::Draw(LPDIRECT3DTEXTURE9 _texture, RECT _srcRect, D3DXVECTOR3 _position)
 {

@@ -167,6 +167,7 @@
     <ClCompile Include="Goomba.cpp" />
     <ClCompile Include="GreenPipe.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Koopa.cpp" />
     <ClCompile Include="StaticAnim.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="ImagePath.cpp" />
@@ -205,6 +206,8 @@
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="GreenPipe.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="Koopa.h" />
+    <ClInclude Include="KoopaState.h" />
     <ClInclude Include="StaticAnim.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="ImagePath.h" />

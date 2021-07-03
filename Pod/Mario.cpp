@@ -81,6 +81,11 @@ bool Mario::getIsSuperMode()
 	return this->isSuperMode;
 }
 
+int Mario::getPointCoef()
+{
+	return this->pointCoef;
+}
+
 void Mario::loadInfo(string line, char seperator)
 {
 	vector<string> v = Tool::splitToVectorStringFrom(line, seperator);
@@ -174,6 +179,7 @@ void Mario::setState(MarioState _state)
 			else {
 				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioStanding());
 			}
+			this->resetPointCoef();
 			this->setTargetVx(0);
 			this->setTargetVy(0);
 			this->setAccelerationY(0);
@@ -393,6 +399,16 @@ void Mario::updateVelocity()
 			}
 		}
 	}
+}
+
+void Mario::increasePointCoef()
+{
+	++(this->pointCoef);
+}
+
+void Mario::resetPointCoef()
+{
+	this->pointCoef = 0;
 }
 
 void Mario::onKeyUp()
@@ -731,16 +747,27 @@ void Mario::handleGreenPipeCollision(GreenPipe* _greenPipe, float _dt)
 
 void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 {
+	if (this->getState() == DIE
+		|| this->getState() == DIE_DROPPING
+		|| this->getState() == DIE_JUMPING
+		|| _goomba->getState() == TRAMPLED_GOOMBA
+		|| _goomba->getState() == DEAD_GOOMBA) {
+		return;
+	}
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_goomba, _dt);
 	//RECT r = this->getBounds();
 	if (get<0>(collisionResult) == true) {
 		//for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[0];
-			if (edge == bottomEdge) {
+			if (edge == bottomEdge && this->getState() == DROPPING) {
 				this->setState(MarioState::JUMPING);
 				this->plusY(get<1>(collisionResult) * _dt + (_goomba->getHeight() / 2));
 				_goomba->setState(GoombaState::TRAMPLED_GOOMBA);
-				ScoreBoard::getInstance()->plusPoint(100);
+
+				// Calculate points
+				this->increasePointCoef();
+				_goomba->setPointCoef(this->getPointCoef());
+				ScoreBoard::getInstance()->plusPoint(_goomba->getDefaultPoint() * _goomba->getPointCoef());
 			}
 			else if (edge == leftEdge) {
 				this->setState(MarioState::DIE);
@@ -756,7 +783,63 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 	}
 }
 
-bool Mario::isCollideByBounds(Component* _component, float _dt)
+void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 {
-	return get<0>(this->sweptAABBByBounds(_component, _dt));
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_koopa, _dt);
+	//RECT r = this->getBounds();
+	if (get<0>(collisionResult) == true) {
+		//for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+		CollisionEdge edge = get<2>(collisionResult)[0];
+		if (edge == leftEdge) {
+			this->setState(MarioState::DIE);
+			this->plusX(get<1>(collisionResult) * this->getVx());
+			_koopa->setState(KoopaState::KOOPA_STANDING);
+		}
+		else if (edge == rightEdge) {
+			this->setState(MarioState::DIE);
+			this->plusX(get<1>(collisionResult) * this->getVx());
+			_koopa->setState(KoopaState::KOOPA_STANDING);
+		}
+		else if (edge == topEdge) {
+			this->setState(MarioState::DIE);
+			_koopa->setState(KoopaState::KOOPA_STANDING);
+		}
+		else if (edge == bottomEdge && this->getState() == DROPPING) {
+			this->plusY(get<1>(collisionResult) * this->getVx());
+			this->setState(MarioState::JUMPING);
+
+			if (_koopa->getState() == KOOPA_SHRINKAGE) {
+				float centerMario = this->getX() + this->getWidth() / 2;
+				float centerKoopa = _koopa->getX() + _koopa->getWidth() / 2;
+
+				if (centerMario >= centerKoopa) {
+					_koopa->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
+				}
+				else {
+					_koopa->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
+				}
+			}
+			else {
+				_koopa->setState(KoopaState::KOOPA_SHRINKAGE);
+			}
+		}
+		//}
+	}
+}
+
+void Mario::handleSuperMushroomCollision(SuperMushroom* _superMushroom, float _dt)
+{
+	if (_superMushroom->getState() == SUPER_MUSHROOM_BEING_EARNED
+	||_superMushroom->getState() == SUPER_MUSHROOM_DISAPPEARED
+	|| this->getState() == SCALING_UP) return;
+
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_superMushroom, _dt);
+
+	if (get<0>(collisionResult) == true) {
+		_superMushroom->setState(SuperMushroomState::SUPER_MUSHROOM_BEING_EARNED);
+		this->setState(MarioState::SCALING_UP);
+		this->plusX(this->getVx() * get<1>(collisionResult));
+		this->plusY(this->getVy() * get<1>(collisionResult));
+		ScoreBoard::getInstance()->plusPoint(1000);
+	}
 }
