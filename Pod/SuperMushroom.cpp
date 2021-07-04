@@ -86,26 +86,6 @@ void SuperMushroom::setIsStandOnSurface(bool _isStandOnSurface)
 	this->isStandOnSurface = _isStandOnSurface;
 }
 
-//void SuperMushroom::loadInfo(int _x, int _y, int _width, int _height, int _vx, int _vy, int _id)
-//{
-//	this->setX(_x);
-//	this->setY(_y);
-//	this->setWidth(_width);
-//	this->setHeight(_height);
-//	this->setVx(_vx);
-//	this->setVy(_vy);
-//	this->setId(_id);
-//
-//	this->pointY = this->getY() - 16;
-//	this->endPointJumpUp = this->getY() - 48;
-//
-//	// Random number
-//	srand(time(NULL));
-//
-//	int randomNumber = rand() % 2 + 1;
-//	this->moveLeftFirst = randomNumber == 1 ? true : false;
-//}
-
 void SuperMushroom::Update(float _dt)
 {
 	if (this->getState() == SUPER_MUSHROOM_DISAPPEARED) return;

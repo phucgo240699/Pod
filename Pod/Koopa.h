@@ -16,11 +16,15 @@ private:
 	Animation* animation, pointAnimation = Animation(0,0,0);
 	KoopaState state;
 	float originVx, originVy;
+	bool firstCheckAnim = true;
+	int oldFrameHeight, oldFrameWidth;
+	int newFrameHeight, newFrameWidth;
 
 	int leftAnchor, rightAnchor;
 	float endPointJumpUp, pointX, pointY = -std::numeric_limits<float>::infinity();
 	int pointCoef;
 	int defaultPoint;
+	int countDown = 30, originCountDown = 30; // countDown to switch from standing to shaking, and from shaking to moving
 
 	// Collision
 	bool isStandOnSurface = false, isFlip = false;
@@ -46,6 +50,10 @@ public:
 	void setIsFlip(bool _isFlip);
 	void setIsStandOnSurface(bool _isStandOnSurface);
 	void setPointCoef(int _pointCoef);
+	void setPointX(float _pointX);
+	void setPointY(float _pointY);
+	void setEndPointJumpUp(float _endPointJumpUp);
+	void setupPointAnimPosition();
 
 	void Update(float _dt);
 	void Draw(LPDIRECT3DTEXTURE9 _texture);

@@ -63,6 +63,11 @@ int Koopa::getDefaultPoint()
 
 void Koopa::setState(KoopaState _state)
 {
+	if (this->animation != NULL) {
+		this->oldFrameWidth = this->animation->getCurrentFrameWidth();
+		this->oldFrameHeight = this->animation->getCurrentFrameHeight();
+	}
+
 	switch (_state)
 	{
 	case KOOPA_STANDING:
@@ -73,7 +78,7 @@ void Koopa::setState(KoopaState _state)
 		this->setVy(0);
 		break;
 	case KOOPA_MOVING_LEFT:
-		if (this->animation == NULL) {
+		if (this->getState() == KOOPA_SHRINKAGE_SHAKING || this->animation == NULL) {
 			this->animation = new Animation(AnimationBundle::getInstance()->getKoopaMoving());
 		}
 		this->setIsFlip(true);
@@ -81,7 +86,7 @@ void Koopa::setState(KoopaState _state)
 		this->setVy(0);
 		break;
 	case KOOPA_MOVING_RIGHT:
-		if (this->animation == NULL) {
+		if (this->getState() == KOOPA_SHRINKAGE_SHAKING || this->animation == NULL) {
 			this->animation = new Animation(AnimationBundle::getInstance()->getKoopaMoving());
 		}
 		this->setIsFlip(false);
@@ -90,21 +95,17 @@ void Koopa::setState(KoopaState _state)
 		break;
 	case KOOPA_SHRINKAGE:
 	{
-		float oldHeight = this->animation->getCurrentFrameHeight();
-		float oldWidth = this->animation->getCurrentFrameWidth();
+		/*float oldHeight = this->animation->getCurrentFrameHeight();
+		float oldWidth = this->animation->getCurrentFrameWidth();*/
 
 		this->animation = new Animation(AnimationBundle::getInstance()->getKoopaShrinkage());
 		this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
 
-		float newHeight = this->animation->getCurrentFrameHeight();
+		/*float newHeight = this->animation->getCurrentFrameHeight();
 		float newWidth = this->animation->getCurrentFrameWidth();
 
 		this->plusX(oldWidth - newWidth);
-		this->plusY(oldHeight - newHeight);
-
-		this->pointX = this->getX();
-		this->pointY = this->getY() - this->pointAnimation.getCurrentFrameHeight();
-		this->endPointJumpUp = this->getY() - this->pointAnimation.getCurrentFrameHeight() - 48;
+		this->plusY(oldHeight - newHeight);*/
 
 		this->setVx(0);
 		this->setVy(0);
@@ -112,72 +113,67 @@ void Koopa::setState(KoopaState _state)
 		break;
 
 	case KOOPA_SHRINKAGE_MOVING_LEFT:
-		if (this->getState() == KOOPA_SHRINKAGE) {
+		if (this->getState() == KOOPA_SHRINKAGE || this->getState() == KOOPA_SHRINKAGE_SHAKING) {
 			this->animation = new Animation(AnimationBundle::getInstance()->getKoopaShrinkageMoving());
 			this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
-
-			this->pointX = this->getX();
-			this->pointY = this->getY() - this->pointAnimation.getCurrentFrameHeight();
-			this->endPointJumpUp = this->getY() - this->pointAnimation.getCurrentFrameHeight() - 48;
 		}
 		this->setIsFlip(true);
-		this->setVx(-7 * abs(this->originVx));
+		this->setVx(-8 * abs(this->originVx));
 		this->setVy(0);
 		break;
 
 	case KOOPA_SHRINKAGE_MOVING_RIGHT:
-		if (this->getState() == KOOPA_SHRINKAGE) {
+		if (this->getState() == KOOPA_SHRINKAGE || this->getState() == KOOPA_SHRINKAGE_SHAKING) {
 			this->animation = new Animation(AnimationBundle::getInstance()->getKoopaShrinkageMoving());
 			this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
-
-			this->pointX = this->getX();
-			this->pointY = this->getY() - this->pointAnimation.getCurrentFrameHeight();
-			this->endPointJumpUp = this->getY() - this->pointAnimation.getCurrentFrameHeight() - 48;
 		}
 		this->setIsFlip(false);
-		this->setVx(7 * abs(this->originVx));
+		this->setVx(8 * abs(this->originVx));
 		this->setVy(0);
 		break;
 
 	case KOOPA_SHRINKAGE_DROPPING_LEFT:
-		if (this->getState() == KOOPA_SHRINKAGE) {
+		if (this->getState() == KOOPA_SHRINKAGE || this->getState() == KOOPA_SHRINKAGE_SHAKING) {
 			this->animation = new Animation(AnimationBundle::getInstance()->getKoopaShrinkageMoving());
 			this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
-
-			this->pointX = this->getX();
-			this->pointY = this->getY() - this->pointAnimation.getCurrentFrameHeight();
-			this->endPointJumpUp = this->getY() - this->pointAnimation.getCurrentFrameHeight() - 48;
 		}
 		this->setIsFlip(true);
-		this->setVx(-7 * abs(this->originVx));
+		this->setVx(-8 * abs(this->originVx));
 		this->setVy(abs(this->originVy));
 		break;
 
 	case KOOPA_SHRINKAGE_DROPPING_RIGHT:
-		if (this->getState() == KOOPA_SHRINKAGE) {
+		if (this->getState() == KOOPA_SHRINKAGE || this->getState() == KOOPA_SHRINKAGE_SHAKING) {
 			this->animation = new Animation(AnimationBundle::getInstance()->getKoopaShrinkageMoving());
 			this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
-
-			this->pointX = this->getX();
-			this->pointY = this->getY() - this->pointAnimation.getCurrentFrameHeight();
-			this->endPointJumpUp = this->getY() - this->pointAnimation.getCurrentFrameHeight() - 48;
 		}
 		this->setIsFlip(true);
-		this->setVx(7 * abs(this->originVx));
+		this->setVx(8 * abs(this->originVx));
 		this->setVy(abs(this->originVy));
 		break;
-	case KOOPA_BEING_EARNED:
+
+	case KOOPA_SHRINKAGE_SHAKING:
+		this->animation = new Animation(AnimationBundle::getInstance()->getKoopaShrinkageShaking());
 		this->setVx(0);
 		this->setVy(0);
-		this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
-
-		this->pointX = this->getX();
-		this->pointY = this->getY() - this->pointAnimation.getCurrentFrameHeight();
-		this->endPointJumpUp = this->getY() - this->pointAnimation.getCurrentFrameHeight() - 48;
 		break;
 	}
 
 	this->state = _state;
+
+	if (firstCheckAnim == false) {
+		this->newFrameWidth = this->animation->getCurrentFrameWidth();
+		this->newFrameHeight = this->animation->getCurrentFrameHeight();
+
+		if (oldFrameWidth != newFrameWidth) {
+			this->plusX(oldFrameWidth - newFrameWidth);
+		}
+		if (oldFrameHeight != newFrameHeight) {
+			this->plusY(oldFrameHeight - newFrameHeight);
+		}
+	}
+
+	firstCheckAnim = false;
 }
 
 void Koopa::setIsFlip(bool _isFlip)
@@ -195,13 +191,39 @@ void Koopa::setPointCoef(int _pointCoef)
 	this->pointCoef = _pointCoef;
 }
 
+void Koopa::setPointX(float _pointX)
+{
+	this->pointX = _pointX;
+}
+
+void Koopa::setPointY(float _pointY)
+{
+	this->pointY = _pointY;
+}
+
+void Koopa::setEndPointJumpUp(float _endPointJumpUp)
+{
+	this->endPointJumpUp = _endPointJumpUp;
+}
+
+void Koopa::setupPointAnimPosition()
+{
+	this->pointX = this->getX();
+	this->pointY = this->getY() - this->pointAnimation.getCurrentFrameHeight();
+	this->endPointJumpUp = this->getY() - this->pointAnimation.getCurrentFrameHeight() - 48;
+}
+
 void Koopa::Update(float _dt)
 {
-	if (this->getState() == KOOPA_DEAD) return;
+	if (this->getState() == KOOPA_DEAD || this->getState() == KOOPA_STANDING) return;
+	
 	Enemy::Update(_dt);
+
 	if (this->getIsStandOnSurface() == true) {
 		this->setIsStandOnSurface(false);
 	}
+
+	this->animation->Update(_dt);
 
 	if (this->getState() == KOOPA_MOVING_LEFT) {
 		if (this->getX() + this->getVx() * _dt < this->leftAnchor) {
@@ -233,8 +255,26 @@ void Koopa::Update(float _dt)
 		this->plusXNoRound(this->getVx() * _dt);
 		this->plusYNoRound(this->getVy() * _dt);
 	}
-
-	this->animation->Update(_dt);
+	else if (this->getState() == KOOPA_SHRINKAGE) {
+		if (this->animation->getCurrentIndexFrame() == this->animation->getTotalFrames() - 1
+			&& this->animation->getAnimCount() >= this->animation->getAnimDelay()) {
+			this->setState(KoopaState::KOOPA_SHRINKAGE_SHAKING);
+		}
+	}
+	else if (this->getState() == KOOPA_SHRINKAGE_SHAKING) {
+		if (this->animation->getCurrentIndexFrame() == this->animation->getTotalFrames() - 1
+			&& this->animation->getAnimCount() >= this->animation->getAnimDelay()) {
+			// TODO: Now set state to moving => problem: range moving...
+			
+			int random = rand() % 2 + 1;
+			if (random == 1) {
+				this->setState(KoopaState::KOOPA_MOVING_RIGHT);
+			}
+			else {
+				this->setState(KoopaState::KOOPA_MOVING_LEFT);
+			}
+		}
+	}
 
 	if (this->pointY == this->endPointJumpUp || this->pointY == -std::numeric_limits<float>::infinity()) {
 		return;
@@ -245,9 +285,6 @@ void Koopa::Update(float _dt)
 	}
 	else {
 		this->pointY = this->endPointJumpUp;
-		if (this->getState() == KOOPA_BEING_EARNED) {
-			this->setState(KoopaState::KOOPA_DEAD);
-		}
 	}
 
 
@@ -258,7 +295,7 @@ void Koopa::Update(float _dt)
 void Koopa::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
 	if (this->getState() == KOOPA_DEAD) return;
-	if (this->animation != NULL && this->getState() != KOOPA_BEING_EARNED) {
+	if (this->animation != NULL) {
 		Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), this->getPosition(), this->getIsFlip());
 	}
 	if (this->pointY == this->endPointJumpUp || this->pointY == -std::numeric_limits<float>::infinity()) {
@@ -275,6 +312,8 @@ void Koopa::handleHardComponentCollision(Component* _component, float _dt)
 			CollisionEdge edge = get<2>(collisionResult)[0];
 			if (edge == bottomEdge) {
 				this->setIsStandOnSurface(true);
+				this->leftAnchor = _component->getX();
+				this->rightAnchor = _component->getX() + _component->getWidth();
 				if (this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT) {
 					//this->setY(_component->getY() - this->getHeight());
 					this->plusYNoRound(this->getVy() * get<1>(collisionResult));
@@ -287,7 +326,10 @@ void Koopa::handleHardComponentCollision(Component* _component, float _dt)
 				}
 			}
 			else if (edge == leftEdge) {
-				if (this->getState() == KOOPA_SHRINKAGE_MOVING_LEFT) {
+				if (this->getState() == KOOPA_MOVING_LEFT) {
+					this->setState(KoopaState::KOOPA_MOVING_RIGHT);
+				}
+				else if (this->getState() == KOOPA_SHRINKAGE_MOVING_LEFT) {
 					this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
 				}
 				else if (this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT) {
@@ -295,7 +337,10 @@ void Koopa::handleHardComponentCollision(Component* _component, float _dt)
 				}
 			}
 			else if (edge == rightEdge) {
-				if (this->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT) {
+				if (this->getState() == KOOPA_MOVING_RIGHT) {
+					this->setState(KoopaState::KOOPA_MOVING_LEFT);
+				}
+				else if (this->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT) {
 					this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
 				}
 				else if (this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
@@ -312,6 +357,8 @@ void Koopa::handleHardComponentCollision(Component* _component, float _dt)
 					|| (_component->getX() <= this->getX() && this->getX() <= _component->getFrame().right)) { // this is check which ground that mario is standing on
 					if (_component->getY() - 1 <= this->getY() + this->getHeight() && this->getY() + this->getHeight() <= _component->getY() + 1) {
 						this->setIsStandOnSurface(true);
+						this->leftAnchor = _component->getX();
+						this->rightAnchor = _component->getX() + _component->getWidth();
 					}
 				}
 			}
@@ -328,6 +375,9 @@ void Koopa::handleBlockCollision(Component* _block, float _dt)
 			CollisionEdge edge = get<2>(collisionResult)[0];
 			if (edge == bottomEdge) {
 				this->setIsStandOnSurface(true);
+				this->leftAnchor = _block->getX();
+				this->rightAnchor = _block->getX() + _block->getWidth();
+
 				if (this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT) {
 					//this->setY(_block->getY() - this->getHeight());
 					this->plusYNoRound(this->getVy() * get<1>(collisionResult));
@@ -349,6 +399,8 @@ void Koopa::handleBlockCollision(Component* _block, float _dt)
 						|| (_block->getX() <= this->getX() && this->getX() <= _block->getFrame().right)) { // this is check which ground that mario is standing on
 						if (_block->getY() -1 <= this->getY() + this->getHeight() && this->getY() + this->getHeight() <= _block->getY() + 1) {
 							this->setIsStandOnSurface(true);
+							this->leftAnchor = _block->getX();
+							this->rightAnchor = _block->getX() + _block->getWidth();
 						}
 					}
 				}
@@ -364,21 +416,31 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 		//for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[0];
 			if (edge == leftEdge) {
-				_mario->setState(MarioState::DIE);
-				this->plusX(get<1>(collisionResult) * this->getVx() * _dt);
-				this->setState(KoopaState::KOOPA_STANDING);
+				if (this->getState() == KOOPA_SHRINKAGE || this->getState() == KOOPA_SHRINKAGE_SHAKING) {
+					this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
+				}
+				else {
+					_mario->setState(MarioState::DIE);
+					this->plusX(get<1>(collisionResult) * this->getVx() * _dt);
+					this->setState(KoopaState::KOOPA_STANDING);
+				}
 			}
 			else if (edge == rightEdge) {
-				_mario->setState(MarioState::DIE);
-				this->plusX(get<1>(collisionResult) * this->getVx() * _dt);
-				this->setState(KoopaState::KOOPA_STANDING);
+				if (this->getState() == KOOPA_SHRINKAGE || this->getState() == KOOPA_SHRINKAGE_SHAKING) {
+					this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
+				}
+				else {
+					_mario->setState(MarioState::DIE);
+					this->plusX(get<1>(collisionResult) * this->getVx() * _dt);
+					this->setState(KoopaState::KOOPA_STANDING);
+				}
 			}
 			else if (edge == bottomEdge) {
 				_mario->setState(MarioState::DIE);
 				this->setState(KoopaState::KOOPA_STANDING);
 			}
 			else if (edge == topEdge && _mario->getState() == DROPPING) { // _mario->getState() == DROPPING: for prevenet conflict check collide from mario and from koopa
-				_mario->plusY(get<1>(collisionResult) * this->getVx() * _dt);
+				_mario->plusY(get<1>(collisionResult) * this->getVx() * _dt + this->getHeight() / 4);
 				_mario->setState(MarioState::JUMPING);
 
 				// Calculate points
@@ -396,12 +458,11 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 						this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
 					}
 				}
-				else if (this->getState() == KOOPA_MOVING_LEFT || this->getState() == KOOPA_MOVING_RIGHT) {
+				else {
 					this->setState(KoopaState::KOOPA_SHRINKAGE);
 				}
-				else {
-					this->setState(KoopaState::KOOPA_BEING_EARNED);
-				}
+
+				this->setupPointAnimPosition();
 			}
 		//}
 	}

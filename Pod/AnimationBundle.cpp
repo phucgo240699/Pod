@@ -206,9 +206,14 @@ Animation AnimationBundle::getKoopaShrinkageMoving()
 	return this->animations->at(21);
 }
 
-Animation AnimationBundle::get200Points()
+Animation AnimationBundle::getKoopaShrinkageShaking()
 {
 	return this->animations->at(22);
+}
+
+Animation AnimationBundle::get200Points()
+{
+	return this->animations->at(23);
 }
 
 Animation AnimationBundle::getPoints(int points)
@@ -232,15 +237,15 @@ Animation AnimationBundle::getPoints(int points)
 
 Animation AnimationBundle::get400Points()
 {
-	return this->animations->at(23);
+	return this->animations->at(24);
 }
 
 Animation AnimationBundle::get800Points()
 {
-	return this->animations->at(24);
+	return this->animations->at(25);
 }
 
 Animation AnimationBundle::get1000Points()
 {
-	return this->animations->at(25);
+	return this->animations->at(26);
 }

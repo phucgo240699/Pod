@@ -49,6 +49,7 @@ public:
 	Animation getKoopaMoving();
 	Animation getKoopaShrinkage();
 	Animation getKoopaShrinkageMoving();
+	Animation getKoopaShrinkageShaking();
 	Animation get200Points();
 	Animation get400Points();
 	Animation get800Points();

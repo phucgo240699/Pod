@@ -36,8 +36,6 @@ public:
 	void setState(SuperMushroomState _state);
 	void setIsStandOnSurface(bool _isStandOnSurface);
 
-	//void loadInfo(int _x, int _y, int _width, int _height, int _vx, int _vy, int _id);
-
 	void Update(float _dt);
 	void Draw(LPDIRECT3DTEXTURE9 _texture);
 

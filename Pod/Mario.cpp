@@ -788,21 +788,31 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 		//for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
 		if (edge == leftEdge) {
-			this->setState(MarioState::DIE);
-			this->plusX(get<1>(collisionResult) * this->getVx());
-			_koopa->setState(KoopaState::KOOPA_STANDING);
+			if (_koopa->getState() == KOOPA_SHRINKAGE || _koopa->getState() == KOOPA_SHRINKAGE_SHAKING) {
+				_koopa->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
+			}
+			else {
+				this->setState(MarioState::DIE);
+				this->plusX(get<1>(collisionResult) * this->getVx());
+				_koopa->setState(KoopaState::KOOPA_STANDING);
+			}
 		}
 		else if (edge == rightEdge) {
-			this->setState(MarioState::DIE);
-			this->plusX(get<1>(collisionResult) * this->getVx());
-			_koopa->setState(KoopaState::KOOPA_STANDING);
+			if (_koopa->getState() == KOOPA_SHRINKAGE || _koopa->getState() == KOOPA_SHRINKAGE_SHAKING) {
+				_koopa->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
+			}
+			else {
+				this->setState(MarioState::DIE);
+				this->plusX(get<1>(collisionResult) * this->getVx());
+				_koopa->setState(KoopaState::KOOPA_STANDING);
+			}
 		}
 		else if (edge == topEdge) {
 			this->setState(MarioState::DIE);
 			_koopa->setState(KoopaState::KOOPA_STANDING);
 		}
 		else if (edge == bottomEdge && this->getState() == DROPPING) {
-			this->plusY(get<1>(collisionResult) * this->getVx());
+			this->plusY(get<1>(collisionResult) * this->getVx() + _koopa->getHeight() / 4);
 			this->setState(MarioState::JUMPING);
 
 			// Calculate points
@@ -821,13 +831,11 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 					_koopa->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
 				}
 			}
-			else if (_koopa->getState() == KOOPA_MOVING_LEFT || _koopa->getState() == KOOPA_MOVING_RIGHT) {
+			else {
 				_koopa->setState(KoopaState::KOOPA_SHRINKAGE);
 			}
-			else {
-				_koopa->setState(KoopaState::KOOPA_BEING_EARNED);
-			}
 
+			_koopa->setupPointAnimPosition();
 		}
 		//}
 	}

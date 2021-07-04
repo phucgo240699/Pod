@@ -311,47 +311,45 @@ void SunnyVC::viewDidUpdate(float _dt)
 						this->koopas->erase(static_cast<Koopa*>(*itr));
 					}
 
-					if (static_cast<Koopa*>(*itr)->getState() != KOOPA_BEING_EARNED) {
-						// Mario vs Koopa
-						this->mario->handleKoopaCollision(static_cast<Koopa*>(*itr), _dt);
-						static_cast<Koopa*>(*itr)->handleMarioCollision(this->mario, _dt);
+					// Mario vs Koopa
+					this->mario->handleKoopaCollision(static_cast<Koopa*>(*itr), _dt);
+					static_cast<Koopa*>(*itr)->handleMarioCollision(this->mario, _dt);
 
-						// Koopa to others
-						int beginRowKoopa = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-						int endRowKoopa = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-						int beginColKoopa = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
-						int endColKoopa = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					// Koopa to others
+					int beginRowKoopa = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int endRowKoopa = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int beginColKoopa = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int endColKoopa = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
 
-						beginRowKoopa = beginRowKoopa < 0 ? 0 : beginRowKoopa;
-						endRowKoopa = endRowKoopa > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowKoopa;
-						beginColKoopa = beginColKoopa < 0 ? 0 : beginColKoopa;
-						endColKoopa = endColKoopa > Grid::getInstance()->getTotalCols() ? Grid::getInstance()->getTotalCols() : endColKoopa;
+					beginRowKoopa = beginRowKoopa < 0 ? 0 : beginRowKoopa;
+					endRowKoopa = endRowKoopa > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowKoopa;
+					beginColKoopa = beginColKoopa < 0 ? 0 : beginColKoopa;
+					endColKoopa = endColKoopa > Grid::getInstance()->getTotalCols() ? Grid::getInstance()->getTotalCols() : endColKoopa;
 
-						for (int r = beginRowKoopa; r < endRowKoopa; ++r) {
-							for (int c = beginColKoopa; c < endColKoopa; ++c) {
-								unordered_set<Component*> koopaCell = Grid::getInstance()->getCell(r, c);
-								unordered_set<Component*> ::iterator koopaItr;
-								for (koopaItr = koopaCell.begin(); koopaItr != koopaCell.end(); ++koopaItr) {
-									if ((beginGroundId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGroundId)
-										|| (beginGoldenBrickId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGoldenBrickId)
-										|| (beginGiftBrickId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGiftBrickId)
-										|| (beginGreenPipeId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGreenPipeId)) {
-										static_cast<Koopa*>(*itr)->handleHardComponentCollision(*koopaItr, _dt);
-									}
-									else if (beginBlockId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endBlockId) {
-										static_cast<Koopa*>(*itr)->handleBlockCollision(*koopaItr, _dt);
-									}
+					for (int r = beginRowKoopa; r < endRowKoopa; ++r) {
+						for (int c = beginColKoopa; c < endColKoopa; ++c) {
+							unordered_set<Component*> koopaCell = Grid::getInstance()->getCell(r, c);
+							unordered_set<Component*> ::iterator koopaItr;
+							for (koopaItr = koopaCell.begin(); koopaItr != koopaCell.end(); ++koopaItr) {
+								if ((beginGroundId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGroundId)
+									|| (beginGoldenBrickId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGoldenBrickId)
+									|| (beginGiftBrickId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGiftBrickId)
+									|| (beginGreenPipeId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGreenPipeId)) {
+									static_cast<Koopa*>(*itr)->handleHardComponentCollision(*koopaItr, _dt);
+								}
+								else if (beginBlockId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endBlockId) {
+									static_cast<Koopa*>(*itr)->handleBlockCollision(*koopaItr, _dt);
 								}
 							}
 						}
-
-						if (static_cast<Koopa*>(*itr)->getIsStandOnSurface() == false && static_cast<Koopa*>(*itr)->getState() == KOOPA_SHRINKAGE_MOVING_LEFT) {
-							static_cast<Koopa*>(*itr)->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_LEFT);
-						}
-						else if (static_cast<Koopa*>(*itr)->getIsStandOnSurface() == false && static_cast<Koopa*>(*itr)->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT) {
-							static_cast<Koopa*>(*itr)->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_RIGHT);
-						}
 					}
+
+					if (static_cast<Koopa*>(*itr)->getIsStandOnSurface() == false && static_cast<Koopa*>(*itr)->getState() == KOOPA_SHRINKAGE_MOVING_LEFT) {
+						static_cast<Koopa*>(*itr)->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_LEFT);
+					}
+					else if (static_cast<Koopa*>(*itr)->getIsStandOnSurface() == false && static_cast<Koopa*>(*itr)->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT) {
+						static_cast<Koopa*>(*itr)->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_RIGHT);
+					}					
 				}
 			}
 		}
