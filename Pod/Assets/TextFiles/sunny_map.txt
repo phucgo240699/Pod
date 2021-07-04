@@ -168,7 +168,7 @@
 
 <KoopaFrames>
 # (x, y, vx, vy, leftAnchor, rightAnchor, defaultPoint, id)
-512,357,0.4,0.5,512,608,100,57
+512,357,0.4,2,512,608,100,57
 </KoopaFrames>
 
 <GridInfo>

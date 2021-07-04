@@ -34,5 +34,7 @@ public:
 	void add(Component* _component, int row, int col);
 	void remove(Component* _component, int row, int col);
 	void updateCellOf(Component* _component);
+
+	bool checkExist(Component* _component, int beginRow, int endRow, int beginCol, int endCol);
 };
 

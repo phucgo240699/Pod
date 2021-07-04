@@ -101,9 +101,13 @@ void SunnyVC::viewWillUpdate(float _dt)
 		map->Update(_dt);
 	}
 
-	// Check by cell in grid	
-	for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
-		for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+	// Check by cell in grid
+	int beginRow = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight());
+	int endRow = ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
+	int beginCol = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth());
+	int endCol = ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth());
+	for (int i = beginRow; i < endRow; ++i) {
+		for (int j = beginCol; j < endCol; ++j) {
 
 			if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
@@ -127,13 +131,17 @@ void SunnyVC::viewWillUpdate(float _dt)
 				else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= beginSuperMushroomId) {
 					(*itr)->Update(_dt);
 
+					if ((*itr)->isAlreadyJoinedCamera() && Grid::getInstance()->checkExist(*itr, beginRow, endRow, beginCol, endCol)) {
+						Grid::getInstance()->remove(*itr, i, j);
+					}
+
 					// update which cell in grid that it's belongs to
 					Grid::getInstance()->updateCellOf(*itr);
 
-					// Remove it when drop to far from map
-					if ((*itr)->getY() >= Camera::getInstance()->getLimitY()) {
-						Grid::getInstance()->remove(*itr, i, j);
-					}
+					//// Remove it when drop to far from map
+					//if ((*itr)->getY() >= Camera::getInstance()->getLimitY()) {
+					//	Grid::getInstance()->remove(*itr, i, j);
+					//}
 				}
 
 				// GiftBrick
@@ -144,22 +152,11 @@ void SunnyVC::viewWillUpdate(float _dt)
 				// Goombas
 				else if (beginGoombaId <= (*itr)->getId() && (*itr)->getId() <= endGoombaId) {
 					(*itr)->Update(_dt);
-
-					// update which cell in grid that it's belongs to
-					Grid::getInstance()->updateCellOf(*itr);
-
-					// Remove it when drop to far from map
-					if ((*itr)->getY() >= Camera::getInstance()->getLimitY()) {
-						Grid::getInstance()->remove(*itr, i, j);
-					}
 				}
 
 				// Koopas
 				else if (beginKoopaId <= (*itr)->getId() && (*itr)->getId() <= endKoopaId) {
 					(*itr)->Update(_dt);
-
-					// update which cell in grid that it's belongs to
-					Grid::getInstance()->updateCellOf(*itr);
 				}
 			}
 		}
@@ -221,7 +218,7 @@ void SunnyVC::viewDidUpdate(float _dt)
 				else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= endSuperMushroomId) {
 					if (static_cast<SuperMushroom*>(*itr)->getState() == SUPER_MUSHROOM_DISAPPEARED) {
 						Grid::getInstance()->remove(*itr, i, j);
-						return;
+						break;
 					}
 
 					// Mario vs SuperMushroom
@@ -265,7 +262,7 @@ void SunnyVC::viewDidUpdate(float _dt)
 					if (static_cast<Goomba*>(*itr)->getState() == DEAD_GOOMBA) {
 						Grid::getInstance()->remove(*itr, i, j);
 						this->goombas->erase(static_cast<Goomba*>(*itr));
-						return;
+						break;
 					}
 
 					// Mario vs Goomba
@@ -294,36 +291,41 @@ void SunnyVC::viewDidUpdate(float _dt)
 
 				// Koopas
 				else if (beginKoopaId <= (*itr)->getId() && (*itr)->getId() <= endKoopaId) {
-					// Mario vs Koopa
-					this->mario->handleKoopaCollision(static_cast<Koopa*>(*itr), _dt);
-					static_cast<Koopa*>(*itr)->handleMarioCollision(this->mario, _dt);
+					if (static_cast<Koopa*>(*itr)->getState() == KOOPA_DEAD) {
+						Grid::getInstance()->remove(*itr, i, j);
+						this->koopas->erase(static_cast<Koopa*>(*itr));
+					}
 
-					// Koopa to others
-					for (int r = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); r < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++r) {
-						for (int c = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); c < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++c) {
-							unordered_set<Component*> koopaCell = Grid::getInstance()->getCell(r, c);
-							unordered_set<Component*> ::iterator koopaItr;
-							for (koopaItr = koopaCell.begin(); koopaItr != koopaCell.end(); ++koopaItr) {
-								if ((beginGroundId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGroundId)
-									|| (beginGoldenBrickId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGoldenBrickId)
-									|| (beginGiftBrickId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGiftBrickId)
-									|| (beginGreenPipeId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGreenPipeId)) {
-									static_cast<Koopa*>(*itr)->handleHardComponentCollision(*koopaItr, _dt);
-								}
-								else if (beginBlockId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endBlockId) {
-									static_cast<Koopa*>(*itr)->handleBlockCollision(*koopaItr, _dt);
+					if (static_cast<Koopa*>(*itr)->getState() != KOOPA_BEING_EARNED) {
+						// Mario vs Koopa
+						this->mario->handleKoopaCollision(static_cast<Koopa*>(*itr), _dt);
+						static_cast<Koopa*>(*itr)->handleMarioCollision(this->mario, _dt);
+
+						// Koopa to others
+						for (int r = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); r < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++r) {
+							for (int c = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); c < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++c) {
+								unordered_set<Component*> koopaCell = Grid::getInstance()->getCell(r, c);
+								unordered_set<Component*> ::iterator koopaItr;
+								for (koopaItr = koopaCell.begin(); koopaItr != koopaCell.end(); ++koopaItr) {
+									if ((beginGroundId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGroundId)
+										|| (beginGoldenBrickId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGoldenBrickId)
+										|| (beginGiftBrickId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGiftBrickId)
+										|| (beginGreenPipeId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGreenPipeId)) {
+										static_cast<Koopa*>(*itr)->handleHardComponentCollision(*koopaItr, _dt);
+									}
+									else if (beginBlockId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endBlockId) {
+										static_cast<Koopa*>(*itr)->handleBlockCollision(*koopaItr, _dt);
+									}
 								}
 							}
 						}
-					}
 
-					if (static_cast<Koopa*>(*itr)->getIsStandOnSurface() == false && static_cast<Koopa*>(*itr)->getState() == KOOPA_SHRINKAGE_MOVING_LEFT) {
-						static_cast<Koopa*>(*itr)->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_LEFT);
-						return;
-					}
-					else if (static_cast<Koopa*>(*itr)->getIsStandOnSurface() == false && static_cast<Koopa*>(*itr)->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT) {
-						static_cast<Koopa*>(*itr)->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_RIGHT);
-						return;
+						if (static_cast<Koopa*>(*itr)->getIsStandOnSurface() == false && static_cast<Koopa*>(*itr)->getState() == KOOPA_SHRINKAGE_MOVING_LEFT) {
+							static_cast<Koopa*>(*itr)->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_LEFT);
+						}
+						else if (static_cast<Koopa*>(*itr)->getIsStandOnSurface() == false && static_cast<Koopa*>(*itr)->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT) {
+							static_cast<Koopa*>(*itr)->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_RIGHT);
+						}
 					}
 				}
 			}

@@ -1,4 +1,5 @@
 #include "Component.h"
+#include "Camera.h"
 
 Component::Component(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id)
 {
@@ -60,9 +61,19 @@ void Component::setId(int _id)
 	this->id = _id;
 }
 
+void Component::setAlreadyJoinedCamera(bool _value)
+{
+	this->alreadyJoinedCamera = _value;
+}
+
 int Component::getId()
 {
 	return this->id;
+}
+
+bool Component::isAlreadyJoinedCamera()
+{
+	return this->alreadyJoinedCamera;
 }
 
 void Component::setPosition(D3DXVECTOR3 _position)
@@ -132,6 +143,9 @@ void Component::plusVy(float _vy)
 
 void Component::Update(float _dt)
 {
+	if (this->isAlreadyJoinedCamera() == false && this->isCollidingByFrame(Camera::getInstance()->getFrame())) {
+		this->setAlreadyJoinedCamera(true);
+	}
 }
 
 void Component::Draw()

@@ -98,7 +98,7 @@ void Goomba::setState(GoombaState _state)
 			this->setVy(0);
 
 			this->pointY = this->getY() - this->pointAnimation->getCurrentFrameHeight();
-			this->endPointJumpUp = this->getY() - this->pointAnimation->getCurrentFrameHeight() - 32;
+			this->endPointJumpUp = this->getY() - this->pointAnimation->getCurrentFrameHeight() - 48;
 		}
 		break;
 
@@ -128,6 +128,7 @@ void Goomba::setPointCoef(int _pointCoef)
 
 void Goomba::Update(float _dt)
 {
+	Enemy::Update(_dt);
 	if (this->getState() == DEAD_GOOMBA || this->getState() == GOOMBA_STANDING) return;
 
 	if (this->getIsStandOnSurface() == true) {
@@ -160,6 +161,10 @@ void Goomba::Update(float _dt)
 	}
 
 	this->animation->Update(_dt);
+
+
+	// update which cell in grid that it's belongs to
+	Grid::getInstance()->updateCellOf(this);
 }
 
 void Goomba::Draw(LPDIRECT3DTEXTURE9 _texture)

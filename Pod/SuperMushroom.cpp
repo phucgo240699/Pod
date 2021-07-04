@@ -73,7 +73,7 @@ void SuperMushroom::setState(SuperMushroomState _state)
 		this->pointAnimation = new Animation(AnimationBundle::getInstance()->get1000Points());
 
 		this->pointY = this->getY();
-		this->endPointJumpUp = this->getY() - 32;
+		this->endPointJumpUp = this->getY() - 48;
 		break;
 	default:
 		break;

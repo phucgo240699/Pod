@@ -117,8 +117,8 @@ void Koopa::setState(KoopaState _state)
 			this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
 
 			this->pointX = this->getX();
-			this->pointY = this->getY() - 16;
-			this->endPointJumpUp = this->getY() - 16 - 48;
+			this->pointY = this->getY() - this->pointAnimation.getCurrentFrameHeight();
+			this->endPointJumpUp = this->getY() - this->pointAnimation.getCurrentFrameHeight() - 48;
 		}
 		this->setIsFlip(true);
 		this->setVx(-7 * abs(this->originVx));
@@ -131,8 +131,8 @@ void Koopa::setState(KoopaState _state)
 			this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
 
 			this->pointX = this->getX();
-			this->pointY = this->getY() - 16;
-			this->endPointJumpUp = this->getY() - 16 - 48;
+			this->pointY = this->getY() - this->pointAnimation.getCurrentFrameHeight();
+			this->endPointJumpUp = this->getY() - this->pointAnimation.getCurrentFrameHeight() - 48;
 		}
 		this->setIsFlip(false);
 		this->setVx(7 * abs(this->originVx));
@@ -145,8 +145,8 @@ void Koopa::setState(KoopaState _state)
 			this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
 
 			this->pointX = this->getX();
-			this->pointY = this->getY() - 16;
-			this->endPointJumpUp = this->getY() - 16 - 48;
+			this->pointY = this->getY() - this->pointAnimation.getCurrentFrameHeight();
+			this->endPointJumpUp = this->getY() - this->pointAnimation.getCurrentFrameHeight() - 48;
 		}
 		this->setIsFlip(true);
 		this->setVx(-7 * abs(this->originVx));
@@ -159,12 +159,21 @@ void Koopa::setState(KoopaState _state)
 			this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
 
 			this->pointX = this->getX();
-			this->pointY = this->getY() - 16;
-			this->endPointJumpUp = this->getY() - 16 - 48;
+			this->pointY = this->getY() - this->pointAnimation.getCurrentFrameHeight();
+			this->endPointJumpUp = this->getY() - this->pointAnimation.getCurrentFrameHeight() - 48;
 		}
 		this->setIsFlip(true);
 		this->setVx(7 * abs(this->originVx));
 		this->setVy(abs(this->originVy));
+		break;
+	case KOOPA_BEING_EARNED:
+		this->setVx(0);
+		this->setVy(0);
+		this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
+
+		this->pointX = this->getX();
+		this->pointY = this->getY() - this->pointAnimation.getCurrentFrameHeight();
+		this->endPointJumpUp = this->getY() - this->pointAnimation.getCurrentFrameHeight() - 48;
 		break;
 	}
 
@@ -188,6 +197,8 @@ void Koopa::setPointCoef(int _pointCoef)
 
 void Koopa::Update(float _dt)
 {
+	if (this->getState() == KOOPA_DEAD) return;
+	Enemy::Update(_dt);
 	if (this->getIsStandOnSurface() == true) {
 		this->setIsStandOnSurface(false);
 	}
@@ -234,12 +245,20 @@ void Koopa::Update(float _dt)
 	}
 	else {
 		this->pointY = this->endPointJumpUp;
+		if (this->getState() == KOOPA_BEING_EARNED) {
+			this->setState(KoopaState::KOOPA_DEAD);
+		}
 	}
+
+
+	// update which cell in grid that it's belongs to
+	Grid::getInstance()->updateCellOf(this);
 }
 
 void Koopa::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
-	if (this->animation != NULL) {
+	if (this->getState() == KOOPA_DEAD) return;
+	if (this->animation != NULL && this->getState() != KOOPA_BEING_EARNED) {
 		Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), this->getPosition(), this->getIsFlip());
 	}
 	if (this->pointY == this->endPointJumpUp || this->pointY == -std::numeric_limits<float>::infinity()) {
@@ -358,7 +377,7 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 				_mario->setState(MarioState::DIE);
 				this->setState(KoopaState::KOOPA_STANDING);
 			}
-			else if (edge == topEdge && _mario->getState() == DROPPING) {
+			else if (edge == topEdge && _mario->getState() == DROPPING) { // _mario->getState() == DROPPING: for prevenet conflict check collide from mario and from koopa
 				_mario->plusY(get<1>(collisionResult) * this->getVx() * _dt);
 				_mario->setState(MarioState::JUMPING);
 
@@ -376,11 +395,12 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 					else {
 						this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
 					}
-
+				}
+				else if (this->getState() == KOOPA_MOVING_LEFT || this->getState() == KOOPA_MOVING_RIGHT) {
+					this->setState(KoopaState::KOOPA_SHRINKAGE);
 				}
 				else {
-					this->setState(KoopaState::KOOPA_SHRINKAGE);
-
+					this->setState(KoopaState::KOOPA_BEING_EARNED);
 				}
 			}
 		//}

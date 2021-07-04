@@ -9,3 +9,8 @@ Enemy::Enemy(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _
 {
 	Component::Component(_position, _vx, _vy, _limitX, _limitY);
 }
+
+void Enemy::Update(float _dt)
+{
+	Component::Update(_dt);
+}

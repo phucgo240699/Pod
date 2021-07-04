@@ -747,10 +747,7 @@ void Mario::handleGreenPipeCollision(GreenPipe* _greenPipe, float _dt)
 
 void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 {
-	if (this->getState() == DIE
-		|| this->getState() == DIE_DROPPING
-		|| this->getState() == DIE_JUMPING
-		|| _goomba->getState() == TRAMPLED_GOOMBA
+	if (_goomba->getState() == TRAMPLED_GOOMBA
 		|| _goomba->getState() == DEAD_GOOMBA) {
 		return;
 	}
@@ -824,8 +821,11 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 					_koopa->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
 				}
 			}
-			else {
+			else if (_koopa->getState() == KOOPA_MOVING_LEFT || _koopa->getState() == KOOPA_MOVING_RIGHT) {
 				_koopa->setState(KoopaState::KOOPA_SHRINKAGE);
+			}
+			else {
+				_koopa->setState(KoopaState::KOOPA_BEING_EARNED);
 			}
 
 		}

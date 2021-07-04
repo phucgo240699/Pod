@@ -134,3 +134,13 @@ void Grid::updateCellOf(Component* _component)
 		}
 	}
 }
+
+bool Grid::checkExist(Component* _component, int beginRow, int endRow, int beginCol, int endCol)
+{
+	if (_component->getFrame().bottom < beginRow * this->cellWidth) return false;
+	else if (_component->getY() > (endRow + 1) * this->cellWidth) return false;
+	else if (_component->getFrame().right < beginCol * this->cellHeight) return false;
+	else if (_component->getX() > (endCol + 1) * this->cellHeight) return false;
+
+	return true;
+}
