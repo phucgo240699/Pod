@@ -93,7 +93,7 @@ void Goomba::setState(GoombaState _state)
 	case TRAMPLED_GOOMBA:
 		if (this->getState() == GOOMBA_MOVING_LEFT || GOOMBA_MOVING_RIGHT) {
 			this->animation = new Animation(AnimationBundle::getInstance()->getTrampledGoomba());
-			this->pointAnimation = new Animation(AnimationBundle::getInstance()->getPoints(this->defaultPoint * this->getPointCoef()));
+			this->pointAnimation = new Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
 			this->setVx(0);
 			this->setVy(0);
 
@@ -149,7 +149,7 @@ void Goomba::Update(float _dt)
 		}
 	}
 	else if (this->getState() == TRAMPLED_GOOMBA) {
-		this->pointAnimation->Update(_dt);
+		//this->pointAnimation->Update(_dt);
 		if (this->pointY - (2 * _dt) >= this->endPointJumpUp) {
 			this->pointY -= (2 * _dt);
 		}
@@ -173,9 +173,9 @@ void Goomba::Draw(LPDIRECT3DTEXTURE9 _texture)
 	else if (this->getState() == TRAMPLED_GOOMBA) {
 		Drawing::getInstance()->draw(_texture, this->pointAnimation->getCurrentFrame(), D3DXVECTOR3(this->getX(), this->pointY, 0));
 	}
-	else {
+	//else {
 		Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), this->getPosition());
-	}
+	//}
 }
 
 void Goomba::handleHardComponentCollision(Component* _component, float _dt)
@@ -282,10 +282,7 @@ void Goomba::handleBlockCollision(Component* _block, float _dt)
 
 void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 {
-	if (_mario->getState() == DIE
-		|| _mario->getState() == DIE_DROPPING
-		|| _mario->getState() == DIE_JUMPING
-		|| this->getState() == TRAMPLED_GOOMBA
+	if (this->getState() == TRAMPLED_GOOMBA
 		|| this->getState() == DEAD_GOOMBA) {
 		return;
 	}

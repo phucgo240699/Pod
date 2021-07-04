@@ -30,6 +30,16 @@ int Grid::getCellHeight()
 	return this->cellHeight;
 }
 
+int Grid::getTotalRows()
+{
+	return this->totalRow;
+}
+
+int Grid::getTotalCols()
+{
+	return this->totalCol;
+}
+
 void Grid::loadInfo(string line, char seperator)
 {
 	vector<int> v = Tool::splitToVectorIntegerFrom(line, seperator);

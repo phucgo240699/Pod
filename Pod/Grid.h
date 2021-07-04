@@ -27,6 +27,8 @@ public:
 	unordered_set<Component*> getCell(int row, int col);
 	int getCellWidth();
 	int getCellHeight();
+	int getTotalRows();
+	int getTotalCols();
 
 	void loadInfo(string line, char seperator);
 	void loadMatrixId(vector<string> data, char beginSeperator, char pairSeperator, char seperator);

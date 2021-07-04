@@ -239,7 +239,7 @@ void Koopa::Update(float _dt)
 	if (this->pointY == this->endPointJumpUp || this->pointY == -std::numeric_limits<float>::infinity()) {
 		return;
 	}
-	this->pointAnimation.Update(_dt);
+	//this->pointAnimation.Update(_dt);
 	if (this->pointY - (2 * _dt) >= this->endPointJumpUp) {
 		this->pointY -= (2 * _dt);
 	}

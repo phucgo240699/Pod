@@ -190,8 +190,13 @@ void SunnyVC::viewDidUpdate(float _dt)
 	}
 
 	// Check by cell in grid
-	for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
-		for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+	int beginRowMario = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight());
+	int endRowMario = ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
+	int beginColMario = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth());
+	int endColMario = ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth());
+
+	for (int i = beginRowMario; i < endRowMario; ++i) {
+		for (int j = beginColMario; j < endColMario; ++j) {
 
 			if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
@@ -270,8 +275,18 @@ void SunnyVC::viewDidUpdate(float _dt)
 					static_cast<Goomba*>(*itr)->handleMarioCollision(this->mario, _dt);
 
 					// Goomba to others
-					for (int r = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); r < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++r) {
-						for (int c = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); c < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++c) {
+					int beginRowGoomba = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int endRowGoomba = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int beginColGoomba = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int endColGoomba = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+
+					beginRowGoomba = beginRowGoomba < 0 ? 0 : beginRowGoomba;
+					endRowGoomba = endRowGoomba > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowGoomba;
+					beginColGoomba = beginColGoomba < 0 ? 0 : beginColGoomba;
+					endColGoomba = endColGoomba > Grid::getInstance()->getTotalCols() ? Grid::getInstance()->getTotalCols() : endColGoomba;
+
+					for (int r = beginRowGoomba; r < endRowGoomba; ++r) {
+						for (int c = beginColGoomba; c < endColGoomba; ++c) {
 							unordered_set<Component*> goombaCell = Grid::getInstance()->getCell(r, c);
 							unordered_set<Component*> ::iterator goombaItr;
 							for (goombaItr = goombaCell.begin(); goombaItr != goombaCell.end(); ++goombaItr) {
@@ -302,8 +317,18 @@ void SunnyVC::viewDidUpdate(float _dt)
 						static_cast<Koopa*>(*itr)->handleMarioCollision(this->mario, _dt);
 
 						// Koopa to others
-						for (int r = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); r < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++r) {
-							for (int c = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); c < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++c) {
+						int beginRowKoopa = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+						int endRowKoopa = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+						int beginColKoopa = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+						int endColKoopa = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+
+						beginRowKoopa = beginRowKoopa < 0 ? 0 : beginRowKoopa;
+						endRowKoopa = endRowKoopa > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowKoopa;
+						beginColKoopa = beginColKoopa < 0 ? 0 : beginColKoopa;
+						endColKoopa = endColKoopa > Grid::getInstance()->getTotalCols() ? Grid::getInstance()->getTotalCols() : endColKoopa;
+
+						for (int r = beginRowKoopa; r < endRowKoopa; ++r) {
+							for (int c = beginColKoopa; c < endColKoopa; ++c) {
 								unordered_set<Component*> koopaCell = Grid::getInstance()->getCell(r, c);
 								unordered_set<Component*> ::iterator koopaItr;
 								for (koopaItr = koopaCell.begin(); koopaItr != koopaCell.end(); ++koopaItr) {

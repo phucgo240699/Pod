@@ -140,7 +140,7 @@ void SuperMushroom::Update(float _dt)
 	}
 
 	else if (this->getState() == SUPER_MUSHROOM_BEING_EARNED) {
-		this->pointAnimation->Update(_dt);
+		//this->pointAnimation->Update(_dt);
 		if (this->pointY - (2 * _dt) >= this->endPointJumpUp) {
 			this->pointY -= (2 * _dt);
 		}

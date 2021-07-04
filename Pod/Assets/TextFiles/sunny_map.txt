@@ -394,7 +394,7 @@
 
 # GiftBrick empty box
 238,0,16,16
-> 6 0 10
+> 6 0 0
 
 # GiftBrick coin animation
 255,0,16,16
@@ -405,7 +405,7 @@
 
 # GiftBrick 100 coins
 102,34,16,16
-> 8 0 10
+> 8 0 0
 
 # Goomba Moving
 0,136,16,16
@@ -414,19 +414,19 @@
 
 # Trampled Goomba
 34,136,16,16
-> 10 0 3
+> 10 0 0
 
 # Green Pipe 3 floors
 0,153,32,48
-> 11 0 10
+> 11 0 0
 
 # Green Pipe 2 floors
 33,153,32,32
-> 12 0 10
+> 12 0 0
 
 # Super Mushroom
 238,17,16,16
-> 13 0 4
+> 13 0 0
 
 # Super Mario Standing
 2,21,11,21,0,16,16,27
@@ -468,7 +468,7 @@
 
 # Koopa Shrinkage
 32,186,16,16
-> 20 0 4
+> 20 0 0
 
 # Koopa Shrinkage Moving
 49,186,16,16
@@ -478,18 +478,18 @@
 
 # 200 Points
 238,51,16,16
-> 22 0 1
+> 22 0 0
 
 # 400
 51,136,16,16
-> 23 0 1
+> 23 0 0
 
 # 800
 68,136,16,16
-> 24 0 1
+> 24 0 0
 
 # 1000 Points
 238,34,16,16
-> 25 0 10
+> 25 0 0
 
 </AnimationBundle>
