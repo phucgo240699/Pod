@@ -403,7 +403,7 @@ void Mario::updateVelocity()
 
 void Mario::increasePointCoef()
 {
-	++(this->pointCoef);
+	this->pointCoef += 1;
 }
 
 void Mario::resetPointCoef()
@@ -808,6 +808,11 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 			this->plusY(get<1>(collisionResult) * this->getVx());
 			this->setState(MarioState::JUMPING);
 
+			// Calculate points
+			this->increasePointCoef();
+			_koopa->setPointCoef(this->getPointCoef());
+			ScoreBoard::getInstance()->plusPoint(_koopa->getDefaultPoint() * _koopa->getPointCoef());
+
 			if (_koopa->getState() == KOOPA_SHRINKAGE) {
 				float centerMario = this->getX() + this->getWidth() / 2;
 				float centerKoopa = _koopa->getX() + _koopa->getWidth() / 2;
@@ -822,6 +827,7 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 			else {
 				_koopa->setState(KoopaState::KOOPA_SHRINKAGE);
 			}
+
 		}
 		//}
 	}

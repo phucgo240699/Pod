@@ -13,12 +13,12 @@ class Mario; // Say Goomba exists without defining it.
 class Koopa : public Enemy
 {
 private:
-	Animation* animation, * pointAnimation;
+	Animation* animation, pointAnimation = Animation(0,0,0);
 	KoopaState state;
 	float originVx, originVy;
 
 	int leftAnchor, rightAnchor;
-	int endPointJumpUp, pointX, pointY;
+	float endPointJumpUp, pointX, pointY = -std::numeric_limits<float>::infinity();
 	int pointCoef;
 	int defaultPoint;
 
