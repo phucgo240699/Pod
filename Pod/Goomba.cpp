@@ -183,12 +183,12 @@ void Goomba::handleHardComponentCollision(Component* _component, float _dt)
 			else if (edge == bottomEdge) {
 				this->setIsStandOnSurface(true);
 				if (this->getState() == GOOMBA_DROPPING_LEFT) {
-					this->setY(_component->getY() - this->getHeight());
 					this->setState(GoombaState::GOOMBA_MOVING_LEFT);
+					this->setY(_component->getY() - this->getHeight());
 				}
 				else if (this->getState() == GOOMBA_DROPPING_RIGHT) {
-					this->setY(_component->getY() - this->getHeight());
 					this->setState(GoombaState::GOOMBA_MOVING_RIGHT);
+					this->setY(_component->getY() - this->getHeight());
 				}
 			}
 		}
@@ -206,14 +206,14 @@ void Goomba::handleHardComponentCollision(Component* _component, float _dt)
 			}
 		}
 
-		if (this->getIsStandOnSurface() == false && this->getState() == GOOMBA_MOVING_LEFT) {
+		/*if (this->getIsStandOnSurface() == false && this->getState() == GOOMBA_MOVING_LEFT) {
 			this->setState(GoombaState::GOOMBA_DROPPING_LEFT);
 			return;
 		}
 		else if (this->getIsStandOnSurface() == false && this->getState() == GOOMBA_MOVING_RIGHT) {
 			this->setState(GoombaState::GOOMBA_DROPPING_RIGHT);
 			return;
-		}
+		}*/
 	}
 }
 
@@ -226,12 +226,12 @@ void Goomba::handleBlockCollision(Component* _block, float _dt)
 			if (edge == bottomEdge) {
 				this->setIsStandOnSurface(true);
 				if (this->getState() == SUPER_MUSHROOM_DROPPING_LEFT) {
-					this->setY(_block->getY() - this->getHeight());
 					this->setState(GoombaState::GOOMBA_MOVING_LEFT);
+					this->setY(_block->getY() - this->getHeight());
 				}
 				else if (this->getState() == SUPER_MUSHROOM_DROPPING_RIGHT) {
-					this->setY(_block->getY() - this->getHeight());
 					this->setState(GoombaState::GOOMBA_MOVING_RIGHT);
+					this->setY(_block->getY() - this->getHeight());
 				}
 			}
 		}
@@ -242,21 +242,21 @@ void Goomba::handleBlockCollision(Component* _block, float _dt)
 			if (this->getIsStandOnSurface() == false) {
 				if ((_block->getX() <= this->getFrame().right && this->getFrame().right <= _block->getFrame().right)
 					|| (_block->getX() <= this->getX() && this->getX() <= _block->getFrame().right)) { // this is check which ground that mario is standing on
-					if (this->getFrame().bottom == _block->getY() - Setting::getInstance()->getCollisionSafeSpace()) {
+					if (this->getFrame().bottom == _block->getY()) {
 						this->setIsStandOnSurface(true);
 					}
 				}
 			}
 		}
 
-		if (this->getIsStandOnSurface() == false && this->getState() == GOOMBA_MOVING_LEFT) {
+		/*if (this->getIsStandOnSurface() == false && this->getState() == GOOMBA_MOVING_LEFT) {
 			this->setState(GoombaState::GOOMBA_DROPPING_LEFT);
 			return;
 		}
 		else if (this->getIsStandOnSurface() == false && this->getState() == GOOMBA_MOVING_RIGHT) {
 			this->setState(GoombaState::GOOMBA_DROPPING_RIGHT);
 			return;
-		}
+		}*/
 	}
 }
 

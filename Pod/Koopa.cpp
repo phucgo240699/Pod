@@ -305,14 +305,14 @@ void Koopa::handleHardComponentCollision(Component* _component, float _dt)
 				this->leftAnchor = _component->getX();
 				this->rightAnchor = _component->getX() + _component->getWidth();
 				if (this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT) {
-					//this->setY(_component->getY() - this->getHeight());
-					this->plusY(this->getVy() * get<1>(collisionResult));
 					this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
+					this->setY(_component->getY() - this->getHeight());
+					//this->plusY(this->getVy() * get<1>(collisionResult));
 				}
 				else if (this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
-					//this->setY(_component->getY() - this->getHeight());
-					this->plusY(this->getVy() * get<1>(collisionResult));
 					this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
+					this->setY(_component->getY() - this->getHeight());
+					//this->plusY(this->getVy() * get<1>(collisionResult));
 				}
 			}
 			else if (edge == leftEdge) {
@@ -347,7 +347,12 @@ void Koopa::handleHardComponentCollision(Component* _component, float _dt)
 			if (this->getIsStandOnSurface() == false) {
 				if ((_component->getX() <= this->getFrame().right && this->getFrame().right <= _component->getFrame().right)
 					|| (_component->getX() <= this->getX() && this->getX() <= _component->getFrame().right)) { // this is check which ground that mario is standing on
-					if (_component->getY() - 1 <= this->getY() + this->getHeight() && this->getY() + this->getHeight() <= _component->getY() + 1) {
+					/*if (_component->getY() - 1 <= this->getY() + this->getHeight() && this->getY() + this->getHeight() <= _component->getY() + 1) {
+						this->setIsStandOnSurface(true);
+						this->leftAnchor = _component->getX();
+						this->rightAnchor = _component->getX() + _component->getWidth();
+					}*/
+					if (this->getY() + this->getHeight() == _component->getY()) {
 						this->setIsStandOnSurface(true);
 						this->leftAnchor = _component->getX();
 						this->rightAnchor = _component->getX() + _component->getWidth();
@@ -389,7 +394,12 @@ void Koopa::handleBlockCollision(Component* _block, float _dt)
 				if (this->getIsStandOnSurface() == false) {
 					if ((_block->getX() <= this->getFrame().right && this->getFrame().right <= _block->getFrame().right)
 						|| (_block->getX() <= this->getX() && this->getX() <= _block->getFrame().right)) { // this is check which ground that mario is standing on
-						if (_block->getY() -1 <= this->getY() + this->getHeight() && this->getY() + this->getHeight() <= _block->getY() + 1) {
+						/*if (_block->getY() -1 <= this->getY() + this->getHeight() && this->getY() + this->getHeight() <= _block->getY() + 1) {
+							this->setIsStandOnSurface(true);
+							this->leftAnchor = _block->getX();
+							this->rightAnchor = _block->getX() + _block->getWidth();
+						}*/
+						if (this->getY() + this->getHeight() == _block->getY()) {
 							this->setIsStandOnSurface(true);
 							this->leftAnchor = _block->getX();
 							this->rightAnchor = _block->getX() + _block->getWidth();

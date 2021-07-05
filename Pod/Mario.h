@@ -26,50 +26,73 @@ class Mario : public MainCharacter
 private:
 	LPDIRECT3DTEXTURE9 texture;
 	MarioState state;
-	MarioState pressureState; // Hold state of mario before scaling up or scaling down
 	MarioSubState subState;
-	bool isFlip; // false: Left side - true: Right side. Default is false
-	bool debugMode = true;
-
+	MarioState pressureState; // Hold state of mario before scaling up or scaling down
 	Animation* currentAnimation;
 
-	bool isStandOnSurface = false, isSuperMode = false, isFlashMode = false;
+	// Control
+	bool isStandOnSurface = false, isReduceWalking = false;
+	bool isFlip; // false: Left side - true: Right side. Default is false
+
+	// Mode
+	bool isSuperMode = false, isFlashMode = false, debugMode = true;
+
+	// Validate Animation
 	int oldFrameHeight, oldFrameWidth;
 	int newFrameHeight, newFrameWidth;
+
+	// Point
 	int pointCoef = 0;
 	int countDownFlash = 512;
 
 public:
-	//float startdrop = 0;
 	// Init
 	Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state);
 	Mario(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state);
-
-	// Getter
-	Animation* getCurrentAnimation();
-	MarioSubState getSubState();
+	
+	//
+	// =============== Getter ===============
+	//
 	MarioState getState();
+	MarioSubState getSubState();
 	MarioState getPressureState(); // Hold state of mario before scaling up or scaling down
+	Animation* getCurrentAnimation();
 	RECT getBounds();
-	bool getIsFlip();
+
 	float getBoundsWidth();
 	float getBoundsHeight();
 	float getWidth();
 	float getHeight();
+
+	// Control
+	bool getIsFlip();
+	bool getIsReduceWalking();
 	bool getIsStandOnSurface();
+	
+	// Mode
 	bool getIsSuperMode();
-	int getPointCoef();
 	bool getIsFlashMode();
 
+	int getPointCoef();
 
-	// Setter
-	void setIsFlip(bool _isFlip);
+
+
+	//
+	// =============== Setter ===============
+	//
 	void setState(MarioState _state);
-	void setPressureState(MarioState _pressureState);
 	void setSubState(MarioSubState _subState);
+	void setPressureState(MarioState _pressureState);
+
+	// Control
+	void setIsFlip(bool _isFlip);
+	void setIsReduceWalking(bool _isReduceWalking);
 	void setIsStandOnSurface(bool _isStandOnSurface);
+	
+	// Mode
 	void setIsSuperMode(bool _isSuperMode);
 	void setIsFlashMode(bool _isFlashMode);
+
 	void updateVelocity();
 	void increasePointCoef(); // this method will add pointCoeft to 1.
 	void resetPointCoef(); // this method will set pointCoef to 0.
