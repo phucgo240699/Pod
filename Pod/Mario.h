@@ -33,13 +33,14 @@ private:
 
 	Animation* currentAnimation;
 
-	bool isStandOnSurface = false, isSuperMode = false;
+	bool isStandOnSurface = false, isSuperMode = false, isFlashMode = false;
 	int oldFrameHeight, oldFrameWidth;
 	int newFrameHeight, newFrameWidth;
 	int pointCoef = 0;
+	int countDownFlash = 512;
 
 public:
-	float startdrop = 0;
+	//float startdrop = 0;
 	// Init
 	Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state);
 	Mario(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state);
@@ -58,6 +59,7 @@ public:
 	bool getIsStandOnSurface();
 	bool getIsSuperMode();
 	int getPointCoef();
+	bool getIsFlashMode();
 
 
 	// Setter
@@ -67,6 +69,7 @@ public:
 	void setSubState(MarioSubState _subState);
 	void setIsStandOnSurface(bool _isStandOnSurface);
 	void setIsSuperMode(bool _isSuperMode);
+	void setIsFlashMode(bool _isFlashMode);
 	void updateVelocity();
 	void increasePointCoef(); // this method will add pointCoeft to 1.
 	void resetPointCoef(); // this method will set pointCoef to 0.

@@ -67,7 +67,8 @@ void SunnyVC::viewReceiveKeyUp()
 	if (this->mario->getState() == DIE
 		|| this->mario->getState() == DIE_JUMPING
 		|| this->mario->getState() == DIE_DROPPING
-		|| this->mario->getState() == SCALING_UP) {
+		|| this->mario->getState() == SCALING_UP
+		|| this->mario->getState() == SCALING_DOWN) {
 		return;
 	}
 	mario->onKeyUp();
@@ -78,7 +79,8 @@ void SunnyVC::viewReceiveKeyUp(vector<KeyType> _keyTypes)
 	if (this->mario->getState() == DIE
 		|| this->mario->getState() == DIE_JUMPING
 		|| this->mario->getState() == DIE_DROPPING
-		|| this->mario->getState() == SCALING_UP) {
+		|| this->mario->getState() == SCALING_UP
+		|| this->mario->getState() == SCALING_DOWN) {
 		return;
 	}
 	mario->onKeyUp(_keyTypes);
@@ -89,7 +91,8 @@ void SunnyVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 	if (this->mario->getState() == DIE
 		|| this->mario->getState() == DIE_JUMPING
 		|| this->mario->getState() == DIE_DROPPING
-		|| this->mario->getState() == SCALING_UP) {
+		|| this->mario->getState() == SCALING_UP
+		|| this->mario->getState() == SCALING_DOWN) {
 		return;
 	}
 	mario->onKeyDown(_keyTypes);
@@ -131,22 +134,22 @@ void SunnyVC::viewWillUpdate(float _dt)
 				else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= beginSuperMushroomId) {
 					(*itr)->Update(_dt);
 
-					if ((*itr)->isAlreadyJoinedCamera() && Grid::getInstance()->checkExist(*itr, beginRow, endRow, beginCol, endCol)) {
-						Grid::getInstance()->remove(*itr, i, j);
-					}
-
 					// update which cell in grid that it's belongs to
 					Grid::getInstance()->updateCellOf(*itr);
-
-					//// Remove it when drop to far from map
-					//if ((*itr)->getY() >= Camera::getInstance()->getLimitY()) {
-					//	Grid::getInstance()->remove(*itr, i, j);
-					//}
 				}
 
 				// GiftBrick
 				else if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
 					(*itr)->Update(_dt);
+				}
+
+				// ==========================================================================================
+				if (this->mario->getState() == DIE
+					|| this->mario->getState() == DIE_JUMPING
+					|| this->mario->getState() == DIE_DROPPING
+					|| this->mario->getState() == SCALING_UP
+					|| this->mario->getState() == SCALING_DOWN) {
+					continue;
 				}
 
 				// Goombas
@@ -169,7 +172,8 @@ void SunnyVC::viewWillUpdate(float _dt)
 	if (this->mario->getState() == DIE
 	|| this->mario->getState() == DIE_JUMPING
 	|| this->mario->getState() == DIE_DROPPING
-	|| this->mario->getState() == SCALING_UP) {
+	|| this->mario->getState() == SCALING_UP
+	|| this->mario->getState() == SCALING_DOWN) {
 		return;
 	}
 	ScoreBoard::getInstance()->Update(_dt);
@@ -180,7 +184,9 @@ void SunnyVC::viewDidUpdate(float _dt)
 	if (this->mario->getState() == DIE
 		|| this->mario->getState() == DIE_JUMPING
 		|| this->mario->getState() == DIE_DROPPING
-		|| this->mario->getState() == SCALING_UP)
+		|| this->mario->getState() == SCALING_UP
+		|| this->mario->getState() == SCALING_DOWN
+		|| this->mario->getIsFlashMode())
 	{
 		return;
 	}
@@ -194,7 +200,6 @@ void SunnyVC::viewDidUpdate(float _dt)
 	int endRowMario = ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
 	int beginColMario = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth());
 	int endColMario = ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth());
-
 	for (int i = beginRowMario; i < endRowMario; ++i) {
 		for (int j = beginColMario; j < endColMario; ++j) {
 
@@ -312,14 +317,15 @@ void SunnyVC::viewDidUpdate(float _dt)
 					}
 
 					// Mario vs Koopa
+					//static_cast<Koopa*>(*itr)->setHasCollideMario(false);
 					this->mario->handleKoopaCollision(static_cast<Koopa*>(*itr), _dt);
 					static_cast<Koopa*>(*itr)->handleMarioCollision(this->mario, _dt);
 
 					// Koopa to others
-					int beginRowKoopa = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int endRowKoopa = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int beginColKoopa = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
-					int endColKoopa = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int beginRowKoopa = floor(((*itr)->getY() - (Camera::getInstance()->getHeight())) / Grid::getInstance()->getCellHeight());
+					int endRowKoopa = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight())) / Grid::getInstance()->getCellHeight());
+					int beginColKoopa = floor(((*itr)->getX() - (Camera::getInstance()->getWidth())) / Grid::getInstance()->getCellWidth());
+					int endColKoopa = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth())) / Grid::getInstance()->getCellWidth());
 
 					beginRowKoopa = beginRowKoopa < 0 ? 0 : beginRowKoopa;
 					endRowKoopa = endRowKoopa > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowKoopa;

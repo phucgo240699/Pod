@@ -36,16 +36,6 @@ bool Goomba::getIsStandOnSurface()
 	return this->isStandOnSurface;
 }
 
-int Goomba::getPointCoef()
-{
-	return this->pointCoef;
-}
-
-int Goomba::getDefaultPoint()
-{
-	return this->defaultPoint;
-}
-
 void Goomba::setState(GoombaState _state)
 {
 	switch (_state)
@@ -114,16 +104,6 @@ void Goomba::setState(GoombaState _state)
 		break;
 	}
 	this->state = _state;
-}
-
-void Goomba::setIsStandOnSurface(bool _isStandOnSurface)
-{
-	this->isStandOnSurface = _isStandOnSurface;
-}
-
-void Goomba::setPointCoef(int _pointCoef)
-{
-	this->pointCoef = _pointCoef;
 }
 
 void Goomba::Update(float _dt)
@@ -291,19 +271,25 @@ void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == leftEdge) {
+				if (_mario->getIsSuperMode() == false) {
+					this->setState(GoombaState::GOOMBA_STANDING);
+				}
 				_mario->setState(MarioState::DIE);
 				this->plusX(get<1>(collisionResult) * this->getVx());
-				this->setState(GoombaState::GOOMBA_STANDING);
 			}
 			else if (edge == rightEdge) {
+				if (_mario->getIsSuperMode() == false) {
+					this->setState(GoombaState::GOOMBA_STANDING);
+				}
 				_mario->setState(MarioState::DIE);
 				this->plusX(get<1>(collisionResult) * this->getVx());
-				this->setState(GoombaState::GOOMBA_STANDING);
 			}
 			else if (edge == bottomEdge) {
+				if (_mario->getIsSuperMode() == false) {
+					this->setState(GoombaState::GOOMBA_STANDING);
+				}
 				_mario->setState(MarioState::DIE);
 				this->plusY(get<1>(collisionResult) * this->getVy());
-				this->setState(GoombaState::GOOMBA_STANDING);
 			}
 			else if (edge == topEdge && _mario->getState() == DROPPING) {
 				_mario->setState(MarioState::JUMPING);

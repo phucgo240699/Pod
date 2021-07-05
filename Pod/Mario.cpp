@@ -86,6 +86,11 @@ int Mario::getPointCoef()
 	return this->pointCoef;
 }
 
+bool Mario::getIsFlashMode()
+{
+	return this->isFlashMode;
+}
+
 void Mario::loadInfo(string line, char seperator)
 {
 	vector<string> v = Tool::splitToVectorStringFrom(line, seperator);
@@ -94,67 +99,6 @@ void Mario::loadInfo(string line, char seperator)
 	this->setLimitX(stof(v[2]));
 	this->setLimitY(stof(v[3]));
 	this->setState(Tool::getMarioStateFromString(v[4]));
-}
-
-void Mario::Update(float _dt)
-{
-	if (currentAnimation == NULL) {
-		return;
-	}
-	// Update animation frame
-	this->currentAnimation->Update(_dt);
-
-	if (this->getState() == SCALING_UP) {
-		if (this->currentAnimation->getCurrentIndexFrame() == this->currentAnimation->getTotalFrames() - 1
-			&& this->currentAnimation->getAnimCount() >= this->currentAnimation->getAnimDelay()) {
-			this->setState(this->getPressureState());
-		}
-	}
-
-	// Change from DIE to DIE_JUMPING
-	if (this->getState() == DIE) {
-		if (this->currentAnimation->getCurrentIndexFrame() == this->currentAnimation->getTotalFrames() - 1
-		&& this->currentAnimation->getAnimCount() >= this->currentAnimation->getAnimDelay()) {
-			this->setState(MarioState::DIE_JUMPING);
-		}
-	}
-
-	// Update position, velocity
-	this->updateVelocity();
-	if (this->getX() + round(this->getVx() * _dt) >= 0 && this->getX() + this->getWidth() + round(this->getVx() * _dt) <= this->getLimitX()) {
-		this->plusX(round(this->getVx() * _dt));
-	}
-	this->plusY(round(this->getVy() * _dt));
-
-	// Navigate to WorldVC when Mario drop out of map to far
-	if (this->getY() >= this->getLimitY() + 200) {
-		Setting::getInstance()->setIsTransfering(true);
-		Setting::getInstance()->setSceneName(SceneName::WorldScene);
-		ScoreBoard::getInstance()->minusMarioLife();
-	}
-}
-
-void Mario::Draw()
-{
-	if (currentAnimation == NULL) {
-		return;
-	}
-	Camera* camera = Camera::getInstance();
-	float translateX = 0;
-	if (this->getX() > camera->getWidth() / 2) {
-		translateX = -camera->getX();
-	}
-
-	float translateY = 0;
-	if (this->getY() > camera->getHeight() / 2) {
-		translateY = -(camera->getY());
-	}
-
-	this->currentAnimation->DrawWithoutCamera(this->texture, this->getPosition(), D3DXVECTOR2(translateX, translateY), this->getIsFlip(), D3DCOLOR_XRGB(255, 255, 255));
-
-	if (debugMode == Setting::getInstance()->getDebugMode()) {
-		Drawing::getInstance()->drawDebugBox(this->getFrame(), NULL, this->getPosition(), D3DXVECTOR2(translateX, translateY), false, D3DCOLOR_ARGB(128, 255, 255, 255));
-	}
 }
 
 void Mario::setIsFlip(bool _isFlip)
@@ -208,7 +152,7 @@ void Mario::setState(MarioState _state)
 		
 		break;
 	case JUMPING:
-		if (this->getState() != JUMPING || this->currentAnimation == NULL) {
+		//if (this->getState() != JUMPING || this->currentAnimation == NULL) {
 			if (this->getState() != DROPPING) {
 				if (this->getIsSuperMode()) {
 					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioJumping());
@@ -220,11 +164,11 @@ void Mario::setState(MarioState _state)
 			this->setTargetVy(0);
 			this->setVy(this->getIsSuperMode() ? -4.4 : -4.0);
 			this->setAccelerationY(0.11);
-		}
+		//}
 
 		break;
 	case DROPPING:
-		if (this->getState() != DROPPING || this->currentAnimation == NULL) {
+		//if (this->getState() != DROPPING || this->currentAnimation == NULL) {
 			if (this->getState() != JUMPING) {
 				if (this->getIsSuperMode()) {
 					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioDropping());
@@ -235,10 +179,14 @@ void Mario::setState(MarioState _state)
 			}
 			this->setTargetVy(6);
 			this->setAccelerationY(0.25);
-		}
+		//}
 		break;
 	case DIE:
-		if (this->getState() != DIE || this->currentAnimation == NULL) {
+		if (this->getIsSuperMode()) {
+			this->setState(MarioState::SCALING_DOWN);
+			return;
+		}
+		//if (this->getState() != DIE || this->currentAnimation == NULL) {
 			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioDie());
 			this->setTargetVx(0);
 			this->setTargetVy(0);
@@ -246,36 +194,36 @@ void Mario::setState(MarioState _state)
 			this->setAccelerationY(0);
 			this->setVx(0);
 			this->setVy(0);
-		}
+		//}
 		break;
 	case DIE_JUMPING:
-		if (this->getState() != DIE_JUMPING || this->currentAnimation == NULL) {
+		/*if (this->getState() != DIE_JUMPING || this->currentAnimation == NULL) {
 			if (this->getState() != DIE) {
 				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioDie());
-			}
+			}*/
 			this->setTargetVx(0);
 			this->setTargetVy(0);
 			this->setAccelerationX(0);
 			this->setAccelerationY(0.11);
 			this->setVx(0);
 			this->setVy(-4.4);
-		}
+		//}
 		break;
 	case DIE_DROPPING:
-		if (this->getState() != DIE_DROPPING || this->currentAnimation == NULL) {
+		/*if (this->getState() != DIE_DROPPING || this->currentAnimation == NULL) {
 			if (this->getState() != DIE && this->getState() != DIE_JUMPING) {
 				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioDie());
-			}
+			}*/
 			this->setTargetVx(0);
 			this->setTargetVy(6);
 			this->setAccelerationX(0);
 			this->setAccelerationY(0.34);
 			this->setVx(0);
 			this->setVy(0);
-		}
+		//}
 		break;
 	case SCALING_UP:
-		if (this->getState() != SCALING_UP || this->currentAnimation == NULL) {
+		//if (this->getState() != SCALING_UP || this->currentAnimation == NULL) {
 			// Store old state to pressureState variable
 			this->setIsSuperMode(true);
 			this->setPressureState(MarioState(this->getState()));
@@ -286,15 +234,16 @@ void Mario::setState(MarioState _state)
 			this->setAccelerationY(0);
 			this->setVx(0);
 			this->setVy(0);
-		}
+		//}
 		break;
 	case SCALING_DOWN:
-		if (this->getState() != SCALING_DOWN || this->currentAnimation == NULL) {
+		//if (this->getState() != SCALING_DOWN || this->currentAnimation == NULL) {
 			// Store old state to pressureState variable
 			this->setIsSuperMode(false);
 			this->setPressureState(MarioState(this->getState()));
 			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioScalingDown());
-		}
+			this->countDownFlash = this->getCurrentAnimation()->getTotalFrames() * 16;
+		//}
 		break;
 	default:
 		break;
@@ -343,6 +292,97 @@ void Mario::setIsStandOnSurface(bool _isStandOnSurface)
 void Mario::setIsSuperMode(bool _isSuperMode)
 {
 	this->isSuperMode = _isSuperMode;
+}
+
+void Mario::setIsFlashMode(bool _isFlashMode)
+{
+	this->isFlashMode = _isFlashMode;
+}
+
+void Mario::Update(float _dt)
+{
+	if (currentAnimation == NULL) {
+		return;
+	}
+	// Update animation frame
+	this->currentAnimation->Update(_dt);
+
+	if (this->getState() == SCALING_UP) {
+		if (this->currentAnimation->getCurrentIndexFrame() == this->currentAnimation->getTotalFrames() - 1
+			&& this->currentAnimation->getAnimCount() >= this->currentAnimation->getAnimDelay()) {
+			this->setState(this->getPressureState());
+		}
+	}
+
+	else if (this->getState() == SCALING_DOWN) {
+		if (this->currentAnimation->getCurrentIndexFrame() == this->currentAnimation->getTotalFrames() - 1
+			&& this->currentAnimation->getAnimCount() >= this->currentAnimation->getAnimDelay()) {
+			this->setState(this->getPressureState());
+			this->setIsFlashMode(true);
+			this->countDownFlash = this->getCurrentAnimation()->getTotalFrames() * 16;
+		}
+		this->countDownFlash -= 1;
+	}
+
+	else if (this->getIsFlashMode()) {
+		this->countDownFlash -= 1;
+		if (this->countDownFlash <= 0) {
+			this->setIsFlashMode(false);
+			this->countDownFlash = this->getCurrentAnimation()->getTotalFrames() * 16;
+		}
+	}
+
+	// Change from DIE to DIE_JUMPING
+	else if (this->getState() == DIE) {
+		if (this->currentAnimation->getCurrentIndexFrame() == this->currentAnimation->getTotalFrames() - 1
+			&& this->currentAnimation->getAnimCount() >= this->currentAnimation->getAnimDelay()) {
+			this->setState(MarioState::DIE_JUMPING);
+		}
+	}
+
+	// Update position, velocity
+	this->updateVelocity();
+	if (this->getX() + round(this->getVx() * _dt) >= 0 && this->getX() + this->getWidth() + round(this->getVx() * _dt) <= this->getLimitX()) {
+		this->plusX(round(this->getVx() * _dt));
+	}
+	this->plusY(round(this->getVy() * _dt));
+
+	// Navigate to WorldVC when Mario drop out of map to far
+	if (this->getY() >= this->getLimitY() + 200) {
+		Setting::getInstance()->setIsTransfering(true);
+		Setting::getInstance()->setSceneName(SceneName::WorldScene);
+		ScoreBoard::getInstance()->minusMarioLife();
+	}
+}
+
+void Mario::Draw()
+{
+	if (currentAnimation == NULL) {
+		return;
+	}
+	Camera* camera = Camera::getInstance();
+	float translateX = 0;
+	if (this->getX() > camera->getWidth() / 2) {
+		translateX = -camera->getX();
+	}
+
+	float translateY = 0;
+	if (this->getY() > camera->getHeight() / 2) {
+		translateY = -(camera->getY());
+	}
+
+	// Draw mario
+	if (this->getState() == SCALING_DOWN || this->getIsFlashMode()) {
+		this->currentAnimation->DrawWithoutCamera(this->texture, this->getPosition(), D3DXVECTOR2(translateX, translateY), this->getIsFlip(), (this->countDownFlash % 4 == 0 ? D3DCOLOR_ARGB(128, 255, 255, 255) : D3DCOLOR_XRGB(255, 255, 255)));
+	}
+	else {
+		this->currentAnimation->DrawWithoutCamera(this->texture, this->getPosition(), D3DXVECTOR2(translateX, translateY), this->getIsFlip(), D3DCOLOR_XRGB(255, 255, 255));
+	}
+
+	// Draw debug box
+	if (debugMode == Setting::getInstance()->getDebugMode()) {
+		Drawing::getInstance()->drawDebugBox(this->getFrame(), NULL, this->getPosition(), D3DXVECTOR2(translateX, translateY), false, D3DCOLOR_ARGB(128, 255, 255, 255));
+	}
 }
 
 void Mario::updateVelocity()
@@ -434,7 +474,7 @@ void Mario::onKeyUp(vector<KeyType> _keyTypes)
 	for (int i = 0; i < _keyTypes.size(); ++i) {
 		if (_keyTypes[i] == KeyType::space) {
 			if (this->getState() == JUMPING) {
-				startdrop = this->getY();
+				//startdrop = this->getY();
 				this->setState(MarioState::DROPPING);
 			}
 		}
@@ -757,8 +797,8 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 		//for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[0];
 			if (edge == bottomEdge && this->getState() == DROPPING) {
+				this->plusY(get<1>(collisionResult) * this->getVy());
 				this->setState(MarioState::JUMPING);
-				this->plusY(get<1>(collisionResult) * _dt);
 				_goomba->setState(GoombaState::TRAMPLED_GOOMBA);
 
 				// Calculate points
@@ -767,14 +807,25 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 				ScoreBoard::getInstance()->plusPoint(_goomba->getDefaultPoint() * _goomba->getPointCoef());
 			}
 			else if (edge == leftEdge) {
-				this->setState(MarioState::DIE);
+				if (this->getIsSuperMode() == false) {
+					_goomba->setState(GoombaState::GOOMBA_STANDING);
+				}
 				this->plusX(get<1>(collisionResult) * this->getVx());
-				_goomba->setState(GoombaState::GOOMBA_STANDING);
+				this->setState(MarioState::DIE);
 			}
 			else if (edge == rightEdge) {
-				this->setState(MarioState::DIE);
+				if (this->getIsSuperMode() == false) {
+					_goomba->setState(GoombaState::GOOMBA_STANDING);
+				}
 				this->plusX(get<1>(collisionResult) * this->getVx());
-				_goomba->setState(GoombaState::GOOMBA_STANDING);
+				this->setState(MarioState::DIE);
+			}
+			else if (edge == topEdge) {
+				if (this->getIsSuperMode() == false) {
+					_goomba->setState(GoombaState::GOOMBA_STANDING);
+				}
+				this->plusY(get<1>(collisionResult) * this->getVy());
+				this->setState(MarioState::DIE);
 			}
 		//}
 	}
@@ -783,36 +834,45 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 {
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_koopa, _dt);
-	//RECT r = this->getBounds();
+
 	if (get<0>(collisionResult) == true) {
-		//for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
 		if (edge == leftEdge) {
 			if (_koopa->getState() == KOOPA_SHRINKAGE || _koopa->getState() == KOOPA_SHRINKAGE_SHAKING) {
-				_koopa->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
+				_koopa->plusX(this->getVx() * _dt);
+				_koopa->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
+				this->plusX(get<1>(collisionResult) * this->getVx());
 			}
 			else {
+				if (this->getIsSuperMode() == false) {
+					_koopa->setState(KoopaState::KOOPA_STANDING);
+				}
 				this->setState(MarioState::DIE);
 				this->plusX(get<1>(collisionResult) * this->getVx());
-				_koopa->setState(KoopaState::KOOPA_STANDING);
 			}
 		}
 		else if (edge == rightEdge) {
 			if (_koopa->getState() == KOOPA_SHRINKAGE || _koopa->getState() == KOOPA_SHRINKAGE_SHAKING) {
-				_koopa->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
+				_koopa->plusX(this->getVx() * _dt);
+				_koopa->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
+				this->plusX(get<1>(collisionResult) * this->getVx());
 			}
 			else {
+				if (this->getIsSuperMode() == false) {
+					_koopa->setState(KoopaState::KOOPA_STANDING);
+				}
 				this->setState(MarioState::DIE);
 				this->plusX(get<1>(collisionResult) * this->getVx());
-				_koopa->setState(KoopaState::KOOPA_STANDING);
 			}
 		}
 		else if (edge == topEdge) {
+			if (this->getIsSuperMode() == false) {
+				_koopa->setState(KoopaState::KOOPA_STANDING);
+			}
 			this->setState(MarioState::DIE);
-			_koopa->setState(KoopaState::KOOPA_STANDING);
 		}
 		else if (edge == bottomEdge && this->getState() == DROPPING) {
-			this->plusY(get<1>(collisionResult) * this->getVx() + _koopa->getHeight() / 4);
+			this->plusY(get<1>(collisionResult) * this->getVy());
 			this->setState(MarioState::JUMPING);
 
 			// Calculate points
@@ -837,7 +897,6 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 
 			_koopa->setupPointAnimPosition();
 		}
-		//}
 	}
 }
 
