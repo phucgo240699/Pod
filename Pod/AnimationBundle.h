@@ -25,35 +25,37 @@ public:
 	Animation getWTurtle();
 
 	// Sunny Scene
-	Animation getMarioStanding();
-	Animation getMarioWalking();
-	Animation getMarioDropping();
-	Animation getMarioJumping();
-	Animation getMarioDie();
 	Animation getGoldenBrick();
 	Animation getFullGiftBrick();
 	Animation getEmptyGiftBrick();
 	Animation getCoin();
-	Animation get100Points();
 	Animation getGoombaMoving();
 	Animation getTrampledGoomba();
 	Animation getGreenPipe3Floor();
 	Animation getGreenPipe2Floor();
 	Animation getSuperMushroom();
+	Animation getKoopaMoving();
+	Animation getKoopaShrinkage();
+	Animation getKoopaShrinkageMoving();
+	Animation getKoopaShrinkageShaking();
+	Animation get100Points();
+	Animation get200Points();
+	Animation get400Points();
+	Animation get800Points();
+	Animation get1000Points();
+	Animation getPoints(int points);
+
+	// Mario
+	Animation getMarioStanding();
+	Animation getMarioWalking();
+	Animation getMarioDropping();
+	Animation getMarioJumping();
+	Animation getMarioDie();
 	Animation getSuperMarioStanding();
 	Animation getSuperMarioWalking();
 	Animation getSuperMarioDropping();
 	Animation getSuperMarioJumping();
 	Animation getMarioScalingUp();
 	Animation getMarioScalingDown();
-	Animation getKoopaMoving();
-	Animation getKoopaShrinkage();
-	Animation getKoopaShrinkageMoving();
-	Animation getKoopaShrinkageShaking();
-	Animation get200Points();
-	Animation get400Points();
-	Animation get800Points();
-	Animation get1000Points();
-	Animation getPoints(int points);
 };
 

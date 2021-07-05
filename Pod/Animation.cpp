@@ -45,6 +45,7 @@ RECT Animation::getCurrentBounds()
 
 RECT Animation::getCurrentFrame()
 {
+	int asd = this->id;
 	return this->frames->at(currentIndexFrame).second;
 }
 

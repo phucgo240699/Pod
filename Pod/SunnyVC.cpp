@@ -765,6 +765,8 @@ void SunnyVC::adaptAnimation()
 			(*koopaItr)->setState(KoopaState::KOOPA_MOVING_LEFT);
 		}
 	}
+
+	this->mario->setState(MarioState::DROPPING);
 }
 
 void SunnyVC::adaptToGrid()

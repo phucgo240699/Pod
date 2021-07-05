@@ -86,134 +86,134 @@ Animation AnimationBundle::getWTurtle()
 
 Animation AnimationBundle::getMarioStanding()
 {
-	return this->animations->at(0);
+	return this->animations->at(18);
 }
 
 Animation AnimationBundle::getMarioWalking()
 {
-	return this->animations->at(1);
+	return this->animations->at(19);
 }
 
 Animation AnimationBundle::getMarioDropping()
 {
-	return this->animations->at(2);
+	return this->animations->at(20);
 }
 
 Animation AnimationBundle::getMarioJumping()
 {
-	return this->animations->at(2);
+	return this->animations->at(20);
 }
 
 Animation AnimationBundle::getMarioDie()
 {
-	return this->animations->at(3);
+	return this->animations->at(21);
 }
 
 Animation AnimationBundle::getGoldenBrick()
 {
-	return this->animations->at(4);
+	return this->animations->at(0);
 }
 
 Animation AnimationBundle::getFullGiftBrick()
 {
-	return this->animations->at(5);
+	return this->animations->at(1);
 }
 
 Animation AnimationBundle::getEmptyGiftBrick()
 {
-	return this->animations->at(6);
+	return this->animations->at(2);
 }
 
 Animation AnimationBundle::getCoin()
 {
-	return this->animations->at(7);
+	return this->animations->at(3);
 }
 
 Animation AnimationBundle::get100Points()
 {
-	return this->animations->at(8);
+	return this->animations->at(13);
 }
 
 Animation AnimationBundle::getGoombaMoving()
 {
-	return this->animations->at(9);
+	return this->animations->at(4);
 }
 
 Animation AnimationBundle::getTrampledGoomba()
 {
-	return this->animations->at(10);
+	return this->animations->at(5);
 }
 
 Animation AnimationBundle::getGreenPipe3Floor()
 {
-	return this->animations->at(11);
+	return this->animations->at(6);
 }
 
 Animation AnimationBundle::getGreenPipe2Floor()
 {
-	return this->animations->at(12);
+	return this->animations->at(7);
 }
 
 Animation AnimationBundle::getSuperMushroom()
 {
-	return this->animations->at(13);
+	return this->animations->at(8);
 }
 
 Animation AnimationBundle::getSuperMarioStanding()
 {
-	return this->animations->at(14);
+	return this->animations->at(22);
 }
 
 Animation AnimationBundle::getSuperMarioWalking()
 {
-	return this->animations->at(15);
+	return this->animations->at(23);
 }
 
 Animation AnimationBundle::getSuperMarioDropping()
 {
-	return this->animations->at(16);
+	return this->animations->at(24);
 }
 
 Animation AnimationBundle::getSuperMarioJumping()
 {
-	return this->animations->at(16);
+	return this->animations->at(24);
 }
 
 
 
 Animation AnimationBundle::getMarioScalingUp()
 {
-	return this->animations->at(17);
+	return this->animations->at(25);
 }
 
 Animation AnimationBundle::getMarioScalingDown()
 {
-	return this->animations->at(18);
+	return this->animations->at(26);
 }
 
 Animation AnimationBundle::getKoopaMoving()
 {
-	return this->animations->at(19);
+	return this->animations->at(9);
 }
 
 Animation AnimationBundle::getKoopaShrinkage()
 {
-	return this->animations->at(20);
+	return this->animations->at(10);
 }
 
 Animation AnimationBundle::getKoopaShrinkageMoving()
 {
-	return this->animations->at(21);
+	return this->animations->at(11);
 }
 
 Animation AnimationBundle::getKoopaShrinkageShaking()
 {
-	return this->animations->at(22);
+	return this->animations->at(12);
 }
 
 Animation AnimationBundle::get200Points()
 {
-	return this->animations->at(23);
+	return this->animations->at(14);
 }
 
 Animation AnimationBundle::getPoints(int points)
@@ -237,15 +237,15 @@ Animation AnimationBundle::getPoints(int points)
 
 Animation AnimationBundle::get400Points()
 {
-	return this->animations->at(24);
+	return this->animations->at(15);
 }
 
 Animation AnimationBundle::get800Points()
 {
-	return this->animations->at(25);
+	return this->animations->at(16);
 }
 
 Animation AnimationBundle::get1000Points()
 {
-	return this->animations->at(26);
+	return this->animations->at(17);
 }

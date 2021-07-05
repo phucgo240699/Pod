@@ -367,121 +367,69 @@
 <AnimationBundle>
 # > id, startIndexFrame, animationDelay
 # if has 4 numbers in line => just get frame
-# if has 8 numbers in line => get bounds then get frame 
-# Mario Stading
-3,3,9,12,0,0,16,16
-> 0 0 2
-
-# Mario Running
-3,3,9,12,0,0,16,16
-17,2,12,13,16,0,16,16
-> 1 0 2
-
-# Mario: Jumping & Dropping
-32,2,12,12,32,0,16,16
-> 2 0 2
-
-# Mario: Die & Die Jumping & Die Dropping
-48,0,16,16
-> 3 0 20
+# if has 8 numbers in line => get bounds then get frame
+# (x, y, width, height)
 
 # GoldenBrickAnimation
-# (x, y, width, height)
 204,119,16,16
 221,119,16,16
 238,119,16,16
 255,119,16,16
-> 4 0 4
+> 0 0 4
 
-# GiftBrick secret animation
+# GiftBrick secret animation / Full GiftBrick
 170,0,16,16
 187,0,16,16
 204,0,16,16
 221,0,16,16
-> 5 0 6
+> 1 0 6
 
 # GiftBrick empty box
 238,0,16,16
-> 6 0 0
+> 2 0 1
 
 # GiftBrick coin animation
 255,0,16,16
 255,17,16,16
 255,34,16,16
 255,51,16,16
-> 7 0 4
-
-# GiftBrick 100 coins
-102,34,16,16
-> 8 0 0
+> 3 0 4
 
 # Goomba Moving
 0,136,16,16
 17,136,16,16
-> 9 0 3
+> 4 0 3
 
 # Trampled Goomba
 34,136,16,16
-> 10 0 0
+> 5 0 1
 
 # Green Pipe 3 floors
 0,153,32,48
-> 11 0 0
+> 6 0 1
 
 # Green Pipe 2 floors
 33,153,32,32
-> 12 0 0
+> 7 0 1
 
 # Super Mushroom
 238,17,16,16
-> 13 0 0
-
-# Super Mario Standing
-2,21,11,21,0,16,16,27
-> 14 0 4
-
-# Super Mario Running
-18,21,11,21,16,16,16,27
-34,21,12,20,32,16,16,27
-> 15 0 4
-
-# Super Mario Dropping & Jumping
-50,19,13,21,48,16,16,27
-> 16 0 4
-
-# Mario Scaling Up
-64,5,16,22
-80,5,16,22
-64,5,16,22
-80,5,16,22
-64,5,16,22
-80,5,16,22
-64,5,16,22
-> 17 0 8
-
-# Super Mario Scaling Down
-0,16,16,27
-64,0,16,27
-0,16,16,27
-64,0,16,27
-0,16,16,27
-64,0,16,27
-> 18 0 8
+> 8 0 1
 
 # Koopa Moving
 66,158,16,27
 83,158,16,27
-> 19 0 16
+> 9 0 16
 
 # Koopa Shrinkage
 32,186,16,16
-> 20 0 129
+> 10 0 129
 
 # Koopa Shrinkage Moving
 49,186,16,16
 66,186,16,16
 83,186,16,16
-> 21 0 2
+> 11 0 2
 
 # Koopa Shrinkage Shaking
 31,186,17,16
@@ -516,22 +464,80 @@
 85,136,17,16
 84,136,17,16
 85,136,17,16
-> 22 0 2
+> 12 0 2
+
+# GiftBrick 100 coins
+102,34,16,16
+> 13 0 1
 
 # 200 Points
 238,51,16,16
-> 23 0 0
+> 14 0 1
 
 # 400
 51,136,16,16
-> 24 0 0
+> 15 0 1
 
 # 800
 68,136,16,16
-> 25 0 0
+> 16 0 1
 
 # 1000 Points
 238,34,16,16
-> 26 0 0
+> 17 0 1
 
+# Mario Standing
+68,10,7,12,64,6,16,16
+> 18 0 2
+
+# Mario Running
+68,10,7,12,64,6,16,16
+3,3,9,13,0,0,16,16
+> 19 0 3
+
+# Mario: Jumping & Dropping
+19,3,11,13,16,0,16,16
+> 20 0 2
+
+# Mario: Die & Die Jumping & Die Dropping
+32,0,16,16
+> 21 0 20
+
+# Super Mario Standing
+3,29,8,22,0,23,16,28
+> 22 0 4
+
+# Super Mario Running
+19,29,19,22,16,23,16,28
+34,29,11,22,32,23,16,28
+> 23 0 4
+
+# Super Mario Dropping & Jumping
+50,29,11,22,48,23,16,28
+> 24 0 4
+
+# Mario Scaling Up
+# Medium
+# Small
+80,29,16,22
+64,0,16,22
+80,29,16,22
+64,0,16,22
+80,29,16,22
+64,0,16,22
+80,29,16,22
+64,0,16,22
+> 25 0 8
+
+# Super Mario Scaling Down
+# Large
+# Medium
+0,23,16,28
+80,23,16,28
+0,23,16,28
+80,23,16,28
+0,23,16,28
+80,23,16,28
+0,23,16,28
+> 26 0 8
 </AnimationBundle>

@@ -88,6 +88,7 @@ public:
 	void setIsFlip(bool _isFlip);
 	void setIsReduceWalking(bool _isReduceWalking);
 	void setIsStandOnSurface(bool _isStandOnSurface);
+	void setupReduceWalking(bool _isReduceWalking);
 	
 	// Mode
 	void setIsSuperMode(bool _isSuperMode);

@@ -103,7 +103,7 @@ void Mario::loadInfo(string line, char seperator)
 	this->setY(stof(v[1]));
 	this->setLimitX(stof(v[2]));
 	this->setLimitY(stof(v[3]));
-	this->setState(Tool::getMarioStateFromString(v[4]));
+	//this->setState(Tool::getMarioStateFromString(v[4]));
 }
 
 void Mario::setIsFlip(bool _isFlip)
@@ -128,16 +128,17 @@ void Mario::setState(MarioState _state)
 			else {
 				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioStanding());
 			}
+			this->setIsReduceWalking(false);
 			this->resetPointCoef();
 			this->setTargetVx(0);
 			this->setTargetVy(0);
 			this->setAccelerationY(0);
 			this->setVy(0);
 
-			/*this->setAccelerationX(0);
-			this->setVx(0);*/
+			this->setAccelerationX(0);
+			this->setVx(0);
 
-			if (this->getVx() > this->getTargetVx()) {
+			/*if (this->getVx() > this->getTargetVx()) {
 				this->setAccelerationX(-0.1);
 			}
 			else if (this->getVx() < this->getTargetVx()) {
@@ -145,7 +146,7 @@ void Mario::setState(MarioState _state)
 			}
 			else {
 				this->setAccelerationX(0);
-			}
+			}*/
 		}
 		break;
 	case WALKING:
@@ -283,6 +284,20 @@ void Mario::setIsStandOnSurface(bool _isStandOnSurface)
 	this->isStandOnSurface = _isStandOnSurface;
 }
 
+void Mario::setupReduceWalking(bool _isReduceWalking)
+{
+	this->setIsReduceWalking(_isReduceWalking);
+	if (this->getVx() < 0) {
+		this->setAccelerationX(0.1);
+	}
+	else if (this->getVx() > 0) {
+		this->setAccelerationX(-0.1);
+	}
+	if (this->getTargetVx() != 0) {
+		this->setTargetVx(0);
+	}
+}
+
 void Mario::setIsReduceWalking(bool _isReduceWalking)
 {
 	this->isReduceWalking = _isReduceWalking;
@@ -342,9 +357,9 @@ void Mario::Update(float _dt)
 	// Update position, velocity
 	this->updateVelocity();
 	if (this->getX() + round(this->getVx() * _dt) >= 0 && this->getX() + this->getWidth() + round(this->getVx() * _dt) <= this->getLimitX()) {
-		this->plusX(round(this->getVx() * _dt));
+		this->plusXNoRound(this->getVx() * _dt);
 	}
-	this->plusY(round(this->getVy() * _dt));
+	this->plusYNoRound(this->getVy() * _dt);
 
 	// Navigate to WorldVC when Mario drop out of map to far
 	if (this->getY() >= this->getLimitY() + 200) {
@@ -403,6 +418,9 @@ void Mario::updateVelocity()
 			}
 			else {
 				this->setVx(0);
+				if (this->getIsReduceWalking()) {
+					this->setState(MarioState::STANDING);
+				}
 			}
 		}
 		else { // <--
@@ -411,6 +429,9 @@ void Mario::updateVelocity()
 			}
 			else {
 				this->setVx(0);
+				if (this->getIsReduceWalking()) {
+					this->setState(MarioState::STANDING);
+				}
 			}
 		}
 	}
@@ -453,14 +474,15 @@ void Mario::resetPointCoef()
 void Mario::onKeyUp()
 {
 	if (this->getState() == WALKING) {
-		this->setState(MarioState::STANDING);
+		//this->setState(MarioState::STANDING);
+		this->setupReduceWalking(true);
 	}
 	else if (this->getState() == DROPPING) {
 		if (this->getVx() < 0) {
-			this->setAccelerationX(0.3);
+			this->setAccelerationX(0.1);
 		}
 		else if (this->getVx() > 0) {
-			this->setAccelerationX(-0.3);
+			this->setAccelerationX(-0.1);
 		}
 		if (this->getTargetVx() != 0) {
 			this->setTargetVx(0);
@@ -507,9 +529,9 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 					this->setTargetVx(1.2);
 				}
 				else {
-					this->setTargetVx(1.5);
+					this->setTargetVx(2.1);
 				}
-				this->setAccelerationX(0.3);
+				this->setAccelerationX(0.1);
 			}
 			else {
 				this->setTargetVx(0);
@@ -536,9 +558,9 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 					this->setTargetVx(-1.2);
 				}
 				else {
-					this->setTargetVx(-1.5);
+					this->setTargetVx(-2.1);
 				}
-				this->setAccelerationX(-0.3);
+				this->setAccelerationX(-0.1);
 			}
 			else {
 				this->setTargetVx(0);
