@@ -109,6 +109,11 @@ Animation AnimationBundle::getMarioDie()
 	return this->animations->at(21);
 }
 
+Animation AnimationBundle::getMarioConverting()
+{
+	return this->animations->at(22);
+}
+
 Animation AnimationBundle::getGoldenBrick()
 {
 	return this->animations->at(0);
@@ -161,34 +166,37 @@ Animation AnimationBundle::getSuperMushroom()
 
 Animation AnimationBundle::getSuperMarioStanding()
 {
-	return this->animations->at(22);
+	return this->animations->at(23);
 }
 
 Animation AnimationBundle::getSuperMarioWalking()
 {
-	return this->animations->at(23);
+	return this->animations->at(24);
 }
 
 Animation AnimationBundle::getSuperMarioDropping()
 {
-	return this->animations->at(24);
+	return this->animations->at(25);
 }
 
 Animation AnimationBundle::getSuperMarioJumping()
 {
-	return this->animations->at(24);
+	return this->animations->at(25);
 }
-
-
 
 Animation AnimationBundle::getMarioScalingUp()
 {
-	return this->animations->at(25);
+	return this->animations->at(26);
 }
 
 Animation AnimationBundle::getMarioScalingDown()
 {
-	return this->animations->at(26);
+	return this->animations->at(27);
+}
+
+Animation AnimationBundle::getSuperMarioConverting()
+{
+	return this->animations->at(28);
 }
 
 Animation AnimationBundle::getKoopaMoving()

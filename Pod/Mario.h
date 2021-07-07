@@ -31,7 +31,7 @@ private:
 	Animation* currentAnimation;
 
 	// Control
-	bool isStandOnSurface = false, isReduceWalking = false;
+	bool isStandOnSurface = false, isReduceWalking = false, isConverting = false;
 	bool isFlip; // false: Left side - true: Right side. Default is false
 
 	// Mode
@@ -66,6 +66,7 @@ public:
 
 	// Control
 	bool getIsFlip();
+	bool getIsConverting();
 	bool getIsReduceWalking();
 	bool getIsStandOnSurface();
 	
@@ -73,6 +74,7 @@ public:
 	bool getIsSuperMode();
 	bool getIsFlashMode();
 
+	// Point
 	int getPointCoef();
 
 
@@ -86,6 +88,7 @@ public:
 
 	// Control
 	void setIsFlip(bool _isFlip);
+	void setIsConverting(bool _isConverting);
 	void setIsReduceWalking(bool _isReduceWalking);
 	void setIsStandOnSurface(bool _isStandOnSurface);
 	void setupReduceWalking(bool _isReduceWalking);
@@ -94,11 +97,12 @@ public:
 	void setIsSuperMode(bool _isSuperMode);
 	void setIsFlashMode(bool _isFlashMode);
 
-	void updateVelocity();
+	// Point
 	void increasePointCoef(); // this method will add pointCoeft to 1.
 	void resetPointCoef(); // this method will set pointCoef to 0.
 
-	// Inherit
+	// Update & Draw
+	void updateVelocity();
 	void Update(float _dt);
 	void Draw();
 

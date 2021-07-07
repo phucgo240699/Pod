@@ -51,11 +51,13 @@ public:
 	Animation getMarioDropping();
 	Animation getMarioJumping();
 	Animation getMarioDie();
+	Animation getMarioConverting();
 	Animation getSuperMarioStanding();
 	Animation getSuperMarioWalking();
 	Animation getSuperMarioDropping();
 	Animation getSuperMarioJumping();
 	Animation getMarioScalingUp();
 	Animation getMarioScalingDown();
+	Animation getSuperMarioConverting();
 };
 
