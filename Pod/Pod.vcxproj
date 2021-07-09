@@ -153,7 +153,6 @@
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AnimationBundle.cpp" />
-    <ClCompile Include="AnimationCD.cpp" />
     <ClCompile Include="AppController.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -190,7 +189,6 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AnimationBundle.h" />
-    <ClInclude Include="AnimationCD.h" />
     <ClInclude Include="AppController.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="Camera.h" />

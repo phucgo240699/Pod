@@ -288,9 +288,6 @@
     <ClCompile Include="Koopa.cpp">
       <Filter>Source Files\Components\Enemies\Koopa</Filter>
     </ClCompile>
-    <ClCompile Include="AnimationCD.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tool.h">
@@ -424,9 +421,6 @@
     </ClInclude>
     <ClInclude Include="KoopaState.h">
       <Filter>Header Files\System\Enums</Filter>
-    </ClInclude>
-    <ClInclude Include="AnimationCD.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
