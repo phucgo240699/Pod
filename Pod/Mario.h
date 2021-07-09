@@ -35,7 +35,7 @@ private:
 	bool isFlip; // false: Left side - true: Right side. Default is false
 
 	// Mode
-	bool isSuperMode = false, isFlashMode = false, debugMode = true;
+	bool isSuperMode = false, isFlashMode = false, debugMode = true, isFireMode = false;
 
 	// Validate Animation
 	int oldFrameHeight, oldFrameWidth;
@@ -73,6 +73,7 @@ public:
 	// Mode
 	bool getIsSuperMode();
 	bool getIsFlashMode();
+	bool getIsFireMode();
 
 	// Point
 	int getPointCoef();
@@ -96,6 +97,9 @@ public:
 	// Mode
 	void setIsSuperMode(bool _isSuperMode);
 	void setIsFlashMode(bool _isFlashMode);
+	void turnOnFireSkin(MarioState _state);
+	void turnOffFireSkin(MarioState _state);
+	void setIsFireMode(bool _isFireMode);
 
 	// Point
 	void increasePointCoef(); // this method will add pointCoeft to 1.

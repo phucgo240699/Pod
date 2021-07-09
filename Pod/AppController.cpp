@@ -87,12 +87,30 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		hasKeyDown = true;
 	}
 
+	// F3
+	if (KEY_DOWN(VK_F3) == 1) {
+		hasKeyDown = true;
+		keyDowns.push_back(KeyType::F3);
+	}
+	else {
+		keyUps.push_back(KeyType::F3);
+	}
+
+	// F4
+	if (KEY_DOWN(VK_F4) == 1) {
+		hasKeyDown = true;
+		keyDowns.push_back(KeyType::F4);
+	}
+	else {
+		keyUps.push_back(KeyType::F4);
+	}
+
 	// Enter
 	if (KEY_DOWN(VK_RETURN) == 1) {
 		keyDowns.push_back(KeyType::enter);
 		hasKeyDown = true;
 	}
-	else if (KEY_DOWN(VK_RETURN) != 1) {
+	else {
 		keyUps.push_back(KeyType::enter);
 	}
 
@@ -101,7 +119,7 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		keyDowns.push_back(KeyType::up);
 		hasKeyDown = true;
 	}
-	else if (KEY_DOWN(VK_UP) != 1) {
+	else {
 		keyUps.push_back(KeyType::up);
 	}
 
@@ -110,7 +128,7 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		keyDowns.push_back(KeyType::down);
 		hasKeyDown = true;
 	}
-	else if (KEY_DOWN(VK_DOWN) != 1) {
+	else {
 		keyUps.push_back(KeyType::down);
 	}
 
@@ -119,7 +137,7 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		keyDowns.push_back(KeyType::right);
 		hasKeyDown = true;
 	}
-	else if (KEY_DOWN(VK_RIGHT) != 1) {
+	else {
 		keyUps.push_back(KeyType::right);
 	}
 
@@ -128,7 +146,7 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		keyDowns.push_back(KeyType::left);
 		hasKeyDown = true;
 	}
-	else if (KEY_DOWN(VK_LEFT) != 1) {
+	else {
 		keyUps.push_back(KeyType::left);
 	}
 
@@ -137,7 +155,7 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		keyDowns.push_back(KeyType::space);
 		hasKeyDown = true;
 	}
-	else if (KEY_DOWN(VK_SPACE) != 1) {
+	else {
 		keyUps.push_back(KeyType::space);
 	}
 

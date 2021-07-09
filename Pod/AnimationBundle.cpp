@@ -199,6 +199,71 @@ Animation AnimationBundle::getSuperMarioConverting()
 	return this->animations->at(28);
 }
 
+Animation AnimationBundle::getMarioFireStanding()
+{
+	return this->animations->at(29);
+}
+
+Animation AnimationBundle::getMarioFireWalking()
+{
+	return this->animations->at(30);
+}
+
+Animation AnimationBundle::getMarioFireDropping()
+{
+	return this->animations->at(31);
+}
+
+Animation AnimationBundle::getMarioFireJumping()
+{
+	return this->animations->at(31);
+}
+
+Animation AnimationBundle::getMarioFireDie()
+{
+	return this->animations->at(32);
+}
+
+Animation AnimationBundle::getMarioFireConverting()
+{
+	return this->animations->at(33);
+}
+
+Animation AnimationBundle::getSuperMarioFireStanding()
+{
+	return this->animations->at(34);
+}
+
+Animation AnimationBundle::getSuperMarioFireWalking()
+{
+	return this->animations->at(35);
+}
+
+Animation AnimationBundle::getSuperMarioFireDropping()
+{
+	return this->animations->at(36);
+}
+
+Animation AnimationBundle::getSuperMarioFireJumping()
+{
+	return this->animations->at(36);
+}
+
+Animation AnimationBundle::getMarioFireScalingUp()
+{
+	return this->animations->at(37);
+}
+
+Animation AnimationBundle::getMarioFireScalingDown()
+{
+	return this->animations->at(38);
+}
+
+Animation AnimationBundle::getSuperMarioFireConverting()
+{
+	return this->animations->at(39);
+}
+
 Animation AnimationBundle::getKoopaMoving()
 {
 	return this->animations->at(9);

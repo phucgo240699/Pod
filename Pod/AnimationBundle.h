@@ -59,5 +59,18 @@ public:
 	Animation getMarioScalingUp();
 	Animation getMarioScalingDown();
 	Animation getSuperMarioConverting();
+	Animation getMarioFireStanding();
+	Animation getMarioFireWalking();
+	Animation getMarioFireDropping();
+	Animation getMarioFireJumping();
+	Animation getMarioFireDie();
+	Animation getMarioFireConverting();
+	Animation getSuperMarioFireStanding();
+	Animation getSuperMarioFireWalking();
+	Animation getSuperMarioFireDropping();
+	Animation getSuperMarioFireJumping();
+	Animation getMarioFireScalingUp();
+	Animation getMarioFireScalingDown();
+	Animation getSuperMarioFireConverting();
 };
 
