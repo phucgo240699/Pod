@@ -42,6 +42,7 @@ void Goomba::setState(GoombaState _state)
 	{
 	case GOOMBA_STANDING:
 		if (this->animation == NULL) {
+			delete animation;
 			this->animation = new Animation(AnimationBundle::getInstance()->getGoombaMoving());
 			this->setVx(0);
 			this->setVy(0);
@@ -50,6 +51,7 @@ void Goomba::setState(GoombaState _state)
 
 	case GOOMBA_MOVING_LEFT:
 		if (this->animation == NULL) {
+			delete animation;
 			this->animation = new Animation(AnimationBundle::getInstance()->getGoombaMoving());
 		}
 		this->setVx(-originVx);
@@ -58,6 +60,7 @@ void Goomba::setState(GoombaState _state)
 
 	case GOOMBA_MOVING_RIGHT:
 		if (this->animation == NULL) {
+			delete animation;
 			this->animation = new Animation(AnimationBundle::getInstance()->getGoombaMoving());
 		}
 		this->setVx(originVx);
@@ -66,6 +69,7 @@ void Goomba::setState(GoombaState _state)
 
 	case GOOMBA_DROPPING_LEFT:
 		if (this->animation == NULL) {
+			delete animation;
 			this->animation = new Animation(AnimationBundle::getInstance()->getGoombaMoving());
 		}
 		this->setVx(-originVx);
@@ -74,6 +78,7 @@ void Goomba::setState(GoombaState _state)
 
 	case GOOMBA_DROPPING_RIGHT:
 		if (this->animation == NULL) {
+			delete animation;
 			this->animation = new Animation(AnimationBundle::getInstance()->getGoombaMoving());
 		}
 		this->setVx(originVx);
@@ -82,6 +87,7 @@ void Goomba::setState(GoombaState _state)
 
 	case TRAMPLED_GOOMBA:
 		if (this->getState() == GOOMBA_MOVING_LEFT || GOOMBA_MOVING_RIGHT) {
+			delete animation;
 			this->animation = new Animation(AnimationBundle::getInstance()->getTrampledGoomba());
 			this->pointAnimation = new Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
 			this->setVx(0);
@@ -95,7 +101,8 @@ void Goomba::setState(GoombaState _state)
 	case DEAD_GOOMBA:
 		if (this->getState() == TRAMPLED_GOOMBA) {
 			this->animation = NULL;
-			this->pointAnimation = NULL;
+			delete pointAnimation;
+			//this->pointAnimation = NULL;
 			this->setVx(0);
 			this->setVy(0);
 		}
@@ -197,23 +204,14 @@ void Goomba::handleHardComponentCollision(Component* _component, float _dt)
 		// if supermushroom walk out of ground's top surface, it will drop
 		if (this->getState() == GOOMBA_MOVING_LEFT || this->getState() == GOOMBA_MOVING_RIGHT) {
 			if (this->getIsStandOnSurface() == false) {
-				if ((_component->getX() <= this->getFrame().right && this->getFrame().right <= _component->getFrame().right)
-					|| (_component->getX() <= this->getX() && this->getX() <= _component->getFrame().right)) { // this is check which ground that mario is standing on
+				if ((_component->getX() <= this->getX() + this->getWidth() && this->getX() + this->getWidth() <= _component->getX() + _component->getWidth())
+					|| (_component->getX() <= this->getX() && this->getX() <= _component->getX() + _component->getWidth())) { // this is check which ground that mario is standing on
 					if (this->getY() + this->getHeight() == _component->getY()) {
 						this->setIsStandOnSurface(true);
 					}
 				}
 			}
 		}
-
-		/*if (this->getIsStandOnSurface() == false && this->getState() == GOOMBA_MOVING_LEFT) {
-			this->setState(GoombaState::GOOMBA_DROPPING_LEFT);
-			return;
-		}
-		else if (this->getIsStandOnSurface() == false && this->getState() == GOOMBA_MOVING_RIGHT) {
-			this->setState(GoombaState::GOOMBA_DROPPING_RIGHT);
-			return;
-		}*/
 	}
 }
 
@@ -240,23 +238,14 @@ void Goomba::handleBlockCollision(Component* _block, float _dt)
 		// if mario walk out of ground's top surface, it will drop
 		if (this->getState() == WALKING || this->getState() == STANDING) {
 			if (this->getIsStandOnSurface() == false) {
-				if ((_block->getX() <= this->getFrame().right && this->getFrame().right <= _block->getFrame().right)
-					|| (_block->getX() <= this->getX() && this->getX() <= _block->getFrame().right)) { // this is check which ground that mario is standing on
-					if (this->getFrame().bottom == _block->getY()) {
+				if ((_block->getX() <= this->getX() + this->getWidth() && this->getX() + this->getWidth() <= _block->getX() + _block->getWidth())
+					|| (_block->getX() <= this->getX() && this->getX() <= _block->getX() + _block->getWidth())) { // this is check which ground that mario is standing on
+					if (this->getY() + this->getHeight() == _block->getY()) {
 						this->setIsStandOnSurface(true);
 					}
 				}
 			}
 		}
-
-		/*if (this->getIsStandOnSurface() == false && this->getState() == GOOMBA_MOVING_LEFT) {
-			this->setState(GoombaState::GOOMBA_DROPPING_LEFT);
-			return;
-		}
-		else if (this->getIsStandOnSurface() == false && this->getState() == GOOMBA_MOVING_RIGHT) {
-			this->setState(GoombaState::GOOMBA_DROPPING_RIGHT);
-			return;
-		}*/
 	}
 }
 

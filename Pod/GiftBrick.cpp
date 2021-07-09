@@ -65,6 +65,7 @@ void GiftBrick::setState(GiftBrickState _state)
 		break;
 	case POPUPGIFTBRICK:
 		if (this->getState() == FULLGIFTBRICK) {
+			delete boxAnimation;
 			this->boxAnimation = new Animation(AnimationBundle::getInstance()->getEmptyGiftBrick());
 			if (this->getGiftType() == Point100Gift) {
 				this->coinAnimation = new Animation(AnimationBundle::getInstance()->getCoin());
@@ -75,9 +76,9 @@ void GiftBrick::setState(GiftBrickState _state)
 		break;
 	case EMPTYGIFTBRICK:
 		if (this->getState() == POPUPGIFTBRICK) {
-			this->boxAnimation = new Animation(AnimationBundle::getInstance()->getEmptyGiftBrick());
-			this->coinAnimation = NULL;
-			this->pointAnimation = NULL;
+			//this->boxAnimation = new Animation(AnimationBundle::getInstance()->getEmptyGiftBrick());
+			delete coinAnimation;
+			delete pointAnimation;
 			this->state = _state;
 		}
 		break;

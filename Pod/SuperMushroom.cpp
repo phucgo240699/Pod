@@ -181,22 +181,13 @@ void SuperMushroom::handleHardComponentCollision(Component* _component, float _d
 		// if supermushroom walk out of ground's top surface, it will drop
 		if (this->getState() == SUPER_MUSHROOM_MOVING_LEFT || this->getState() == SUPER_MUSHROOM_MOVING_RIGHT) {
 			if (this->getIsStandOnSurface() == false) {
-				if ((_component->getX() <= this->getFrame().right && this->getFrame().right <= _component->getFrame().right)
+				if ((_component->getX() <= this->getX() + this->getWidth() && this->getX() + this->getWidth() <= _component->getFrame().right)
 					|| (_component->getX() <= this->getX() && this->getX() <= _component->getFrame().right)) { // this is check which ground that mario is standing on
-					if (this->getFrame().bottom <= _component->getY()) {
+					if (this->getY() + this->getHeight() <= _component->getY()) {
 						this->setIsStandOnSurface(true);
 					}
 				}
 			}
-		}
-
-		if (this->getIsStandOnSurface() == false && this->getState() == SUPER_MUSHROOM_MOVING_LEFT) {
-			this->setState(SuperMushroomState::SUPER_MUSHROOM_DROPPING_LEFT);
-			return;
-		}
-		else if (this->getIsStandOnSurface() == false && this->getState() == SUPER_MUSHROOM_MOVING_RIGHT) {
-			this->setState(SuperMushroomState::SUPER_MUSHROOM_DROPPING_RIGHT);
-			return;
 		}
 	}
 }
@@ -224,22 +215,13 @@ void SuperMushroom::handleBlockCollision(Block* _block, float _dt)
 		// if mario walk out of ground's top surface, it will drop
 		if (this->getState() == WALKING || this->getState() == STANDING) {
 			if (this->getIsStandOnSurface() == false) {
-				if ((_block->getX() <= this->getFrame().right && this->getFrame().right <= _block->getFrame().right)
+				if ((_block->getX() <= this->getX() + this->getWidth() && this->getX() + this->getWidth() <= _block->getFrame().right)
 					|| (_block->getX() <= this->getX() && this->getX() <= _block->getFrame().right)) { // this is check which ground that mario is standing on
-					if (this->getFrame().bottom == _block->getY() - Setting::getInstance()->getCollisionSafeSpace()) {
+					if (this->getY() + this->getHeight() == _block->getY() - Setting::getInstance()->getCollisionSafeSpace()) {
 						this->setIsStandOnSurface(true);
 					}
 				}
 			}
-		}
-
-		if (this->getIsStandOnSurface() == false && this->getState() == SUPER_MUSHROOM_MOVING_LEFT) {
-			this->setState(SuperMushroomState::SUPER_MUSHROOM_DROPPING_LEFT);
-			return;
-		}
-		else if (this->getIsStandOnSurface() == false && this->getState() == SUPER_MUSHROOM_MOVING_RIGHT) {
-			this->setState(SuperMushroomState::SUPER_MUSHROOM_DROPPING_RIGHT);
-			return;
 		}
 	}
 }

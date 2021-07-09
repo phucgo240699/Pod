@@ -45,7 +45,7 @@ private:
 
 public:
 	// De init
-	~SunnyVC();
+	//~SunnyVC();
 
 	void viewDidLoad();
 	void viewReceiveKeyUp();

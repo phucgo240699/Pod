@@ -1,47 +1,47 @@
 #include "SunnyVC.h"
 
-SunnyVC::~SunnyVC()
-{
-	delete mario;
-	delete map;
-
-	// Ground
-	for (int i = 0; i < this->grounds->size(); ++i) {
-		delete this->grounds->at(i);
-	}
-	delete this->grounds;
-
-	// Block
-	for (int i = 0; i < this->blocks->size(); ++i) {
-		delete this->blocks->at(i);
-	}
-	delete this->blocks;
-	
-	// Golden Brick
-	for (int i = 0; i < this->goldenBricks->size(); ++i) {
-		delete this->goldenBricks->at(i);
-	}
-	delete this->goldenBricks;
-
-	// Gift Brick
-	for (int i = 0; i < this->giftBricks->size(); ++i) {
-		delete this->giftBricks->at(i);
-	}
-	delete this->giftBricks;
-
-	// Green Pipe
-	for (int i = 0; i < this->greenPipes->size(); ++i) {
-		delete this->greenPipes->at(i);
-	}
-	delete this->greenPipes;
-
-	// Goomba
-	unordered_set<Goomba*> ::iterator itr;
-	for (itr = this->goombas->begin(); itr != this->goombas->end(); ++itr) {
-		delete (*itr);
-	}
-	delete this->goombas;
-}
+//SunnyVC::~SunnyVC()
+//{
+//	delete mario;
+//	delete map;
+//
+//	// Ground
+//	for (int i = 0; i < this->grounds->size(); ++i) {
+//		delete this->grounds->at(i);
+//	}
+//	delete this->grounds;
+//
+//	// Block
+//	for (int i = 0; i < this->blocks->size(); ++i) {
+//		delete this->blocks->at(i);
+//	}
+//	delete this->blocks;
+//	
+//	// Golden Brick
+//	for (int i = 0; i < this->goldenBricks->size(); ++i) {
+//		delete this->goldenBricks->at(i);
+//	}
+//	delete this->goldenBricks;
+//
+//	// Gift Brick
+//	for (int i = 0; i < this->giftBricks->size(); ++i) {
+//		delete this->giftBricks->at(i);
+//	}
+//	delete this->giftBricks;
+//
+//	// Green Pipe
+//	for (int i = 0; i < this->greenPipes->size(); ++i) {
+//		delete this->greenPipes->at(i);
+//	}
+//	delete this->greenPipes;
+//
+//	// Goomba
+//	unordered_set<Goomba*> ::iterator itr;
+//	for (itr = this->goombas->begin(); itr != this->goombas->end(); ++itr) {
+//		delete (*itr);
+//	}
+//	delete this->goombas;
+//}
 
 void SunnyVC::viewDidLoad()
 {
@@ -254,6 +254,16 @@ void SunnyVC::viewDidUpdate(float _dt)
 							}
 						}
 					}
+
+					if (static_cast<SuperMushroom*>(*itr)->getIsStandOnSurface() == false && static_cast<SuperMushroom*>(*itr)->getState() == SUPER_MUSHROOM_MOVING_LEFT) {
+						static_cast<SuperMushroom*>(*itr)->setState(SuperMushroomState::SUPER_MUSHROOM_DROPPING_LEFT);
+						return;
+					}
+					else if (static_cast<SuperMushroom*>(*itr)->getIsStandOnSurface() == false && static_cast<SuperMushroom*>(*itr)->getState() == SUPER_MUSHROOM_MOVING_RIGHT) {
+						static_cast<SuperMushroom*>(*itr)->setState(SuperMushroomState::SUPER_MUSHROOM_DROPPING_RIGHT);
+						return;
+					}
+
 					
 				}
 

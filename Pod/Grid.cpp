@@ -80,9 +80,7 @@ void Grid::loadMatrixId(vector<string> data, char beginSeperator, char pairSeper
 			for (int k = 0; k < pairsStr.size(); ++k) {
 				pairs.push_back(Tool::splitToPairIntIntFrom(pairsStr[k], seperator));
 			}
-			if (currentID == 14) {
-				int asd = 0;
-			}
+
 			this->matrixId[currentID] = pairs;
 
 			pairsStr.clear();

@@ -21,25 +21,21 @@ Camera* Camera::getInstance()
 void Camera::setX(float _x)
 {
 	Component::setX(_x);
-	//Drawing::getInstance()->setCameraX(this->position.x);
 }
 
 void Camera::setY(float _y)
 {
 	Component::setY(_y);
-	//Drawing::getInstance()->setCameraY(this->position.y);
 }
 
 void Camera::plusX(float _x)
 {
 	Component::plusX(_x);
-	//Drawing::getInstance()->setCameraX(this->position.x);
 }
 
 void Camera::plusY(float _y)
 {
 	Component::plusY(_y);
-	//Drawing::getInstance()->setCameraY(this->position.y);
 }
 
 void Camera::setPositionBy(Component* _target)

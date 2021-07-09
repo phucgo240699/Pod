@@ -17,12 +17,6 @@ private:
 	GoombaState state;
 
 	int endPointJumpUp, pointY;
-	//float originVx, originVy;
-	//int pointCoef;
-	//int defaultPoint;
-
-	//// Collision
-	//bool isStandOnSurface = false;
 
 public:
 	// Init
@@ -34,13 +28,9 @@ public:
 	// Getter
 	GoombaState getState();
 	bool getIsStandOnSurface();
-	//int getPointCoef();
-	//int getDefaultPoint();
 
 	// Setter
 	void setState(GoombaState _state);
-	/*void setIsStandOnSurface(bool _isStandOnSurface);
-	void setPointCoef(int _pointCoef);*/
 
 	void Update(float _dt);
 	void Draw(LPDIRECT3DTEXTURE9 _texture);

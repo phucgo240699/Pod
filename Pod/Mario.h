@@ -123,7 +123,7 @@ public:
 	void handleGroundCollision(Ground* _ground, float _dt);
 	void handleBlockCollision(Block* _block, float _dt);
 	void handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt);
-	void handleGiftBrickCollision(GiftBrick* _goldenBrick, float _dt);
+	void handleGiftBrickCollision(GiftBrick* _giftBrick, float _dt);
 	void handleGreenPipeCollision(GreenPipe* _greenPipe, float _dt);
 	void handleGoombaCollision(Goomba* _goomba, float _dt);
 	void handleKoopaCollision(Koopa* _koopa, float _dt);
