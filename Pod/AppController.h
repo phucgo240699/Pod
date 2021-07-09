@@ -24,8 +24,8 @@ class AppController {
 private:
 	ViewController* rootViewController;
 
-	WorldVC* worldVC;
-	SunnyVC* sunnyVC;
+	//WorldVC* worldVC;
+	//SunnyVC* sunnyVC;
 public:
 
 	// Getter

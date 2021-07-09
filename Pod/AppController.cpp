@@ -10,30 +10,38 @@ void AppController::setRootViewController(SceneName _sceneName)
 	switch (Setting::getInstance()->getSceneName())
 	{
 	case WorldScene:
-		if (this->worldVC == NULL) {
-			this->worldVC = new WorldVC();
-		}
+		//if (this->worldVC == NULL) {
+		//	this->worldVC = new WorldVC();
+		//}
 
-		if (this->sunnyVC != NULL) {
-			this->sunnyVC->~SunnyVC();
-		}
-		//delete sunnyVC;
+		//if (this->sunnyVC != NULL) {
+		//	this->sunnyVC->~SunnyVC();
+		//}
+		////delete sunnyVC;
 
-		this->rootViewController = this->worldVC;
+		//this->rootViewController = this->worldVC;
+		//this->rootViewController->viewDidLoad();
+
+		delete rootViewController;
+		this->rootViewController = new WorldVC();
 		this->rootViewController->viewDidLoad();
 		break;
 	case SunnyScene:
-		if (this->sunnyVC == NULL) {
-			this->sunnyVC = new SunnyVC();
-			this->sunnyVC->viewDidLoad();
-		}
+		//if (this->sunnyVC == NULL) {
+		//	this->sunnyVC = new SunnyVC();
+		//	this->sunnyVC->viewDidLoad();
+		//}
 
-		if (this->worldVC != NULL) {
-			this->worldVC->~WorldVC();
-		}
-		//delete worldVC;
+		//if (this->worldVC != NULL) {
+		//	this->worldVC->~WorldVC();
+		//}
+		////delete worldVC;
 
-		this->rootViewController = sunnyVC;
+		//this->rootViewController = sunnyVC;
+		//this->rootViewController->viewDidLoad();
+
+		delete rootViewController;
+		this->rootViewController = new SunnyVC();
 		this->rootViewController->viewDidLoad();
 		break;
 	default:

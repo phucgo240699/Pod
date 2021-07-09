@@ -125,18 +125,17 @@ void Goomba::Update(float _dt)
 	if (this->getState() == GOOMBA_MOVING_LEFT || this->getState() == GOOMBA_MOVING_RIGHT) {
 		if (this->getX() + this->getVx() * _dt >= 0
 		&& this->getX() + this->getWidth() + this->getVx() * _dt <= Camera::getInstance()->getLimitX()) {
-			this->plusX(this->getVx() * _dt);
+			this->plusXNoRound(this->getVx() * _dt);
 		}
 	}
 	else if (this->getState() == GOOMBA_DROPPING_LEFT || this->getState() == GOOMBA_DROPPING_RIGHT) {
 		if (this->getY() + this->getVy() * _dt >= 0
 			&& this->getY() + this->getHeight() + this->getVy() * _dt <= Camera::getInstance()->getLimitY()) {
-			this->plusX(this->getVx() * _dt);
-			this->plusY(this->getVy() * _dt);
+			this->plusXNoRound(this->getVx() * _dt);
+			this->plusYNoRound(this->getVy() * _dt);
 		}
 	}
 	else if (this->getState() == TRAMPLED_GOOMBA) {
-		//this->pointAnimation->Update(_dt);
 		if (this->pointY - (2 * _dt) >= this->endPointJumpUp) {
 			this->pointY -= (2 * _dt);
 		}

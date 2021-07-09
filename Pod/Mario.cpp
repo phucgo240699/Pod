@@ -659,6 +659,9 @@ void Mario::updateVelocity()
 		if (this->getVx() + this->getAccelerationX() <= this->getTargetVx()) {
 			this->plusVx(this->getAccelerationX());
 		}
+		/*else {
+			this->setVx(this->getTargetVx());
+		}*/
 
 		// Stop Converting
 		if (this->getVx() >= 0) {
@@ -672,6 +675,9 @@ void Mario::updateVelocity()
 		if (this->getVx() + this->getAccelerationX() >= this->getTargetVx()) {
 			this->plusVx(this->getAccelerationX());
 		}
+		/*else {
+			this->setVx(this->getTargetVx());
+		}*/
 
 		// Stop Converting
 		if (this->getVx() <= 0) {
@@ -710,6 +716,9 @@ void Mario::updateVelocity()
 		if (this->getVy() + this->getAccelerationY() <= this->getTargetVy()) {
 			this->plusVy(this->getAccelerationY());
 		}
+		/*else {
+			this->setVy(this->getTargetVy());
+		}*/
 	}
 	else if (this->getTargetVy() == 0) {
 		if (this->getState() == JUMPING) {
@@ -797,7 +806,7 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 
 			if (!hasKeyLeft) {
 				this->setIsFlip(false);
-				if (this->getState() == DROPPING) {
+				if (this->getState() == DROPPING || this->getState() == JUMPING) {
 					this->setTargetVx(1.2);
 				}
 				else {
@@ -832,7 +841,7 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 
 			if (!hasKeyRight) {
 				this->setIsFlip(true);
-				if (this->getState() == DROPPING) {
+				if (this->getState() == DROPPING || this->getState() == JUMPING) {
 					this->setTargetVx(-1.2);
 				}
 				else {

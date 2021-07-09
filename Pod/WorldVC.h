@@ -17,7 +17,7 @@ private:
 
 public:
 	// De init
-	~WorldVC();
+	//~WorldVC();
 
 	void viewReceiveKeyDown(vector<KeyType> _keyTypes);
 	void viewDidLoad();

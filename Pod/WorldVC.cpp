@@ -1,13 +1,13 @@
 #include "WorldVC.h"
 
-WorldVC::~WorldVC()
-{
-	delete map;
-	delete grasses;
-	delete helpLabel;
-	delete wMario;
-	delete wTurtle;
-}
+//WorldVC::~WorldVC()
+//{
+//	delete map;
+//	delete grasses;
+//	delete helpLabel;
+//	delete wMario;
+//	delete wTurtle;
+//}
 
 void WorldVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 {
