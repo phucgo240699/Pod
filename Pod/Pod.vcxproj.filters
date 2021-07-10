@@ -184,6 +184,18 @@
     <Filter Include="Source Files\Components\Enemies\Koopa">
       <UniqueIdentifier>{d658a63e-a9b9-4421-9e88-68bd756688e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\System\AnimationCDPlayer">
+      <UniqueIdentifier>{480592dd-d390-42d9-9db6-bd153230c8d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\System\AnimationCDPlayer">
+      <UniqueIdentifier>{53ad800a-9828-4119-9569-25fe8467b034}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\System\AnimationCDPlayer\AnimationCD">
+      <UniqueIdentifier>{64ff231e-cb25-4fcb-9522-d50975750f9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\System\AnimationCDPlayer\AnimationCD">
+      <UniqueIdentifier>{23b21053-9c84-46a1-b1b5-3b0a03bf2537}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -287,6 +299,15 @@
     </ClCompile>
     <ClCompile Include="Koopa.cpp">
       <Filter>Source Files\Components\Enemies\Koopa</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationCDPlayer.cpp">
+      <Filter>Source Files\System\AnimationCDPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="PointCD.cpp">
+      <Filter>Source Files\System\AnimationCDPlayer\AnimationCD</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationCD.cpp">
+      <Filter>Source Files\System\AnimationCDPlayer\AnimationCD</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -421,6 +442,18 @@
     </ClInclude>
     <ClInclude Include="KoopaState.h">
       <Filter>Header Files\System\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="CDType.h">
+      <Filter>Header Files\System\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationCDPlayer.h">
+      <Filter>Header Files\System\AnimationCDPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="PointCD.h">
+      <Filter>Header Files\System\AnimationCDPlayer\AnimationCD</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationCD.h">
+      <Filter>Header Files\System\AnimationCDPlayer\AnimationCD</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

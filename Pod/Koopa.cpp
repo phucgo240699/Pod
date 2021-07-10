@@ -1,5 +1,6 @@
 #include "Koopa.h"
 #include "Mario.h"
+#include "Goomba.h"
 
 Koopa::Koopa(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id) : Enemy(_x, _y, _vx, _vy, _limitX, _limitY)
 {
@@ -313,6 +314,34 @@ void Koopa::setIsGreenMode(bool _isGreenMode)
 	this->isGreenMode = _isGreenMode;
 }
 
+void Koopa::convertMovingState()
+{
+	if (this->getState() == KOOPA_MOVING_LEFT) {
+		this->setState(KoopaState::KOOPA_MOVING_RIGHT);
+	}
+	else if (this->getState() == KOOPA_MOVING_RIGHT) {
+		this->setState(KoopaState::KOOPA_MOVING_LEFT);
+	}
+	else if (this->getState() == KOOPA_DROPPING_LEFT) {
+		this->setState(KoopaState::KOOPA_DROPPING_RIGHT);
+	}
+	else if (this->getState() == KOOPA_DROPPING_RIGHT) {
+		this->setState(KoopaState::KOOPA_DROPPING_LEFT);
+	}
+	else if (this->getState() == KOOPA_SHRINKAGE_MOVING_LEFT) {
+		this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
+	}
+	else if (this->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT) {
+		this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
+	}
+	else if (this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT) {
+		this->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_RIGHT);
+	}
+	else if (this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
+		this->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_LEFT);
+	}
+}
+
 void Koopa::Update(float _dt)
 {
 	if (this->getState() == KOOPA_DEAD || this->getState() == KOOPA_STANDING) return;
@@ -511,6 +540,23 @@ void Koopa::handleBlockCollision(Component* _block, float _dt)
 			}
 		}
 	//}
+}
+
+void Koopa::handleGoombaCollision(Goomba* _goomba, float _dt)
+{
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_goomba, _dt);
+	if (get<0>(collisionResult) == true) {
+		CollisionEdge edge = get<2>(collisionResult)[0];
+		if (edge == leftEdge || edge == rightEdge) {
+			if (this->getState() == KOOPA_MOVING_LEFT
+				|| this->getState() == KOOPA_MOVING_RIGHT
+				|| this->getState() == KOOPA_DROPPING_LEFT
+				|| this->getState() == KOOPA_DROPPING_RIGHT) {
+				this->convertMovingState();
+				_goomba->convertMovingState();
+			}
+		}
+	}
 }
 
 void Koopa::handleMarioCollision(Mario* _mario, float _dt)

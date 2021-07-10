@@ -7,16 +7,20 @@
 #include "AnimationBundle.h"
 #include "Camera.h"
 #include "Grid.h"
+#include "AnimationCDPlayer.h"
 
 class Mario; // Say Goomba exists without defining it.
+class Koopa;
 
 class Goomba : public Enemy
 {
 private:
-	Animation* animation, *pointAnimation;
+	Animation* animation;// , * pointAnimation;
 	GoombaState state;
 
-	int endPointJumpUp, pointY;
+	bool alreadyPlayPointCD = false;
+	int countDownToDead = 0;
+	//int endPointJumpUp, pointY;
 
 public:
 	// Init
@@ -32,12 +36,14 @@ public:
 	// Setter
 	void setState(GoombaState _state);
 
+	void convertMovingState();
 	void Update(float _dt);
 	void Draw(LPDIRECT3DTEXTURE9 _texture);
 
 	// Collision
 	void handleHardComponentCollision(Component* _component, float _dt);
 	void handleBlockCollision(Component* _block, float _dt);
+	void handleKoopaCollision(Koopa* _koopa, float _dt);
 	void handleMarioCollision(Mario* _mario, float _dt);
 };
 

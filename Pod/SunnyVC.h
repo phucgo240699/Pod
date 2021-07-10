@@ -7,6 +7,7 @@
 #include "AnimationBundle.h"
 #include "Goomba.h"
 #include "Koopa.h"
+#include "AnimationCDPlayer.h"
 
 class SunnyVC : public ViewController
 {

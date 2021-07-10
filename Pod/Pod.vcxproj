@@ -153,6 +153,8 @@
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AnimationBundle.cpp" />
+    <ClCompile Include="AnimationCD.cpp" />
+    <ClCompile Include="AnimationCDPlayer.cpp" />
     <ClCompile Include="AppController.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -168,6 +170,7 @@
     <ClCompile Include="GreenPipe.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Koopa.cpp" />
+    <ClCompile Include="PointCD.cpp" />
     <ClCompile Include="StaticAnim.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="ImagePath.cpp" />
@@ -189,6 +192,8 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AnimationBundle.h" />
+    <ClInclude Include="AnimationCD.h" />
+    <ClInclude Include="AnimationCDPlayer.h" />
     <ClInclude Include="AppController.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="Camera.h" />
@@ -206,8 +211,10 @@
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="GreenPipe.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="CDType.h" />
     <ClInclude Include="Koopa.h" />
     <ClInclude Include="KoopaState.h" />
+    <ClInclude Include="PointCD.h" />
     <ClInclude Include="StaticAnim.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="ImagePath.h" />

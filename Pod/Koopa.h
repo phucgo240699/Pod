@@ -9,6 +9,7 @@
 #include "Grid.h"
 
 class Mario; // Say Goomba exists without defining it.
+class Goomba;
 
 class Koopa : public Enemy
 {
@@ -53,12 +54,14 @@ public:
 	void setHasCollideMario(bool _hasCollideMario);
 	void setIsGreenMode(bool _isGreenMode);
 
+	void convertMovingState();
 	void Update(float _dt);
 	void Draw(LPDIRECT3DTEXTURE9 _texture);
 
 	// Collision
 	void handleHardComponentCollision(Component* _component, float _dt);
 	void handleBlockCollision(Component* _block, float _dt);
+	void handleGoombaCollision(Goomba* _goomba, float _dt);
 	void handleMarioCollision(Mario* _mario, float _dt);
 };
 

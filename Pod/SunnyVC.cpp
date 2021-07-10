@@ -171,6 +171,8 @@ void SunnyVC::viewWillUpdate(float _dt)
 		}
 	}
 
+	AnimationCDPlayer::getInstance()->Update(_dt);
+
 	if (mario != NULL) {
 		mario->Update(_dt);
 		Camera::getInstance()->follow(mario, _dt);
@@ -318,6 +320,9 @@ void SunnyVC::viewDidUpdate(float _dt)
 								else if (beginBlockId <= (*goombaItr)->getId() && (*goombaItr)->getId() <= endBlockId) {
 									static_cast<Goomba*>(*itr)->handleBlockCollision(*goombaItr, _dt);
 								}
+								else if (beginKoopaId <= (*goombaItr)->getId() && (*goombaItr)->getId() < endKoopaId) {
+									static_cast<Goomba*>(*itr)->handleKoopaCollision(static_cast<Koopa*>(*goombaItr), _dt);
+								}
 							}
 						}
 					}
@@ -368,6 +373,9 @@ void SunnyVC::viewDidUpdate(float _dt)
 								}
 								else if (beginBlockId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endBlockId) {
 									static_cast<Koopa*>(*itr)->handleBlockCollision(*koopaItr, _dt);
+								}
+								else if (beginGoombaId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGoombaId) {
+									static_cast<Koopa*>(*itr)->handleGoombaCollision(static_cast<Goomba*>(*koopaItr), _dt);
 								}
 							}
 						}
@@ -450,6 +458,8 @@ void SunnyVC::viewWillRender()
 				}
 			}
 		}
+
+		AnimationCDPlayer::getInstance()->Draw(map->getTexture());
 
 		if (mario != NULL) {
 			mario->Draw();
