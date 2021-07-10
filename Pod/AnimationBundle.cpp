@@ -264,6 +264,26 @@ Animation AnimationBundle::getSuperMarioFireConverting()
 	return this->animations->at(39);
 }
 
+Animation AnimationBundle::getKoopaGreenMoving()
+{
+	return this->animations->at(40);
+}
+
+Animation AnimationBundle::getKoopaGreenShrinkage()
+{
+	return this->animations->at(41);
+}
+
+Animation AnimationBundle::getKoopaGreenShrinkageMoving()
+{
+	return this->animations->at(42);
+}
+
+Animation AnimationBundle::getKoopaGreenShrinkageShaking()
+{
+	return this->animations->at(43);
+}
+
 Animation AnimationBundle::getKoopaMoving()
 {
 	return this->animations->at(9);

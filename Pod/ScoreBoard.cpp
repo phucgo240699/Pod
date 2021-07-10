@@ -11,6 +11,16 @@ int ScoreBoard::getTime()
 	return this->time;
 }
 
+int ScoreBoard::getWidth()
+{
+	return this->width;
+}
+
+int ScoreBoard::getHeight()
+{
+	return this->height;
+}
+
 ScoreBoard* ScoreBoard::instance;
 
 ScoreBoard* ScoreBoard::getInstance()
@@ -96,6 +106,8 @@ void ScoreBoard::loadInfo(string line, char seperator)
 	this->coin = v[11];
 	this->point = v[12];
 	this->time = v[13];
+	this->width = v[14];
+	this->height = v[15];
 }
 
 void ScoreBoard::Update(float _dt)

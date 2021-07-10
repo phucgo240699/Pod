@@ -131,14 +131,15 @@ void Grid::updateCellOf(Component* _component)
 			int newCol = _component->getX() / this->cellWidth;
 			int newRow = _component->getY() / this->cellHeight;
 			
-			if (col != newCol) {
+			if (col != newCol && newCol < this->getTotalCols()) {
 				this->matrixId[_component->getId()][i].first = newCol;
 			}
-			if (row != newRow) {
+			if (row != newRow && newRow < this->getTotalRows()) {
 				this->matrixId[_component->getId()][i].second = newRow;
 			}
-
-			this->add(_component, newRow, newCol);
+			if (newCol < this->getTotalCols() && newRow < this->getTotalRows()) {
+				this->add(_component, newRow, newCol);
+			}
 		}
 	}
 }

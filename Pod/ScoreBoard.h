@@ -13,6 +13,8 @@ private:
 	D3DXVECTOR3 position;
 	unordered_map<string, RECT> frames;
 
+	int width, height;
+
 	long startTime;
 	int time, point, coin, marioLife;
 	int marioLifeX, marioLifeY, coinX, coinY, pointX, pointY, timeX, timeY;
@@ -25,6 +27,8 @@ public:
 
 	// Getter
 	int getTime();
+	int getWidth();
+	int getHeight();
 
 	// Setter
 	void setTime(int _time);

@@ -25,7 +25,7 @@ private:
 
 	int countDown = 30, originCountDown = 30; // countDown to switch from standing to shaking, and from shaking to moving
 
-	bool isFlip = false;
+	bool isFlip = false, isGreenMode = false;
 
 public:
 	// Init
@@ -41,6 +41,7 @@ public:
 	bool getIsFlip();
 	bool getIsStandOnSurface();
 	bool getHasCollideMario();
+	bool getIsGreenMode();
 
 	// Setter
 	void setState(KoopaState _state);
@@ -50,6 +51,7 @@ public:
 	void setEndPointJumpUp(float _endPointJumpUp);
 	void setupPointAnimPosition();
 	void setHasCollideMario(bool _hasCollideMario);
+	void setIsGreenMode(bool _isGreenMode);
 
 	void Update(float _dt);
 	void Draw(LPDIRECT3DTEXTURE9 _texture);

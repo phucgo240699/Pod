@@ -155,11 +155,17 @@ void SunnyVC::viewWillUpdate(float _dt)
 				// Goombas
 				else if (beginGoombaId <= (*itr)->getId() && (*itr)->getId() <= endGoombaId) {
 					(*itr)->Update(_dt);
+
+					// update which cell in grid that it's belongs to
+					Grid::getInstance()->updateCellOf(*itr);
 				}
 
 				// Koopas
 				else if (beginKoopaId <= (*itr)->getId() && (*itr)->getId() <= endKoopaId) {
 					(*itr)->Update(_dt);
+
+					// update which cell in grid that it's belongs to
+					Grid::getInstance()->updateCellOf(*itr);
 				}
 			}
 		}
@@ -263,8 +269,6 @@ void SunnyVC::viewDidUpdate(float _dt)
 						static_cast<SuperMushroom*>(*itr)->setState(SuperMushroomState::SUPER_MUSHROOM_DROPPING_RIGHT);
 						return;
 					}
-
-					
 				}
 
 				// Gift Brick
@@ -369,12 +373,21 @@ void SunnyVC::viewDidUpdate(float _dt)
 						}
 					}
 
-					if (static_cast<Koopa*>(*itr)->getIsStandOnSurface() == false && static_cast<Koopa*>(*itr)->getState() == KOOPA_SHRINKAGE_MOVING_LEFT) {
-						static_cast<Koopa*>(*itr)->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_LEFT);
+					if (static_cast<Koopa*>(*itr)->getIsStandOnSurface() == false) {
+						if (static_cast<Koopa*>(*itr)->getState() == KOOPA_SHRINKAGE_MOVING_LEFT) {
+							static_cast<Koopa*>(*itr)->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_LEFT);
+						}
+						else if (static_cast<Koopa*>(*itr)->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT) {
+							static_cast<Koopa*>(*itr)->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_RIGHT);
+						}
+						else if (static_cast<Koopa*>(*itr) ->getIsGreenMode() && static_cast<Koopa*>(*itr)->getState() == KOOPA_MOVING_LEFT) {
+							static_cast<Koopa*>(*itr)->setState(KoopaState::KOOPA_DROPPING_LEFT);
+						}
+						else if (static_cast<Koopa*>(*itr)->getIsGreenMode() && static_cast<Koopa*>(*itr)->getState() == KOOPA_MOVING_RIGHT) {
+							static_cast<Koopa*>(*itr)->setState(KoopaState::KOOPA_DROPPING_RIGHT);
+						}
 					}
-					else if (static_cast<Koopa*>(*itr)->getIsStandOnSurface() == false && static_cast<Koopa*>(*itr)->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT) {
-						static_cast<Koopa*>(*itr)->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_RIGHT);
-					}					
+										
 				}
 			}
 		}

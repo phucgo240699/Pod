@@ -147,10 +147,6 @@ void Goomba::Update(float _dt)
 	}
 
 	this->animation->Update(_dt);
-
-
-	// update which cell in grid that it's belongs to
-	Grid::getInstance()->updateCellOf(this);
 }
 
 void Goomba::Draw(LPDIRECT3DTEXTURE9 _texture)
@@ -258,7 +254,14 @@ void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 	if (get<0>(collisionResult) == true) {
 		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
-			if (edge == leftEdge) {
+			if (edge == bottomEdge) {
+				if (_mario->getIsSuperMode() == false) {
+					this->setState(GoombaState::GOOMBA_STANDING);
+				}
+				_mario->setState(MarioState::DIE);
+				this->plusY(get<1>(collisionResult) * this->getVy());
+			}
+			else if (edge == leftEdge) {
 				if (_mario->getIsSuperMode() == false) {
 					this->setState(GoombaState::GOOMBA_STANDING);
 				}
@@ -271,13 +274,6 @@ void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 				}
 				_mario->setState(MarioState::DIE);
 				this->plusX(get<1>(collisionResult) * this->getVx());
-			}
-			else if (edge == bottomEdge) {
-				if (_mario->getIsSuperMode() == false) {
-					this->setState(GoombaState::GOOMBA_STANDING);
-				}
-				_mario->setState(MarioState::DIE);
-				this->plusY(get<1>(collisionResult) * this->getVy());
 			}
 			else if (edge == topEdge && _mario->getState() == DROPPING) {
 				_mario->setState(MarioState::JUMPING);

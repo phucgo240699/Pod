@@ -72,5 +72,10 @@ public:
 	Animation getMarioFireScalingUp();
 	Animation getMarioFireScalingDown();
 	Animation getSuperMarioFireConverting();
+
+	Animation getKoopaGreenMoving();
+	Animation getKoopaGreenShrinkage();
+	Animation getKoopaGreenShrinkageMoving();
+	Animation getKoopaGreenShrinkageShaking();
 };
 
