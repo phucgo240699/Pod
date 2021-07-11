@@ -14,18 +14,18 @@ class Mario;
 class SuperMushroom : public Component
 {
 private:
-	Animation* animation, * pointAnimation;
+	Animation* animation;// , * pointAnimation;
 	SuperMushroomState state;
 	bool moveLeftFirst;
-	int endGrowupPoint;
-	int endPointJumpUp, pointY;
+	int endGrowUpY, countDownToDisappear = 12;
+	//int endPointJumpUp, pointY;
 
 	// Collision
 	bool isStandOnSurface = false;
 
 public:
 	// Init
-	SuperMushroom(float _x, float _y, float _width, float _height, float _vx, float _vy, int _id, int _endGrowupPoint);
+	SuperMushroom(float _x, float _y, float _width, float _height, float _vx, float _vy, int _id, int _endGrowUpY);
 
 	// Getter
 	SuperMushroomState getState();

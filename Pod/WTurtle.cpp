@@ -65,7 +65,7 @@ void WTurtle::Update(float _dt)
 
 	}
 
-	this->plusX(this->getVx() * _dt);
+	this->plusXNoRound(this->getVx() * _dt);
 }
 
 void WTurtle::Draw(LPDIRECT3DTEXTURE9 _texture)

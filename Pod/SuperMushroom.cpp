@@ -2,13 +2,13 @@
 #include "Block.h"
 #include "Mario.h"
 
-SuperMushroom::SuperMushroom(float _x, float _y, float _width, float _height, float _vx, float _vy, int _id, int _endGrowupPoint) : Component(_x, _y, _vx, _vy, 0, 0)
+SuperMushroom::SuperMushroom(float _x, float _y, float _width, float _height, float _vx, float _vy, int _id, int _endGrowUpY) : Component(_x, _y, _vx, _vy, 0, 0)
 {
 	Component::Component(_x, _y, _vx, _vy, 0, 0);
 	this->setId(_id);
 	this->setWidth(_width);
 	this->setHeight(_height);
-	this->endGrowupPoint = _endGrowupPoint;
+	this->endGrowUpY = _endGrowUpY;
 
 	// Random number
 	srand(time(NULL));
@@ -70,10 +70,10 @@ void SuperMushroom::setState(SuperMushroomState _state)
 		break;
 	case SUPER_MUSHROOM_BEING_EARNED:
 		this->animation = NULL;
-		this->pointAnimation = new Animation(AnimationBundle::getInstance()->get1000Points());
+		/*this->pointAnimation = new Animation(AnimationBundle::getInstance()->get1000Points());
 
 		this->pointY = this->getY();
-		this->endPointJumpUp = this->getY() - 48;
+		this->endPointJumpUp = this->getY() - 48;*/
 		break;
 	default:
 		break;
@@ -94,7 +94,7 @@ void SuperMushroom::Update(float _dt)
 	}
 
 	if (this->getState() == SUPER_MUSHROOM_GROWING_UP) {
-		if (this->getY() + (this->getVy() * _dt) < this->endGrowupPoint) {
+		if (this->getY() + (this->getVy() * _dt) < this->endGrowUpY) {
 			if (moveLeftFirst) {
 				this->setState(SuperMushroomState::SUPER_MUSHROOM_MOVING_LEFT);
 				this->setIsStandOnSurface(true);
@@ -121,25 +121,30 @@ void SuperMushroom::Update(float _dt)
 
 	else if (this->getState() == SUPER_MUSHROOM_BEING_EARNED) {
 		//this->pointAnimation->Update(_dt);
-		if (this->pointY - (2 * _dt) >= this->endPointJumpUp) {
+		/*if (this->pointY - (2 * _dt) >= this->endPointJumpUp) {
 			this->pointY -= (2 * _dt);
 		}
 		else {
 			this->pointY = this->endPointJumpUp;
 			this->setState(SuperMushroomState::SUPER_MUSHROOM_DISAPPEARED);
-		}
+		}*/
+
+		
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(1000, this->getX(), this->getY())));
+		this->setState(SuperMushroomState::SUPER_MUSHROOM_DISAPPEARED);
+		
 	}
 }
 
 void SuperMushroom::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
 	if (this->getState() == SUPER_MUSHROOM_DISAPPEARED) return;
-	else if (this->getState() == SUPER_MUSHROOM_BEING_EARNED) {
+	/*else if (this->getState() == SUPER_MUSHROOM_BEING_EARNED) {
 		Drawing::getInstance()->draw(_texture, this->pointAnimation->getCurrentFrame(), D3DXVECTOR3(this->getX(), this->pointY, 0));
-	}
-	else {
+	}*/
+	//else {
 		Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), D3DXVECTOR3(round(this->getX()), round(this->getY()), 0));
-	}
+	//}
 }
 
 void SuperMushroom::handleHardComponentCollision(Component* _component, float _dt)
@@ -235,10 +240,12 @@ void SuperMushroom::handleMarioCollision(Mario* _mario, float _dt)
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
 
 	if (get<0>(collisionResult) == true) {
+		this->plusX(this->getVx() * get<1>(collisionResult));
+		this->plusY(this->getVy() * get<1>(collisionResult));
 		this->setState(SuperMushroomState::SUPER_MUSHROOM_BEING_EARNED);
-		_mario->setState(MarioState::SCALING_UP);
 		_mario->plusX(this->getVx() * get<1>(collisionResult));
 		_mario->plusY(this->getVy() * get<1>(collisionResult));
+		_mario->setState(MarioState::SCALING_UP);
 		ScoreBoard::getInstance()->plusPoint(1000);
 	}
 }

@@ -170,7 +170,7 @@
     <ClCompile Include="GreenPipe.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Koopa.cpp" />
-    <ClCompile Include="PointCD.cpp" />
+    <ClCompile Include="PointUpCD.cpp" />
     <ClCompile Include="StaticAnim.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="ImagePath.cpp" />
@@ -214,7 +214,7 @@
     <ClInclude Include="CDType.h" />
     <ClInclude Include="Koopa.h" />
     <ClInclude Include="KoopaState.h" />
-    <ClInclude Include="PointCD.h" />
+    <ClInclude Include="PointUpCD.h" />
     <ClInclude Include="StaticAnim.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="ImagePath.h" />

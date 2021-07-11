@@ -303,10 +303,10 @@
     <ClCompile Include="AnimationCDPlayer.cpp">
       <Filter>Source Files\System\AnimationCDPlayer</Filter>
     </ClCompile>
-    <ClCompile Include="PointCD.cpp">
+    <ClCompile Include="AnimationCD.cpp">
       <Filter>Source Files\System\AnimationCDPlayer\AnimationCD</Filter>
     </ClCompile>
-    <ClCompile Include="AnimationCD.cpp">
+    <ClCompile Include="PointUpCD.cpp">
       <Filter>Source Files\System\AnimationCDPlayer\AnimationCD</Filter>
     </ClCompile>
   </ItemGroup>
@@ -449,10 +449,10 @@
     <ClInclude Include="AnimationCDPlayer.h">
       <Filter>Header Files\System\AnimationCDPlayer</Filter>
     </ClInclude>
-    <ClInclude Include="PointCD.h">
+    <ClInclude Include="AnimationCD.h">
       <Filter>Header Files\System\AnimationCDPlayer\AnimationCD</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationCD.h">
+    <ClInclude Include="PointUpCD.h">
       <Filter>Header Files\System\AnimationCDPlayer\AnimationCD</Filter>
     </ClInclude>
   </ItemGroup>

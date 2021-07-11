@@ -1221,10 +1221,12 @@ void Mario::handleSuperMushroomCollision(SuperMushroom* _superMushroom, float _d
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_superMushroom, _dt);
 
 	if (get<0>(collisionResult) == true) {
+		_superMushroom->plusX(this->getVx() * get<1>(collisionResult));
+		_superMushroom->plusY(this->getVy() * get<1>(collisionResult));
 		_superMushroom->setState(SuperMushroomState::SUPER_MUSHROOM_BEING_EARNED);
-		this->setState(MarioState::SCALING_UP);
 		this->plusX(this->getVx() * get<1>(collisionResult));
 		this->plusY(this->getVy() * get<1>(collisionResult));
+		this->setState(MarioState::SCALING_UP);
 		ScoreBoard::getInstance()->plusPoint(1000);
 	}
 }

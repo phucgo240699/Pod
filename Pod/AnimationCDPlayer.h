@@ -1,6 +1,6 @@
 #pragma once
 #include "CDType.h"
-#include "PointCD.h"
+#include "PointUpCD.h"
 #include <unordered_map>
 
 class AnimationCDPlayer
@@ -8,7 +8,6 @@ class AnimationCDPlayer
 private:
 	AnimationCDPlayer() = default; // 1.Don't public constructor function
 	static AnimationCDPlayer* instance; // 2. static private instance
-
 
 	unordered_map<CDType, AnimationCD*> listCD;
 

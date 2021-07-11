@@ -153,7 +153,7 @@ void Goomba::Update(float _dt)
 	}
 	else if (this->getState() == TRAMPLED_GOOMBA) {
 		if (countDownToDead == 0 && alreadyPlayPointCD == false) {
-			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointCDType, new PointCD(new Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef())), this->getX(), this->getY() - 16, this->getY() - 48)));
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint() * this->getPointCoef(), this->getX(), this->getY())));
 			alreadyPlayPointCD = true;
 			countDownToDead = 12;
 		}

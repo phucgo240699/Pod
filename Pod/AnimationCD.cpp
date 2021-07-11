@@ -1,9 +1,13 @@
 #include "AnimationCD.h"
 
-AnimationCD::AnimationCD(Animation* _animation)
+AnimationCD::AnimationCD(Animation _animation)
 {
     this->animation = _animation;
 }
+
+//AnimationCD::AnimationCD()
+//{
+//}
 
 bool AnimationCD::getIsFinish()
 {

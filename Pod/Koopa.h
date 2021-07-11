@@ -4,9 +4,9 @@
 
 #include "Enemy.h"
 #include "KoopaState.h"
-#include "AnimationBundle.h"
 #include "Camera.h"
 #include "Grid.h"
+#include "AnimationCDPlayer.h"
 
 class Mario; // Say Goomba exists without defining it.
 class Goomba;
@@ -14,7 +14,7 @@ class Goomba;
 class Koopa : public Enemy
 {
 private:
-	Animation* animation, pointAnimation = Animation(0,0,0);
+	Animation* animation;// , pointAnimation = Animation(0, 0, 0);
 	KoopaState state;
 
 	bool firstCheckAnim = true;
@@ -22,7 +22,7 @@ private:
 	int newFrameHeight, newFrameWidth;
 
 	int leftAnchor, rightAnchor;
-	float endPointJumpUp, pointX, pointY = -std::numeric_limits<float>::infinity();
+	//float endPointJumpUp, pointX, pointY = -std::numeric_limits<float>::infinity();
 
 	int countDown = 30, originCountDown = 30; // countDown to switch from standing to shaking, and from shaking to moving
 
@@ -47,9 +47,9 @@ public:
 	// Setter
 	void setState(KoopaState _state);
 	void setIsFlip(bool _isFlip);
-	void setPointX(float _pointX);
-	void setPointY(float _pointY);
-	void setEndPointJumpUp(float _endPointJumpUp);
+	//void setPointX(float _pointX);
+	//void setPointY(float _pointY);
+	//void setEndPointJumpUp(float _endPointJumpUp);
 	void setupPointAnimPosition();
 	void setHasCollideMario(bool _hasCollideMario);
 	void setIsGreenMode(bool _isGreenMode);

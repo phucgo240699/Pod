@@ -1,14 +1,16 @@
 #pragma once
 #include "Animation.h"
+#include "AnimationBundle.h"
 
 class AnimationCD
 {
 protected:
-	Animation* animation;
+	Animation animation = Animation(0, 0, 0);
 	bool isFinish = false;
 public:
 	// Init
-	AnimationCD(Animation* _animation);
+	AnimationCD(Animation _animation);
+	//AnimationCD();
 
 	// Getter
 	bool getIsFinish();

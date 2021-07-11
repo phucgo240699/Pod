@@ -167,7 +167,7 @@ void Koopa::setState(KoopaState _state)
 		else {
 			this->animation = new Animation(AnimationBundle::getInstance()->getKoopaShrinkage());
 		}
-		this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
+		//this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
 		this->setVx(0);
 		this->setVy(0);
 		break;
@@ -183,7 +183,7 @@ void Koopa::setState(KoopaState _state)
 			else {
 				this->animation = new Animation(AnimationBundle::getInstance()->getKoopaShrinkageMoving());
 			}
-			this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
+			//this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
 		}
 		this->setIsFlip(true);
 		this->setVx(-6 * abs(this->originVx));
@@ -201,7 +201,7 @@ void Koopa::setState(KoopaState _state)
 			else {
 				this->animation = new Animation(AnimationBundle::getInstance()->getKoopaShrinkageMoving());
 			}
-			this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
+			//this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
 		}
 		this->setIsFlip(false);
 		this->setVx(6 * abs(this->originVx));
@@ -219,7 +219,7 @@ void Koopa::setState(KoopaState _state)
 			else {
 				this->animation = new Animation(AnimationBundle::getInstance()->getKoopaShrinkageMoving());
 			}
-			this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
+			//this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
 		}
 		this->setIsFlip(true);
 		this->setVx(-6 * abs(this->originVx));
@@ -237,7 +237,7 @@ void Koopa::setState(KoopaState _state)
 			else {
 				this->animation = new Animation(AnimationBundle::getInstance()->getKoopaShrinkageMoving());
 			}
-			this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
+			//this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
 		}
 		this->setIsFlip(true);
 		this->setVx(6 * abs(this->originVx));
@@ -282,26 +282,24 @@ void Koopa::setIsFlip(bool _isFlip)
 	this->isFlip = _isFlip;
 }
 
-void Koopa::setPointX(float _pointX)
-{
-	this->pointX = _pointX;
-}
-
-void Koopa::setPointY(float _pointY)
-{
-	this->pointY = _pointY;
-}
-
-void Koopa::setEndPointJumpUp(float _endPointJumpUp)
-{
-	this->endPointJumpUp = _endPointJumpUp;
-}
+//void Koopa::setPointX(float _pointX)
+//{
+//	this->pointX = _pointX;
+//}
+//
+//void Koopa::setPointY(float _pointY)
+//{
+//	this->pointY = _pointY;
+//}
+//
+//void Koopa::setEndPointJumpUp(float _endPointJumpUp)
+//{
+//	this->endPointJumpUp = _endPointJumpUp;
+//}
 
 void Koopa::setupPointAnimPosition()
 {
-	this->pointX = this->getX();
-	this->pointY = this->getY() - this->pointAnimation.getCurrentFrameHeight();
-	this->endPointJumpUp = this->getY() - this->pointAnimation.getCurrentFrameHeight() - 48;
+	AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint() * this->getPointCoef(), this->getX(), this->getY())));
 }
 
 void Koopa::setHasCollideMario(bool _hasCollideMario)
@@ -405,7 +403,7 @@ void Koopa::Update(float _dt)
 		}
 	}
 
-	if (this->pointY == this->endPointJumpUp || this->pointY == -std::numeric_limits<float>::infinity()) {
+	/*if (this->pointY == this->endPointJumpUp || this->pointY == -std::numeric_limits<float>::infinity()) {
 		return;
 	}
 
@@ -414,7 +412,7 @@ void Koopa::Update(float _dt)
 	}
 	else {
 		this->pointY = this->endPointJumpUp;
-	}
+	}*/
 }
 
 void Koopa::Draw(LPDIRECT3DTEXTURE9 _texture)
@@ -423,10 +421,10 @@ void Koopa::Draw(LPDIRECT3DTEXTURE9 _texture)
 	if (this->animation != NULL) {
 		Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), this->getPosition(), this->getIsFlip());
 	}
-	if (this->pointY == this->endPointJumpUp || this->pointY == -std::numeric_limits<float>::infinity()) {
+	/*if (this->pointY == this->endPointJumpUp || this->pointY == -std::numeric_limits<float>::infinity()) {
 		return;
-	}
-	Drawing::getInstance()->draw(_texture, this->pointAnimation.getCurrentFrame(), D3DXVECTOR3(this->pointX, this->pointY, 0));
+	}*/
+	//Drawing::getInstance()->draw(_texture, this->pointAnimation.getCurrentFrame(), D3DXVECTOR3(this->pointX, this->pointY, 0));
 }
 
 void Koopa::handleHardComponentCollision(Component* _component, float _dt)
@@ -620,7 +618,7 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 				else {
 					this->setState(KoopaState::KOOPA_SHRINKAGE);
 				}
-
+				
 				this->setupPointAnimPosition();
 			}
 	}
