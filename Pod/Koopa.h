@@ -8,6 +8,7 @@
 #include "Grid.h"
 #include "AnimationCDPlayer.h"
 
+
 class Mario; // Say Goomba exists without defining it.
 class Goomba;
 

@@ -2,13 +2,13 @@
 #include "Block.h"
 #include "Mario.h"
 
-SuperMushroom::SuperMushroom(float _x, float _y, float _width, float _height, float _vx, float _vy, int _id, int _endGrowUpY) : Component(_x, _y, _vx, _vy, 0, 0)
+SuperMushroom::SuperMushroom(float _x, float _y, float _width, float _height, float _vx, float _vy, int _id) : Component(_x, _y, _vx, _vy, 0, 0)
 {
 	Component::Component(_x, _y, _vx, _vy, 0, 0);
 	this->setId(_id);
 	this->setWidth(_width);
 	this->setHeight(_height);
-	this->endGrowUpY = _endGrowUpY;
+	this->endGrowUpY = this->getY() - this->getHeight();
 
 	// Random number
 	srand(time(NULL));
@@ -37,44 +37,52 @@ void SuperMushroom::setState(SuperMushroomState _state)
 	switch (_state)
 	{
 	case SUPER_MUSHROOM_GROWING_UP:
+	{
 		if (animation == NULL) {
 			this->animation = new Animation(AnimationBundle::getInstance()->getSuperMushroom());
 		}
 		this->setVy(-1 * abs(this->getVy()));
 		break;
+	}
 	case SUPER_MUSHROOM_MOVING_LEFT:
+	{
 		if (animation == NULL) {
 			this->animation = new Animation(AnimationBundle::getInstance()->getSuperMushroom());
 		}
 		this->setVx(-1 * abs(this->getVx()));
 		break;
+	}
 	case SUPER_MUSHROOM_MOVING_RIGHT:
+	{
 		if (animation == NULL) {
 			this->animation = new Animation(AnimationBundle::getInstance()->getSuperMushroom());
 		}
 		this->setVx(abs(this->getVx()));
 		break;
+	}
 	case SUPER_MUSHROOM_DROPPING_LEFT:
+	{
 		if (animation == NULL) {
 			this->animation = new Animation(AnimationBundle::getInstance()->getSuperMushroom());
 		}
 		this->setVx(-abs(this->getVx()));
 		this->setVy(abs(this->getVy()));
 		break;
+	}
 	case SUPER_MUSHROOM_DROPPING_RIGHT:
+	{
 		if (animation == NULL) {
 			this->animation = new Animation(AnimationBundle::getInstance()->getSuperMushroom());
 		}
 		this->setVx(abs(this->getVx()));
 		this->setVy(abs(this->getVy()));
 		break;
+	}
 	case SUPER_MUSHROOM_BEING_EARNED:
-		this->animation = NULL;
-		/*this->pointAnimation = new Animation(AnimationBundle::getInstance()->get1000Points());
-
-		this->pointY = this->getY();
-		this->endPointJumpUp = this->getY() - 48;*/
+	{
+		delete animation;
 		break;
+	}
 	default:
 		break;
 	}
@@ -188,7 +196,7 @@ void SuperMushroom::handleHardComponentCollision(Component* _component, float _d
 			if (this->getIsStandOnSurface() == false) {
 				if ((_component->getX() <= this->getX() + this->getWidth() && this->getX() + this->getWidth() <= _component->getFrame().right)
 					|| (_component->getX() <= this->getX() && this->getX() <= _component->getFrame().right)) { // this is check which ground that mario is standing on
-					if (this->getY() + this->getHeight() <= _component->getY()) {
+					if (this->getY() + this->getHeight() == _component->getY()) {
 						this->setIsStandOnSurface(true);
 					}
 				}
@@ -222,7 +230,7 @@ void SuperMushroom::handleBlockCollision(Block* _block, float _dt)
 			if (this->getIsStandOnSurface() == false) {
 				if ((_block->getX() <= this->getX() + this->getWidth() && this->getX() + this->getWidth() <= _block->getFrame().right)
 					|| (_block->getX() <= this->getX() && this->getX() <= _block->getFrame().right)) { // this is check which ground that mario is standing on
-					if (this->getY() + this->getHeight() == _block->getY() - Setting::getInstance()->getCollisionSafeSpace()) {
+					if (this->getY() + this->getHeight() == _block->getY()) {// - Setting::getInstance()->getCollisionSafeSpace()) {
 						this->setIsStandOnSurface(true);
 					}
 				}

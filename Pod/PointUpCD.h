@@ -4,7 +4,7 @@
 class PointUpCD : public AnimationCD
 {
 private:
-	int x, y, endY;
+	int endY;
 
 public:
 	// Init

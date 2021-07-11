@@ -41,6 +41,7 @@ void Goomba::setState(GoombaState _state)
 	switch (_state)
 	{
 	case GOOMBA_STANDING:
+	{
 		if (this->animation == NULL) {
 			delete animation;
 			this->animation = new Animation(AnimationBundle::getInstance()->getGoombaMoving());
@@ -48,8 +49,10 @@ void Goomba::setState(GoombaState _state)
 			this->setVy(0);
 		}
 		break;
+	}
 
 	case GOOMBA_MOVING_LEFT:
+	{
 		if (this->animation == NULL) {
 			delete animation;
 			this->animation = new Animation(AnimationBundle::getInstance()->getGoombaMoving());
@@ -57,8 +60,10 @@ void Goomba::setState(GoombaState _state)
 		this->setVx(-originVx);
 		this->setVy(0);
 		break;
+	}
 
 	case GOOMBA_MOVING_RIGHT:
+	{
 		if (this->animation == NULL) {
 			delete animation;
 			this->animation = new Animation(AnimationBundle::getInstance()->getGoombaMoving());
@@ -66,8 +71,10 @@ void Goomba::setState(GoombaState _state)
 		this->setVx(originVx);
 		this->setVy(0);
 		break;
+	}
 
 	case GOOMBA_DROPPING_LEFT:
+	{
 		if (this->animation == NULL) {
 			delete animation;
 			this->animation = new Animation(AnimationBundle::getInstance()->getGoombaMoving());
@@ -75,8 +82,10 @@ void Goomba::setState(GoombaState _state)
 		this->setVx(-originVx);
 		this->setVy(originVy);
 		break;
+	}
 
 	case GOOMBA_DROPPING_RIGHT:
+	{
 		if (this->animation == NULL) {
 			delete animation;
 			this->animation = new Animation(AnimationBundle::getInstance()->getGoombaMoving());
@@ -84,29 +93,35 @@ void Goomba::setState(GoombaState _state)
 		this->setVx(originVx);
 		this->setVy(originVy);
 		break;
+	}
 
 	case TRAMPLED_GOOMBA:
-		if (this->getState() == GOOMBA_MOVING_LEFT || GOOMBA_MOVING_RIGHT) {
-			delete animation;
-			this->animation = new Animation(AnimationBundle::getInstance()->getTrampledGoomba());
-			//this->pointAnimation = new Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
-			this->setVx(0);
-			this->setVy(0);
-
-			/*this->pointY = this->getY() - this->pointAnimation->getCurrentFrameHeight();
-			this->endPointJumpUp = this->getY() - this->pointAnimation->getCurrentFrameHeight() - 48;*/
-		}
+	{
+		delete animation;
+		this->animation = new Animation(AnimationBundle::getInstance()->getTrampledGoomba());
+		this->setVx(0);
 		break;
+	}
+
+	case THROWN_AWAY_GOOMBA:
+	{
+		delete animation;
+		this->animation = new Animation(AnimationBundle::getInstance()->getThrownAwayGoomba());
+		this->setVx(-originVx);
+		this->setVy(-1.2 * originVy);
+		this->limitThrownAwayUp = this->getY() - 32;
+		break;
+	}
 
 	case DEAD_GOOMBA:
+	{
 		if (this->getState() == TRAMPLED_GOOMBA) {
-			this->animation = NULL;
-			//delete pointAnimation;
-			//this->pointAnimation = NULL;
+			delete animation;
 			this->setVx(0);
 			this->setVy(0);
 		}
 		break;
+	}
 	default:
 		break;
 	}
@@ -157,15 +172,25 @@ void Goomba::Update(float _dt)
 			alreadyPlayPointCD = true;
 			countDownToDead = 12;
 		}
-		else if (countDownToDead == 0 && alreadyPlayPointCD) {
+		else if (countDownToDead <= 0 && alreadyPlayPointCD) {
 			this->setState(GoombaState::DEAD_GOOMBA);
+			alreadyPlayPointCD = false;
+			countDownToDead = 0;
 		}
 
 		--countDownToDead;
 
 		return;
 	}
-
+	else if (this->getState() == THROWN_AWAY_GOOMBA) {
+		if (this->getY() + this->getVy() * _dt >= this->limitThrownAwayUp) {
+			this->plusXNoRound(this->getVx() * _dt);
+			this->plusYNoRound(this->getVy() * _dt);
+		}
+		else {
+			this->setVy(2.4 * originVy);
+		}
+	}
 	this->animation->Update(_dt);
 }
 
@@ -261,6 +286,11 @@ void Goomba::handleBlockCollision(Component* _block, float _dt)
 
 void Goomba::handleKoopaCollision(Koopa* _koopa, float _dt)
 {
+	if (this->getState() == TRAMPLED_GOOMBA
+		|| this->getState() == THROWN_AWAY_GOOMBA
+		|| this->getState() == DEAD_GOOMBA) {
+		return;
+	}
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_koopa, _dt);
 	if (get<0>(collisionResult) == true) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
@@ -272,6 +302,14 @@ void Goomba::handleKoopaCollision(Koopa* _koopa, float _dt)
 				_koopa->convertMovingState();
 				this->convertMovingState();
 			}
+		}
+		else if (_koopa->getState() == KOOPA_SHRINKAGE_MOVING_LEFT
+			|| _koopa->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT
+			|| _koopa->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT
+			|| _koopa->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint() * this->getPointCoef(), this->getX(), this->getY())));
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(this->getX(), this->getY())));
+			this->setState(GoombaState::THROWN_AWAY_GOOMBA);
 		}
 	}
 }

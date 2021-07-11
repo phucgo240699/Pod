@@ -309,6 +309,9 @@
     <ClCompile Include="PointUpCD.cpp">
       <Filter>Source Files\System\AnimationCDPlayer\AnimationCD</Filter>
     </ClCompile>
+    <ClCompile Include="FlashLightCD.cpp">
+      <Filter>Source Files\System\AnimationCDPlayer\AnimationCD</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tool.h">
@@ -453,6 +456,9 @@
       <Filter>Header Files\System\AnimationCDPlayer\AnimationCD</Filter>
     </ClInclude>
     <ClInclude Include="PointUpCD.h">
+      <Filter>Header Files\System\AnimationCDPlayer\AnimationCD</Filter>
+    </ClInclude>
+    <ClInclude Include="FlashLightCD.h">
       <Filter>Header Files\System\AnimationCDPlayer\AnimationCD</Filter>
     </ClInclude>
   </ItemGroup>

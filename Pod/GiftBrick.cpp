@@ -25,7 +25,7 @@ void GiftBrick::loadInfo(string line, char seperator)
 
 	// Super mushroom
 	if (this->getGiftType() == SuperMushroomGift) {
-		superMushroom = new SuperMushroom(this->getX(), this->getY(), v[6], v[7], v[8], v[9], v[10], this->getY() - this->getHeight());
+		superMushroom = new SuperMushroom(this->getX(), this->getY(), v[6], v[7], v[8], v[9], v[10]);
 		return;
 	}
 

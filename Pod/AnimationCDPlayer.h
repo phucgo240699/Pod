@@ -1,6 +1,7 @@
 #pragma once
 #include "CDType.h"
 #include "PointUpCD.h"
+#include "FlashLightCD.h"
 #include <unordered_map>
 
 class AnimationCDPlayer

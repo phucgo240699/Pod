@@ -1151,26 +1151,29 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 		CollisionEdge edge = get<2>(collisionResult)[0];
 		if (edge == leftEdge) {
 			if (_koopa->getState() == KOOPA_SHRINKAGE || _koopa->getState() == KOOPA_SHRINKAGE_SHAKING) {
-				_koopa->plusX(this->getVx() * _dt);
+				_koopa->plusX(this->getVx() * _dt - 2);
 				_koopa->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
-				this->plusX(get<1>(collisionResult) * this->getVx());
+				//this->plusX(get<1>(collisionResult) * this->getVx());
 			}
 			else {
 				if (this->getIsSuperMode() == false) {
+					_koopa->plusX(get<1>(collisionResult) * _koopa->getVx());
 					_koopa->setState(KoopaState::KOOPA_STANDING);
 				}
+
+				this->plusX(get<1>(collisionResult)* this->getVx());
 				this->setState(MarioState::DIE);
-				this->plusX(get<1>(collisionResult) * this->getVx());
 			}
 		}
 		else if (edge == rightEdge) {
 			if (_koopa->getState() == KOOPA_SHRINKAGE || _koopa->getState() == KOOPA_SHRINKAGE_SHAKING) {
-				_koopa->plusX(this->getVx() * _dt);
+				_koopa->plusX(this->getVx() * _dt + 2);
 				_koopa->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
-				this->plusX(get<1>(collisionResult) * this->getVx());
+				//this->plusX(get<1>(collisionResult) * this->getVx());
 			}
 			else {
 				if (this->getIsSuperMode() == false) {
+					_koopa->plusX(get<1>(collisionResult) * _koopa->getVx());
 					_koopa->setState(KoopaState::KOOPA_STANDING);
 				}
 				this->setState(MarioState::DIE);

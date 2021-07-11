@@ -6,6 +6,8 @@ class AnimationCD
 {
 protected:
 	Animation animation = Animation(0, 0, 0);
+
+	D3DXVECTOR3 position;
 	bool isFinish = false;
 public:
 	// Init

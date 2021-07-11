@@ -542,6 +542,11 @@ void Koopa::handleBlockCollision(Component* _block, float _dt)
 
 void Koopa::handleGoombaCollision(Goomba* _goomba, float _dt)
 {
+	if (_goomba->getState() == TRAMPLED_GOOMBA
+		|| _goomba->getState() == THROWN_AWAY_GOOMBA
+		|| _goomba->getState() == DEAD_GOOMBA) {
+		return;
+	}
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_goomba, _dt);
 	if (get<0>(collisionResult) == true) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
@@ -552,6 +557,14 @@ void Koopa::handleGoombaCollision(Goomba* _goomba, float _dt)
 				|| this->getState() == KOOPA_DROPPING_RIGHT) {
 				this->convertMovingState();
 				_goomba->convertMovingState();
+			}
+			else if (this->getState() == KOOPA_SHRINKAGE_MOVING_LEFT
+				|| this->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT
+				|| this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT
+				|| this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
+				AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_goomba->getDefaultPoint() * _goomba->getPointCoef(), _goomba->getX(), _goomba->getY())));
+				AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(_goomba->getX(), _goomba->getY())));
+				_goomba->setState(GoombaState::THROWN_AWAY_GOOMBA);
 			}
 		}
 	}
@@ -564,12 +577,13 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 			CollisionEdge edge = get<2>(collisionResult)[0];
 			if (edge == leftEdge) {
 				if (this->getState() == KOOPA_SHRINKAGE || this->getState() == KOOPA_SHRINKAGE_SHAKING) {
-					this->plusX(_mario->getVx() * _dt);
+					this->plusX(_mario->getVx() * _dt + 2);
 					this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
-					_mario->plusX(get<1>(collisionResult) * _mario->getVx());
+					//_mario->plusX(get<1>(collisionResult) * _mario->getVx());
 				}
 				else {
 					if (_mario->getIsSuperMode() == false) {
+						this->plusX(get<1>(collisionResult) * this->getVx());
 						this->setState(KoopaState::KOOPA_STANDING);
 					}
 					_mario->setState(MarioState::DIE);
@@ -578,12 +592,13 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 			}
 			else if (edge == rightEdge) {
 				if (this->getState() == KOOPA_SHRINKAGE || this->getState() == KOOPA_SHRINKAGE_SHAKING) {
-					this->plusX(_mario->getVx() * _dt);
+					this->plusX(_mario->getVx() * _dt - 2);
 					this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
-					_mario->plusX(get<1>(collisionResult) * _mario->getVx());
+					//_mario->plusX(get<1>(collisionResult) * _mario->getVx());
 				}
 				else {
 					if (_mario->getIsSuperMode() == false) {
+						this->plusX(get<1>(collisionResult) * this->getVx());
 						this->setState(KoopaState::KOOPA_STANDING);
 					}
 					_mario->setState(MarioState::DIE);

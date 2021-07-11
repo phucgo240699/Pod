@@ -15,12 +15,12 @@ class Koopa;
 class Goomba : public Enemy
 {
 private:
-	Animation* animation;// , * pointAnimation;
+	Animation* animation;
 	GoombaState state;
 
 	bool alreadyPlayPointCD = false;
 	int countDownToDead = 0;
-	//int endPointJumpUp, pointY;
+	int limitThrownAwayUp;
 
 public:
 	// Init

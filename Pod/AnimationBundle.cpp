@@ -284,6 +284,16 @@ Animation AnimationBundle::getKoopaGreenShrinkageShaking()
 	return this->animations->at(43);
 }
 
+Animation AnimationBundle::getThrownAwayGoomba()
+{
+	return this->animations->at(44);
+}
+
+Animation AnimationBundle::getFlashLight()
+{
+	return this->animations->at(45);
+}
+
 Animation AnimationBundle::getKoopaMoving()
 {
 	return this->animations->at(9);

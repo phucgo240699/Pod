@@ -11,14 +11,14 @@ AnimationCDPlayer* AnimationCDPlayer::getInstance()
 void AnimationCDPlayer::Update(float _dt)
 {
 	for (auto cd = listCD.begin(); cd != listCD.end();) {
-		if ((*cd).first == PointUpCDType) {
-			static_cast<PointUpCD*>((*cd).second)->Update(_dt);
-			if (static_cast<PointUpCD*>((*cd).second)->getIsFinish()) {
-				this->listCD.erase(cd++);
-			}
-			else {
-				++cd;
-			}
+		(*cd).second->Update(_dt);
+
+		// Check is CD finish
+		if ((*cd).second->getIsFinish()) {
+			this->listCD.erase(cd++);
+		}
+		else {
+			++cd;
 		}
 	}
 }
@@ -26,9 +26,7 @@ void AnimationCDPlayer::Update(float _dt)
 void AnimationCDPlayer::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
 	for (auto cd = listCD.begin(); cd != listCD.end(); cd++) {
-		if ((*cd).first == PointUpCDType) {
-			static_cast<PointUpCD*>((*cd).second)->Draw(_texture);
-		}
+		(*cd).second->Draw(_texture);
 	}
 }
 

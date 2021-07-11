@@ -77,5 +77,8 @@ public:
 	Animation getKoopaGreenShrinkage();
 	Animation getKoopaGreenShrinkageMoving();
 	Animation getKoopaGreenShrinkageShaking();
+
+	Animation getThrownAwayGoomba();
+	Animation getFlashLight();
 };
 
