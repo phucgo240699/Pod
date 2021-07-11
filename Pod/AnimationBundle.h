@@ -80,5 +80,6 @@ public:
 
 	Animation getThrownAwayGoomba();
 	Animation getFlashLight();
+	Animation getSuperLeaf();
 };
 

@@ -352,7 +352,14 @@ void Mario::setState(MarioState _state)
 			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioScalingDown());
 		}
 
-		this->countDownFlash = this->getCurrentAnimation()->getTotalFrames() * 16;
+		this->countDownFlash = this->getCurrentAnimation()->getTotalFrames() * 26;
+
+		this->setTargetVx(0);
+		this->setTargetVy(0);
+		this->setAccelerationX(0);
+		this->setAccelerationY(0);
+		this->setVx(0);
+		this->setVy(0);
 		break;
 	}
 
@@ -587,7 +594,7 @@ void Mario::Update(float _dt)
 			&& this->currentAnimation->getAnimCount() >= this->currentAnimation->getAnimDelay()) {
 			this->setState(this->getPressureState());
 			this->setIsFlashMode(true);
-			this->countDownFlash = this->getCurrentAnimation()->getTotalFrames() * 16;
+			//this->countDownFlash = this->getCurrentAnimation()->getTotalFrames() * 16;
 		}
 		this->countDownFlash -= 1;
 	}
@@ -596,7 +603,7 @@ void Mario::Update(float _dt)
 		this->countDownFlash -= 1;
 		if (this->countDownFlash <= 0) {
 			this->setIsFlashMode(false);
-			this->countDownFlash = this->getCurrentAnimation()->getTotalFrames() * 16;
+			//this->countDownFlash = this->getCurrentAnimation()->getTotalFrames() * 16;
 		}
 	}
 
@@ -610,10 +617,12 @@ void Mario::Update(float _dt)
 
 	// Update position, velocity
 	this->updateVelocity();
-	if (this->getX() + round(this->getVx() * _dt) >= 0 && this->getX() + this->getWidth() + round(this->getVx() * _dt) <= this->getLimitX()) {
-		this->plusXNoRound(this->getVx() * _dt);
+	if (this->getX() + round(this->getVx() * _dt) >= 0
+		&& this->getX() + this->getWidth() + round(this->getVx() * _dt) <= this->getLimitX()
+		&& this->getSubState() != PUSHING) {
+		this->plusX(this->getVx() * _dt);
 	}
-	this->plusYNoRound(this->getVy() * _dt);
+	this->plusY(this->getVy() * _dt);
 
 	// Navigate to WorldVC when Mario drop out of map to far
 	if (this->getY() >= this->getLimitY() + 200) {
@@ -855,7 +864,7 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 			}
 			else {
 				this->setTargetVx(0);
-				this->setIsConverting(false);
+				this->setIsConverting(true);
 				if (this->getVx() > this->getTargetVx()) {
 					this->setAccelerationX(-0.1);
 				}
@@ -1022,6 +1031,11 @@ void Mario::handleGiftBrickCollision(GiftBrick* _giftBrick, float _dt)
 				this->setY(_giftBrick->getY() + _giftBrick->getHeight());
 				this->setVy(0);
 				if (_giftBrick->getState() == FULLGIFTBRICK) {
+					if (_giftBrick->getGiftType() == NotPoint) {
+						if (this->getIsSuperMode() == false) {
+							_giftBrick->setGiftType(GiftType::SuperMushroomGift);
+						}
+					}
 					_giftBrick->setState(GiftBrickState::POPUPGIFTBRICK);
 					if (_giftBrick->getGiftType() == Point100Gift) {
 						ScoreBoard::getInstance()->plusCoin(1);
@@ -1034,11 +1048,11 @@ void Mario::handleGiftBrickCollision(GiftBrick* _giftBrick, float _dt)
 				this->setY(_giftBrick->getY() - this->getHeight() - Setting::getInstance()->getCollisionSafeSpace());
 				this->setIsStandOnSurface(true);
 			}
-			else if (edge == leftEdge && (this->getState() == JUMPING || this->getState() == DROPPING)) {
-				this->setX(_giftBrick->getX() + _giftBrick->getWidth());
+			else if (edge == leftEdge/* && (this->getState() == JUMPING || this->getState() == DROPPING) */) {
+				this->setX(_giftBrick->getX() + this->getWidth());
 				this->setSubState(MarioSubState::PUSHING);
 			}
-			else if (edge == rightEdge && (this->getState() == JUMPING || this->getState() == DROPPING)) {
+			else if (edge == rightEdge/* && (this->getState() == JUMPING || this->getState() == DROPPING)*/) {
 				this->setX(_giftBrick->getX() - this->getWidth());
 				this->setSubState(MarioSubState::PUSHING);
 			}
@@ -1221,7 +1235,7 @@ void Mario::handleSuperMushroomCollision(SuperMushroom* _superMushroom, float _d
 	||_superMushroom->getState() == SUPER_MUSHROOM_DISAPPEARED
 	|| this->getState() == SCALING_UP) return;
 
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_superMushroom, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_superMushroom, _dt);
 
 	if (get<0>(collisionResult) == true) {
 		_superMushroom->plusX(this->getVx() * get<1>(collisionResult));

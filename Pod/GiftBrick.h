@@ -6,6 +6,7 @@
 #include "SuperMushroom.h"
 #include "Grid.h"
 #include "GiftType.h"
+#include "SuperLeaf.h"
 
 class GiftBrick : public Component
 {
@@ -13,6 +14,7 @@ private:
 	GiftBrickState state = FULLGIFTBRICK;
 	Animation* boxAnimation, * coinAnimation, * pointAnimation;
 	SuperMushroom* superMushroom;
+	SuperLeaf* superLeaf;
 	GiftType giftType;
 
 	int beginBoxJumpUp, endBoxJumpUp;
@@ -31,7 +33,9 @@ public:
 
 	// Setter
 	void setSuperMushroomState(SuperMushroomState _state);
+	void setSuperLeafState(SuperLeafState _state);
 	void setState(GiftBrickState _state);
+	void setGiftType(GiftType _giftType);
 	void setGiftType(int _giftCode);
 
 	void Update(float _dt);

@@ -24,7 +24,7 @@ void GiftBrick::loadInfo(string line, char seperator)
 	this->beginBoxJumpUp = this->getY();
 
 	// Super mushroom
-	if (this->getGiftType() == SuperMushroomGift) {
+	if (this->getGiftType() == NotPoint) {
 		superMushroom = new SuperMushroom(this->getX(), this->getY(), v[6], v[7], v[8], v[9], v[10]);
 		return;
 	}
@@ -51,6 +51,11 @@ GiftType GiftBrick::getGiftType()
 void GiftBrick::setSuperMushroomState(SuperMushroomState _state)
 {
 	this->superMushroom->setState(_state);
+}
+
+void GiftBrick::setSuperLeafState(SuperLeafState _state)
+{
+	this->superLeaf->setState(_state);
 }
 
 void GiftBrick::setState(GiftBrickState _state)
@@ -87,10 +92,15 @@ void GiftBrick::setState(GiftBrickState _state)
 	}
 }
 
+void GiftBrick::setGiftType(GiftType _giftType)
+{
+	this->giftType = _giftType;
+}
+
 void GiftBrick::setGiftType(int _giftCode)
 {
 	if (_giftCode == 0) {
-		this->giftType = GiftType::SuperMushroomGift;
+		this->giftType = GiftType::NotPoint;
 	}
 	else {
 		this->giftType = GiftType::Point100Gift;

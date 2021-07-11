@@ -196,6 +196,12 @@
     <Filter Include="Source Files\System\AnimationCDPlayer\AnimationCD">
       <UniqueIdentifier>{23b21053-9c84-46a1-b1b5-3b0a03bf2537}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\Map\SuperLeaf">
+      <UniqueIdentifier>{78bb59d5-861b-4861-b69e-f48e905f8c8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Map\SuperLeaf">
+      <UniqueIdentifier>{e422f749-c16e-4580-8d9d-6e13a8401bdc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -311,6 +317,9 @@
     </ClCompile>
     <ClCompile Include="FlashLightCD.cpp">
       <Filter>Source Files\System\AnimationCDPlayer\AnimationCD</Filter>
+    </ClCompile>
+    <ClCompile Include="SuperLeaf.cpp">
+      <Filter>Source Files\Components\Map\SuperLeaf</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -460,6 +469,12 @@
     </ClInclude>
     <ClInclude Include="FlashLightCD.h">
       <Filter>Header Files\System\AnimationCDPlayer\AnimationCD</Filter>
+    </ClInclude>
+    <ClInclude Include="SuperLeafState.h">
+      <Filter>Header Files\System\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="SuperLeaf.h">
+      <Filter>Header Files\Components\Map\SuperLeaf</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

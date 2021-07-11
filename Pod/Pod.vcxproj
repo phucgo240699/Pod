@@ -183,6 +183,7 @@
     <ClCompile Include="Setting.cpp" />
     <ClCompile Include="SunnyMap.cpp" />
     <ClCompile Include="SunnyVC.cpp" />
+    <ClCompile Include="SuperLeaf.cpp" />
     <ClCompile Include="SuperMushroom.cpp" />
     <ClCompile Include="ViewController.cpp" />
     <ClCompile Include="WMario.cpp" />
@@ -231,6 +232,8 @@
     <ClInclude Include="Setting.h" />
     <ClInclude Include="SunnyMap.h" />
     <ClInclude Include="SunnyVC.h" />
+    <ClInclude Include="SuperLeaf.h" />
+    <ClInclude Include="SuperLeafState.h" />
     <ClInclude Include="SuperMushroom.h" />
     <ClInclude Include="SuperMushroomState.h" />
     <ClInclude Include="Tool.h" />

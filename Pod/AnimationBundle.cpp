@@ -294,6 +294,11 @@ Animation AnimationBundle::getFlashLight()
 	return this->animations->at(45);
 }
 
+Animation AnimationBundle::getSuperLeaf()
+{
+	return this->animations->at(46);
+}
+
 Animation AnimationBundle::getKoopaMoving()
 {
 	return this->animations->at(9);

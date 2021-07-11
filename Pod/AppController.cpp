@@ -140,15 +140,6 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		keyUps.push_back(KeyType::down);
 	}
 
-	// Right
-	if (KEY_DOWN(VK_RIGHT) == 1) {
-		keyDowns.push_back(KeyType::right);
-		hasKeyDown = true;
-	}
-	else {
-		keyUps.push_back(KeyType::right);
-	}
-
 	// Left
 	if (KEY_DOWN(VK_LEFT) == 1) {
 		keyDowns.push_back(KeyType::left);
@@ -156,6 +147,15 @@ void AppController::Handler_Keyboard(HWND hwnd)
 	}
 	else {
 		keyUps.push_back(KeyType::left);
+	}
+
+	// Right
+	if (KEY_DOWN(VK_RIGHT) == 1) {
+		keyDowns.push_back(KeyType::right);
+		hasKeyDown = true;
+	}
+	else {
+		keyUps.push_back(KeyType::right);
 	}
 
 	// SPACE

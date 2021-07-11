@@ -1,5 +1,5 @@
 #pragma once
 
 enum GiftType {
-	Point100Gift, SuperMushroomGift,
+	Point100Gift, NotPoint, SuperMushroomGift, SuperLeafGift
 };

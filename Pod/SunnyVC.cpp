@@ -760,7 +760,7 @@ void SunnyVC::adaptAnimation()
 	// Gift Bricks
 	for (int i = 0; i < this->giftBricks->size(); ++i) {
 		this->giftBricks->at(i)->setState(GiftBrickState::FULLGIFTBRICK);
-		if (this->giftBricks->at(i)->getGiftType() == SuperMushroomGift) { // Super Mushroom
+		if (this->giftBricks->at(i)->getGiftType() == NotPoint) { // Super Mushroom
 			this->giftBricks->at(i)->setSuperMushroomState(SuperMushroomState::SUPER_MUSHROOM_GROWING_UP);
 		}
 	}
