@@ -26,6 +26,7 @@ private:
 	vector<GoldenBrick*>* goldenBricks;
 
 	int beginSuperMushroomId, endSuperMushroomId;
+	int beginSuperLeafId, endSuperLeafId;
 	int beginGiftBrickId, endGiftBrickId;
 	vector<GiftBrick*>* giftBricks;
 

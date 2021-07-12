@@ -26,6 +26,7 @@ void GiftBrick::loadInfo(string line, char seperator)
 	// Super mushroom
 	if (this->getGiftType() == NotPoint) {
 		superMushroom = new SuperMushroom(this->getX(), this->getY(), v[6], v[7], v[8], v[9], v[10]);
+		superLeaf = new SuperLeaf(this->getX(), this->getY(), v[11], v[12], v[13], v[14], v[15]);
 		return;
 	}
 
@@ -70,7 +71,14 @@ void GiftBrick::setState(GiftBrickState _state)
 		break;
 	case POPUPGIFTBRICK:
 		if (this->getState() == FULLGIFTBRICK) {
-			delete boxAnimation;
+			
+			if (this->getGiftType() == SuperLeafGift) {
+				// add super leaf to grid
+				Grid::getInstance()->add(this->superLeaf);
+				Grid::getInstance()->updateCellOf(this->superLeaf);
+			}
+
+			//delete boxAnimation;
 			this->boxAnimation = new Animation(AnimationBundle::getInstance()->getEmptyGiftBrick());
 			if (this->getGiftType() == Point100Gift) {
 				this->coinAnimation = new Animation(AnimationBundle::getInstance()->getCoin());
@@ -82,8 +90,8 @@ void GiftBrick::setState(GiftBrickState _state)
 	case EMPTYGIFTBRICK:
 		if (this->getState() == POPUPGIFTBRICK) {
 			//this->boxAnimation = new Animation(AnimationBundle::getInstance()->getEmptyGiftBrick());
-			delete coinAnimation;
-			delete pointAnimation;
+			/*delete coinAnimation;
+			delete pointAnimation;*/
 			this->state = _state;
 		}
 		break;
@@ -112,7 +120,6 @@ void GiftBrick::Update(float _dt)
 	// Box
 	this->boxAnimation->Update(_dt);
 	if (this->getState() == POPUPGIFTBRICK) {
-
 		// Box
 		if (isBoxDropDown == false) {
 			if (this->getY() - 2 >= endBoxJumpUp) {
@@ -131,51 +138,55 @@ void GiftBrick::Update(float _dt)
 				if (this->getY() != beginBoxJumpUp) {
 					this->setY(beginBoxJumpUp);
 				}
-
-				if (this->getGiftType() == SuperMushroomGift) {
+				if (this->getGiftType() != Point100Gift) {
 					this->setState(GiftBrickState::EMPTYGIFTBRICK);
+				}
+				if (this->getGiftType() == SuperMushroomGift) {
 					Grid::getInstance()->add(this->superMushroom);
+					Grid::getInstance()->updateCellOf(this->superMushroom);
 					return;
 				}
 			}
 		}
 
-		if (this->getGiftType() == SuperMushroomGift) return;
+		if (this->getGiftType() == Point100Gift) {
 
-		// Coin
-		this->coinAnimation->Update(_dt);
+			// Coin
+			this->coinAnimation->Update(_dt);
 
-		if (isCoinDropDown == false) {
-			if (this->coinY - 4 >= endCoinJumpUp) {
-				this->coinY -= 4;
-			}
-			else {
-				isCoinDropDown = true;
-				this->coinY = endCoinJumpUp;
-			}
-		}
-		else {
-			if (this->coinY + 4 <= beginCoinJumpUp) {
-				this->coinY += 4;
-			}
-			else {
-				if (this->coinY != beginCoinJumpUp) {
-					this->coinY = beginCoinJumpUp;
+			if (isCoinDropDown == false) {
+				if (this->coinY - 2 >= endCoinJumpUp) {
+					this->coinY -= 2;
 				}
-				this->isPointsStartPopUp = true;
-			}
-		}
-
-		// Point
-		if (isPointsStartPopUp) {
-			if (this->pointY - 2 >= this->endCoinJumpUp) {
-				this->pointY -= 2;
+				else {
+					isCoinDropDown = true;
+					this->coinY = endCoinJumpUp;
+				}
 			}
 			else {
-				isPointsStartPopUp = false;
-				this->pointY = endCoinJumpUp;
-				this->setState(GiftBrickState::EMPTYGIFTBRICK);
+				if (this->coinY + 2 <= beginCoinJumpUp) {
+					this->coinY += 2;
+				}
+				else {
+					if (this->coinY != beginCoinJumpUp) {
+						this->coinY = beginCoinJumpUp;
+					}
+					this->isPointsStartPopUp = true;
+				}
 			}
+
+			// Point
+			if (isPointsStartPopUp) {
+				if (this->pointY - 2 >= this->endCoinJumpUp) {
+					this->pointY -= 2;
+				}
+				else {
+					isPointsStartPopUp = false;
+					this->pointY = endCoinJumpUp;
+					this->setState(GiftBrickState::EMPTYGIFTBRICK);
+				}
+			}
+
 		}
 	}
 }

@@ -13,14 +13,25 @@ private:
 	Animation* animation;
 	SuperLeafState state;
 
+	float originVx, originVy;
+
+	// Popping
+	float limitPoppingUp;
+
+	// Dropping
+	bool isFlip = false;
+	float leftX, rightX, topY;
+
 public:
 	// Init
 	SuperLeaf(float _x, float _y, float _width, float _height, float _vx, float _vy, int _id);
 
 	// Getter
+	bool getIsFlip();
 	SuperLeafState getState();
 
 	// Setter
+	void setIsFlip(bool _isFlip);
 	void setAnimation(Animation* _animation);
 	void setState(SuperLeafState _state);
 

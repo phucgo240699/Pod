@@ -4,8 +4,8 @@
 Component::Component(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id)
 {
 	this->position = D3DXVECTOR3(_x, _y, 0);
-	this->vx = round(_vx);
-	this->vy = round(_vy);
+	this->vx = _vx;
+	this->vy = _vy;
 	this->limitX = _limitX;
 	this->limitY = _limitY;
 	this->id = _id;
@@ -14,8 +14,8 @@ Component::Component(float _x, float _y, float _vx, float _vy, float _limitX, fl
 Component::Component(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _limitY, int _id)
 {
 	this->position = _position;
-	this->vx = round(_vx);
-	this->vy = round(_vy);
+	this->vx = _vx;
+	this->vy = _vy;
 	this->limitX = _limitX;
 	this->limitY = _limitY;
 	this->id = _id;

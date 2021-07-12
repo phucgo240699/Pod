@@ -106,6 +106,11 @@ bool Mario::getIsFireMode()
 	return this->isFireMode;
 }
 
+bool Mario::getIsCloudMode()
+{
+	return this->isCloudMode;
+}
+
 void Mario::loadInfo(string line, char seperator)
 {
 	vector<string> v = Tool::splitToVectorStringFrom(line, seperator);
@@ -574,6 +579,11 @@ void Mario::setIsFireMode(bool _isFireMode)
 	this->isFireMode = _isFireMode;
 }
 
+void Mario::setIsCloudMode(bool _isCloudMode)
+{
+	this->isCloudMode = _isCloudMode;
+}
+
 void Mario::Update(float _dt)
 {
 	if (currentAnimation == NULL) {
@@ -1035,6 +1045,9 @@ void Mario::handleGiftBrickCollision(GiftBrick* _giftBrick, float _dt)
 						if (this->getIsSuperMode() == false) {
 							_giftBrick->setGiftType(GiftType::SuperMushroomGift);
 						}
+						else {
+							_giftBrick->setGiftType(GiftType::SuperLeafGift);
+						}
 					}
 					_giftBrick->setState(GiftBrickState::POPUPGIFTBRICK);
 					if (_giftBrick->getGiftType() == Point100Gift) {
@@ -1117,7 +1130,8 @@ void Mario::handleGreenPipeCollision(GreenPipe* _greenPipe, float _dt)
 void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 {
 	if (_goomba->getState() == TRAMPLED_GOOMBA
-		|| _goomba->getState() == DEAD_GOOMBA) {
+		|| _goomba->getState() == DEAD_GOOMBA
+		|| this->getIsFlashMode()) {
 		return;
 	}
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_goomba, _dt);
@@ -1159,13 +1173,16 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 
 void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 {
+	if (this->getIsFlashMode()) {
+		return;
+	}
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_koopa, _dt);
 
 	if (get<0>(collisionResult) == true) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
 		if (edge == leftEdge) {
 			if (_koopa->getState() == KOOPA_SHRINKAGE || _koopa->getState() == KOOPA_SHRINKAGE_SHAKING) {
-				_koopa->plusX(this->getVx() * _dt - 2);
+				_koopa->plusX(this->getVx() * _dt - (this->getWidth() / 2));
 				_koopa->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
 				//this->plusX(get<1>(collisionResult) * this->getVx());
 			}
@@ -1181,7 +1198,7 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 		}
 		else if (edge == rightEdge) {
 			if (_koopa->getState() == KOOPA_SHRINKAGE || _koopa->getState() == KOOPA_SHRINKAGE_SHAKING) {
-				_koopa->plusX(this->getVx() * _dt + 2);
+				_koopa->plusX((this->getVx() * _dt) + (this->getWidth() / 2));
 				_koopa->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
 				//this->plusX(get<1>(collisionResult) * this->getVx());
 			}
@@ -1233,11 +1250,12 @@ void Mario::handleSuperMushroomCollision(SuperMushroom* _superMushroom, float _d
 {
 	if (_superMushroom->getState() == SUPER_MUSHROOM_BEING_EARNED
 	||_superMushroom->getState() == SUPER_MUSHROOM_DISAPPEARED
-	|| this->getState() == SCALING_UP) return;
+	|| this->getState() == SCALING_UP
+	|| this->getIsFlashMode()) return;
 
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_superMushroom, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_superMushroom, _dt);
 
-	if (get<0>(collisionResult) == true) {
+	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_superMushroom->getBounds())) {
 		_superMushroom->plusX(this->getVx() * get<1>(collisionResult));
 		_superMushroom->plusY(this->getVy() * get<1>(collisionResult));
 		_superMushroom->setState(SuperMushroomState::SUPER_MUSHROOM_BEING_EARNED);

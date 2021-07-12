@@ -131,7 +131,15 @@ void SunnyVC::viewWillUpdate(float _dt)
 				}
 
 				// SuperMushroom
-				else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= beginSuperMushroomId) {
+				else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= endSuperMushroomId) {
+					(*itr)->Update(_dt);
+
+					// update which cell in grid that it's belongs to
+					Grid::getInstance()->updateCellOf(*itr);
+				}
+
+				// SuperLeaf
+				else if (beginSuperLeafId <= (*itr)->getId() && (*itr)->getId() <= endSuperLeafId) {
 					(*itr)->Update(_dt);
 
 					// update which cell in grid that it's belongs to
@@ -193,8 +201,7 @@ void SunnyVC::viewDidUpdate(float _dt)
 		|| this->mario->getState() == DIE_JUMPING
 		|| this->mario->getState() == DIE_DROPPING
 		|| this->mario->getState() == SCALING_UP
-		|| this->mario->getState() == SCALING_DOWN
-		|| this->mario->getIsFlashMode())
+		|| this->mario->getState() == SCALING_DOWN)
 	{
 		return;
 	}
@@ -244,6 +251,16 @@ void SunnyVC::viewDidUpdate(float _dt)
 					static_cast<SuperMushroom*>(*itr)->handleMarioCollision(this->mario, _dt);
 
 					// Super Mushroom collide to others
+					int beginRowSuperMushroom = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int endRowSuperMushroom = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int beginColSuperMushroom = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int endColSuperMushroom = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+
+					beginRowSuperMushroom = beginRowSuperMushroom < 0 ? 0 : beginRowSuperMushroom;
+					endRowSuperMushroom = endRowSuperMushroom > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowSuperMushroom;
+					beginColSuperMushroom = beginColSuperMushroom < 0 ? 0 : beginColSuperMushroom;
+					endColSuperMushroom = endColSuperMushroom > Grid::getInstance()->getTotalCols() ? Grid::getInstance()->getTotalCols() : endColSuperMushroom;
+
 					for (int r = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); r < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++r) {
 						for (int c = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); c < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++c) {
 							unordered_set<Component*> superMushroomCell = Grid::getInstance()->getCell(r, c);
@@ -350,10 +367,10 @@ void SunnyVC::viewDidUpdate(float _dt)
 					static_cast<Koopa*>(*itr)->handleMarioCollision(this->mario, _dt);
 
 					// Koopa to others
-					int beginRowKoopa = floor(((*itr)->getY() - (Camera::getInstance()->getHeight())) / Grid::getInstance()->getCellHeight());
-					int endRowKoopa = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight())) / Grid::getInstance()->getCellHeight());
-					int beginColKoopa = floor(((*itr)->getX() - (Camera::getInstance()->getWidth())) / Grid::getInstance()->getCellWidth());
-					int endColKoopa = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth())) / Grid::getInstance()->getCellWidth());
+					int beginRowKoopa = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int endRowKoopa = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int beginColKoopa = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int endColKoopa = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
 
 					beginRowKoopa = beginRowKoopa < 0 ? 0 : beginRowKoopa;
 					endRowKoopa = endRowKoopa > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowKoopa;
@@ -431,7 +448,12 @@ void SunnyVC::viewWillRender()
 					}
 
 					// Super Mushroom
-					else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= beginSuperMushroomId) {
+					else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= endSuperMushroomId) {
+						(*itr)->Draw(map->getTexture());
+					}
+
+					// SuperLeaf
+					else if (beginSuperLeafId <= (*itr)->getId() && (*itr)->getId() <= endSuperLeafId) {
 						(*itr)->Draw(map->getTexture());
 					}
 
@@ -509,20 +531,25 @@ void SunnyVC::adaptRangeID(vector<string> data, char seperator)
 		}
 		else if (i == 4) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
+			this->beginSuperLeafId = v[0];
+			this->endSuperLeafId = v[1];
+		}
+		else if (i == 5) {
+			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginGiftBrickId = v[0];
 			this->endGiftBrickId = v[1];
 		}
-		else if (i == 5) {
+		else if (i == 6) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginGreenPipeId = v[0];
 			this->endGreenPipeId = v[1];
 		}
-		else if (i == 6) {
+		else if (i == 7) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginGoombaId = v[0];
 			this->endGoombaId = v[1];
 		}
-		else if (i == 7) {
+		else if (i == 8) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginKoopaId = v[0];
 			this->endKoopaId = v[1];
@@ -762,6 +789,7 @@ void SunnyVC::adaptAnimation()
 		this->giftBricks->at(i)->setState(GiftBrickState::FULLGIFTBRICK);
 		if (this->giftBricks->at(i)->getGiftType() == NotPoint) { // Super Mushroom
 			this->giftBricks->at(i)->setSuperMushroomState(SuperMushroomState::SUPER_MUSHROOM_GROWING_UP);
+			this->giftBricks->at(i)->setSuperLeafState(SuperLeafState::SUPER_LEAF_POPPING_UP);
 		}
 	}
 
