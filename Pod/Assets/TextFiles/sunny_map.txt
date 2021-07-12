@@ -593,7 +593,7 @@
 
 # Super Mario Converting
 66,29,11,22,64,23,16,28
-> 28 0 4
+> 28 0 0
 
 # Mario Fire Standing
 67,69,10,13,64,66,16,16
@@ -656,7 +656,8 @@
 
 # Super Mario Fire Converting
 66,89,11,22,64,83,16,28
-> 39 0 4
+> 39 0 0
+
 
 
 # Green Koopa Moving
@@ -734,8 +735,29 @@
 102,186,16,16
 > 46 0 0
 
+
+
 # Super Mario Flying Standing
+141,0,24,30
+> 47 0 0
 
+# Super Mario Flying Running
+165,0,24,30
+189,0,24,30
+165,0,24,30
+141,0,24,30
+> 48 0 3
 
+# Super Mario Flying Jumping
+213,0,24,30
+> 49 0 0
+
+# Super Mario Flying Dropping
+237,0,24,30
+> 50 0 0
+
+# Super Mario Flying Converting
+261,0,24,30
+> 50 0 0
 
 </AnimationBundle>
