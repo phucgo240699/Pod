@@ -936,11 +936,11 @@ void Mario::handleGroundCollision(Ground* _ground, float _dt)
 				this->setY(_ground->getY() - this->getHeight() - Setting::getInstance()->getCollisionSafeSpace());
 				this->setIsStandOnSurface(true);
 			}
-			else if (edge == leftEdge) {
+			else if (edge == leftEdge && this->getY() + this->getHeight() != _ground->getY()) {
 				this->setX(_ground->getX() + _ground->getWidth());
 				this->setSubState(MarioSubState::PUSHING);
 			}
-			else if (edge == rightEdge) {
+			else if (edge == rightEdge && this->getY() + this->getHeight() != _ground->getY()) {
 				this->setX(_ground->getX() - this->getWidth());
 				this->setSubState(MarioSubState::PUSHING);
 			}
@@ -1005,11 +1005,11 @@ void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 				this->setY(_goldenBrick->getY() - this->getHeight() - Setting::getInstance()->getCollisionSafeSpace());
 				this->setIsStandOnSurface(true);
 			}
-			else if (edge == leftEdge) {
+			else if (edge == leftEdge && this->getY() + this->getHeight() != _goldenBrick->getY()) {
 				this->setX(_goldenBrick->getX() + _goldenBrick->getWidth());
 				this->setSubState(MarioSubState::PUSHING);
 			}
-			else if (edge == rightEdge) {
+			else if (edge == rightEdge && this->getY() + this->getHeight() != _goldenBrick->getY()) {
 				this->setX(_goldenBrick->getX() - this->getWidth());
 				this->setSubState(MarioSubState::PUSHING);
 			}
@@ -1061,11 +1061,11 @@ void Mario::handleGiftBrickCollision(GiftBrick* _giftBrick, float _dt)
 				this->setY(_giftBrick->getY() - this->getHeight() - Setting::getInstance()->getCollisionSafeSpace());
 				this->setIsStandOnSurface(true);
 			}
-			else if (edge == leftEdge/* && (this->getState() == JUMPING || this->getState() == DROPPING) */) {
+			else if (edge == leftEdge && this->getY() + this->getHeight() != _giftBrick->getY()/* && (this->getState() == JUMPING || this->getState() == DROPPING) */) {
 				this->setX(_giftBrick->getX() + this->getWidth());
 				this->setSubState(MarioSubState::PUSHING);
 			}
-			else if (edge == rightEdge/* && (this->getState() == JUMPING || this->getState() == DROPPING)*/) {
+			else if (edge == rightEdge && this->getY() + this->getHeight() != _giftBrick->getY()/* && (this->getState() == JUMPING || this->getState() == DROPPING)*/) {
 				this->setX(_giftBrick->getX() - this->getWidth());
 				this->setSubState(MarioSubState::PUSHING);
 			}
@@ -1102,11 +1102,11 @@ void Mario::handleGreenPipeCollision(GreenPipe* _greenPipe, float _dt)
 				this->setY(_greenPipe->getY() - this->getHeight() - Setting::getInstance()->getCollisionSafeSpace());
 				this->setIsStandOnSurface(true);
 			}
-			else if (edge == leftEdge) {
+			else if (edge == leftEdge && this->getY() + this->getHeight() != _greenPipe->getY()) {
 				this->setX(_greenPipe->getX() + _greenPipe->getWidth());
 				this->setSubState(MarioSubState::PUSHING);
 			}
-			else if (edge == rightEdge) {
+			else if (edge == rightEdge && this->getY() + this->getHeight() != _greenPipe->getY()) {
 				this->setX(_greenPipe->getX() - this->getWidth());
 				this->setSubState(MarioSubState::PUSHING);
 			}
