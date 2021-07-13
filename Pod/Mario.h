@@ -45,6 +45,12 @@ private:
 	int pointCoef = 0;
 	int countDownFlash = 512;
 
+	// Bounds vs Frame
+	int leftSpace, topSpace;
+	int marioLeftSpace, marioTopSpace;
+	int superMarioLeftSpace, superMarioTopSpace;
+
+
 public:
 	// Init
 	Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state);
@@ -79,6 +85,13 @@ public:
 	// Point
 	int getPointCoef();
 
+	// Bounds vs Frame
+	int getLeftSpace();
+	int getTopSpace();
+	int getMarioLeftSpace();
+	int getMarioTopSpace();
+	int getSuperMarioLeftSpace();
+	int getSuperMarioTopSpace();
 
 
 	//
@@ -106,6 +119,15 @@ public:
 	// Point
 	void increasePointCoef(); // this method will add pointCoeft to 1.
 	void resetPointCoef(); // this method will set pointCoef to 0.
+
+	// Bounds vs Frame
+	void setLeftSpace(int _space);
+	void setTopSpace(int _space);
+	void setMarioLeftSpace(int _space);
+	void setMarioTopSpace(int _space);
+	void setSuperMarioLeftSpace(int _space);
+	void setSuperMarioTopSpace(int _space);
+
 
 	// Update & Draw
 	void updateVelocity();

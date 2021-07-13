@@ -69,8 +69,8 @@
 </MapIndexes>
 
 <MarioInfo>
-#(x,y,limitX,limitY,state)
-96,400,2816,470,STANDING
+#(x,y,limitX,limitY,leftSpace,topSpace,marioLeftSpace,marioTopSpace,superMarioLeftSpace,superMarioTopSpace)
+96,400,2816,470,4,3,4,3,3,5
 </MarioInfo>
 
 <Grounds>
@@ -532,38 +532,38 @@
 > 17 0 0
 
 # Mario Standing
-67,9,10,13,64,6,16,16
+68,9,10,13,64,6,16,16
 > 18 0 0
 
 # Mario Running
-67,9,10,13,64,6,16,16
-2,3,10,13,0,0,16,16
+68,9,10,13,64,6,16,16
+4,3,10,13,0,0,16,16
 > 19 0 3
 
 # Mario: Jumping & Dropping
-19,3,10,13,16,0,16,16
+20,3,10,13,16,0,16,16
 > 20 0 0
 
 # Mario: Die & Die Jumping & Die Dropping
 # anim delay is referenced
-32,0,16,16
+36,3,10,13,32,0,16,16
 > 21 0 20
 
 # Mario Converting
-50,3,10,13,48,0,16,16
+52,3,10,13,48,0,16,16
 > 22 0 0
 
 # Super Mario Standing
-2,29,11,22,0,23,16,28
+3,28,12,23,0,23,16,28
 > 23 0 0
 
 # Super Mario Running
-18,29,11,22,16,23,16,28
-34,28,11,22,32,23,16,28
+19,28,12,23,16,23,16,28
+35,28,12,23,32,23,16,28
 > 24 0 3
 
 # Super Mario Dropping & Jumping
-50,28,11,22,48,23,16,28
+51,28,12,23,48,23,16,28
 > 25 0 0
 
 # Mario Scaling Up
@@ -592,41 +592,41 @@
 > 27 0 8
 
 # Super Mario Converting
-66,29,11,22,64,23,16,28
+67,28,12,23,64,23,16,28
 > 28 0 0
 
 # Mario Fire Standing
-67,69,10,13,64,66,16,16
+68,69,10,13,64,66,16,16
 > 29 0 0
 
 # Mario Fire Running
-67,69,10,13,64,66,16,16
-2,63,10,13,0,60,16,16
+68,69,10,13,64,66,16,16
+4,63,10,13,0,60,16,16
 > 30 0 3
 
 # Mario Fire Dropping * Jumping
-19,63,10,13,16,60,16,16
+20,63,10,13,16,60,16,16
 > 31 0 0
 
 # Mario Fire: Die & Die Jumping & Die Dropping
-32,60,16,16
+36,63,10,13,32,60,16,16
 > 32 0 20
 
 # Mario Fire Converting
-50,63,10,13,48,60,16,16
+52,63,10,13,48,60,16,16
 > 33 0 0
 
 # Super Mario Fire Standing
-2,89,11,22,0,83,16,28
+3,88,12,23,0,83,16,28
 > 34 0 0
 
 # Super Mario Fire Running
-18,89,11,22,16,83,16,28
-34,89,11,22,32,83,16,28
+19,88,12,23,16,83,16,28
+35,88,12,23,32,83,16,28
 > 35 0 3
 
 # Super Mario Fire Dropping & Jumping
-50,89,11,22,48,83,16,28
+51,88,12,23,48,83,16,28
 > 36 0 0
 
 # Mario Fire Scaling Up
@@ -655,7 +655,7 @@
 > 38 0 8
 
 # Super Mario Fire Converting
-66,89,11,22,64,83,16,28
+67,88,12,23,64,83,16,28
 > 39 0 0
 
 

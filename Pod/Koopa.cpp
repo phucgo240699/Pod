@@ -429,7 +429,7 @@ void Koopa::Draw(LPDIRECT3DTEXTURE9 _texture)
 
 void Koopa::handleHardComponentCollision(Component* _component, float _dt)
 {
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_component, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_component, _dt);
 	if (get<0>(collisionResult) == true) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
 		if (edge == bottomEdge) {
@@ -500,7 +500,7 @@ void Koopa::handleHardComponentCollision(Component* _component, float _dt)
 void Koopa::handleBlockCollision(Component* _block, float _dt)
 {
 	//if (this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT || this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
-		tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_block, _dt);
+		tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_block, _dt);
 		if (get<0>(collisionResult) == true) {
 			CollisionEdge edge = get<2>(collisionResult)[0];
 			if (edge == bottomEdge) {
@@ -624,7 +624,7 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 				ScoreBoard::getInstance()->plusPoint(this->getDefaultPoint() * this->getPointCoef());
 
 				if (this->getState() == KOOPA_SHRINKAGE) {
-					float centerMario = _mario->getX() + _mario->getWidth() / 2;
+					float centerMario = _mario->getX() + _mario->getBoundsWidth() / 2;
 					float centerKoopa = this->getX() + this->getWidth() / 2;
 					if (centerMario >= centerKoopa) {
 						this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
