@@ -113,6 +113,11 @@ void Animation::DrawWithoutCamera(LPDIRECT3DTEXTURE9 _texture, D3DXVECTOR3 _posi
 	Drawing::getInstance()->drawWithoutCamera(_texture, this->getCurrentFrame(), NULL, _position, _translation, _isFlip, _color);
 }
 
+void Animation::DrawMarioWithoutCamera(LPDIRECT3DTEXTURE9 _texture, D3DXVECTOR3 _position, D3DXVECTOR2 _translation, int _leftSpace, int _topSpace, int _rightSpace, bool _isFlip, D3DCOLOR _color)
+{
+	Drawing::getInstance()->drawMarioWithoutCamera(_texture, this->getCurrentFrame(), NULL, _position, _translation, _leftSpace, _topSpace, _rightSpace, _isFlip, _color);
+}
+
 void Animation::DrawWithoutCamera(LPDIRECT3DTEXTURE9 _texture, RECT _srcRect, D3DXVECTOR3 _position)
 {
 	Drawing::getInstance()->drawWithoutCamera(_texture, _srcRect, _position);

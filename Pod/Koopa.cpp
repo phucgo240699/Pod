@@ -615,7 +615,7 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 				_mario->setState(MarioState::DIE);
 			}
 			else if (edge == topEdge && _mario->getState() == DROPPING) { // _mario->getState() == DROPPING: for prevenet conflict check collide from mario and from koopa
-				_mario->plusY(get<1>(collisionResult) * _mario->getVy());
+				_mario->plusY(get<1>(collisionResult) * _mario->getVy() + this->getHeight() / 4);
 				_mario->setState(MarioState::JUMPING);
 
 				// Calculate points

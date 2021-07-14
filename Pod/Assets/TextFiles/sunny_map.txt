@@ -69,8 +69,11 @@
 </MapIndexes>
 
 <MarioInfo>
-#(x,y,limitX,limitY,leftSpace,topSpace,marioLeftSpace,marioTopSpace,superMarioLeftSpace,superMarioTopSpace)
-96,400,2816,470,4,3,4,3,3,5
+#(x, y, limitX, limitY, leftSpace, topSpace, rightSpace,
+# marioLeftSpace, marioTopSpace, marioRightSpace,
+# superMarioLeftSpace, superMarioTopSpace, superMarioRightSpace,
+# superMarioFlyingLeftSpace, superMarioFlyingTopSpace, superMarioFlyingRightSpace)
+96,400,2816,470,4,3,2,4,3,2,3,5,1,10,6,1
 </MarioInfo>
 
 <Grounds>
@@ -768,7 +771,7 @@
 > 51 0 0
 
 # Super Mario Flying Converting
-272,6,13,24,261,0,24,30
+271,6,13,24,261,0,24,30
 > 52 0 0
 
 
@@ -792,7 +795,7 @@
 > 56 0 0
 
 # Super Mario Flying Fire Converting
-272,75,13,24,261,69,24,30
+271,75,13,24,261,69,24,30
 > 57 0 0
 
 

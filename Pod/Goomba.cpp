@@ -348,7 +348,7 @@ void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 			}
 			else if (edge == topEdge && _mario->getState() == DROPPING) {
 				_mario->setState(MarioState::JUMPING);
-				_mario->plusY(get<1>(collisionResult) * _mario->getVy());
+				_mario->plusY(get<1>(collisionResult) * _mario->getVy() + this->getHeight() / 4);
 				this->setState(GoombaState::TRAMPLED_GOOMBA);
 
 				// Calculate points

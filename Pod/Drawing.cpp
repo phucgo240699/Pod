@@ -103,6 +103,35 @@ void Drawing::drawWithoutCamera(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXV
 	spriteHandler->SetTransform(&oldMatrix);
 }
 
+void Drawing::drawMarioWithoutCamera(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXVECTOR3* _center, D3DXVECTOR3 _position, D3DXVECTOR2 _translation, int _leftSpace, int _topSpace, int _rightSpace, bool _isFlip, D3DCOLOR _color)
+{
+	D3DXVECTOR2 scalePoint;
+	D3DXMATRIX matrix;
+	D3DXMATRIX oldMatrix;
+	if (_isFlip) {
+		float width = _srcRect.right - _srcRect.left;
+		float height = _srcRect.bottom - _srcRect.top;
+		scalePoint = D3DXVECTOR2(round(_position.x + width / 2), round(_position.y + height / 2));
+		_translation.x -= _rightSpace;
+		_translation.y -= _topSpace;
+		D3DXMatrixTransformation2D(&matrix, &scalePoint, 0, &scaleReverse, &rotationCenter, 0, &_translation);
+	}
+	else {
+		scalePoint = D3DXVECTOR2(0, 0);
+		_translation.x -= _leftSpace;
+		_translation.y -= _topSpace;
+		D3DXMatrixTransformation2D(&matrix, &scalePoint, 0, &scale, &rotationCenter, 0, &_translation);
+	}
+
+	_position.x = round(_position.x);
+	_position.y = round(_position.y);
+
+	spriteHandler->GetTransform(&oldMatrix);
+	spriteHandler->SetTransform(&matrix);
+	spriteHandler->Draw(texture, &_srcRect, _center, &_position, _color);
+	spriteHandler->SetTransform(&oldMatrix);
+}
+
 void Drawing::drawWithoutCamera(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXVECTOR3* _center, D3DXVECTOR3 _position, D3DCOLOR _color)
 {
 	_position.x = round(_position.x);

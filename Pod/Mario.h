@@ -45,9 +45,10 @@ private:
 	int countDownFlash = 512;
 
 	// Bounds vs Frame
-	int leftSpace, topSpace;
-	int marioLeftSpace, marioTopSpace;
-	int superMarioLeftSpace, superMarioTopSpace;
+	int leftSpace, topSpace, rightSpace;
+	int marioLeftSpace, marioTopSpace, marioRightSpace;
+	int superMarioLeftSpace, superMarioTopSpace, superMarioRightSpace;
+	int superMarioFlyingLeftSpace, superMarioFlyingTopSpace, superMarioFlyingRightSpace;
 
 
 public:
@@ -88,10 +89,16 @@ public:
 	// Bounds vs Frame
 	int getLeftSpace();
 	int getTopSpace();
+	int getRightSpace();
 	int getMarioLeftSpace();
 	int getMarioTopSpace();
+	int getMarioRightSpace();
 	int getSuperMarioLeftSpace();
 	int getSuperMarioTopSpace();
+	int getSuperMarioRightSpace();
+	int getSuperMarioFlyingLeftSpace();
+	int getSuperMarioFlyingTopSpace();
+	int getSuperMarioFlyingRightSpace();
 
 
 	//
@@ -116,6 +123,7 @@ public:
 	void setIsFireMode(bool _isFireMode);
 	void setIsCloudMode(bool _isCloudMode);
 	void setIsFlyingMode(bool _isFlyingMode);
+	void toggleFlyingMode();
 
 
 	// Point
@@ -125,10 +133,16 @@ public:
 	// Bounds vs Frame
 	void setLeftSpace(int _space);
 	void setTopSpace(int _space);
+	void setRightSpace(int _space);
 	void setMarioLeftSpace(int _space);
 	void setMarioTopSpace(int _space);
+	void setMarioRightSpace(int _space);
 	void setSuperMarioLeftSpace(int _space);
 	void setSuperMarioTopSpace(int _space);
+	void setSuperMarioRightSpace(int _space);
+	void setSuperMarioFlyingLeftSpace(int _space);
+	void setSuperMarioFlyingTopSpace(int _space);
+	void setSuperMarioFlyingRightSpace(int _space);
 
 
 	// Update & Draw

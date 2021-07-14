@@ -105,6 +105,11 @@ int Mario::getTopSpace()
 	return this->topSpace;
 }
 
+int Mario::getRightSpace()
+{
+	return this->rightSpace;
+}
+
 int Mario::getMarioLeftSpace()
 {
 	return this->marioLeftSpace;
@@ -115,6 +120,11 @@ int Mario::getMarioTopSpace()
 	return this->marioTopSpace;
 }
 
+int Mario::getMarioRightSpace()
+{
+	return this->marioRightSpace;
+}
+
 int Mario::getSuperMarioLeftSpace()
 {
 	return this->superMarioLeftSpace;
@@ -123,6 +133,26 @@ int Mario::getSuperMarioLeftSpace()
 int Mario::getSuperMarioTopSpace()
 {
 	return this->superMarioTopSpace;
+}
+
+int Mario::getSuperMarioRightSpace()
+{
+	return this->superMarioRightSpace;
+}
+
+int Mario::getSuperMarioFlyingLeftSpace()
+{
+	return this->superMarioFlyingLeftSpace;
+}
+
+int Mario::getSuperMarioFlyingTopSpace()
+{
+	return this->superMarioFlyingTopSpace;
+}
+
+int Mario::getSuperMarioFlyingRightSpace()
+{
+	return this->superMarioFlyingRightSpace;
 }
 
 bool Mario::getIsFlashMode()
@@ -154,10 +184,16 @@ void Mario::loadInfo(string line, char seperator)
 	this->setLimitY(stof(v[3]));
 	this->setLeftSpace(stof(v[4]));
 	this->setTopSpace(stof(v[5]));
-	this->setMarioLeftSpace(stof(v[6]));
-	this->setMarioTopSpace(stof(v[7]));
-	this->setSuperMarioLeftSpace(stof(v[8]));
-	this->setSuperMarioTopSpace(stof(v[9]));
+	this->setRightSpace(stof(v[6]));
+	this->setMarioLeftSpace(stof(v[7]));
+	this->setMarioTopSpace(stof(v[8]));
+	this->setMarioRightSpace(stof(v[9]));
+	this->setSuperMarioLeftSpace(stof(v[10]));
+	this->setSuperMarioTopSpace(stof(v[11]));
+	this->setSuperMarioRightSpace(stof(v[12]));
+	this->setSuperMarioFlyingLeftSpace(stof(v[13]));
+	this->setSuperMarioFlyingTopSpace(stof(v[14]));
+	this->setSuperMarioFlyingRightSpace(stof(v[15]));
 	//this->setState(Tool::getMarioStateFromString(v[4]));
 }
 
@@ -179,7 +215,7 @@ void Mario::setState(MarioState _state)
 	}
 	
 	if (this->getState() == TRANSFERING_TO_FLY) {
-		this->setIsFlyingMode(true);
+		this->toggleFlyingMode();
 	}
 
 	switch (_state)
@@ -367,7 +403,11 @@ void Mario::setState(MarioState _state)
 
 	case DIE:
 	{
-		if (this->getIsSuperMode()) {
+		if (this->getIsFlyingMode()) {
+			this->setState(MarioState::TRANSFERING_TO_FLY);
+			return;
+		}
+		else if (this->getIsSuperMode()) {
 			this->setState(MarioState::SCALING_DOWN);
 			return;
 		}
@@ -493,10 +533,24 @@ void Mario::setState(MarioState _state)
 	if (this->getState() == SCALING_DOWN) {
 		this->setLeftSpace(this->getMarioLeftSpace());
 		this->setTopSpace(this->getMarioTopSpace());
+		this->setRightSpace(this->getMarioRightSpace());
 	}
 	else if (this->getState() == SCALING_UP) {
 		this->setLeftSpace(this->getSuperMarioLeftSpace());
 		this->setTopSpace(this->getSuperMarioTopSpace());
+		this->setRightSpace(this->getSuperMarioRightSpace());
+	}
+	else if (this->getState() == TRANSFERING_TO_FLY) {
+		if (this->getIsFlyingMode()) {
+			this->setLeftSpace(this->getSuperMarioFlyingLeftSpace());
+			this->setTopSpace(this->getSuperMarioFlyingTopSpace());
+			this->setRightSpace(this->getSuperMarioFlyingRightSpace());
+		}
+		else {
+			this->setLeftSpace(this->getSuperMarioLeftSpace());
+			this->setTopSpace(this->getSuperMarioTopSpace());
+			this->setRightSpace(this->getSuperMarioRightSpace());
+		}
 	}
 
 	this->state = _state;
@@ -706,6 +760,11 @@ void Mario::setIsFlyingMode(bool _isFlyingMode)
 	this->isFlyingMode = _isFlyingMode;
 }
 
+void Mario::toggleFlyingMode()
+{
+	this->isFlyingMode = !(this->isFlyingMode);
+}
+
 void Mario::Update(float _dt)
 {
 	if (currentAnimation == NULL) {
@@ -789,10 +848,12 @@ void Mario::Draw()
 
 	// Draw mario
 	if (this->getState() == SCALING_DOWN || this->getIsFlashMode()) {
-		this->currentAnimation->DrawWithoutCamera(this->texture, this->getPosition(), D3DXVECTOR2(translateX - this->getLeftSpace(), translateY - this->getTopSpace()), this->getIsFlip(), (this->countDownFlash % 4 == 0 ? D3DCOLOR_ARGB(128, 255, 255, 255) : D3DCOLOR_XRGB(255, 255, 255)));
+		this->currentAnimation->DrawMarioWithoutCamera(this->texture, this->getPosition(), D3DXVECTOR2(translateX, translateY), this->getLeftSpace(), this->getTopSpace(), this->getRightSpace(), this->getIsFlip(), (this->countDownFlash % 4 == 0 ? D3DCOLOR_ARGB(128, 255, 255, 255) : D3DCOLOR_XRGB(255, 255, 255)));
+		//this->currentAnimation->DrawWithoutCamera(this->texture, this->getPosition(), D3DXVECTOR2(translateX - transX, translateY - this->getTopSpace()), this->getIsFlip(), (this->countDownFlash % 4 == 0 ? D3DCOLOR_ARGB(128, 255, 255, 255) : D3DCOLOR_XRGB(255, 255, 255)));
 	}
 	else {
-		this->currentAnimation->DrawWithoutCamera(this->texture, this->getPosition(), D3DXVECTOR2(translateX - this->getLeftSpace(), translateY - this->getTopSpace()), this->getIsFlip(), D3DCOLOR_XRGB(255, 255, 255));
+		this->currentAnimation->DrawMarioWithoutCamera(this->texture, this->getPosition(), D3DXVECTOR2(translateX, translateY), this->getLeftSpace(), this->getTopSpace(), this->getRightSpace(), this->getIsFlip());
+		//this->currentAnimation->DrawWithoutCamera(this->texture, this->getPosition(), D3DXVECTOR2(translateX - transX, translateY - this->getTopSpace()), this->getIsFlip(), D3DCOLOR_XRGB(255, 255, 255));
 	}
 
 	// Draw debug box
@@ -908,6 +969,11 @@ void Mario::setTopSpace(int _space)
 	this->topSpace = _space;
 }
 
+void Mario::setRightSpace(int _space)
+{
+	this->rightSpace = _space;
+}
+
 void Mario::setMarioLeftSpace(int _space)
 {
 	this->marioLeftSpace = _space;
@@ -918,6 +984,11 @@ void Mario::setMarioTopSpace(int _space)
 	this->marioTopSpace = _space;
 }
 
+void Mario::setMarioRightSpace(int _space)
+{
+	this->marioRightSpace = _space;
+}
+
 void Mario::setSuperMarioLeftSpace(int _space)
 {
 	this->superMarioLeftSpace = _space;
@@ -926,6 +997,26 @@ void Mario::setSuperMarioLeftSpace(int _space)
 void Mario::setSuperMarioTopSpace(int _space)
 {
 	this->superMarioTopSpace = _space;
+}
+
+void Mario::setSuperMarioRightSpace(int _space)
+{
+	this->superMarioRightSpace = _space;
+}
+
+void Mario::setSuperMarioFlyingLeftSpace(int _space)
+{
+	this->superMarioFlyingLeftSpace = _space;
+}
+
+void Mario::setSuperMarioFlyingTopSpace(int _space)
+{
+	this->superMarioFlyingTopSpace = _space;
+}
+
+void Mario::setSuperMarioFlyingRightSpace(int _space)
+{
+	this->superMarioFlyingRightSpace = _space;
 }
 
 void Mario::onKeyUp()
@@ -1222,7 +1313,7 @@ void Mario::handleGiftBrickCollision(GiftBrick* _giftBrick, float _dt)
 				this->setIsStandOnSurface(true);
 			}
 			else if (edge == leftEdge && this->getY() + this->getBoundsHeight() != _giftBrick->getY()/* && (this->getState() == JUMPING || this->getState() == DROPPING) */) {
-				this->setX(_giftBrick->getX() + this->getBoundsWidth());
+				this->setX(_giftBrick->getX() + _giftBrick->getWidth());
 				this->setSubState(MarioSubState::PUSHING);
 			}
 			else if (edge == rightEdge && this->getY() + this->getBoundsHeight() != _giftBrick->getY()/* && (this->getState() == JUMPING || this->getState() == DROPPING)*/) {
@@ -1298,7 +1389,7 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 	if (get<0>(collisionResult) == true) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
 		if (edge == bottomEdge && this->getState() == DROPPING) {
-			this->plusY(get<1>(collisionResult) * this->getVy());
+			this->plusY(get<1>(collisionResult) * this->getVy() + _goomba->getHeight() / 4);
 			this->setState(MarioState::JUMPING);
 			_goomba->setState(GoombaState::TRAMPLED_GOOMBA);
 
@@ -1378,7 +1469,7 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 			this->setState(MarioState::DIE);
 		}
 		else if (edge == bottomEdge && this->getState() == DROPPING) {
-			this->plusY(get<1>(collisionResult) * this->getVy());
+			this->plusY(get<1>(collisionResult) * this->getVy() + _koopa->getHeight() / 4);
 			this->setState(MarioState::JUMPING);
 
 			// Calculate points
