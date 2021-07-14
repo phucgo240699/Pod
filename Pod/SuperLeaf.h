@@ -6,6 +6,7 @@
 #include "SuperLeafState.h"
 #include "AnimationBundle.h"
 
+class Mario;
 
 class SuperLeaf : public Component
 {
@@ -37,6 +38,9 @@ public:
 
 	void Update(float _dt);
 	void Draw(LPDIRECT3DTEXTURE9 _texture);
+
+	// Collision
+	void handleMarioCollision(Mario* _mario, float _dt);
 };
 
 #endif // !SUPERLEAF_H

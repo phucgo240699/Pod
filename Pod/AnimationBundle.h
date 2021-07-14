@@ -81,5 +81,18 @@ public:
 	Animation getThrownAwayGoomba();
 	Animation getFlashLight();
 	Animation getSuperLeaf();
+	Animation getCloudEffect();
+
+	Animation getSuperMarioFlyingStanding();
+	Animation getSuperMarioFlyingWalking();
+	Animation getSuperMarioFlyingJumping();
+	Animation getSuperMarioFlyingDropping();
+	Animation getSuperMarioFlyingConverting();
+
+	Animation getSuperMarioFlyingFireStanding();
+	Animation getSuperMarioFlyingFireWalking();
+	Animation getSuperMarioFlyingFireJumping();
+	Animation getSuperMarioFlyingFireDropping();
+	Animation getSuperMarioFlyingFireConverting();
 };
 

@@ -1,5 +1,4 @@
 #include "Mario.h"
-#include "Goomba.h"
 
 Mario::Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state) : MainCharacter(_x, _y, _vx, _vy, _limitX, _limitY)
 {
@@ -141,6 +140,11 @@ bool Mario::getIsCloudMode()
 	return this->isCloudMode;
 }
 
+bool Mario::getIsFlyingMode()
+{
+	return this->isFlyingMode;
+}
+
 void Mario::loadInfo(string line, char seperator)
 {
 	vector<string> v = Tool::splitToVectorStringFrom(line, seperator);
@@ -173,6 +177,10 @@ void Mario::setState(MarioState _state)
 		this->oldFrameWidth = this->currentAnimation->getCurrentFrameWidth();
 		this->oldFrameHeight = this->currentAnimation->getCurrentFrameHeight();
 	}
+	
+	if (this->getState() == TRANSFERING_TO_FLY) {
+		this->setIsFlyingMode(true);
+	}
 
 	switch (_state)
 	{
@@ -184,7 +192,16 @@ void Mario::setState(MarioState _state)
 				return;
 			}
 			delete currentAnimation;
-			if (this->getIsSuperMode()) {
+
+			if (this->getIsFlyingMode()) {
+				if (this->getIsFireMode()) {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingFireStanding());
+				}
+				else {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingStanding());
+				}
+			}
+			else if (this->getIsSuperMode()) {
 				if (this->getIsFireMode()) {
 					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireStanding());
 				}
@@ -200,6 +217,7 @@ void Mario::setState(MarioState _state)
 					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioStanding());
 				}
 			}
+
 			this->setIsReduceWalking(false);
 			this->resetPointCoef();
 			this->setTargetVx(0);
@@ -216,7 +234,26 @@ void Mario::setState(MarioState _state)
 	case WALKING:
 	{
 		delete currentAnimation;
-		if (this->getIsSuperMode()) {
+
+		if (this->getIsFlyingMode()) {
+			if (this->getIsConverting()) {
+				if (this->getIsFireMode()) {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingFireConverting());
+				}
+				else {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingConverting());
+				}
+			}
+			else {
+				if (this->getIsFireMode()) {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingFireWalking());
+				}
+				else {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingWalking());
+				}
+			}
+		}
+		else if (this->getIsSuperMode()) {
 			if (this->getIsConverting()) {
 				if (this->getIsFireMode()) {
 					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireConverting());
@@ -262,14 +299,23 @@ void Mario::setState(MarioState _state)
 	{
 		if (this->getState() != DROPPING) {
 			delete currentAnimation;
-			if (this->getIsSuperMode()) {
+
+			if (this->getIsFlyingMode()) {
 				if (this->getIsFireMode()) {
-					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireJumping());
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingFireJumping());
 				}
 				else {
-					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioJumping());
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingJumping());
 				}
 			}
+			else if (this->getIsSuperMode()) {
+					if (this->getIsFireMode()) {
+						this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireJumping());
+					}
+					else {
+						this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioJumping());
+					}
+				}
 			else {
 				if (this->getIsFireMode()) {
 					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioFireJumping());
@@ -289,7 +335,15 @@ void Mario::setState(MarioState _state)
 	{
 		if (this->getState() != JUMPING) {
 			delete currentAnimation;
-			if (this->getIsSuperMode()) {
+			if (this->getIsFlyingMode()) {
+				if (this->getIsFireMode()) {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingFireDropping());
+				}
+				else {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingDropping());
+				}
+			}
+			else if (this->getIsSuperMode()) {
 				if (this->getIsFireMode()) {
 					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireDropping());
 				}
@@ -383,9 +437,9 @@ void Mario::setState(MarioState _state)
 	{
 		delete currentAnimation;
 		// Store old state to pressureState variable
-		this->setIsSuperMode(false);
 		this->setPressureState(MarioState(this->getState()));
 
+		this->setIsSuperMode(false);
 		if (this->getIsFireMode()) {
 			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioFireScalingDown());
 		}
@@ -394,6 +448,24 @@ void Mario::setState(MarioState _state)
 		}
 
 		this->countDownFlash = this->getCurrentAnimation()->getTotalFrames() * 26;
+
+		this->setTargetVx(0);
+		this->setTargetVy(0);
+		this->setAccelerationX(0);
+		this->setAccelerationY(0);
+		this->setVx(0);
+		this->setVy(0);
+		break;
+	}
+
+	case TRANSFERING_TO_FLY:
+	{
+		delete currentAnimation;
+
+		// Store old state to pressureState variable
+		this->setPressureState(MarioState(this->getState()));
+
+		this->currentAnimation = new Animation(AnimationBundle::getInstance()->getCloudEffect());
 
 		this->setTargetVx(0);
 		this->setTargetVy(0);
@@ -629,6 +701,11 @@ void Mario::setIsCloudMode(bool _isCloudMode)
 	this->isCloudMode = _isCloudMode;
 }
 
+void Mario::setIsFlyingMode(bool _isFlyingMode)
+{
+	this->isFlyingMode = _isFlyingMode;
+}
+
 void Mario::Update(float _dt)
 {
 	if (currentAnimation == NULL) {
@@ -659,6 +736,13 @@ void Mario::Update(float _dt)
 		if (this->countDownFlash <= 0) {
 			this->setIsFlashMode(false);
 			//this->countDownFlash = this->getCurrentAnimation()->getTotalFrames() * 16;
+		}
+	}
+
+	else if (this->getState() == TRANSFERING_TO_FLY) {
+		if (this->currentAnimation->getCurrentIndexFrame() >= this->currentAnimation->getTotalFrames() - 1
+			&& this->currentAnimation->getAnimCount() >= this->currentAnimation->getAnimDelay()) {
+			this->setState(this->getPressureState());
 		}
 	}
 
@@ -1112,15 +1196,13 @@ void Mario::handleGiftBrickCollision(GiftBrick* _giftBrick, float _dt)
 		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == topEdge) {
-				this->setState(MarioState::DROPPING);
-				this->setY(_giftBrick->getY() + _giftBrick->getHeight());
-				this->setVy(0);
 				if (_giftBrick->getState() == FULLGIFTBRICK) {
 					if (_giftBrick->getGiftType() == NotPoint) {
 						if (this->getIsSuperMode() == false) {
 							_giftBrick->setGiftType(GiftType::SuperMushroomGift);
 						}
 						else {
+							_giftBrick->plusY(this->getVy() * _dt + (_giftBrick->getHeight() / 2));
 							_giftBrick->setGiftType(GiftType::SuperLeafGift);
 						}
 					}
@@ -1130,6 +1212,9 @@ void Mario::handleGiftBrickCollision(GiftBrick* _giftBrick, float _dt)
 						ScoreBoard::getInstance()->plusPoint(100);
 					}
 				}
+				this->setState(MarioState::DROPPING);
+				this->setY(_giftBrick->getY() + _giftBrick->getHeight());
+				this->setVy(0);
 			}
 			else if (edge == bottomEdge) {
 				this->setState(MarioState::STANDING);
@@ -1204,11 +1289,11 @@ void Mario::handleGreenPipeCollision(GreenPipe* _greenPipe, float _dt)
 
 void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 {
-	if (_goomba->getState() == TRAMPLED_GOOMBA
-		|| _goomba->getState() == DEAD_GOOMBA
-		|| this->getIsFlashMode()) {
-		return;
-	}
+	//if (_goomba->getState() == TRAMPLED_GOOMBA
+	//	|| _goomba->getState() == DEAD_GOOMBA
+	//	|| this->getIsFlashMode()) {
+	//	return;
+	//}
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_goomba, _dt);
 	if (get<0>(collisionResult) == true) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
@@ -1248,9 +1333,9 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 
 void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 {
-	if (this->getIsFlashMode()) {
-		return;
-	}
+	//if (this->getIsFlashMode()) {
+	//	return;
+	//}
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_koopa, _dt);
 
 	if (get<0>(collisionResult) == true) {
@@ -1323,10 +1408,10 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 
 void Mario::handleSuperMushroomCollision(SuperMushroom* _superMushroom, float _dt)
 {
-	if (_superMushroom->getState() == SUPER_MUSHROOM_BEING_EARNED
-	||_superMushroom->getState() == SUPER_MUSHROOM_DISAPPEARED
-	|| this->getState() == SCALING_UP
-	|| this->getIsFlashMode()) return;
+	//if (_superMushroom->getState() == SUPER_MUSHROOM_BEING_EARNED
+	//||_superMushroom->getState() == SUPER_MUSHROOM_DISAPPEARED
+	//|| this->getState() == SCALING_UP
+	//|| this->getIsFlashMode()) return;
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_superMushroom, _dt);
 
@@ -1337,6 +1422,21 @@ void Mario::handleSuperMushroomCollision(SuperMushroom* _superMushroom, float _d
 		this->plusX(this->getVx() * get<1>(collisionResult));
 		this->plusY(this->getVy() * get<1>(collisionResult));
 		this->setState(MarioState::SCALING_UP);
+		ScoreBoard::getInstance()->plusPoint(1000);
+	}
+}
+
+void Mario::handleSuperLeafCollision(SuperLeaf* _superLeaf, float _dt)
+{
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_superLeaf, _dt);
+
+	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_superLeaf->getBounds())) {
+		_superLeaf->plusX(_superLeaf->getVx() * get<1>(collisionResult));
+		_superLeaf->plusY(_superLeaf->getVy() * get<1>(collisionResult));
+		_superLeaf->setState(SuperLeafState::SUPER_LEAF_BEING_EARNED);
+		this->plusX(this->getVx() * get<1>(collisionResult));
+		this->plusY(this->getVy() * get<1>(collisionResult));
+		this->setState(MarioState::TRANSFERING_TO_FLY);
 		ScoreBoard::getInstance()->plusPoint(1000);
 	}
 }

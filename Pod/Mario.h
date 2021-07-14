@@ -11,15 +11,14 @@
 #include "GoldenBrick.h"
 #include "GiftBrick.h"
 #include "ScoreBoard.h"
-//#include "Goomba.h"
+#include "Goomba.h"
 #include "Koopa.h"
 #include "Block.h"
 #include "GreenPipe.h"
+#include "SuperLeaf.h"
 #include <unordered_map>
 
 using namespace std;
-
-class Goomba; // Say Mario exists without defining it.
 
 class Mario : public MainCharacter
 {
@@ -35,7 +34,7 @@ private:
 	bool isFlip; // false: Left side - true: Right side. Default is false
 
 	// Mode
-	bool isSuperMode = false, isFlashMode = false, debugMode = true, isFireMode = false, isCloudMode = false;
+	bool isSuperMode = false, isFlashMode = false, debugMode = true, isFireMode = false, isCloudMode = false, isFlyingMode = false;
 
 	// Validate Animation
 	int oldFrameHeight, oldFrameWidth;
@@ -81,6 +80,7 @@ public:
 	bool getIsFlashMode();
 	bool getIsFireMode();
 	bool getIsCloudMode();
+	bool getIsFlyingMode();
 
 	// Point
 	int getPointCoef();
@@ -115,6 +115,8 @@ public:
 	void turnOffFireSkin(MarioState _state);
 	void setIsFireMode(bool _isFireMode);
 	void setIsCloudMode(bool _isCloudMode);
+	void setIsFlyingMode(bool _isFlyingMode);
+
 
 	// Point
 	void increasePointCoef(); // this method will add pointCoeft to 1.
@@ -152,6 +154,7 @@ public:
 	void handleGoombaCollision(Goomba* _goomba, float _dt);
 	void handleKoopaCollision(Koopa* _koopa, float _dt);
 	void handleSuperMushroomCollision(SuperMushroom* _superMushroom, float _dt);
+	void handleSuperLeafCollision(SuperLeaf* _superLeaf, float _dt);
 };
 
 #endif // !MARIO_H

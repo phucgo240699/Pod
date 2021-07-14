@@ -68,7 +68,8 @@ void SunnyVC::viewReceiveKeyUp()
 		|| this->mario->getState() == DIE_JUMPING
 		|| this->mario->getState() == DIE_DROPPING
 		|| this->mario->getState() == SCALING_UP
-		|| this->mario->getState() == SCALING_DOWN) {
+		|| this->mario->getState() == SCALING_DOWN
+		|| this->mario->getState() == TRANSFERING_TO_FLY) {
 		return;
 	}
 	mario->onKeyUp();
@@ -80,7 +81,8 @@ void SunnyVC::viewReceiveKeyUp(vector<KeyType> _keyTypes)
 		|| this->mario->getState() == DIE_JUMPING
 		|| this->mario->getState() == DIE_DROPPING
 		|| this->mario->getState() == SCALING_UP
-		|| this->mario->getState() == SCALING_DOWN) {
+		|| this->mario->getState() == SCALING_DOWN
+		|| this->mario->getState() == TRANSFERING_TO_FLY) {
 		return;
 	}
 	mario->onKeyUp(_keyTypes);
@@ -92,7 +94,8 @@ void SunnyVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 		|| this->mario->getState() == DIE_JUMPING
 		|| this->mario->getState() == DIE_DROPPING
 		|| this->mario->getState() == SCALING_UP
-		|| this->mario->getState() == SCALING_DOWN) {
+		|| this->mario->getState() == SCALING_DOWN
+		|| this->mario->getState() == TRANSFERING_TO_FLY) {
 		return;
 	}
 	mario->onKeyDown(_keyTypes);
@@ -156,7 +159,8 @@ void SunnyVC::viewWillUpdate(float _dt)
 					|| this->mario->getState() == DIE_JUMPING
 					|| this->mario->getState() == DIE_DROPPING
 					|| this->mario->getState() == SCALING_UP
-					|| this->mario->getState() == SCALING_DOWN) {
+					|| this->mario->getState() == SCALING_DOWN
+					|| this->mario->getState() == TRANSFERING_TO_FLY) {
 					continue;
 				}
 
@@ -201,7 +205,8 @@ void SunnyVC::viewDidUpdate(float _dt)
 		|| this->mario->getState() == DIE_JUMPING
 		|| this->mario->getState() == DIE_DROPPING
 		|| this->mario->getState() == SCALING_UP
-		|| this->mario->getState() == SCALING_DOWN)
+		|| this->mario->getState() == SCALING_DOWN
+		|| this->mario->getState() == TRANSFERING_TO_FLY)
 	{
 		return;
 	}
@@ -239,6 +244,27 @@ void SunnyVC::viewDidUpdate(float _dt)
 					this->mario->handleGoldenBrickCollision(static_cast<GoldenBrick*>(*itr), _dt);
 				}
 
+				// Gift Brick
+				else if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
+					this->mario->handleGiftBrickCollision(static_cast<GiftBrick*>(*itr), _dt);
+				}
+
+				// Green Pipe
+				else if (beginGreenPipeId <= (*itr)->getId() && (*itr)->getId() <= endGreenPipeId) {
+					this->mario->handleGreenPipeCollision(static_cast<GreenPipe*>(*itr), _dt);
+				}
+
+				if (this->mario->getState() == DIE
+					|| this->mario->getState() == DIE_JUMPING
+					|| this->mario->getState() == DIE_DROPPING
+					|| this->mario->getState() == SCALING_UP
+					|| this->mario->getState() == SCALING_DOWN
+					|| this->mario->getState() == TRANSFERING_TO_FLY
+					|| this->mario->getIsFlashMode())
+				{
+					return;
+				}
+
 				// Super Mushroom
 				else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= endSuperMushroomId) {
 					if (static_cast<SuperMushroom*>(*itr)->getState() == SUPER_MUSHROOM_DISAPPEARED) {
@@ -268,9 +294,9 @@ void SunnyVC::viewDidUpdate(float _dt)
 							for (superMushroomItr = superMushroomCell.begin(); superMushroomItr != superMushroomCell.end(); ++superMushroomItr) {
 								// Ground, GoldenBrick, GiftBrick, GreenPipe
 								if ((beginGroundId <= (*superMushroomItr)->getId() && (*superMushroomItr)->getId() <= endGroundId)
-								|| (beginGoldenBrickId <= (*superMushroomItr)->getId() && (*superMushroomItr)->getId() <= endGoldenBrickId)
-								|| (beginGiftBrickId <= (*superMushroomItr)->getId() && (*superMushroomItr)->getId() <= endGiftBrickId)
-								|| (beginGreenPipeId <= (*superMushroomItr)->getId() && (*superMushroomItr)->getId() <= endGreenPipeId)) {
+									|| (beginGoldenBrickId <= (*superMushroomItr)->getId() && (*superMushroomItr)->getId() <= endGoldenBrickId)
+									|| (beginGiftBrickId <= (*superMushroomItr)->getId() && (*superMushroomItr)->getId() <= endGiftBrickId)
+									|| (beginGreenPipeId <= (*superMushroomItr)->getId() && (*superMushroomItr)->getId() <= endGreenPipeId)) {
 									static_cast<SuperMushroom*>(*itr)->handleHardComponentCollision(*superMushroomItr, _dt);
 								}
 								else if (beginBlockId <= (*superMushroomItr)->getId() && (*superMushroomItr)->getId() <= endBlockId) {
@@ -290,14 +316,16 @@ void SunnyVC::viewDidUpdate(float _dt)
 					}
 				}
 
-				// Gift Brick
-				else if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
-					this->mario->handleGiftBrickCollision(static_cast<GiftBrick*>(*itr), _dt);
-				}
+				// Super Leaf
+				else if (beginSuperLeafId <= (*itr)->getId() && (*itr)->getId() <= endSuperLeafId) {
+					if (static_cast<SuperLeaf*>(*itr)->getState() == SUPER_LEAF_BEING_EARNED) {
+						Grid::getInstance()->remove(*itr, i, j);
+						break;
+					}
 
-				// Green Pipe
-				else if (beginGreenPipeId <= (*itr)->getId() && (*itr)->getId() <= endGreenPipeId) {
-					this->mario->handleGreenPipeCollision(static_cast<GreenPipe*>(*itr), _dt);
+					// Mario vs SuperLeaf
+					this->mario->handleSuperLeafCollision(static_cast<SuperLeaf*>(*itr), _dt);
+					static_cast<SuperLeaf*>(*itr)->handleMarioCollision(this->mario, _dt);
 				}
 
 				// Goombas
@@ -352,6 +380,16 @@ void SunnyVC::viewDidUpdate(float _dt)
 						static_cast<Goomba*>(*itr)->setState(GoombaState::GOOMBA_DROPPING_RIGHT);
 						return;
 					}
+				}
+
+				if (this->mario->getState() == DIE
+					|| this->mario->getState() == DIE_JUMPING
+					|| this->mario->getState() == DIE_DROPPING
+					|| this->mario->getState() == SCALING_UP
+					|| this->mario->getState() == SCALING_DOWN
+					|| this->mario->getIsFlashMode())
+				{
+					return;
 				}
 
 				// Koopas

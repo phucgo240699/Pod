@@ -316,11 +316,11 @@ void Goomba::handleKoopaCollision(Koopa* _koopa, float _dt)
 
 void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 {
-	if (this->getState() == TRAMPLED_GOOMBA
-		|| this->getState() == DEAD_GOOMBA
-		|| _mario->getIsFlashMode()) {
-		return;
-	}
+	//if (this->getState() == TRAMPLED_GOOMBA
+	//	|| this->getState() == DEAD_GOOMBA
+	//	|| _mario->getIsFlashMode()) {
+	//	return;
+	//}
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
 	if (get<0>(collisionResult) == true) {
 		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {

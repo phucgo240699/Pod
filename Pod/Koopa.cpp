@@ -572,9 +572,9 @@ void Koopa::handleGoombaCollision(Goomba* _goomba, float _dt)
 
 void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 {
-	if (_mario->getIsFlashMode()) {
-		return;
-	}
+	//if (_mario->getIsFlashMode()) {
+	//	return;
+	//}
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
 	if (get<0>(collisionResult) == true) {
 			CollisionEdge edge = get<2>(collisionResult)[0];

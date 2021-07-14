@@ -1,4 +1,5 @@
 #include "SuperLeaf.h"
+#include "Mario.h"
 
 SuperLeaf::SuperLeaf(float _x, float _y, float _width, float _height, float _vx, float _vy, int _id) : Component(_x, _y, _vx, _vy, 0, 0, _id)
 {
@@ -42,7 +43,7 @@ void SuperLeaf::setState(SuperLeafState _state)
 			this->animation = new Animation(AnimationBundle::getInstance()->getSuperLeaf());
 		}
 		this->setVx(0);
-		this->setVy(-abs(originVy));
+		this->setVy(-2 * abs(originVy));
 		break;
 	case SUPER_LEAF_DROPPING:
 		if (animation == NULL) {
@@ -108,4 +109,19 @@ void SuperLeaf::Update(float _dt)
 void SuperLeaf::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
 	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), this->getPosition(), this->getIsFlip());
+}
+
+void SuperLeaf::handleMarioCollision(Mario* _mario, float _dt)
+{
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
+
+	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_mario->getBounds())) {
+		this->plusX(this->getVx() * get<1>(collisionResult));
+		this->plusY(this->getVy() * get<1>(collisionResult));
+		this->setState(SuperLeafState::SUPER_LEAF_BEING_EARNED);
+		_mario->plusX(_mario->getVx() * get<1>(collisionResult));
+		_mario->plusY(_mario->getVy() * get<1>(collisionResult));
+		_mario->setState(MarioState::TRANSFERING_TO_FLY);
+		ScoreBoard::getInstance()->plusPoint(1000);
+	}
 }

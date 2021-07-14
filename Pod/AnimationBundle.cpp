@@ -299,6 +299,61 @@ Animation AnimationBundle::getSuperLeaf()
 	return this->animations->at(46);
 }
 
+Animation AnimationBundle::getCloudEffect()
+{
+	return this->animations->at(47);
+}
+
+Animation AnimationBundle::getSuperMarioFlyingStanding()
+{
+	return this->animations->at(48);
+}
+
+Animation AnimationBundle::getSuperMarioFlyingFireStanding()
+{
+	return this->animations->at(53);
+}
+
+Animation AnimationBundle::getSuperMarioFlyingFireWalking()
+{
+	return this->animations->at(54);
+}
+
+Animation AnimationBundle::getSuperMarioFlyingFireJumping()
+{
+	return this->animations->at(55);
+}
+
+Animation AnimationBundle::getSuperMarioFlyingFireDropping()
+{
+	return this->animations->at(56);
+}
+
+Animation AnimationBundle::getSuperMarioFlyingFireConverting()
+{
+	return this->animations->at(57);
+}
+
+Animation AnimationBundle::getSuperMarioFlyingWalking()
+{
+	return this->animations->at(49);
+}
+
+Animation AnimationBundle::getSuperMarioFlyingJumping()
+{
+	return this->animations->at(50);
+}
+
+Animation AnimationBundle::getSuperMarioFlyingDropping()
+{
+	return this->animations->at(51);
+}
+
+Animation AnimationBundle::getSuperMarioFlyingConverting()
+{
+	return this->animations->at(52);
+}
+
 Animation AnimationBundle::getKoopaMoving()
 {
 	return this->animations->at(9);

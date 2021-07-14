@@ -155,8 +155,8 @@ void GiftBrick::Update(float _dt)
 			this->coinAnimation->Update(_dt);
 
 			if (isCoinDropDown == false) {
-				if (this->coinY - 2 >= endCoinJumpUp) {
-					this->coinY -= 2;
+				if (this->coinY - 3 >= endCoinJumpUp) {
+					this->coinY -= 3;
 				}
 				else {
 					isCoinDropDown = true;
@@ -164,8 +164,8 @@ void GiftBrick::Update(float _dt)
 				}
 			}
 			else {
-				if (this->coinY + 2 <= beginCoinJumpUp) {
-					this->coinY += 2;
+				if (this->coinY + 3 <= beginCoinJumpUp) {
+					this->coinY += 3;
 				}
 				else {
 					if (this->coinY != beginCoinJumpUp) {
