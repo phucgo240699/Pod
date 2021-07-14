@@ -429,7 +429,7 @@ void Koopa::Draw(LPDIRECT3DTEXTURE9 _texture)
 
 void Koopa::handleHardComponentCollision(Component* _component, float _dt)
 {
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_component, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_component, _dt);
 	if (get<0>(collisionResult) == true) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
 		if (edge == bottomEdge) {
@@ -497,10 +497,114 @@ void Koopa::handleHardComponentCollision(Component* _component, float _dt)
 	}
 }
 
+void Koopa::handleGiftBrickCollision(GiftBrick* _giftBrick, Mario* _mario, float _dt)
+{
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_giftBrick, _dt);
+	if (get<0>(collisionResult) == true) {
+		CollisionEdge edge = get<2>(collisionResult)[0];
+		if (edge == bottomEdge) {
+			this->setIsStandOnSurface(true);
+			this->leftAnchor = _giftBrick->getX();
+			this->rightAnchor = _giftBrick->getX() + _giftBrick->getWidth();
+
+			if (this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT) {
+				this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
+			}
+			else if (this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
+				this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
+			}
+			else if (this->getState() == KOOPA_DROPPING_LEFT) {
+				this->setState(KoopaState::KOOPA_MOVING_LEFT);
+			}
+			else if (this->getState() == KOOPA_DROPPING_RIGHT) {
+				this->setState(KoopaState::KOOPA_MOVING_RIGHT);
+			}
+
+			this->setY(_giftBrick->getY() - this->getHeight());
+		}
+		else if (edge == leftEdge) {
+			if (this->getState() == KOOPA_MOVING_LEFT) {
+				this->setState(KoopaState::KOOPA_MOVING_RIGHT);
+			}
+			else if (this->getState() == KOOPA_SHRINKAGE_MOVING_LEFT) {
+				this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
+			}
+			else if (this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT) {
+				this->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_RIGHT);
+			}
+			this->plusX(get<1>(collisionResult) * this->getVx());
+
+			if (_giftBrick->getState() == FULLGIFTBRICK) {
+				if (_giftBrick->getGiftType() == NotPoint) {
+					if (_mario->getIsSuperMode() == false) {
+						_giftBrick->setGiftType(GiftType::SuperMushroomGift);
+					}
+					else {
+						_giftBrick->plusY(_mario->getVy() * _dt + (_giftBrick->getHeight() / 2));
+						_giftBrick->setGiftType(GiftType::SuperLeafGift);
+					}
+				}
+				_giftBrick->setState(GiftBrickState::POPUPGIFTBRICK);
+				if (_giftBrick->getGiftType() == Point100Gift) {
+					ScoreBoard::getInstance()->plusCoin(1);
+					ScoreBoard::getInstance()->plusPoint(100);
+				}
+			}
+		}
+		else if (edge == rightEdge) {
+			if (this->getState() == KOOPA_MOVING_RIGHT) {
+				this->setState(KoopaState::KOOPA_MOVING_LEFT);
+			}
+			else if (this->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT) {
+				this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
+			}
+			else if (this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
+				this->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_LEFT);
+			}
+			this->plusX(get<1>(collisionResult) * this->getVx());
+
+			if (_giftBrick->getState() == FULLGIFTBRICK) {
+				if (_giftBrick->getGiftType() == NotPoint) {
+					if (_mario->getIsSuperMode() == false) {
+						_giftBrick->setGiftType(GiftType::SuperMushroomGift);
+					}
+					else {
+						_giftBrick->plusY(_mario->getVy() * _dt + (_giftBrick->getHeight() / 2));
+						_giftBrick->setGiftType(GiftType::SuperLeafGift);
+					}
+				}
+				_giftBrick->setState(GiftBrickState::POPUPGIFTBRICK);
+				if (_giftBrick->getGiftType() == Point100Gift) {
+					ScoreBoard::getInstance()->plusCoin(1);
+					ScoreBoard::getInstance()->plusPoint(100);
+				}
+			}
+		}
+	}
+	else {
+		// if supermushroom walk out of ground's top surface, it will drop
+		if (this->getState() == KOOPA_SHRINKAGE_MOVING_LEFT
+			|| this->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT
+			|| this->getState() == KOOPA_MOVING_LEFT
+			|| this->getState() == KOOPA_MOVING_RIGHT) {
+			if (this->getIsStandOnSurface() == false) {
+				if ((_giftBrick->getX() <= this->getX() + this->getWidth() && this->getX() + this->getWidth() <= _giftBrick->getX() + _giftBrick->getWidth())
+					|| (_giftBrick->getX() <= this->getX() && this->getX() <= _giftBrick->getX() + _giftBrick->getWidth())) { // this is check which ground that mario is standing on
+					if (this->getY() + this->getHeight() == _giftBrick->getY()) {
+						this->setIsStandOnSurface(true);
+						this->leftAnchor = _giftBrick->getX();
+						this->rightAnchor = _giftBrick->getX() + _giftBrick->getWidth();
+					}
+				}
+			}
+		}
+	}
+}
+
 void Koopa::handleBlockCollision(Component* _block, float _dt)
 {
 	//if (this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT || this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
-		tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_block, _dt);
+		tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_block, _dt);
 		if (get<0>(collisionResult) == true) {
 			CollisionEdge edge = get<2>(collisionResult)[0];
 			if (edge == bottomEdge) {
@@ -547,7 +651,7 @@ void Koopa::handleGoombaCollision(Goomba* _goomba, float _dt)
 		|| _goomba->getState() == DEAD_GOOMBA) {
 		return;
 	}
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_goomba, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_goomba, _dt);
 	if (get<0>(collisionResult) == true) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
 		if (edge == leftEdge || edge == rightEdge) {

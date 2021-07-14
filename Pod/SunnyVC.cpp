@@ -262,7 +262,7 @@ void SunnyVC::viewDidUpdate(float _dt)
 					|| this->mario->getState() == TRANSFERING_TO_FLY
 					|| this->mario->getIsFlashMode())
 				{
-					return;
+					continue;
 				}
 
 				// Super Mushroom
@@ -316,6 +316,16 @@ void SunnyVC::viewDidUpdate(float _dt)
 					}
 				}
 
+				if (this->mario->getState() == DIE
+					|| this->mario->getState() == DIE_JUMPING
+					|| this->mario->getState() == DIE_DROPPING
+					|| this->mario->getState() == SCALING_UP
+					|| this->mario->getState() == SCALING_DOWN
+					|| this->mario->getIsFlashMode())
+				{
+					continue;
+				}
+
 				// Super Leaf
 				else if (beginSuperLeafId <= (*itr)->getId() && (*itr)->getId() <= endSuperLeafId) {
 					if (static_cast<SuperLeaf*>(*itr)->getState() == SUPER_LEAF_BEING_EARNED) {
@@ -326,6 +336,16 @@ void SunnyVC::viewDidUpdate(float _dt)
 					// Mario vs SuperLeaf
 					this->mario->handleSuperLeafCollision(static_cast<SuperLeaf*>(*itr), _dt);
 					static_cast<SuperLeaf*>(*itr)->handleMarioCollision(this->mario, _dt);
+				}
+
+				if (this->mario->getState() == DIE
+					|| this->mario->getState() == DIE_JUMPING
+					|| this->mario->getState() == DIE_DROPPING
+					|| this->mario->getState() == SCALING_UP
+					|| this->mario->getState() == SCALING_DOWN
+					|| this->mario->getIsFlashMode())
+				{
+					continue;
 				}
 
 				// Goombas
@@ -389,7 +409,7 @@ void SunnyVC::viewDidUpdate(float _dt)
 					|| this->mario->getState() == SCALING_DOWN
 					|| this->mario->getIsFlashMode())
 				{
-					return;
+					continue;
 				}
 
 				// Koopas
@@ -422,9 +442,11 @@ void SunnyVC::viewDidUpdate(float _dt)
 							for (koopaItr = koopaCell.begin(); koopaItr != koopaCell.end(); ++koopaItr) {
 								if ((beginGroundId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGroundId)
 									|| (beginGoldenBrickId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGoldenBrickId)
-									|| (beginGiftBrickId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGiftBrickId)
 									|| (beginGreenPipeId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGreenPipeId)) {
 									static_cast<Koopa*>(*itr)->handleHardComponentCollision(*koopaItr, _dt);
+								}
+								else if (beginGiftBrickId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGiftBrickId) {
+									static_cast<Koopa*>(*itr)->handleGiftBrickCollision(static_cast<GiftBrick*>(*itr), this->mario, _dt);
 								}
 								else if (beginBlockId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endBlockId) {
 									static_cast<Koopa*>(*itr)->handleBlockCollision(*koopaItr, _dt);

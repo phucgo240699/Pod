@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "Grid.h"
 #include "AnimationCDPlayer.h"
+#include "GiftBrick.h"
 
 
 class Mario; // Say Goomba exists without defining it.
@@ -61,6 +62,7 @@ public:
 
 	// Collision
 	void handleHardComponentCollision(Component* _component, float _dt);
+	void handleGiftBrickCollision(GiftBrick* _giftBrick, Mario* _mario, float _dt);
 	void handleBlockCollision(Component* _block, float _dt);
 	void handleGoombaCollision(Goomba* _goomba, float _dt);
 	void handleMarioCollision(Mario* _mario, float _dt);

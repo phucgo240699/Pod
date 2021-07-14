@@ -227,10 +227,8 @@ void SuperMushroom::handleBlockCollision(Block* _block, float _dt)
 
 void SuperMushroom::handleMarioCollision(Mario* _mario, float _dt)
 {
-	//if (this->getState() == SUPER_MUSHROOM_BEING_EARNED
-	//|| this->getState() == SUPER_MUSHROOM_DISAPPEARED
-	//|| _mario->getState() == SCALING_UP
-	//|| _mario->getIsFlashMode()) return;
+	if (this->getState() == SUPER_MUSHROOM_BEING_EARNED
+	|| this->getState() == SUPER_MUSHROOM_DISAPPEARED) return;
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
 

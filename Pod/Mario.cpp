@@ -527,7 +527,7 @@ void Mario::setState(MarioState _state)
 		this->plusX(oldFrameWidth - newFrameWidth);
 	}
 	if (oldFrameHeight != newFrameHeight) {
-		this->plusY(oldFrameHeight - newFrameHeight);
+		this->plusY(oldFrameHeight - newFrameHeight-4);
 	}
 
 	if (this->getState() == SCALING_DOWN) {
@@ -850,6 +850,9 @@ void Mario::Draw()
 	if (this->getState() == SCALING_DOWN || this->getIsFlashMode()) {
 		this->currentAnimation->DrawMarioWithoutCamera(this->texture, this->getPosition(), D3DXVECTOR2(translateX, translateY), this->getLeftSpace(), this->getTopSpace(), this->getRightSpace(), this->getIsFlip(), (this->countDownFlash % 4 == 0 ? D3DCOLOR_ARGB(128, 255, 255, 255) : D3DCOLOR_XRGB(255, 255, 255)));
 		//this->currentAnimation->DrawWithoutCamera(this->texture, this->getPosition(), D3DXVECTOR2(translateX - transX, translateY - this->getTopSpace()), this->getIsFlip(), (this->countDownFlash % 4 == 0 ? D3DCOLOR_ARGB(128, 255, 255, 255) : D3DCOLOR_XRGB(255, 255, 255)));
+	}
+	else if (this->getState() == SCALING_UP) {
+		this->currentAnimation->DrawWithoutCamera(this->texture, this->getPosition(), D3DXVECTOR2(translateX, translateY), this->getIsFlip());
 	}
 	else {
 		this->currentAnimation->DrawMarioWithoutCamera(this->texture, this->getPosition(), D3DXVECTOR2(translateX, translateY), this->getLeftSpace(), this->getTopSpace(), this->getRightSpace(), this->getIsFlip());
@@ -1499,10 +1502,8 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 
 void Mario::handleSuperMushroomCollision(SuperMushroom* _superMushroom, float _dt)
 {
-	//if (_superMushroom->getState() == SUPER_MUSHROOM_BEING_EARNED
-	//||_superMushroom->getState() == SUPER_MUSHROOM_DISAPPEARED
-	//|| this->getState() == SCALING_UP
-	//|| this->getIsFlashMode()) return;
+	if (_superMushroom->getState() == SUPER_MUSHROOM_BEING_EARNED
+	||_superMushroom->getState() == SUPER_MUSHROOM_DISAPPEARED) return;
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_superMushroom, _dt);
 
