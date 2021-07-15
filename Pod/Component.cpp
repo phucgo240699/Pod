@@ -391,7 +391,7 @@ tuple<bool, float, vector<CollisionEdge>> Component::sweptAABBByBounds(Component
 	float tyEntry, tyExit;
 
 	// Quick result
-	if (this->isColliding(this->getSweptBroadphaseRectByFrame(), other->getBounds()) == false) { // No Collide
+	if (this->isColliding(this->getSweptBroadphaseRectByBounds(), other->getBounds()) == false) { // No Collide
 		get<0>(result) = false;
 		return result;
 	}

@@ -202,6 +202,12 @@
     <Filter Include="Source Files\Components\Map\SuperLeaf">
       <UniqueIdentifier>{e422f749-c16e-4580-8d9d-6e13a8401bdc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\Map\FireFlower">
+      <UniqueIdentifier>{dfcfc68f-4abb-488d-801f-1e84612c3683}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Map\FireFlower">
+      <UniqueIdentifier>{fd53d658-9678-4ae1-908a-946ea4558395}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -320,6 +326,9 @@
     </ClCompile>
     <ClCompile Include="SuperLeaf.cpp">
       <Filter>Source Files\Components\Map\SuperLeaf</Filter>
+    </ClCompile>
+    <ClCompile Include="FireFlower.cpp">
+      <Filter>Source Files\Components\Map\FireFlower</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -475,6 +484,12 @@
     </ClInclude>
     <ClInclude Include="SuperLeaf.h">
       <Filter>Header Files\Components\Map\SuperLeaf</Filter>
+    </ClInclude>
+    <ClInclude Include="FireFlower.h">
+      <Filter>Header Files\Components\Map\FireFlower</Filter>
+    </ClInclude>
+    <ClInclude Include="FireFlowerState.h">
+      <Filter>Header Files\System\Enums</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

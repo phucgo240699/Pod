@@ -334,6 +334,56 @@ Animation AnimationBundle::getSuperMarioFlyingFireConverting()
 	return this->animations->at(57);
 }
 
+Animation AnimationBundle::getRedFireFlowerStandingLookUp()
+{
+	return this->animations->at(58);
+}
+
+Animation AnimationBundle::getRedFireFlowerStandingLookDown()
+{
+	return this->animations->at(59);
+}
+
+Animation AnimationBundle::getRedFireFlowerGrowingUp()
+{
+	return this->animations->at(60);
+}
+
+Animation AnimationBundle::getRedFireFlowerDropping()
+{
+	return this->animations->at(61);
+}
+
+Animation AnimationBundle::getRedFireFlowerHalfSize()
+{
+	return this->animations->at(62);
+}
+
+Animation AnimationBundle::getGreenFireFlowerStandingLookUp()
+{
+	return this->animations->at(63);
+}
+
+Animation AnimationBundle::getGreenFireFlowerStandingLookDown()
+{
+	return this->animations->at(64);
+}
+
+Animation AnimationBundle::getGreenFireFlowerGrowingUp()
+{
+	return this->animations->at(65);
+}
+
+Animation AnimationBundle::getGreenFireFlowerDropping()
+{
+	return this->animations->at(66);
+}
+
+Animation AnimationBundle::getGreenFireFlowerHalfSize()
+{
+	return this->animations->at(67);
+}
+
 Animation AnimationBundle::getSuperMarioFlyingWalking()
 {
 	return this->animations->at(49);

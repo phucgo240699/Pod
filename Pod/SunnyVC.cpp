@@ -54,6 +54,7 @@ void SunnyVC::viewDidLoad()
 	goombas = new unordered_set<Goomba*>();
 	koopas = new unordered_set<Koopa*>();
 	blocks = new vector<Block*>();
+	fireFlowers = new vector<FireFlower*>();
 
 	ScoreBoard::getInstance()->resetTimeTo300();
 
@@ -149,18 +150,34 @@ void SunnyVC::viewWillUpdate(float _dt)
 					Grid::getInstance()->updateCellOf(*itr);
 				}
 
+				// Fire Flower
+				else if (beginFireFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerId) {
+					if (static_cast<FireFlower*>(*itr)->getCountDown() % 12 == 0 &&
+						(static_cast<FireFlower*>(*itr)->getState() == FIRE_FLOWER_STANDING_LOOK_UP || static_cast<FireFlower*>(*itr)->getState() == FIRE_FLOWER_STANDING_LOOK_DOWN)) {
+						if (this->mario->getY() + this->mario->getBoundsHeight() > (*itr)->getY()) {
+							static_cast<FireFlower*>(*itr)->setState(FireFlowerState::FIRE_FLOWER_STANDING_LOOK_DOWN);
+						}
+						else if ((static_cast<FireFlower*>(*itr)->getState() == FIRE_FLOWER_STANDING_LOOK_UP || static_cast<FireFlower*>(*itr)->getState() == FIRE_FLOWER_STANDING_LOOK_DOWN)
+							&& this->mario->getY() < (*itr)->getY()) {
+							static_cast<FireFlower*>(*itr)->setState(FireFlowerState::FIRE_FLOWER_STANDING_LOOK_UP);
+						}
+					}
+
+					static_cast<FireFlower*>(*itr)->setIsFlip(this->mario->getX() <= (*itr)->getX() + (*itr)->getWidth());
+
+					(*itr)->Update(_dt);
+
+					// update which cell in grid that it's belongs to
+					Grid::getInstance()->updateCellOf(*itr);
+				}
+
 				// GiftBrick
 				else if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
 					(*itr)->Update(_dt);
 				}
 
 				// ==========================================================================================
-				if (this->mario->getState() == DIE
-					|| this->mario->getState() == DIE_JUMPING
-					|| this->mario->getState() == DIE_DROPPING
-					|| this->mario->getState() == SCALING_UP
-					|| this->mario->getState() == SCALING_DOWN
-					|| this->mario->getState() == TRANSFERING_TO_FLY) {
+				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getState() == TRANSFERING_TO_FLY) {
 					continue;
 				}
 
@@ -189,11 +206,7 @@ void SunnyVC::viewWillUpdate(float _dt)
 		mario->Update(_dt);
 		Camera::getInstance()->follow(mario, _dt);
 	}
-	if (this->mario->getState() == DIE
-	|| this->mario->getState() == DIE_JUMPING
-	|| this->mario->getState() == DIE_DROPPING
-	|| this->mario->getState() == SCALING_UP
-	|| this->mario->getState() == SCALING_DOWN) {
+	if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN) {
 		return;
 	}
 	ScoreBoard::getInstance()->Update(_dt);
@@ -249,18 +262,20 @@ void SunnyVC::viewDidUpdate(float _dt)
 					this->mario->handleGiftBrickCollision(static_cast<GiftBrick*>(*itr), _dt);
 				}
 
+				//// Fire Flower
+				//else if (beginFireFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerId) {
+				//	(*itr)->Update(_dt);
+
+				//	// update which cell in grid that it's belongs to
+				//	Grid::getInstance()->updateCellOf(*itr);
+				//}
+
 				// Green Pipe
 				else if (beginGreenPipeId <= (*itr)->getId() && (*itr)->getId() <= endGreenPipeId) {
 					this->mario->handleGreenPipeCollision(static_cast<GreenPipe*>(*itr), _dt);
 				}
 
-				if (this->mario->getState() == DIE
-					|| this->mario->getState() == DIE_JUMPING
-					|| this->mario->getState() == DIE_DROPPING
-					|| this->mario->getState() == SCALING_UP
-					|| this->mario->getState() == SCALING_DOWN
-					|| this->mario->getState() == TRANSFERING_TO_FLY
-					|| this->mario->getIsFlashMode())
+				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getState() == TRANSFERING_TO_FLY || this->mario->getIsFlashMode())
 				{
 					continue;
 				}
@@ -316,12 +331,7 @@ void SunnyVC::viewDidUpdate(float _dt)
 					}
 				}
 
-				if (this->mario->getState() == DIE
-					|| this->mario->getState() == DIE_JUMPING
-					|| this->mario->getState() == DIE_DROPPING
-					|| this->mario->getState() == SCALING_UP
-					|| this->mario->getState() == SCALING_DOWN
-					|| this->mario->getIsFlashMode())
+				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getIsFlashMode())
 				{
 					continue;
 				}
@@ -338,12 +348,7 @@ void SunnyVC::viewDidUpdate(float _dt)
 					static_cast<SuperLeaf*>(*itr)->handleMarioCollision(this->mario, _dt);
 				}
 
-				if (this->mario->getState() == DIE
-					|| this->mario->getState() == DIE_JUMPING
-					|| this->mario->getState() == DIE_DROPPING
-					|| this->mario->getState() == SCALING_UP
-					|| this->mario->getState() == SCALING_DOWN
-					|| this->mario->getIsFlashMode())
+				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getIsFlashMode())
 				{
 					continue;
 				}
@@ -402,12 +407,7 @@ void SunnyVC::viewDidUpdate(float _dt)
 					}
 				}
 
-				if (this->mario->getState() == DIE
-					|| this->mario->getState() == DIE_JUMPING
-					|| this->mario->getState() == DIE_DROPPING
-					|| this->mario->getState() == SCALING_UP
-					|| this->mario->getState() == SCALING_DOWN
-					|| this->mario->getIsFlashMode())
+				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getIsFlashMode())
 				{
 					continue;
 				}
@@ -522,6 +522,11 @@ void SunnyVC::viewWillRender()
 						(*itr)->Draw(map->getTexture());
 					}
 
+					// Fire Flower
+					else if (beginFireFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerId) {
+						(*itr)->Draw(map->getTexture());
+					}
+
 					// Green Pipe
 					else if (beginGreenPipeId <= (*itr)->getId() && (*itr)->getId() <= endGreenPipeId) {
 						(*itr)->Draw(map->getTexture());
@@ -569,47 +574,52 @@ void SunnyVC::adaptRangeID(vector<string> data, char seperator)
 {
 	vector<int> v;
 	for (int i = 0; i < data.size(); ++i) {
-		if (i == 0) {
+		if (i == 4) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginGroundId = v[0];
 			this->endGroundId = v[1];
 		}
-		else if (i == 1) {
+		else if (i == 5) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginBlockId = v[0];
 			this->endBlockId = v[1];
 		}
-		else if (i == 2) {
+		else if (i == 6) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginGoldenBrickId = v[0];
 			this->endGoldenBrickId = v[1];
 		}
-		else if (i == 3) {
+		else if (i == 0) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginSuperMushroomId = v[0];
 			this->endSuperMushroomId = v[1];
 		}
-		else if (i == 4) {
+		else if (i == 9) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginSuperLeafId = v[0];
 			this->endSuperLeafId = v[1];
 		}
-		else if (i == 5) {
+		else if (i == 3) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginGiftBrickId = v[0];
 			this->endGiftBrickId = v[1];
 		}
-		else if (i == 6) {
+		else if (i == 7) {
+			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
+			this->beginFireFlowerId = v[0];
+			this->endFireFlowerId = v[1];
+		}
+		else if (i == 8) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginGreenPipeId = v[0];
 			this->endGreenPipeId = v[1];
 		}
-		else if (i == 7) {
+		else if (i == 1) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginGoombaId = v[0];
 			this->endGoombaId = v[1];
 		}
-		else if (i == 8) {
+		else if (i == 2) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginKoopaId = v[0];
 			this->endKoopaId = v[1];
@@ -755,6 +765,18 @@ void SunnyVC::adaptData()
 			}
 			section = SECTION_NONE;
 		}
+		else if (line == "<FireFlowerFrames>") {
+			section = SECTION_FIRE_FLOWER_FRAMES;
+			continue;
+		}
+		else if (line == "</FireFlowerFrames>") {
+			for (int i = 0; i < data.size(); ++i) {
+				FireFlower* fireFlower = new FireFlower(0, 0, 0, 0, 0, 0, 0);
+				fireFlower->loadInfo(data[i], ',');
+				fireFlowers->push_back(fireFlower);
+			}
+			section = SECTION_NONE;
+		}
 		else if (line == "<GridInfo>") {
 			section = SECTION_GRID_INFO;
 			continue;
@@ -820,6 +842,9 @@ void SunnyVC::adaptData()
 		case SECTION_KOOPA_FRAMES:
 			data.push_back(line);
 			break;
+		case SECTION_FIRE_FLOWER_FRAMES:
+			data.push_back(line);
+			break;
 		case SECTION_GRID_INFO:
 			Grid::getInstance()->loadInfo(line, ',');
 			break;
@@ -856,6 +881,11 @@ void SunnyVC::adaptAnimation()
 	// Green Pipes
 	for (int i = 0; i < this->greenPipes->size(); ++i) {
 		this->greenPipes->at(i)->setupAnimation();
+	}
+
+	// Fire Flowers
+	for (int i = 0; i < this->fireFlowers->size(); ++i) {
+		this->fireFlowers->at(i)->setState(FireFlowerState::FIRE_FLOWER_GROWING_UP);
 	}
 
 	///
@@ -915,6 +945,11 @@ void SunnyVC::adaptToGrid()
 	// Green Pipes
 	for (int i = 0; i < this->greenPipes->size(); ++i) {
 		Grid::getInstance()->add(this->greenPipes->at(i));
+	}
+
+	// Fire Flowers
+	for (int i = 0; i < this->fireFlowers->size(); ++i) {
+		Grid::getInstance()->add(this->fireFlowers->at(i));
 	}
 
 	///

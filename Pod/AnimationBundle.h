@@ -94,5 +94,17 @@ public:
 	Animation getSuperMarioFlyingFireJumping();
 	Animation getSuperMarioFlyingFireDropping();
 	Animation getSuperMarioFlyingFireConverting();
+
+	Animation getRedFireFlowerStandingLookUp();
+	Animation getRedFireFlowerStandingLookDown();
+	Animation getRedFireFlowerGrowingUp();
+	Animation getRedFireFlowerDropping();
+	Animation getRedFireFlowerHalfSize();
+
+	Animation getGreenFireFlowerStandingLookUp();
+	Animation getGreenFireFlowerStandingLookDown();
+	Animation getGreenFireFlowerGrowingUp();
+	Animation getGreenFireFlowerDropping();
+	Animation getGreenFireFlowerHalfSize();
 };
 
