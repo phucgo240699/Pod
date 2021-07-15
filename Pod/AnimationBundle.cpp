@@ -384,6 +384,11 @@ Animation AnimationBundle::getGreenFireFlowerHalfSize()
 	return this->animations->at(67);
 }
 
+Animation AnimationBundle::getFireFlowerBall()
+{
+	return this->animations->at(68);
+}
+
 Animation AnimationBundle::getSuperMarioFlyingWalking()
 {
 	return this->animations->at(49);

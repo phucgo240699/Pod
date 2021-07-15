@@ -1532,3 +1532,21 @@ void Mario::handleSuperLeafCollision(SuperLeaf* _superLeaf, float _dt)
 		ScoreBoard::getInstance()->plusPoint(1000);
 	}
 }
+
+void Mario::handleFireFlowerCollision(FireFlower* _fireFlower, float _dt)
+{
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_fireFlower, _dt);
+
+	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_fireFlower->getBounds())) {
+		this->setState(MarioState::DIE);
+	}
+}
+
+void Mario::handleFireFlowerBallCollision(FireFlowerBall* _fireFlowerBall, float _dt)
+{
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_fireFlowerBall, _dt);
+
+	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_fireFlowerBall->getBounds())) {
+		this->setState(MarioState::DIE);
+	}
+}

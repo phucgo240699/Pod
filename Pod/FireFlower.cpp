@@ -1,4 +1,6 @@
 #include "FireFlower.h"
+#include "Camera.h"
+#include "Mario.h"
 
 FireFlower::FireFlower(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id) : Component(_x, _y, _vx, _vy, _limitX, _limitY, _id)
 {
@@ -41,6 +43,11 @@ float FireFlower::getBoundsHeight()
 	return this->animation->getCurrentBoundsWidth();
 }
 
+//FireFlowerBall* FireFlower::getFireFlowerBall()
+//{
+//	return this->fireFlowerBall;
+//}
+
 void FireFlower::setState(FireFlowerState _state)
 {
 	switch (_state)
@@ -76,6 +83,11 @@ void FireFlower::setState(FireFlowerState _state)
 	this->state = _state;
 }
 
+void FireFlower::setFireFlowerBall(FireFlowerBallState _fireFlowerBallState)
+{
+	this->fireFlowerBall->setState(_fireFlowerBallState);
+}
+
 void FireFlower::setIsFlip(bool _isFlip)
 {
 	this->isFlip = _isFlip;
@@ -92,6 +104,8 @@ void FireFlower::loadInfo(string line, char seperator)
 	this->topAnchor = v[3];
 	this->bottomAnchor = this->getY();
 	this->setId(v[4]);
+
+	this->fireFlowerBall = new FireFlowerBall(v[5], v[6], v[7], v[8], Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), v[9]);
 }
 
 void FireFlower::Update(float _dt)
@@ -104,6 +118,18 @@ void FireFlower::Update(float _dt)
 	else if (this->getState() == FIRE_FLOWER_STANDING_LOOK_DOWN) {
 		if (countDown <= 0) {
 			this->setState(FireFlowerState::FIRE_FLOWER_DROPPING);
+
+			this->fireFlowerBall->setX(this->getX() + this->getWidth() / 2);
+			this->fireFlowerBall->setY(this->getY() + this->getWidth() / 2);
+			Grid::getInstance()->add(this->fireFlowerBall);
+			//Grid::getInstance()->updateCellOf(this->fireFlowerBall);
+			if (this->getIsFlip()) {
+				this->fireFlowerBall->setState(FireFlowerBallState::FIRE_FLOWER_BALL_FLYING_LOWER_LEFT);
+			}
+			else {
+				this->fireFlowerBall->setState(FireFlowerBallState::FIRE_FLOWER_BALL_FLYING_LOWER_RIGHT);
+			}
+
 			return;
 		}
 		this->countDown -= 1;
@@ -111,6 +137,17 @@ void FireFlower::Update(float _dt)
 	else if (this->getState() == FIRE_FLOWER_STANDING_LOOK_UP) {
 		if (countDown <= 0) {
 			this->setState(FireFlowerState::FIRE_FLOWER_GROWING_UP);
+
+			this->fireFlowerBall->setX(this->getX() + this->getWidth() / 2);
+			this->fireFlowerBall->setY(this->getY() + this->getWidth() / 2);
+			Grid::getInstance()->add(this->fireFlowerBall);
+			//Grid::getInstance()->updateCellOf(this->fireFlowerBall);
+			if (this->getIsFlip()) {
+				this->fireFlowerBall->setState(FireFlowerBallState::FIRE_FLOWER_BALL_FLYING_UPPER_LEFT);
+			}
+			else {
+				this->fireFlowerBall->setState(FireFlowerBallState::FIRE_FLOWER_BALL_FLYING_UPPER_RIGHT);
+			}
 			return;
 		}
 		this->countDown -= 1;
@@ -136,4 +173,13 @@ void FireFlower::Update(float _dt)
 void FireFlower::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
 	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), this->getPosition(), this->getIsFlip());
+}
+
+void FireFlower::handleMarioCollision(Mario* _mario, float _dt)
+{
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
+
+	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_mario->getBounds())) {
+		_mario->setState(MarioState::DIE);
+	}
 }

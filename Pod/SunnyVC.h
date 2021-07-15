@@ -31,7 +31,9 @@ private:
 	int beginGiftBrickId, endGiftBrickId;
 	vector<GiftBrick*>* giftBricks;
 
+
 	int beginFireFlowerId, endFireFlowerId;
+	int beginFireFlowerBallId, endFireFlowerBallId;
 	vector<FireFlower*>* fireFlowers;
 
 	int beginGreenPipeId, endGreenPipeId;

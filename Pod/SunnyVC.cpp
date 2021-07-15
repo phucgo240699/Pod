@@ -134,6 +134,16 @@ void SunnyVC::viewWillUpdate(float _dt)
 					(*itr)->Update(_dt);
 				}
 
+				// GiftBrick
+				else if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
+					(*itr)->Update(_dt);
+				}
+
+				// ==========================================================================================
+				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getState() == TRANSFERING_TO_FLY) {
+					continue;
+				}
+
 				// SuperMushroom
 				else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= endSuperMushroomId) {
 					(*itr)->Update(_dt);
@@ -171,14 +181,15 @@ void SunnyVC::viewWillUpdate(float _dt)
 					Grid::getInstance()->updateCellOf(*itr);
 				}
 
-				// GiftBrick
-				else if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
+				// Fire Flower Ball
+				else if (beginFireFlowerBallId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerBallId) {
 					(*itr)->Update(_dt);
-				}
 
-				// ==========================================================================================
-				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getState() == TRANSFERING_TO_FLY) {
-					continue;
+					Grid::getInstance()->updateCellOf(*itr);
+
+					if ((*itr)->isCollidingByFrame(Camera::getInstance()->getFrame()) == false) {
+						Grid::getInstance()->remove(*itr, i, j);
+					}
 				}
 
 				// Goombas
@@ -214,12 +225,7 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 void SunnyVC::viewDidUpdate(float _dt)
 {
-	if (this->mario->getState() == DIE
-		|| this->mario->getState() == DIE_JUMPING
-		|| this->mario->getState() == DIE_DROPPING
-		|| this->mario->getState() == SCALING_UP
-		|| this->mario->getState() == SCALING_DOWN
-		|| this->mario->getState() == TRANSFERING_TO_FLY)
+	if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getState() == TRANSFERING_TO_FLY)
 	{
 		return;
 	}
@@ -262,13 +268,17 @@ void SunnyVC::viewDidUpdate(float _dt)
 					this->mario->handleGiftBrickCollision(static_cast<GiftBrick*>(*itr), _dt);
 				}
 
-				//// Fire Flower
-				//else if (beginFireFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerId) {
-				//	(*itr)->Update(_dt);
+				// Fire Flower
+				else if (beginFireFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerId) {
+					this->mario->handleFireFlowerCollision(static_cast<FireFlower*>(*itr), _dt);
+					static_cast<FireFlower*>(*itr)->handleMarioCollision(this->mario, _dt);
+				}
 
-				//	// update which cell in grid that it's belongs to
-				//	Grid::getInstance()->updateCellOf(*itr);
-				//}
+				// Fire Flower Ball
+				else if (beginFireFlowerBallId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerBallId) {
+					this->mario->handleFireFlowerBallCollision(static_cast<FireFlowerBall*>(*itr), _dt);
+					static_cast<FireFlowerBall*>(*itr)->handleMarioCollision(this->mario, _dt);
+				}
 
 				// Green Pipe
 				else if (beginGreenPipeId <= (*itr)->getId() && (*itr)->getId() <= endGreenPipeId) {
@@ -527,6 +537,11 @@ void SunnyVC::viewWillRender()
 						(*itr)->Draw(map->getTexture());
 					}
 
+					// Fire Flower Ball
+					else if (beginFireFlowerBallId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerBallId) {
+						(*itr)->Draw(map->getTexture());
+					}
+
 					// Green Pipe
 					else if (beginGreenPipeId <= (*itr)->getId() && (*itr)->getId() <= endGreenPipeId) {
 						(*itr)->Draw(map->getTexture());
@@ -598,6 +613,8 @@ void SunnyVC::adaptRangeID(vector<string> data, char seperator)
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginSuperLeafId = v[0];
 			this->endSuperLeafId = v[1];
+			this->beginFireFlowerBallId = v[2];
+			this->endFireFlowerBallId = v[3];
 		}
 		else if (i == 3) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
@@ -886,6 +903,7 @@ void SunnyVC::adaptAnimation()
 	// Fire Flowers
 	for (int i = 0; i < this->fireFlowers->size(); ++i) {
 		this->fireFlowers->at(i)->setState(FireFlowerState::FIRE_FLOWER_GROWING_UP);
+		this->fireFlowers->at(i)->setFireFlowerBall(FireFlowerBallState::FIRE_FLOWER_BALL_FLYING_STAYING);
 	}
 
 	///
@@ -950,6 +968,7 @@ void SunnyVC::adaptToGrid()
 	// Fire Flowers
 	for (int i = 0; i < this->fireFlowers->size(); ++i) {
 		Grid::getInstance()->add(this->fireFlowers->at(i));
+		//Grid::getInstance()->add(this->fireFlowers->at(i)->getFireFlowerBall());
 	}
 
 	///

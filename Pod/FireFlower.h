@@ -2,6 +2,11 @@
 #include "Component.h"
 #include "FireFlowerState.h"
 #include "AnimationBundle.h"
+#include "FireFlowerBall.h"
+#include "Grid.h"
+
+class Mario;
+class Camera;
 
 class FireFlower : public Component
 {
@@ -12,6 +17,8 @@ private:
 	float topAnchor, bottomAnchor;
 	int countDown = 120;
 	bool isFlip = false;
+
+	FireFlowerBall* fireFlowerBall;
 
 public:
 	// Init
@@ -26,13 +33,18 @@ public:
 	float getHeight();
 	float getBoundsWidth();
 	float getBoundsHeight();
+	//FireFlowerBall* getFireFlowerBall();
 
 	// Setter
 	void setState(FireFlowerState _state);
+	void setFireFlowerBall(FireFlowerBallState _fireFlowerBallState);
 	void setIsFlip(bool _isFlip);
 
 	void loadInfo(string line, char seperator);
 	void Update(float _dt);
 	void Draw(LPDIRECT3DTEXTURE9 _texture);
 
+
+	// Collision
+	void handleMarioCollision(Mario* _mario, float _dt);
 };

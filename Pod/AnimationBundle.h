@@ -106,5 +106,7 @@ public:
 	Animation getGreenFireFlowerGrowingUp();
 	Animation getGreenFireFlowerDropping();
 	Animation getGreenFireFlowerHalfSize();
+
+	Animation getFireFlowerBall();
 };
 

@@ -18,6 +18,16 @@ Camera* Camera::getInstance()
 }
 
 
+RECT Camera::getFrame()
+{
+	RECT r;
+	r.top = this->getY();
+	r.bottom = this->getY() + this->getHeight();
+	r.left = this->getX();
+	r.right = this->getX() + this->getWidth();
+	return r;
+}
+
 void Camera::setX(float _x)
 {
 	Component::setX(_x);

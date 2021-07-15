@@ -23,11 +23,11 @@
 # 7. beginFireFlowerId, endFireFlowerId
 701,800
 
-# 7. beginGreenPipeId, endGreenPipeId
+# 8. beginGreenPipeId, endGreenPipeId
 801,900
 
-# 8. beginSuperLeafId, endSuperLeafId
-901,1000
+# 9. beginSuperLeafId, endSuperLeafId, beginFireFlowerBallId, endFireFlowerBallId
+901,950,951,1000
 
 </SunnyVC>
 
@@ -76,7 +76,7 @@
 # marioLeftSpace, marioTopSpace, marioRightSpace,
 # superMarioLeftSpace, superMarioTopSpace, superMarioRightSpace,
 # superMarioFlyingLeftSpace, superMarioFlyingTopSpace, superMarioFlyingRightSpace)
-330,400,2816,470,4,3,2,4,3,2,3,5,1,10,6,1
+96,400,2816,470,4,3,2,4,3,2,3,5,1,10,6,1
 </MarioInfo>
 
 <GiftBrickFrames>
@@ -187,8 +187,8 @@
 </GoldenBrickFrames>
 
 <FireFlowerFrames>
-# (x, y, vy, topAnchor id)
-360,368,0.5,336,701
+# (x, y, vy, topAnchor, id, ballX, ballY, ballVx, ballVy, ballId)
+360,368,0.5,336,701,368,376,1.5,1,951
 </FireFlowerFrames>
 
 <GreenPipeFrames>
@@ -432,6 +432,10 @@
 
 > 903
 11,3_11,4
+
+# Fire Flower Ball
+> 951
+2,4
 
 </GridMatrixId>
 
@@ -867,5 +871,12 @@
 238,170,16,32
 255,170,16,32
 > 67 0 12
+
+# Fire Flower Ball
+119,186,8,8
+119,194,8,8
+127,194,8,8
+127,186,8,8
+> 68 0 3
 
 </AnimationBundle>

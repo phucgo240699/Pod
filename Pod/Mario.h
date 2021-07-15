@@ -16,6 +16,7 @@
 #include "Block.h"
 #include "GreenPipe.h"
 #include "SuperLeaf.h"
+#include "FireFlower.h"
 #include <unordered_map>
 
 using namespace std;
@@ -169,6 +170,8 @@ public:
 	void handleKoopaCollision(Koopa* _koopa, float _dt);
 	void handleSuperMushroomCollision(SuperMushroom* _superMushroom, float _dt);
 	void handleSuperLeafCollision(SuperLeaf* _superLeaf, float _dt);
+	void handleFireFlowerCollision(FireFlower* _fireFlower, float _dt);
+	void handleFireFlowerBallCollision(FireFlowerBall* _fireFlowerBall, float _dt);
 };
 
 #endif // !MARIO_H

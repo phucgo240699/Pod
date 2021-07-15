@@ -11,6 +11,9 @@ public:
 	Camera(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY);
 	static Camera* getInstance();	  // . public function for client code usage
 
+	// Getter
+	RECT getFrame();
+
 	void setX(float _x);
 	void setY(float _y);
 	void plusX(float _x);
