@@ -2,6 +2,7 @@
 #include "MainCharacter.h"
 #include "WMarioState.h"
 #include "AnimationBundle.h"
+#include "Camera.h"
 
 class WMario : public MainCharacter
 {
@@ -10,11 +11,12 @@ private:
 	vector<vector<char>> movingMatrix;
 	WMarioState state = WMARIO_STANDING;
 
-	int tileSize, row, col, borderWidth;
+	int tileSize, row, col;
 	int startRowMove, startColMove;
 	bool isMoving = false;
 	char limitScenceId = 'A';
 	char limitSceneMoving = '1';
+
 public:
 	WMario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY);
 	WMario(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _limitY);
@@ -28,6 +30,7 @@ public:
 	// Setter
 	void setState(WMarioState _state);
 	void setAnimation(Animation* _animation);
+
 
 	// Inherit
 	void Update(float _dt);

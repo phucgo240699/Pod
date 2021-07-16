@@ -121,7 +121,7 @@ void WMario::Update(float _dt)
 
 void WMario::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
-	D3DXVECTOR3 pos = D3DXVECTOR3(this->getX() + this->borderWidth, this->getY() + this->borderWidth, 0);
+	D3DXVECTOR3 pos = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->getY() - Camera::getInstance()->getY(), 0);
 	this->animation->DrawWithoutCamera(_texture, this->animation->getCurrentFrame(), pos);
 }
 
@@ -170,7 +170,7 @@ void WMario::loadInfo(string line, char seperator)
 	this->col = v[6];
 	this->startRowMove = v[5];
 	this->startColMove = v[6];
-	this->borderWidth = v[7];
+
 	this->setX(this->col * this->tileSize);
 	this->setY(this->row * this->tileSize);
 }

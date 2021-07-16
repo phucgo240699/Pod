@@ -36,6 +36,7 @@ public:
 	// Setter
 	void setState(GoombaState _state);
 
+
 	void convertMovingState();
 	void Update(float _dt);
 	void Draw(LPDIRECT3DTEXTURE9 _texture);

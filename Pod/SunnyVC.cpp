@@ -175,10 +175,23 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 					static_cast<FireFlower*>(*itr)->setIsFlip(this->mario->getX() <= (*itr)->getX() + (*itr)->getWidth());
 
-					(*itr)->Update(_dt);
+					if ((static_cast<FireFlower*>(*itr)->getState() == FIRE_FLOWER_HIDING
+						&& (static_cast<FireFlower*>(*itr)->getLeftAnchor() > this->mario->getX() + this->mario->getWidth()
+							|| static_cast<FireFlower*>(*itr)->getRightAnchor() < this->mario->getX()
+							|| static_cast<FireFlower*>(*itr)->getTopAnchor() > this->mario->getY() + this->mario->getHeight())
+						)
+						|| static_cast<FireFlower*>(*itr)->getState() != FIRE_FLOWER_HIDING) {
 
-					// update which cell in grid that it's belongs to
-					Grid::getInstance()->updateCellOf(*itr);
+						//if () {
+							(*itr)->Update(_dt);
+
+							// update which cell in grid that it's belongs to
+							Grid::getInstance()->updateCellOf(*itr);
+						//}
+					}
+					else {
+						static_cast<FireFlower*>(*itr)->reduceCountDown();
+					}
 				}
 
 				// Fire Flower Ball
@@ -534,7 +547,14 @@ void SunnyVC::viewWillRender()
 
 					// Fire Flower
 					else if (beginFireFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerId) {
-						(*itr)->Draw(map->getTexture());
+						if ((static_cast<FireFlower*>(*itr)->getState() == FIRE_FLOWER_HIDING
+							&& (static_cast<FireFlower*>(*itr)->getLeftAnchor() > this->mario->getX() + this->mario->getWidth()
+								|| static_cast<FireFlower*>(*itr)->getRightAnchor() < this->mario->getX()
+								|| static_cast<FireFlower*>(*itr)->getTopAnchor() > this->mario->getY() + this->mario->getHeight())
+							)
+							|| static_cast<FireFlower*>(*itr)->getState() != FIRE_FLOWER_HIDING) {
+								(*itr)->Draw(map->getTexture());
+						}
 					}
 
 					// Fire Flower Ball
@@ -556,7 +576,6 @@ void SunnyVC::viewWillRender()
 					else if (beginKoopaId <= (*itr)->getId() && (*itr)->getId() <= endKoopaId) {
 						(*itr)->Draw(map->getTexture());
 					}
-
 				}
 			}
 		}

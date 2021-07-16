@@ -33,7 +33,7 @@
 
 <Camera>
 #(x,y,vX,vY,width,height,limitX,limitY)
-0,0,0,0,236,188,2816,470
+0,0,0,0,256,188,2816,470
 </Camera>
 
 <MapInfo>
@@ -76,7 +76,7 @@
 # marioLeftSpace, marioTopSpace, marioRightSpace,
 # superMarioLeftSpace, superMarioTopSpace, superMarioRightSpace,
 # superMarioFlyingLeftSpace, superMarioFlyingTopSpace, superMarioFlyingRightSpace)
-96,400,2816,470,4,3,2,4,3,2,3,5,1,10,6,1
+48,400,2816,470,4,3,2,4,3,2,3,5,1,10,6,1
 </MarioInfo>
 
 <GiftBrickFrames>
@@ -102,10 +102,10 @@
 
 <GoombaFrames>
 # (x, y, width, height, vx, vy, defaultPoint, id)
-300,400,16,16,-1,1,100,101
+240,400,16,16,-1,1,100,101
 560,400,16,16,-1,1,100,102
 800,384,16,16,-1,1,100,103
-896,384,16,16,-1,1,100,104
+912,384,16,16,-1,1,100,104
 </GoombaFrames>
 
 <KoopaFrames>
@@ -187,8 +187,8 @@
 </GoldenBrickFrames>
 
 <FireFlowerFrames>
-# (x, y, vy, topAnchor, id, ballX, ballY, ballVx, ballVy, ballId)
-360,368,0.5,336,701,368,376,1.5,1,951
+# (x, y, vy, topAnchor, bottomAnchor, leftAnchor, rightAnchor, id, ballX, ballY, ballVx, ballVy, ballId)
+360,368,0.5,336,376,350,374,701,368,376,1,0.5,951
 </FireFlowerFrames>
 
 <GreenPipeFrames>
@@ -222,7 +222,7 @@
 
 # Goomba
 > 101
-0,4
+1,4
 
 > 102
 4,4
@@ -231,7 +231,7 @@
 6,4
 
 > 104
-6,4_7,4
+7,4
 
 # Koopa
 > 201
@@ -540,7 +540,7 @@
 85,136,17,16
 84,136,17,16
 85,136,17,16
-> 12 0 2
+> 12 0 8
 
 # GiftBrick 100 coins
 102,34,16,16
@@ -748,7 +748,7 @@
 136,152,17,16
 135,152,17,16
 136,152,17,16
-> 43 0 3
+> 43 0 8
 
 # Goomba is thrown away
 136,186,16,16

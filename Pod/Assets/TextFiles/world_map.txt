@@ -1,6 +1,6 @@
 <Camera>
 #(x,y,vX,vY,width,height,limitX,limitY)
--6,-6,0,0,236,188,224,144
+-16,-6,0,0,236,188,224,144
 </Camera>
 
 <MapInfo>
@@ -101,7 +101,7 @@
 
 <WMarioInfo>
 #(vX, vY, limitX, limitY, tileSize, startRowIndex, startColumnIndex,borderWidth)
-0,0,224,144,16,2,1,6
+0,0,224,144,16,2,1,16
 </WMarioInfo>
 
 <WMarioMovingMatrix>

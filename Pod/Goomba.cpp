@@ -156,7 +156,7 @@ void Goomba::Update(float _dt)
 	if (this->getState() == GOOMBA_MOVING_LEFT || this->getState() == GOOMBA_MOVING_RIGHT) {
 		if (this->getX() + this->getVx() * _dt >= 0
 		&& this->getX() + this->getWidth() + this->getVx() * _dt <= Camera::getInstance()->getLimitX()) {
-			this->plusXNoRound(this->getVx() * _dt);
+ 			this->plusXNoRound(this->getVx() * _dt);
 		}
 	}
 	else if (this->getState() == GOOMBA_DROPPING_LEFT || this->getState() == GOOMBA_DROPPING_RIGHT) {

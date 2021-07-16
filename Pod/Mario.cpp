@@ -1535,6 +1535,7 @@ void Mario::handleSuperLeafCollision(SuperLeaf* _superLeaf, float _dt)
 
 void Mario::handleFireFlowerCollision(FireFlower* _fireFlower, float _dt)
 {
+	if (_fireFlower->getState() == FIRE_FLOWER_HIDING) return;
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_fireFlower, _dt);
 
 	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_fireFlower->getBounds())) {

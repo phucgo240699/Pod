@@ -43,6 +43,26 @@ float FireFlower::getBoundsHeight()
 	return this->animation->getCurrentBoundsWidth();
 }
 
+float FireFlower::getTopAnchor()
+{
+	return this->topAnchor;
+}
+
+float FireFlower::getBottomAnchor()
+{
+	return this->bottomAnchor;
+}
+
+float FireFlower::getLeftAnchor()
+{
+	return this->leftAnchor;
+}
+
+float FireFlower::getRightAnchor()
+{
+	return this->rightAnchor;
+}
+
 //FireFlowerBall* FireFlower::getFireFlowerBall()
 //{
 //	return this->fireFlowerBall;
@@ -66,13 +86,13 @@ void FireFlower::setState(FireFlowerState _state)
 		delete animation;
 		this->animation = new Animation(AnimationBundle::getInstance()->getRedFireFlowerGrowingUp());
 		this->setVy(-abs(this->originVy));
-		this->countDown = 120;
+		this->countDown = 80;
 		break;
 	case FIRE_FLOWER_DROPPING:
 		delete animation;
 		this->animation = new Animation(AnimationBundle::getInstance()->getRedFireFlowerDropping());
 		this->setVy(abs(this->originVy));
-		this->countDown = 120;
+		//this->countDown = 120;
 		break;
 	case FIRE_FLOWER_HIDING:
 		this->setVy(0);
@@ -93,6 +113,11 @@ void FireFlower::setIsFlip(bool _isFlip)
 	this->isFlip = _isFlip;
 }
 
+void FireFlower::reduceCountDown()
+{
+	this->countDown -= 1;
+}
+
 void FireFlower::loadInfo(string line, char seperator)
 {
 	vector<float> v = Tool::splitToVectorFloatFrom(line, seperator);
@@ -102,10 +127,12 @@ void FireFlower::loadInfo(string line, char seperator)
 	this->setVy(v[2]);
 	this->originVy = v[2];
 	this->topAnchor = v[3];
-	this->bottomAnchor = this->getY();
-	this->setId(v[4]);
+	this->bottomAnchor = v[4];
+	this->leftAnchor = v[5];
+	this->rightAnchor = v[6];
+	this->setId(v[7]);
 
-	this->fireFlowerBall = new FireFlowerBall(v[5], v[6], v[7], v[8], Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), v[9]);
+	this->fireFlowerBall = new FireFlowerBall(v[8], v[9], v[10], v[11], Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), v[12]);
 }
 
 void FireFlower::Update(float _dt)
@@ -136,7 +163,7 @@ void FireFlower::Update(float _dt)
 	}
 	else if (this->getState() == FIRE_FLOWER_STANDING_LOOK_UP) {
 		if (countDown <= 0) {
-			this->setState(FireFlowerState::FIRE_FLOWER_GROWING_UP);
+			this->setState(FireFlowerState::FIRE_FLOWER_DROPPING);
 
 			this->fireFlowerBall->setX(this->getX() + this->getWidth() / 2);
 			this->fireFlowerBall->setY(this->getY() + this->getWidth() / 2);
@@ -177,6 +204,7 @@ void FireFlower::Draw(LPDIRECT3DTEXTURE9 _texture)
 
 void FireFlower::handleMarioCollision(Mario* _mario, float _dt)
 {
+	if (this->getState() == FIRE_FLOWER_HIDING) return;
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
 
 	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_mario->getBounds())) {

@@ -14,7 +14,7 @@ private:
 	Animation* animation;
 	FireFlowerState state;
 	float originVy;
-	float topAnchor, bottomAnchor;
+	float topAnchor, bottomAnchor, leftAnchor, rightAnchor;
 	int countDown = 120;
 	bool isFlip = false;
 
@@ -33,12 +33,17 @@ public:
 	float getHeight();
 	float getBoundsWidth();
 	float getBoundsHeight();
+	float getTopAnchor();
+	float getBottomAnchor();
+	float getLeftAnchor();
+	float getRightAnchor();
 	//FireFlowerBall* getFireFlowerBall();
 
 	// Setter
 	void setState(FireFlowerState _state);
 	void setFireFlowerBall(FireFlowerBallState _fireFlowerBallState);
 	void setIsFlip(bool _isFlip);
+	void reduceCountDown();
 
 	void loadInfo(string line, char seperator);
 	void Update(float _dt);

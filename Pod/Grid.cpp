@@ -92,6 +92,9 @@ void Grid::loadMatrixId(vector<string> data, char beginSeperator, char pairSeper
 
 void Grid::add(Component* _component)
 {
+	//if (_component->getId() == 951) {
+	//	int asd = 0;
+	//}
 	vector<pair<int, int>> pairs = this->matrixId[_component->getId()];
 
 	for (int i = 0; i < pairs.size(); ++i) {
@@ -131,12 +134,12 @@ void Grid::updateCellOf(Component* _component)
 			int newCol = _component->getX() / this->cellWidth;
 			int newRow = _component->getY() / this->cellHeight;
 			
-			if (col != newCol && newCol < this->getTotalCols()) {
+			/*if (col != newCol && newCol < this->getTotalCols()) {
 				this->matrixId[_component->getId()][i].first = newCol;
 			}
 			if (row != newRow && newRow < this->getTotalRows()) {
 				this->matrixId[_component->getId()][i].second = newRow;
-			}
+			}*/
 			if (newCol < this->getTotalCols() && newRow < this->getTotalRows()) {
 				this->add(_component, newRow, newCol);
 			}

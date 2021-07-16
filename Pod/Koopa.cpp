@@ -102,7 +102,7 @@ void Koopa::setState(KoopaState _state)
 			}
 		}
 		this->setIsFlip(true);
-		this->setVx(-1 * abs(this->originVx));
+		this->setVx(-abs(this->originVx));
 		this->setVy(0);
 		break;
 	}
@@ -136,7 +136,7 @@ void Koopa::setState(KoopaState _state)
 			}
 		}
 		this->setIsFlip(true);
-		this->setVx(-1 * abs(this->originVx));
+		this->setVx(-abs(this->originVx));
 		this->setVy(abs(this->originVy));
 		break;
 	}
@@ -153,7 +153,7 @@ void Koopa::setState(KoopaState _state)
 			}
 		}
 		this->setIsFlip(true);
-		this->setVx(-1 * abs(this->originVx));
+		this->setVx(abs(this->originVx));
 		this->setVy(abs(this->originVy));
 		break;
 	}
