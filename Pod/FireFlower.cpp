@@ -23,6 +23,16 @@ bool FireFlower::getIsFlip()
 	return this->isFlip;
 }
 
+bool FireFlower::getIsGreenMode()
+{
+	return this->isGreenMode;
+}
+
+bool FireFlower::getIsHalfSizeMode()
+{
+	return this->isHalfSizeMode;
+}
+
 float FireFlower::getWidth()
 {
 	return this->animation->getCurrentFrameWidth();
@@ -73,28 +83,114 @@ void FireFlower::setState(FireFlowerState _state)
 	switch (_state)
 	{
 	case FIRE_FLOWER_STANDING_LOOK_DOWN:
+	{
 		delete animation;
-		this->animation = new Animation(AnimationBundle::getInstance()->getRedFireFlowerStandingLookDown());
+		if (this->getIsHalfSizeMode()) {
+			if (this->getIsGreenMode()) {
+				this->animation = new Animation(AnimationBundle::getInstance()->getGreenFireFlowerStandingLookDownHalfSize());
+			}
+			else {
+				this->animation = new Animation(AnimationBundle::getInstance()->getRedFireFlowerStandingLookDownHalfSize());
+			}
+		}
+		else {
+			if (this->getIsGreenMode()) {
+				this->animation = new Animation(AnimationBundle::getInstance()->getGreenFireFlowerStandingLookDown());
+			}
+			else {
+				this->animation = new Animation(AnimationBundle::getInstance()->getRedFireFlowerStandingLookDown());
+			}
+		}
 		this->setVy(0);
 		break;
+	}
 	case FIRE_FLOWER_STANDING_LOOK_UP:
+	{
 		delete animation;
-		this->animation = new Animation(AnimationBundle::getInstance()->getRedFireFlowerStandingLookUp());
+		if (this->getIsHalfSizeMode()) {
+			if (this->getIsGreenMode()) {
+				this->animation = new Animation(AnimationBundle::getInstance()->getGreenFireFlowerStandingLookUpHalfSize());
+			}
+			else {
+				this->animation = new Animation(AnimationBundle::getInstance()->getRedFireFlowerStandingLookUpHalfSize());
+			}
+		}
+		else {
+			if (this->getIsGreenMode()) {
+				this->animation = new Animation(AnimationBundle::getInstance()->getGreenFireFlowerStandingLookUp());
+			}
+			else {
+				this->animation = new Animation(AnimationBundle::getInstance()->getRedFireFlowerStandingLookUp());
+			}
+		}
 		this->setVy(0);
 		break;
+	}
 	case FIRE_FLOWER_GROWING_UP:
+	{
 		delete animation;
-		this->animation = new Animation(AnimationBundle::getInstance()->getRedFireFlowerGrowingUp());
+		if (this->getIsHalfSizeMode()) {
+			if (this->getIsGreenMode()) {
+				this->animation = new Animation(AnimationBundle::getInstance()->getGreenFireFlowerGrowingUpHalfSize());
+			}
+			else {
+				this->animation = new Animation(AnimationBundle::getInstance()->getRedFireFlowerGrowingUpHalfSize());
+			}
+		}
+		else {
+			if (this->getIsGreenMode()) {
+				this->animation = new Animation(AnimationBundle::getInstance()->getGreenFireFlowerGrowingUp());
+			}
+			else {
+				this->animation = new Animation(AnimationBundle::getInstance()->getRedFireFlowerGrowingUp());
+			}
+		}
 		this->setVy(-abs(this->originVy));
 		this->countDown = 80;
 		break;
+	}
 	case FIRE_FLOWER_DROPPING:
+	{
 		delete animation;
-		this->animation = new Animation(AnimationBundle::getInstance()->getRedFireFlowerDropping());
+		if (this->getIsHalfSizeMode()) {
+			if (this->getIsGreenMode()) {
+				this->animation = new Animation(AnimationBundle::getInstance()->getGreenFireFlowerDroppingHalfSize());
+			}
+			else {
+				this->animation = new Animation(AnimationBundle::getInstance()->getRedFireFlowerDroppingHalfSize());
+			}
+		}
+		else {
+			if (this->getIsGreenMode()) {
+				this->animation = new Animation(AnimationBundle::getInstance()->getGreenFireFlowerDropping());
+			}
+			else {
+				this->animation = new Animation(AnimationBundle::getInstance()->getRedFireFlowerDropping());
+			}
+		}
 		this->setVy(abs(this->originVy));
 		//this->countDown = 120;
 		break;
+	}
 	case FIRE_FLOWER_HIDING:
+		if (this->animation == NULL) {
+			if (this->getIsHalfSizeMode()) {
+				if (this->getIsGreenMode()) {
+					this->animation = new Animation(AnimationBundle::getInstance()->getGreenFireFlowerStandingLookDownHalfSize());
+				}
+				else {
+					this->animation = new Animation(AnimationBundle::getInstance()->getRedFireFlowerStandingLookDownHalfSize());
+				}
+			}
+			else {
+				if (this->getIsGreenMode()) {
+					this->animation = new Animation(AnimationBundle::getInstance()->getGreenFireFlowerStandingLookDown());
+				}
+				else {
+					this->animation = new Animation(AnimationBundle::getInstance()->getRedFireFlowerStandingLookDown());
+				}
+			}
+		}
 		this->setVy(0);
 		this->countDown = 120;
 	default:
@@ -111,6 +207,16 @@ void FireFlower::setFireFlowerBall(FireFlowerBallState _fireFlowerBallState)
 void FireFlower::setIsFlip(bool _isFlip)
 {
 	this->isFlip = _isFlip;
+}
+
+void FireFlower::setIsGreenMode(bool _isGreenMode)
+{
+	this->isGreenMode = _isGreenMode;
+}
+
+void FireFlower::setIsHalfSizeMode(bool _isHalfSizeMode)
+{
+	isHalfSizeMode = _isHalfSizeMode;
 }
 
 void FireFlower::reduceCountDown()
@@ -130,9 +236,11 @@ void FireFlower::loadInfo(string line, char seperator)
 	this->bottomAnchor = v[4];
 	this->leftAnchor = v[5];
 	this->rightAnchor = v[6];
-	this->setId(v[7]);
+	this->setIsHalfSizeMode(v[7] == 1);
+	this->setIsGreenMode(v[8] == 1);
+	this->setId(v[9]);
 
-	this->fireFlowerBall = new FireFlowerBall(v[8], v[9], v[10], v[11], Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), v[12]);
+	this->fireFlowerBall = new FireFlowerBall(v[10], v[11], v[12], v[13], Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), v[14]);
 }
 
 void FireFlower::Update(float _dt)

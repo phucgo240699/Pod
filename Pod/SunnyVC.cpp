@@ -55,6 +55,7 @@ void SunnyVC::viewDidLoad()
 	koopas = new unordered_set<Koopa*>();
 	blocks = new vector<Block*>();
 	fireFlowers = new vector<FireFlower*>();
+	flowers = new vector<Flower*>();
 
 	ScoreBoard::getInstance()->resetTimeTo300();
 
@@ -205,6 +206,25 @@ void SunnyVC::viewWillUpdate(float _dt)
 					}
 				}
 
+				// Flower
+				else if (beginFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFlowerId) {
+					if ((static_cast<Flower*>(*itr)->getState() == FLOWER_HIDING
+						&& (static_cast<Flower*>(*itr)->getLeftAnchor() > this->mario->getX() + this->mario->getWidth()
+							|| static_cast<Flower*>(*itr)->getRightAnchor() < this->mario->getX()
+							|| static_cast<Flower*>(*itr)->getTopAnchor() > this->mario->getY() + this->mario->getHeight())
+						)
+						|| static_cast<Flower*>(*itr)->getState() != FLOWER_HIDING) {
+
+						(*itr)->Update(_dt);
+
+						// update which cell in grid that it's belongs to
+						Grid::getInstance()->updateCellOf(*itr);
+					}
+					else {
+						static_cast<Flower*>(*itr)->reduceCountDown();
+					}
+				}
+
 				// Goombas
 				else if (beginGoombaId <= (*itr)->getId() && (*itr)->getId() <= endGoombaId) {
 					(*itr)->Update(_dt);
@@ -291,6 +311,12 @@ void SunnyVC::viewDidUpdate(float _dt)
 				else if (beginFireFlowerBallId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerBallId) {
 					this->mario->handleFireFlowerBallCollision(static_cast<FireFlowerBall*>(*itr), _dt);
 					static_cast<FireFlowerBall*>(*itr)->handleMarioCollision(this->mario, _dt);
+				}
+
+				// Flower
+				else if (beginFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFlowerId) {
+					this->mario->handleFlowerCollision(static_cast<Flower*>(*itr), _dt);
+					static_cast<Flower*>(*itr)->handleMarioCollision(this->mario, _dt);
 				}
 
 				// Green Pipe
@@ -562,8 +588,8 @@ void SunnyVC::viewWillRender()
 						(*itr)->Draw(map->getTexture());
 					}
 
-					// Green Pipe
-					else if (beginGreenPipeId <= (*itr)->getId() && (*itr)->getId() <= endGreenPipeId) {
+					// Flower
+					else if (beginFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFlowerId) {
 						(*itr)->Draw(map->getTexture());
 					}
 
@@ -574,6 +600,21 @@ void SunnyVC::viewWillRender()
 
 					// Koopas
 					else if (beginKoopaId <= (*itr)->getId() && (*itr)->getId() <= endKoopaId) {
+						(*itr)->Draw(map->getTexture());
+					}
+				}
+			}
+		}
+
+		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
+			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
+
+				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
+				unordered_set<Component*> ::iterator itr;
+				for (itr = cell.begin(); itr != cell.end(); ++itr) {
+					// Green Pipe
+					if (beginGreenPipeId <= (*itr)->getId() && (*itr)->getId() <= endGreenPipeId) {
 						(*itr)->Draw(map->getTexture());
 					}
 				}
@@ -644,6 +685,8 @@ void SunnyVC::adaptRangeID(vector<string> data, char seperator)
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginFireFlowerId = v[0];
 			this->endFireFlowerId = v[1];
+			this->beginFlowerId = v[2];
+			this->endFlowerId = v[3];
 		}
 		else if (i == 8) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
@@ -813,6 +856,18 @@ void SunnyVC::adaptData()
 			}
 			section = SECTION_NONE;
 		}
+		else if (line == "<FlowerFrames>") {
+			section = SECTION_FLOWER_FRAMES;
+			continue;
+		}
+		else if (line == "</FlowerFrames>") {
+			for (int i = 0; i < data.size(); ++i) {
+				Flower* flower = new Flower(0, 0, 0, 0, 0, 0, 0);
+				flower->loadInfo(data[i], ',');
+				flowers->push_back(flower);
+			}
+			section = SECTION_NONE;
+		}
 		else if (line == "<GridInfo>") {
 			section = SECTION_GRID_INFO;
 			continue;
@@ -881,6 +936,9 @@ void SunnyVC::adaptData()
 		case SECTION_FIRE_FLOWER_FRAMES:
 			data.push_back(line);
 			break;
+		case SECTION_FLOWER_FRAMES:
+			data.push_back(line);
+			break;
 		case SECTION_GRID_INFO:
 			Grid::getInstance()->loadInfo(line, ',');
 			break;
@@ -921,8 +979,13 @@ void SunnyVC::adaptAnimation()
 
 	// Fire Flowers
 	for (int i = 0; i < this->fireFlowers->size(); ++i) {
-		this->fireFlowers->at(i)->setState(FireFlowerState::FIRE_FLOWER_GROWING_UP);
+		this->fireFlowers->at(i)->setState(FireFlowerState::FIRE_FLOWER_HIDING);
 		this->fireFlowers->at(i)->setFireFlowerBall(FireFlowerBallState::FIRE_FLOWER_BALL_FLYING_STAYING);
+	}
+
+	// Flowers
+	for (int i = 0; i < this->flowers->size(); ++i) {
+		this->flowers->at(i)->setState(FlowerState::FLOWER_HIDING);
 	}
 
 	///
@@ -988,6 +1051,11 @@ void SunnyVC::adaptToGrid()
 	for (int i = 0; i < this->fireFlowers->size(); ++i) {
 		Grid::getInstance()->add(this->fireFlowers->at(i));
 		//Grid::getInstance()->add(this->fireFlowers->at(i)->getFireFlowerBall());
+	}
+
+	// Flowers
+	for (int i = 0; i < this->flowers->size(); ++i) {
+		Grid::getInstance()->add(this->flowers->at(i));
 	}
 
 	///

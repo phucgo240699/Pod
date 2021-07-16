@@ -1551,3 +1551,12 @@ void Mario::handleFireFlowerBallCollision(FireFlowerBall* _fireFlowerBall, float
 		this->setState(MarioState::DIE);
 	}
 }
+
+void Mario::handleFlowerCollision(Flower* _flower, float _dt)
+{
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_flower, _dt);
+
+	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_flower->getBounds())) {
+		this->setState(MarioState::DIE);
+	}
+}

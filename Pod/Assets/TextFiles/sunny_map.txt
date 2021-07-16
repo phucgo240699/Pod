@@ -20,8 +20,8 @@
 # 6. beginGoldenBrickId, endGoldenBrickId
 601,700
 
-# 7. beginFireFlowerId, endFireFlowerId
-701,800
+# 7. beginFireFlowerId, endFireFlowerId, beginFlowerId, endFlowerId
+701,750,751,800
 
 # 8. beginGreenPipeId, endGreenPipeId
 801,900
@@ -76,7 +76,7 @@
 # marioLeftSpace, marioTopSpace, marioRightSpace,
 # superMarioLeftSpace, superMarioTopSpace, superMarioRightSpace,
 # superMarioFlyingLeftSpace, superMarioFlyingTopSpace, superMarioFlyingRightSpace)
-48,400,2816,470,4,3,2,4,3,2,3,5,1,10,6,1
+38,400,2816,470,4,3,2,4,3,2,3,5,1,10,6,1
 </MarioInfo>
 
 <GiftBrickFrames>
@@ -187,9 +187,15 @@
 </GoldenBrickFrames>
 
 <FireFlowerFrames>
-# (x, y, vy, topAnchor, bottomAnchor, leftAnchor, rightAnchor, id, ballX, ballY, ballVx, ballVy, ballId)
-360,368,0.5,336,376,350,374,701,368,376,1,0.5,951
+# (x, y, vy, topAnchor, bottomAnchor, leftAnchor, rightAnchor, halfSizeMode, greenMode, id, ballX, ballY, ballVx, ballVy, ballId)
+360,368,0.5,336,376,342,394,0,0,701,368,376,1,0.5,951
+1864,376,0.5,344,376,1846,1898,1,1,702,1872,384,1,0.5,952
 </FireFlowerFrames>
+
+<FlowerFrames>
+# (x, y, vy, topAnchor, bottomAnchor, leftAnchor, rightAnchor, halfSizeMode, greenMode, id)
+1800,392,0.5,360,392,1762,1834,1,1,751
+</FlowerFrames>
 
 <GreenPipeFrames>
 # (x, y, width, height, floorQuantity, id)
@@ -410,6 +416,13 @@
 > 701
 2,3_2,4
 
+> 702
+14,4
+
+# Flower
+> 751
+14,4
+
 # GreenPipe
 > 801
 2,3_2,4_3,3_3,4
@@ -436,6 +449,9 @@
 # Fire Flower Ball
 > 951
 2,4
+
+> 952
+14,4
 
 </GridMatrixId>
 
@@ -844,7 +860,7 @@
 221,136,16,32
 > 61 0 12
 
-# Red Fire Flower Half Size
+# Red Flower
 238,136,16,32
 255,136,16,32
 > 62 0 12
@@ -867,7 +883,7 @@
 221,170,16,32
 > 66 0 12
 
-# Green Fire Flower Half Size
+# Green Flower
 238,170,16,32
 255,170,16,32
 > 67 0 12
@@ -878,5 +894,52 @@
 127,194,8,8
 127,186,8,8
 > 68 0 3
+
+
+# Red Fire Flower Standing Look Up Half Size
+204,136,16,24
+> 69 0 0
+
+# Red Fire Flower Standing Look Down Half Size
+170,136,16,24
+> 70 0 0
+
+# Red Fire Flower Growing Up Half Size
+170,136,16,24
+187,136,16,24
+> 71 0 12
+
+# Red Fire Flower Dropping Half Size
+204,136,16,24
+221,136,16,24
+> 72 0 12
+
+# Red Flower Half Size
+238,136,16,24
+255,136,16,24
+> 73 0 12
+
+# Green Fire Flower Standing Look Up Half Size
+204,170,16,24
+> 74 0 0
+
+# Green Fire Flower Standing Look Down Half Size
+170,170,16,24
+> 75 0 0
+
+# Green Fire Flower Growing Up Half Size
+170,170,16,24
+187,170,16,24
+> 76 0 12
+
+# Green Fire Flower Dropping Half Size
+204,170,16,24
+221,170,16,24
+> 77 0 12
+
+# Green Flower Half Size
+238,170,16,24
+255,170,16,24
+> 78 0 12
 
 </AnimationBundle>

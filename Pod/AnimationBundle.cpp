@@ -354,7 +354,7 @@ Animation AnimationBundle::getRedFireFlowerDropping()
 	return this->animations->at(61);
 }
 
-Animation AnimationBundle::getRedFireFlowerHalfSize()
+Animation AnimationBundle::getRedFlower()
 {
 	return this->animations->at(62);
 }
@@ -379,7 +379,7 @@ Animation AnimationBundle::getGreenFireFlowerDropping()
 	return this->animations->at(66);
 }
 
-Animation AnimationBundle::getGreenFireFlowerHalfSize()
+Animation AnimationBundle::getGreenFlower()
 {
 	return this->animations->at(67);
 }
@@ -387,6 +387,56 @@ Animation AnimationBundle::getGreenFireFlowerHalfSize()
 Animation AnimationBundle::getFireFlowerBall()
 {
 	return this->animations->at(68);
+}
+
+Animation AnimationBundle::getRedFireFlowerStandingLookUpHalfSize()
+{
+	return this->animations->at(69);
+}
+
+Animation AnimationBundle::getRedFireFlowerStandingLookDownHalfSize()
+{
+	return this->animations->at(70);
+}
+
+Animation AnimationBundle::getRedFireFlowerGrowingUpHalfSize()
+{
+	return this->animations->at(71);
+}
+
+Animation AnimationBundle::getRedFireFlowerDroppingHalfSize()
+{
+	return this->animations->at(72);
+}
+
+Animation AnimationBundle::getRedFlowerHalfSize()
+{
+	return this->animations->at(73);
+}
+
+Animation AnimationBundle::getGreenFireFlowerStandingLookUpHalfSize()
+{
+	return this->animations->at(74);
+}
+
+Animation AnimationBundle::getGreenFireFlowerStandingLookDownHalfSize()
+{
+	return this->animations->at(75);
+}
+
+Animation AnimationBundle::getGreenFireFlowerGrowingUpHalfSize()
+{
+	return this->animations->at(76);
+}
+
+Animation AnimationBundle::getGreenFireFlowerDroppingHalfSize()
+{
+	return this->animations->at(77);
+}
+
+Animation AnimationBundle::getGreenFlowerHalfSize()
+{
+	return this->animations->at(78);
 }
 
 Animation AnimationBundle::getSuperMarioFlyingWalking()

@@ -9,6 +9,7 @@
 #include "Koopa.h"
 #include "AnimationCDPlayer.h"
 #include "FireFlower.h"
+#include "Flower.h"
 
 class SunnyVC : public ViewController
 {
@@ -35,6 +36,9 @@ private:
 	int beginFireFlowerId, endFireFlowerId;
 	int beginFireFlowerBallId, endFireFlowerBallId;
 	vector<FireFlower*>* fireFlowers;
+
+	int beginFlowerId, endFlowerId;
+	vector<Flower*>* flowers;
 
 	int beginGreenPipeId, endGreenPipeId;
 	vector<GreenPipe*>* greenPipes;

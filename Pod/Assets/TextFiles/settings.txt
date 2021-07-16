@@ -1,2 +1,2 @@
 #(dt,fps,screenWidth,screenHeight,isFullScreen,backBufferColor,debugMode,collisionSafeSpace,sceneName)
-1.0,66,256,188,0,black,0,0,WorldScene
+1.0,67,256,188,0,black,0,0,WorldScene

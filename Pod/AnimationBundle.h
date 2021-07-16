@@ -99,14 +99,27 @@ public:
 	Animation getRedFireFlowerStandingLookDown();
 	Animation getRedFireFlowerGrowingUp();
 	Animation getRedFireFlowerDropping();
-	Animation getRedFireFlowerHalfSize();
+	Animation getRedFlower();
+
 
 	Animation getGreenFireFlowerStandingLookUp();
 	Animation getGreenFireFlowerStandingLookDown();
 	Animation getGreenFireFlowerGrowingUp();
 	Animation getGreenFireFlowerDropping();
-	Animation getGreenFireFlowerHalfSize();
+	Animation getGreenFlower();
 
 	Animation getFireFlowerBall();
+
+	Animation getRedFireFlowerStandingLookUpHalfSize();
+	Animation getRedFireFlowerStandingLookDownHalfSize();
+	Animation getRedFireFlowerGrowingUpHalfSize();
+	Animation getRedFireFlowerDroppingHalfSize();
+	Animation getRedFlowerHalfSize();
+
+	Animation getGreenFireFlowerStandingLookUpHalfSize();
+	Animation getGreenFireFlowerStandingLookDownHalfSize();
+	Animation getGreenFireFlowerGrowingUpHalfSize();
+	Animation getGreenFireFlowerDroppingHalfSize();
+	Animation getGreenFlowerHalfSize();
 };
 

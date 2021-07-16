@@ -214,6 +214,12 @@
     <Filter Include="Source Files\Components\Map\FireFlowerBall">
       <UniqueIdentifier>{7d876df3-9ea3-4756-9c4b-83def9ab6ce7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\Map\Flower">
+      <UniqueIdentifier>{5c0f5393-22da-4bc1-82fd-4c1c81d26253}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Map\Flower">
+      <UniqueIdentifier>{6fcddf0b-9da3-4a47-b73c-09219c9ca46f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -337,7 +343,10 @@
       <Filter>Source Files\Components\Map\FireFlower</Filter>
     </ClCompile>
     <ClCompile Include="FireFlowerBall.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Components\Map\FireFlowerBall</Filter>
+    </ClCompile>
+    <ClCompile Include="Flower.cpp">
+      <Filter>Source Files\Components\Map\Flower</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -504,7 +513,13 @@
       <Filter>Header Files\System\Enums</Filter>
     </ClInclude>
     <ClInclude Include="FireFlowerBall.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Components\Map\FireFlowerBall</Filter>
+    </ClInclude>
+    <ClInclude Include="Flower.h">
+      <Filter>Header Files\Components\Map\Flower</Filter>
+    </ClInclude>
+    <ClInclude Include="FlowerState.h">
+      <Filter>Header Files\System\Enums</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
