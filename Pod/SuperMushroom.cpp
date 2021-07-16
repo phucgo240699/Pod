@@ -236,8 +236,8 @@ void SuperMushroom::handleMarioCollision(Mario* _mario, float _dt)
 		this->plusX(this->getVx() * get<1>(collisionResult));
 		this->plusY(this->getVy() * get<1>(collisionResult));
 		this->setState(SuperMushroomState::SUPER_MUSHROOM_BEING_EARNED);
-		_mario->plusX(this->getVx() * get<1>(collisionResult));
-		_mario->plusY(this->getVy() * get<1>(collisionResult));
+		/*_mario->plusX(this->getVx() * get<1>(collisionResult));
+		_mario->plusY(this->getVy() * get<1>(collisionResult));*/
 		_mario->setState(MarioState::SCALING_UP);
 		ScoreBoard::getInstance()->plusPoint(1000);
 	}

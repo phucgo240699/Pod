@@ -123,11 +123,11 @@ void SunnyVC::viewWillUpdate(float _dt)
 			unordered_set<Component*> ::iterator itr;
 			for (itr = cell.begin(); itr != cell.end(); ++itr) {
 				// Gift Brick
-				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP) {
 					/*if ((*itr)->getId() < beginGiftBrickId || (*itr)->getId() > endGiftBrickId) continue;*/
-					if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
+				if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
+					//if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP) {
 						(*itr)->Update(_dt);
-					}
+					//}
 				}
 
 				// Golden Brick
@@ -140,21 +140,37 @@ void SunnyVC::viewWillUpdate(float _dt)
 					(*itr)->Update(_dt);
 				}
 
-				// ==========================================================================================
-				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getState() == TRANSFERING_TO_FLY) {
-					continue;
-				}
-
 				// SuperMushroom
 				else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= endSuperMushroomId) {
+					if (static_cast<SuperMushroom*>(*itr)->getState() == SUPER_MUSHROOM_DISAPPEARED
+						|| static_cast<SuperMushroom*>(*itr)->getState() == SUPER_MUSHROOM_BEING_EARNED) {
+						Grid::getInstance()->remove(*itr, i, j);
+						continue;
+					}
+
+					if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_DOWN || this->mario->getState() == TRANSFERING_TO_FLY) {
+						continue;
+					}
+
 					(*itr)->Update(_dt);
 
 					// update which cell in grid that it's belongs to
 					Grid::getInstance()->updateCellOf(*itr);
 				}
 
+
+				// ==========================================================================================
+				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getState() == TRANSFERING_TO_FLY) {
+					continue;
+				}
+
 				// SuperLeaf
 				else if (beginSuperLeafId <= (*itr)->getId() && (*itr)->getId() <= endSuperLeafId) {
+					if (static_cast<SuperLeaf*>(*itr)->getState() == SUPER_LEAF_BEING_EARNED) {
+						Grid::getInstance()->remove(*itr, i, j);
+						continue;
+					}
+					
 					(*itr)->Update(_dt);
 
 					// update which cell in grid that it's belongs to
@@ -227,6 +243,12 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 				// Goombas
 				else if (beginGoombaId <= (*itr)->getId() && (*itr)->getId() <= endGoombaId) {
+					if (static_cast<Goomba*>(*itr)->getState() == DEAD_GOOMBA) {
+						Grid::getInstance()->remove(*itr, i, j);
+						this->goombas->erase(static_cast<Goomba*>(*itr));
+						continue;
+					}
+
 					(*itr)->Update(_dt);
 
 					// update which cell in grid that it's belongs to
@@ -235,6 +257,12 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 				// Koopas
 				else if (beginKoopaId <= (*itr)->getId() && (*itr)->getId() <= endKoopaId) {
+					if (static_cast<Koopa*>(*itr)->getState() == KOOPA_DEAD) {
+						Grid::getInstance()->remove(*itr, i, j);
+						this->koopas->erase(static_cast<Koopa*>(*itr));
+						continue;
+					}
+
 					(*itr)->Update(_dt);
 
 					// update which cell in grid that it's belongs to
@@ -301,44 +329,47 @@ void SunnyVC::viewDidUpdate(float _dt)
 					this->mario->handleGiftBrickCollision(static_cast<GiftBrick*>(*itr), _dt);
 				}
 
-				// Fire Flower
-				else if (beginFireFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerId) {
-					this->mario->handleFireFlowerCollision(static_cast<FireFlower*>(*itr), _dt);
-					static_cast<FireFlower*>(*itr)->handleMarioCollision(this->mario, _dt);
-				}
-
-				// Fire Flower Ball
-				else if (beginFireFlowerBallId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerBallId) {
-					this->mario->handleFireFlowerBallCollision(static_cast<FireFlowerBall*>(*itr), _dt);
-					static_cast<FireFlowerBall*>(*itr)->handleMarioCollision(this->mario, _dt);
-				}
-
-				// Flower
-				else if (beginFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFlowerId) {
-					this->mario->handleFlowerCollision(static_cast<Flower*>(*itr), _dt);
-					static_cast<Flower*>(*itr)->handleMarioCollision(this->mario, _dt);
-				}
-
 				// Green Pipe
 				else if (beginGreenPipeId <= (*itr)->getId() && (*itr)->getId() <= endGreenPipeId) {
 					this->mario->handleGreenPipeCollision(static_cast<GreenPipe*>(*itr), _dt);
 				}
 
-				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getState() == TRANSFERING_TO_FLY || this->mario->getIsFlashMode())
+				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getState() == TRANSFERING_TO_FLY)
 				{
 					continue;
 				}
 
+				// Fire Flower
+				else if (beginFireFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerId) {
+					if (this->mario->getIsFlashMode() == false) {
+						this->mario->handleFireFlowerCollision(static_cast<FireFlower*>(*itr), _dt);
+						static_cast<FireFlower*>(*itr)->handleMarioCollision(this->mario, _dt);
+					}
+				}
+
+				// Fire Flower Ball
+				else if (beginFireFlowerBallId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerBallId) {
+					if (this->mario->getIsFlashMode() == false) {
+						this->mario->handleFireFlowerBallCollision(static_cast<FireFlowerBall*>(*itr), _dt);
+						static_cast<FireFlowerBall*>(*itr)->handleMarioCollision(this->mario, _dt);
+					}
+				}
+
+				// Flower
+				else if (beginFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFlowerId) {
+					if (this->mario->getIsFlashMode() == false) {
+						this->mario->handleFlowerCollision(static_cast<Flower*>(*itr), _dt);
+						static_cast<Flower*>(*itr)->handleMarioCollision(this->mario, _dt);
+					}
+				}
+
 				// Super Mushroom
 				else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= endSuperMushroomId) {
-					if (static_cast<SuperMushroom*>(*itr)->getState() == SUPER_MUSHROOM_DISAPPEARED) {
-						Grid::getInstance()->remove(*itr, i, j);
-						break;
-					}
-
 					// Mario vs SuperMushroom
-					this->mario->handleSuperMushroomCollision(static_cast<SuperMushroom*>(*itr), _dt);
-					static_cast<SuperMushroom*>(*itr)->handleMarioCollision(this->mario, _dt);
+					if (this->mario->getIsFlashMode() == false) {
+						this->mario->handleSuperMushroomCollision(static_cast<SuperMushroom*>(*itr), _dt);
+						static_cast<SuperMushroom*>(*itr)->handleMarioCollision(this->mario, _dt);
+					}
 
 					// Super Mushroom collide to others
 					int beginRowSuperMushroom = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
@@ -380,39 +411,23 @@ void SunnyVC::viewDidUpdate(float _dt)
 					}
 				}
 
-				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getIsFlashMode())
-				{
-					continue;
-				}
-
 				// Super Leaf
 				else if (beginSuperLeafId <= (*itr)->getId() && (*itr)->getId() <= endSuperLeafId) {
-					if (static_cast<SuperLeaf*>(*itr)->getState() == SUPER_LEAF_BEING_EARNED) {
-						Grid::getInstance()->remove(*itr, i, j);
-						break;
+					if (this->mario->getIsFlashMode() == false) {
+						// Mario vs SuperLeaf
+						this->mario->handleSuperLeafCollision(static_cast<SuperLeaf*>(*itr), _dt);
+						static_cast<SuperLeaf*>(*itr)->handleMarioCollision(this->mario, _dt);
 					}
-
-					// Mario vs SuperLeaf
-					this->mario->handleSuperLeafCollision(static_cast<SuperLeaf*>(*itr), _dt);
-					static_cast<SuperLeaf*>(*itr)->handleMarioCollision(this->mario, _dt);
-				}
-
-				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getIsFlashMode())
-				{
-					continue;
 				}
 
 				// Goombas
 				else if (beginGoombaId <= (*itr)->getId() && (*itr)->getId() <= endGoombaId) {
-					if (static_cast<Goomba*>(*itr)->getState() == DEAD_GOOMBA) {
-						Grid::getInstance()->remove(*itr, i, j);
-						this->goombas->erase(static_cast<Goomba*>(*itr));
-						break;
-					}
 
 					// Mario vs Goomba
-					this->mario->handleGoombaCollision(static_cast<Goomba*>(*itr), _dt);
-					static_cast<Goomba*>(*itr)->handleMarioCollision(this->mario, _dt);
+					if (this->mario->getIsFlashMode() == false) {
+						this->mario->handleGoombaCollision(static_cast<Goomba*>(*itr), _dt);
+						static_cast<Goomba*>(*itr)->handleMarioCollision(this->mario, _dt);
+					}
 
 					// Goomba to others
 					int beginRowGoomba = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
@@ -456,22 +471,14 @@ void SunnyVC::viewDidUpdate(float _dt)
 					}
 				}
 
-				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getIsFlashMode())
-				{
-					continue;
-				}
-
 				// Koopas
 				else if (beginKoopaId <= (*itr)->getId() && (*itr)->getId() <= endKoopaId) {
-					if (static_cast<Koopa*>(*itr)->getState() == KOOPA_DEAD) {
-						Grid::getInstance()->remove(*itr, i, j);
-						this->koopas->erase(static_cast<Koopa*>(*itr));
-					}
 
 					// Mario vs Koopa
-					//static_cast<Koopa*>(*itr)->setHasCollideMario(false);
-					this->mario->handleKoopaCollision(static_cast<Koopa*>(*itr), _dt);
-					static_cast<Koopa*>(*itr)->handleMarioCollision(this->mario, _dt);
+					if (this->mario->getIsFlashMode() == false) {
+						this->mario->handleKoopaCollision(static_cast<Koopa*>(*itr), _dt);
+						static_cast<Koopa*>(*itr)->handleMarioCollision(this->mario, _dt);
+					}
 
 					// Koopa to others
 					int beginRowKoopa = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());

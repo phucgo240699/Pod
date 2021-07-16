@@ -475,11 +475,14 @@ void Mario::setState(MarioState _state)
 
 	case SCALING_DOWN:
 	{
-		delete currentAnimation;
+		this->setIsFlashMode(true);
+
 		// Store old state to pressureState variable
 		this->setPressureState(MarioState(this->getState()));
 
 		this->setIsSuperMode(false);
+
+		delete currentAnimation;
 		if (this->getIsFireMode()) {
 			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioFireScalingDown());
 		}
@@ -487,7 +490,7 @@ void Mario::setState(MarioState _state)
 			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioScalingDown());
 		}
 
-		this->countDownFlash = this->getCurrentAnimation()->getTotalFrames() * 26;
+		this->countDownFlash = 120;
 
 		this->setTargetVx(0);
 		this->setTargetVy(0);
@@ -520,9 +523,10 @@ void Mario::setState(MarioState _state)
 		break;
 	}
 
+
+	// Change position when frame anim size change
 	this->newFrameWidth = this->currentAnimation->getCurrentFrameWidth();
 	this->newFrameHeight = this->currentAnimation->getCurrentFrameHeight();
-
 	if (oldFrameWidth != newFrameWidth) {
 		this->plusX(oldFrameWidth - newFrameWidth);
 	}
@@ -530,6 +534,7 @@ void Mario::setState(MarioState _state)
 		this->plusY(oldFrameHeight - newFrameHeight-4);
 	}
 
+	// Space between bounds and frame
 	if (this->getState() == SCALING_DOWN) {
 		this->setLeftSpace(this->getMarioLeftSpace());
 		this->setTopSpace(this->getMarioTopSpace());
@@ -784,7 +789,6 @@ void Mario::Update(float _dt)
 		if (this->currentAnimation->getCurrentIndexFrame() == this->currentAnimation->getTotalFrames() - 1
 			&& this->currentAnimation->getAnimCount() >= this->currentAnimation->getAnimDelay()) {
 			this->setState(this->getPressureState());
-			this->setIsFlashMode(true);
 			//this->countDownFlash = this->getCurrentAnimation()->getTotalFrames() * 16;
 		}
 		this->countDownFlash -= 1;
@@ -794,6 +798,7 @@ void Mario::Update(float _dt)
 		this->countDownFlash -= 1;
 		if (this->countDownFlash <= 0) {
 			this->setIsFlashMode(false);
+			this->countDownFlash = 0;
 			//this->countDownFlash = this->getCurrentAnimation()->getTotalFrames() * 16;
 		}
 	}
@@ -847,7 +852,7 @@ void Mario::Draw()
 	}
 
 	// Draw mario
-	if (this->getState() == SCALING_DOWN || this->getIsFlashMode()) {
+	if (this->getIsFlashMode()) {
 		this->currentAnimation->DrawMarioWithoutCamera(this->texture, this->getPosition(), D3DXVECTOR2(translateX, translateY), this->getLeftSpace(), this->getTopSpace(), this->getRightSpace(), this->getIsFlip(), (this->countDownFlash % 4 == 0 ? D3DCOLOR_ARGB(128, 255, 255, 255) : D3DCOLOR_XRGB(255, 255, 255)));
 		//this->currentAnimation->DrawWithoutCamera(this->texture, this->getPosition(), D3DXVECTOR2(translateX - transX, translateY - this->getTopSpace()), this->getIsFlip(), (this->countDownFlash % 4 == 0 ? D3DCOLOR_ARGB(128, 255, 255, 255) : D3DCOLOR_XRGB(255, 255, 255)));
 	}
@@ -1383,11 +1388,6 @@ void Mario::handleGreenPipeCollision(GreenPipe* _greenPipe, float _dt)
 
 void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 {
-	//if (_goomba->getState() == TRAMPLED_GOOMBA
-	//	|| _goomba->getState() == DEAD_GOOMBA
-	//	|| this->getIsFlashMode()) {
-	//	return;
-	//}
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_goomba, _dt);
 	if (get<0>(collisionResult) == true) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
@@ -1511,8 +1511,8 @@ void Mario::handleSuperMushroomCollision(SuperMushroom* _superMushroom, float _d
 		_superMushroom->plusX(this->getVx() * get<1>(collisionResult));
 		_superMushroom->plusY(this->getVy() * get<1>(collisionResult));
 		_superMushroom->setState(SuperMushroomState::SUPER_MUSHROOM_BEING_EARNED);
-		this->plusX(this->getVx() * get<1>(collisionResult));
-		this->plusY(this->getVy() * get<1>(collisionResult));
+		/*this->plusX(this->getVx() * get<1>(collisionResult));
+		this->plusY(this->getVy() * get<1>(collisionResult));*/
 		this->setState(MarioState::SCALING_UP);
 		ScoreBoard::getInstance()->plusPoint(1000);
 	}
@@ -1548,6 +1548,8 @@ void Mario::handleFireFlowerBallCollision(FireFlowerBall* _fireFlowerBall, float
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_fireFlowerBall, _dt);
 
 	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_fireFlowerBall->getBounds())) {
+		_fireFlowerBall->plusX(get<1>(collisionResult) * _fireFlowerBall->getVx());
+		_fireFlowerBall->plusY(get<1>(collisionResult) * _fireFlowerBall->getVy());
 		this->setState(MarioState::DIE);
 	}
 }

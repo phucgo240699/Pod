@@ -107,6 +107,8 @@ void FireFlowerBall::handleMarioCollision(Mario* _mario, float _dt)
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
 
 	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_mario->getBounds())) {
+		this->plusX(get<1>(collisionResult) * this->getVx());
+		this->plusY(get<1>(collisionResult) * this->getVy());
 		_mario->setState(MarioState::DIE);
 	}
 }
