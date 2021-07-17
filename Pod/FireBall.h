@@ -1,35 +1,38 @@
 #pragma once
 #include "Component.h"
-#include "FireFlowerBallState.h"
 #include "AnimationBundle.h"
+#include "FireBallState.h"
 
 class Mario;
 
-class FireFlowerBall : public Component
+class FireBall : public Component
 {
 private:
 	Animation* animation;
-	FireFlowerBallState state;
-	float originVx, originVy;
+	FireBallState state;
+	float originVx;
 	float originX, originY;
+	bool isOutOfGrid = true;
 
 public:
 	// Init
-	FireFlowerBall(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id = 0);
+	FireBall(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id = 0);
 
 
 	// Getter
-	FireFlowerBallState getState();
+	FireBallState getState();
 	float getWidth();
 	float getHeight();
 	float getBoundsWidth();
 	float getBoundsHeight();
-	
+	bool getIsOutOfGrid();
+
 
 	// Setter
 	void setAnimation(Animation* _animation);
-	void setState(FireFlowerBallState _state);
+	void setState(FireBallState _state);
 	void resetToOriginalPosition();
+	void setIsOutOfGrid(bool _isOutOfGrid);
 
 	//void loadInfo(string line, char seperator);
 	void Update(float _dt);
@@ -39,4 +42,3 @@ public:
 	// Collision
 	void handleMarioCollision(Mario* _mario, float _dt);
 };
-

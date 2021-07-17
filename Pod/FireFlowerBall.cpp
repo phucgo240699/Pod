@@ -37,9 +37,6 @@ float FireFlowerBall::getBoundsHeight()
 
 void FireFlowerBall::setState(FireFlowerBallState _state)
 {
-	if (this->animation == NULL) {
-		this->animation = new Animation(AnimationBundle::getInstance()->getFireFlowerBall());
-	}
 	switch (_state)
 	{
 	case FIRE_FLOWER_BALL_FLYING_STAYING:
@@ -66,6 +63,11 @@ void FireFlowerBall::setState(FireFlowerBallState _state)
 		break;
 	}
 	this->state = _state;
+}
+
+void FireFlowerBall::setAnimation(Animation* _animation)
+{
+	this->animation = _animation;
 }
 
 void FireFlowerBall::resetToOriginalPosition()

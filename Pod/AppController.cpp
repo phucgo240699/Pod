@@ -122,6 +122,15 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		keyUps.push_back(KeyType::enter);
 	}
 
+	// Key S
+	if (KEY_DOWN(0x53) == 1) {
+		keyDowns.push_back(KeyType::key_S);
+		hasKeyDown = true;
+	}
+	else {
+		keyUps.push_back(KeyType::key_S);
+	}
+
 	// Up
 	if (KEY_DOWN(VK_UP) == 1) {
 		keyDowns.push_back(KeyType::up);

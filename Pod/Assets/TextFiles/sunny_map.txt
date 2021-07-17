@@ -29,6 +29,9 @@
 # 9. beginSuperLeafId, endSuperLeafId, beginFireFlowerBallId, endFireFlowerBallId
 901,950,951,1000
 
+# 10. beginFireBallId, endFireBallId
+1001,1100
+
 </SunnyVC>
 
 <Camera>
@@ -75,8 +78,9 @@
 #(x, y, limitX, limitY, leftSpace, topSpace, rightSpace,
 # marioLeftSpace, marioTopSpace, marioRightSpace,
 # superMarioLeftSpace, superMarioTopSpace, superMarioRightSpace,
-# superMarioFlyingLeftSpace, superMarioFlyingTopSpace, superMarioFlyingRightSpace)
-38,400,2816,470,4,3,2,4,3,2,3,5,1,10,6,1
+# superMarioFlyingLeftSpace, superMarioFlyingTopSpace, superMarioFlyingRightSpace,
+# firstFireBallVx, firstFireBallId)
+38,400,2816,470,4,3,2,4,3,2,3,5,1,10,6,1,4,1001
 </MarioInfo>
 
 <GiftBrickFrames>
@@ -452,6 +456,10 @@
 
 > 952
 14,4
+
+# Fire Ball
+> 1001
+0,4
 
 </GridMatrixId>
 

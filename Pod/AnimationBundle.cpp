@@ -389,6 +389,11 @@ Animation AnimationBundle::getFireFlowerBall()
 	return this->animations->at(68);
 }
 
+Animation AnimationBundle::getFireBall()
+{
+	return this->animations->at(68);
+}
+
 Animation AnimationBundle::getRedFireFlowerStandingLookUpHalfSize()
 {
 	return this->animations->at(69);

@@ -10,6 +10,7 @@
 #include "AnimationCDPlayer.h"
 #include "FireFlower.h"
 #include "Flower.h"
+#include "FireBall.h"
 
 class SunnyVC : public ViewController
 {
@@ -42,6 +43,9 @@ private:
 
 	int beginGreenPipeId, endGreenPipeId;
 	vector<GreenPipe*>* greenPipes;
+
+	int beginFireBallId, endFireBallId;
+	vector<FireBall*>* fireBalls;
 
 	//
 	// Enemies

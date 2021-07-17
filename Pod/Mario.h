@@ -18,6 +18,7 @@
 #include "SuperLeaf.h"
 #include "FireFlower.h"
 #include "Flower.h"
+#include "FireBall.h"
 #include <unordered_map>
 
 using namespace std;
@@ -30,6 +31,7 @@ private:
 	MarioSubState subState;
 	MarioState pressureState; // Hold state of mario before scaling up or scaling down
 	Animation* currentAnimation;
+	FireBall* firstFireBall;
 
 	// Control
 	bool isStandOnSurface = false, isReduceWalking = false, isConverting = false;
@@ -106,6 +108,7 @@ public:
 	//
 	// =============== Setter ===============
 	//
+	void setFirstFireBallAnimation(Animation* _animation);
 	void setState(MarioState _state);
 	void setSubState(MarioSubState _subState);
 	void setPressureState(MarioState _pressureState);
@@ -145,6 +148,7 @@ public:
 	void setSuperMarioFlyingLeftSpace(int _space);
 	void setSuperMarioFlyingTopSpace(int _space);
 	void setSuperMarioFlyingRightSpace(int _space);
+	void setFirstFireBallState(FireBallState _state);
 
 
 	// Update & Draw

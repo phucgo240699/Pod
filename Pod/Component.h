@@ -21,7 +21,6 @@ protected:
 	float width, height;
 
 	int id;
-	//bool alreadyJoinedCamera = false;
 
 public:	
 	// Init
@@ -38,7 +37,6 @@ public:
 	float getLimitY();
 
 	int getId();
-	//bool isAlreadyJoinedCamera();
 
 	// Settter
 	void setPosition(D3DXVECTOR3 _position);
@@ -50,7 +48,6 @@ public:
 	void setLimitY(float _limitY);
 
 	void setId(int _id);
-	//void setAlreadyJoinedCamera(bool _value);
 
 	void plusX(float _x);
 	void plusY(float _y);

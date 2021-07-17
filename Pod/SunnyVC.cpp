@@ -56,6 +56,7 @@ void SunnyVC::viewDidLoad()
 	blocks = new vector<Block*>();
 	fireFlowers = new vector<FireFlower*>();
 	flowers = new vector<Flower*>();
+	fireBalls = new vector<FireBall*>();
 
 	ScoreBoard::getInstance()->resetTimeTo300();
 
@@ -219,6 +220,7 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 					if ((*itr)->isCollidingByFrame(Camera::getInstance()->getFrame()) == false) {
 						Grid::getInstance()->remove(*itr, i, j);
+						static_cast<FireBall*>(*itr)->setIsOutOfGrid(true);
 					}
 				}
 
@@ -267,6 +269,18 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 					// update which cell in grid that it's belongs to
 					Grid::getInstance()->updateCellOf(*itr);
+				}
+
+				// Fire Ball
+				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
+					(*itr)->Update(_dt);
+
+					Grid::getInstance()->updateCellOf(*itr);
+
+					if ((*itr)->isCollidingByFrame(Camera::getInstance()->getFrame()) == false) {
+						Grid::getInstance()->remove(*itr, i, j);
+						static_cast<FireBall*>(*itr)->setIsOutOfGrid(true);
+					}
 				}
 			}
 		}
@@ -609,6 +623,11 @@ void SunnyVC::viewWillRender()
 					else if (beginKoopaId <= (*itr)->getId() && (*itr)->getId() <= endKoopaId) {
 						(*itr)->Draw(map->getTexture());
 					}
+
+					// Fire Ball
+					else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
+						(*itr)->Draw(map->getTexture());
+					}
 				}
 			}
 		}
@@ -709,6 +728,11 @@ void SunnyVC::adaptRangeID(vector<string> data, char seperator)
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginKoopaId = v[0];
 			this->endKoopaId = v[1];
+		}
+		else if (i == 10) {
+			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
+			this->beginFireBallId = v[0];
+			this->endFireBallId = v[1];
 		}
 	}
 }
@@ -987,7 +1011,8 @@ void SunnyVC::adaptAnimation()
 	// Fire Flowers
 	for (int i = 0; i < this->fireFlowers->size(); ++i) {
 		this->fireFlowers->at(i)->setState(FireFlowerState::FIRE_FLOWER_HIDING);
-		this->fireFlowers->at(i)->setFireFlowerBall(FireFlowerBallState::FIRE_FLOWER_BALL_FLYING_STAYING);
+		this->fireFlowers->at(i)->setFireFlowerBallState(FireFlowerBallState::FIRE_FLOWER_BALL_FLYING_STAYING);
+		this->fireFlowers->at(i)->setFireFlowerBallAnimation(new Animation(AnimationBundle::getInstance()->getFireFlowerBall()));
 	}
 
 	// Flowers
@@ -1025,6 +1050,8 @@ void SunnyVC::adaptAnimation()
 	}
 
 	this->mario->setState(MarioState::DROPPING);
+	this->mario->setFirstFireBallState(FireBallState::FIREBALL_STAYING);
+	this->mario->setFirstFireBallAnimation(new Animation(AnimationBundle::getInstance()->getFireBall()));
 }
 
 void SunnyVC::adaptToGrid()

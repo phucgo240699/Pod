@@ -164,6 +164,7 @@
     <ClCompile Include="dxgraphics.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FilePath.cpp" />
+    <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="FireFlower.cpp" />
     <ClCompile Include="FireFlowerBall.cpp" />
     <ClCompile Include="FlashLightCD.cpp" />
@@ -209,6 +210,8 @@
     <ClInclude Include="dxgraphics.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="FilePath.h" />
+    <ClInclude Include="FireBall.h" />
+    <ClInclude Include="FireBallState.h" />
     <ClInclude Include="FireFlowerBall.h" />
     <ClInclude Include="FireFlowerBallState.h" />
     <ClInclude Include="FireFlower.h" />

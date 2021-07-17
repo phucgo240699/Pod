@@ -195,6 +195,8 @@ void Mario::loadInfo(string line, char seperator)
 	this->setSuperMarioFlyingTopSpace(stof(v[14]));
 	this->setSuperMarioFlyingRightSpace(stof(v[15]));
 	//this->setState(Tool::getMarioStateFromString(v[4]));
+
+	this->firstFireBall = new FireBall(0, 0, stof(v[16]), 0, 0, 0, stoi(v[17]));
 }
 
 void Mario::setIsFlip(bool _isFlip)
@@ -205,6 +207,11 @@ void Mario::setIsFlip(bool _isFlip)
 void Mario::setIsConverting(bool _isConverting)
 {
 	this->isConverting = _isConverting;
+}
+
+void Mario::setFirstFireBallAnimation(Animation* _animation)
+{
+	this->firstFireBall->setAnimation(_animation);
 }
 
 void Mario::setState(MarioState _state)
@@ -1027,6 +1034,11 @@ void Mario::setSuperMarioFlyingRightSpace(int _space)
 	this->superMarioFlyingRightSpace = _space;
 }
 
+void Mario::setFirstFireBallState(FireBallState _state)
+{
+	this->firstFireBall->setState(_state);
+}
+
 void Mario::onKeyUp()
 {
 	if (this->getState() == WALKING) {
@@ -1109,6 +1121,7 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 				}
 			}
 		}
+		
 		// Left
 		else if (_keyTypes[i] == KeyType::left) {
 			if (this->getSubState() == PUSHING) {
@@ -1144,6 +1157,7 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 				}
 			}
 		}
+		
 		// Space
 		else if (_keyTypes[i] == KeyType::space) {
 			if (this->getState() == DROPPING) {
@@ -1165,6 +1179,25 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 			if (this->getIsFireMode() == true) {
 				this->setIsFireMode(false);
 				this->turnOffFireSkin(this->getState());
+			}
+		}
+
+		// Shoot Fire Ball
+		else if (_keyTypes[i] == KeyType::key_S) {
+			if (this->getIsFireMode() && this->firstFireBall->getIsOutOfGrid()) {
+				if (this->getIsFlip()) {
+					this->firstFireBall->setX(this->getX());
+					this->firstFireBall->setY(this->getY());
+					this->firstFireBall->setState(FireBallState::FIREBALL_FLYING_LEFT);
+				}
+				else {
+					this->firstFireBall->setX(this->getX() + this->getWidth());
+					this->firstFireBall->setY(this->getY());
+					this->firstFireBall->setState(FireBallState::FIREBALL_FLYING_RIGHT);
+				}
+				Grid::getInstance()->add(this->firstFireBall);
+				Grid::getInstance()->updateCellOf(this->firstFireBall);
+				this->firstFireBall->setIsOutOfGrid(false);
 			}
 		}
 	}

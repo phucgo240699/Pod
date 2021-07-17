@@ -109,6 +109,7 @@ public:
 	Animation getGreenFlower();
 
 	Animation getFireFlowerBall();
+	Animation getFireBall();
 
 	Animation getRedFireFlowerStandingLookUpHalfSize();
 	Animation getRedFireFlowerStandingLookDownHalfSize();

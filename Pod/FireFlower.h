@@ -42,8 +42,9 @@ public:
 	//FireFlowerBall* getFireFlowerBall();
 
 	// Setter
+	void setFireFlowerBallAnimation(Animation* _animation);
 	void setState(FireFlowerState _state);
-	void setFireFlowerBall(FireFlowerBallState _fireFlowerBallState);
+	void setFireFlowerBallState(FireFlowerBallState _fireFlowerBallState);
 	void setIsFlip(bool _isFlip);
 	void setIsGreenMode(bool _isGreenMode);
 	void setIsHalfSizeMode(bool _isHalfSizeMode);

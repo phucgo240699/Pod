@@ -220,6 +220,12 @@
     <Filter Include="Source Files\Components\Map\Flower">
       <UniqueIdentifier>{6fcddf0b-9da3-4a47-b73c-09219c9ca46f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\Mario\FireBall">
+      <UniqueIdentifier>{93fe9dde-f529-42f0-a2bb-8ebb7d6e745a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Mario\FireBall">
+      <UniqueIdentifier>{02b00d23-9ab4-4d0e-9609-3677884fa4e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -347,6 +353,9 @@
     </ClCompile>
     <ClCompile Include="Flower.cpp">
       <Filter>Source Files\Components\Map\Flower</Filter>
+    </ClCompile>
+    <ClCompile Include="FireBall.cpp">
+      <Filter>Source Files\Components\Mario\FireBall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -519,6 +528,12 @@
       <Filter>Header Files\Components\Map\Flower</Filter>
     </ClInclude>
     <ClInclude Include="FlowerState.h">
+      <Filter>Header Files\System\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="FireBall.h">
+      <Filter>Header Files\Components\Mario\FireBall</Filter>
+    </ClInclude>
+    <ClInclude Include="FireBallState.h">
       <Filter>Header Files\System\Enums</Filter>
     </ClInclude>
   </ItemGroup>

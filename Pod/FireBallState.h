@@ -1,0 +1,6 @@
+#pragma once
+
+enum FireBallState
+{
+	FIREBALL_STAYING, FIREBALL_FLYING_LEFT, FIREBALL_FLYING_RIGHT
+};

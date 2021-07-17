@@ -73,10 +73,10 @@ float FireFlower::getRightAnchor()
 	return this->rightAnchor;
 }
 
-//FireFlowerBall* FireFlower::getFireFlowerBall()
-//{
-//	return this->fireFlowerBall;
-//}
+void FireFlower::setFireFlowerBallAnimation(Animation* _animation)
+{
+	this->fireFlowerBall->setAnimation(_animation);
+}
 
 void FireFlower::setState(FireFlowerState _state)
 {
@@ -199,7 +199,7 @@ void FireFlower::setState(FireFlowerState _state)
 	this->state = _state;
 }
 
-void FireFlower::setFireFlowerBall(FireFlowerBallState _fireFlowerBallState)
+void FireFlower::setFireFlowerBallState(FireFlowerBallState _fireFlowerBallState)
 {
 	this->fireFlowerBall->setState(_fireFlowerBallState);
 }
