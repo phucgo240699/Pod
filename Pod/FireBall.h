@@ -7,6 +7,7 @@
 #include "Koopa.h"
 #include "FireFlower.h"
 #include "Flower.h"
+#include "ScoreBoard.h"
 
 //class Block;
 //class Goomba;

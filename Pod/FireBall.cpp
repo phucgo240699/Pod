@@ -169,14 +169,15 @@ void FireBall::handleGoombaCollision(Goomba* _goomba, float _dt)
 		}
 
 		this->setState(FireBallState::FIREBALL_DISAPPEARED);
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_goomba->getDefaultPoint() * _goomba->getPointCoef(), _goomba->getX(), _goomba->getY())));
+		ScoreBoard::getInstance()->plusPoint(_goomba->getDefaultPoint());
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_goomba->getDefaultPoint(), _goomba->getX(), _goomba->getY())));
 		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFireBallSplash()), this->getX(), this->getY())));
 	}
 }
 
 void FireBall::handleKoopaCollision(Koopa* _koopa, float _dt)
 {
-	if (this->getState() == KOOPA_THROWN_LEFT_AWAY || this->getState() == KOOPA_THROWN_RIGHT_AWAY) return;
+	if (_koopa->getState() == KOOPA_THROWN_LEFT_AWAY || _koopa->getState() == KOOPA_THROWN_RIGHT_AWAY) return;
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_koopa, _dt);
 
@@ -194,7 +195,8 @@ void FireBall::handleKoopaCollision(Koopa* _koopa, float _dt)
 		}
 
 		this->setState(FireBallState::FIREBALL_DISAPPEARED);
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_koopa->getDefaultPoint() * _koopa->getPointCoef(), _koopa->getX(), _koopa->getY())));
+		ScoreBoard::getInstance()->plusPoint(2 * _koopa->getDefaultPoint());
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(2 * _koopa->getDefaultPoint(), _koopa->getX(), _koopa->getY())));
 		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFireBallSplash()), this->getX(), this->getY())));
 	}
 }
@@ -216,7 +218,8 @@ void FireBall::handleFireFlowerCollision(FireFlower* _fireFlower, float _dt)
 		_fireFlower->plusX(get<1>(collisionResult) * _fireFlower->getVx());
 		_fireFlower->setState(FireFlowerState::FIRE_FLOWER_DEAD);
 
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_fireFlower->getDefaultPoint() * _fireFlower->getPointCoef(), _fireFlower->getX(), _fireFlower->getY())));
+		ScoreBoard::getInstance()->plusPoint(_fireFlower->getDefaultPoint());
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_fireFlower->getDefaultPoint(), _fireFlower->getX(), _fireFlower->getY())));
 		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFireBallSplash()), this->getX(), this->getY())));
 	}
 }
@@ -239,7 +242,8 @@ void FireBall::handleFlowerCollision(Flower* _flower, float _dt)
 		_flower->plusX(get<1>(collisionResult) * _flower->getVx());
 		_flower->setState(FlowerState::FLOWER_DEAD);
 
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_flower->getDefaultPoint() * _flower->getPointCoef(), _flower->getX(), _flower->getY())));
+		ScoreBoard::getInstance()->plusPoint(_flower->getDefaultPoint());
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_flower->getDefaultPoint(), _flower->getX(), _flower->getY())));
 		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFireBallSplash()), this->getX(), this->getY())));
 	}
 }

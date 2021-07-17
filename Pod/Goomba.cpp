@@ -434,7 +434,8 @@ void Goomba::handleFireBallCollision(FireBall* _fireBall, float _dt)
 		}
 
 		_fireBall->setState(FireBallState::FIREBALL_DISAPPEARED);
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint() * this->getPointCoef(), this->getX(), this->getY())));
+		ScoreBoard::getInstance()->plusPoint(this->getDefaultPoint());
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint(), this->getX(), this->getY())));
 		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFireBallSplash()), _fireBall->getX(), _fireBall->getY())));
 	}
 }

@@ -238,9 +238,10 @@ void FireFlower::loadInfo(string line, char seperator)
 	this->rightAnchor = v[6];
 	this->setIsHalfSizeMode(v[7] == 1);
 	this->setIsGreenMode(v[8] == 1);
-	this->setId(v[9]);
+	this->setDefaultPoint(v[9]);
+	this->setId(v[10]);
 
-	this->fireFlowerBall = new FireFlowerBall(v[10], v[11], v[12], v[13], Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), v[14]);
+	this->fireFlowerBall = new FireFlowerBall(v[11], v[12], v[13], v[14], Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), v[15]);
 }
 
 void FireFlower::Update(float _dt)
@@ -348,7 +349,8 @@ void FireFlower::handleFireBallCollision(FireBall* _fireBall, float _dt)
 		this->plusX(get<1>(collisionResult) * this->getVx());
 		this->setState(FireFlowerState::FIRE_FLOWER_DEAD);
 
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint() * this->getPointCoef(), this->getX(), this->getY())));
+		ScoreBoard::getInstance()->plusPoint(this->getDefaultPoint());
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint(), this->getX(), this->getY())));
 		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFireBallSplash()), _fireBall->getX(), _fireBall->getY())));
 	}
 }

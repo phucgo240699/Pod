@@ -30,6 +30,11 @@ void Enemy::setPointCoef(int _pointCoef)
 	this->pointCoef = _pointCoef;
 }
 
+void Enemy::setDefaultPoint(int _defaultPoint)
+{
+	this->defaultPoint = _defaultPoint;
+}
+
 void Enemy::Update(float _dt)
 {
 	Component::Update(_dt);

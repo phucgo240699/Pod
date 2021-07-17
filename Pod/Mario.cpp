@@ -1604,7 +1604,8 @@ void Mario::handleSuperLeafCollision(SuperLeaf* _superLeaf, float _dt)
 		|| this->getState() == SCALING_UP
 		|| this->getState() == SCALING_DOWN
 		|| this->getState() == TRANSFERING_TO_FLY
-		|| this->getIsFlashMode()) {
+		|| this->getIsFlashMode()
+		|| _superLeaf->getState() == SUPER_LEAF_BEING_EARNED) {
 		return;
 	}
 

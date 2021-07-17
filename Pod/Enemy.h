@@ -25,6 +25,7 @@ public:
 	// Setter
 	void setIsStandOnSurface(bool _isStandOnSurface);
 	void setPointCoef(int _pointCoef);
+	void setDefaultPoint(int _defaultPoint);
 
 	void Update(float _dt);
 };

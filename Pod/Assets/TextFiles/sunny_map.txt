@@ -26,11 +26,11 @@
 # 8. beginGreenPipeId, endGreenPipeId
 801,900
 
-# 9. beginSuperLeafId, endSuperLeafId, beginFireFlowerBallId, endFireFlowerBallId
-901,950,951,1000
+# 9. beginSuperLeafId, endSuperLeafId
+901,1000
 
-# 10. beginFireBallId, endFireBallId
-1001,1100
+# 10. beginFireBallId, endFireBallId, beginFireFlowerBallId, endFireFlowerBallId
+1001,1050,1051,1100
 
 </SunnyVC>
 
@@ -191,14 +191,14 @@
 </GoldenBrickFrames>
 
 <FireFlowerFrames>
-# (x, y, vy, topAnchor, bottomAnchor, leftAnchor, rightAnchor, halfSizeMode, greenMode, id, ballX, ballY, ballVx, ballVy, ballId)
-360,368,0.5,336,368,342,394,0,0,701,368,376,1,0.5,951
-1864,368,0.5,344,368,1846,1898,1,1,702,1872,384,1,0.5,952
+# (x, y, vy, topAnchor, bottomAnchor, leftAnchor, rightAnchor, halfSizeMode, greenMode, defaultPoint, id, ballX, ballY, ballVx, ballVy, ballId)
+360,368,0.5,336,368,342,394,0,0,100,701,368,376,1,0.5,1051
+1864,368,0.5,344,368,1846,1898,1,1,100,702,1872,384,1,0.5,1052
 </FireFlowerFrames>
 
 <FlowerFrames>
-# (x, y, vy, topAnchor, bottomAnchor, leftAnchor, rightAnchor, halfSizeMode, greenMode, id)
-1800,384,0.5,360,384,1762,1834,1,1,751
+# (x, y, vy, topAnchor, bottomAnchor, leftAnchor, rightAnchor, halfSizeMode, greenMode, defaultPoint, id)
+1800,384,0.5,360,384,1762,1834,1,1,100,751
 </FlowerFrames>
 
 <GreenPipeFrames>
@@ -450,16 +450,16 @@
 > 903
 11,3_11,4
 
-# Fire Flower Ball
-> 951
-2,4
-
-> 952
-14,4
-
 # Fire Ball
 > 1001
 0,4
+
+# Fire Flower Ball
+> 1051
+2,4
+
+> 1052
+14,4
 
 </GridMatrixId>
 

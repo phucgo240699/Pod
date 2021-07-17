@@ -370,10 +370,10 @@ void SunnyVC::viewDidUpdate(float _dt)
 					this->mario->handleGreenPipeCollision(static_cast<GreenPipe*>(*itr), _dt);
 				}
 
-				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getState() == TRANSFERING_TO_FLY)
+				/*if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getState() == TRANSFERING_TO_FLY)
 				{
 					continue;
-				}
+				}*/
 
 				// Fire Flower
 				else if (beginFireFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerId) {
@@ -774,8 +774,6 @@ void SunnyVC::adaptRangeID(vector<string> data, char seperator)
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginSuperLeafId = v[0];
 			this->endSuperLeafId = v[1];
-			this->beginFireFlowerBallId = v[2];
-			this->endFireFlowerBallId = v[3];
 		}
 		else if (i == 3) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
@@ -808,6 +806,8 @@ void SunnyVC::adaptRangeID(vector<string> data, char seperator)
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginFireBallId = v[0];
 			this->endFireBallId = v[1];
+			this->beginFireFlowerBallId = v[2];
+			this->endFireFlowerBallId = v[3];
 		}
 	}
 }

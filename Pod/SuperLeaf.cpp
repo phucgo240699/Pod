@@ -119,7 +119,8 @@ void SuperLeaf::handleMarioCollision(Mario* _mario, float _dt)
 		|| _mario->getState() == SCALING_UP
 		|| _mario->getState() == SCALING_DOWN
 		|| _mario->getState() == TRANSFERING_TO_FLY
-		|| _mario->getIsFlashMode()) {
+		|| _mario->getIsFlashMode()
+		|| this->getState() == SUPER_LEAF_BEING_EARNED) {
 		return;
 	}
 
