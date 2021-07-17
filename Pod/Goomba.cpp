@@ -315,6 +315,8 @@ void Goomba::handleBlockCollision(Component* _block, float _dt)
 
 void Goomba::handleKoopaCollision(Koopa* _koopa, float _dt)
 {
+	if (_koopa->getState() == KOOPA_THROWN_LEFT_AWAY || _koopa->getState() == KOOPA_THROWN_RIGHT_AWAY) return;
+
 	if (this->getState() == TRAMPLED_GOOMBA
 		|| this->getState() == THROWN_LEFT_AWAY_GOOMBA
 		|| this->getState() == THROWN_RIGHT_AWAY_GOOMBA

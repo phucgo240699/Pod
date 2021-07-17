@@ -258,6 +258,36 @@ void Koopa::setState(KoopaState _state)
 		this->setVy(0);
 		break;
 	}
+
+	case KOOPA_THROWN_LEFT_AWAY:
+	{
+		delete animation;
+		if (this->getIsGreenMode()) {
+			this->animation = new Animation(AnimationBundle::getInstance()->getKoopaGreenThrownAway());
+		}
+		else {
+			this->animation = new Animation(AnimationBundle::getInstance()->getKoopaRedThrownAway());
+		}
+
+		this->thrownX = 0;
+		this->startThrownY = this->getY();
+		break;
+	}
+
+	case KOOPA_THROWN_RIGHT_AWAY:
+	{
+		delete animation;
+		if (this->getIsGreenMode()) {
+			this->animation = new Animation(AnimationBundle::getInstance()->getKoopaGreenThrownAway());
+		}
+		else {
+			this->animation = new Animation(AnimationBundle::getInstance()->getKoopaRedThrownAway());
+		}
+
+		this->thrownX = 0;
+		this->startThrownY = this->getY();
+		break;
+	}
 	}
 
 	this->state = _state;
@@ -387,17 +417,16 @@ void Koopa::Update(float _dt)
 			}
 		}
 	}
-
-	/*if (this->pointY == this->endPointJumpUp || this->pointY == -std::numeric_limits<float>::infinity()) {
-		return;
+	else if (this->getState() == KOOPA_THROWN_LEFT_AWAY) {
+		this->plusXNoRound(-2);
+		this->setY(this->startThrownY + (-1 * (16 - (pow(thrownX + 24, 2) / 36)))); // -1: Oxy in game vs math
+		thrownX -= (2);
 	}
-
-	if (this->pointY - (2 * _dt) >= this->endPointJumpUp) {
-		this->pointY -= (2 * _dt);
+	else if (this->getState() == KOOPA_THROWN_RIGHT_AWAY) {
+		this->plusXNoRound(2);
+		this->setY(this->startThrownY + (-1 * (16 - (pow(thrownX - 24, 2) / 36)))); // -1: Oxy in game vs math
+		thrownX += (2);
 	}
-	else {
-		this->pointY = this->endPointJumpUp;
-	}*/
 }
 
 void Koopa::Draw(LPDIRECT3DTEXTURE9 _texture)
@@ -414,6 +443,7 @@ void Koopa::Draw(LPDIRECT3DTEXTURE9 _texture)
 
 void Koopa::handleHardComponentCollision(Component* _component, float _dt)
 {
+	if (this->getState() == KOOPA_THROWN_LEFT_AWAY || this->getState() == KOOPA_THROWN_RIGHT_AWAY) return;
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_component, _dt);
 	if (get<0>(collisionResult) == true) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
@@ -484,6 +514,7 @@ void Koopa::handleHardComponentCollision(Component* _component, float _dt)
 
 void Koopa::handleGiftBrickCollision(GiftBrick* _giftBrick, Mario* _mario, float _dt)
 {
+	if (this->getState() == KOOPA_THROWN_LEFT_AWAY || this->getState() == KOOPA_THROWN_RIGHT_AWAY) return;
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_giftBrick, _dt);
 	if (get<0>(collisionResult) == true) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
@@ -588,6 +619,8 @@ void Koopa::handleGiftBrickCollision(GiftBrick* _giftBrick, Mario* _mario, float
 
 void Koopa::handleBlockCollision(Component* _block, float _dt)
 {
+	if (this->getState() == KOOPA_THROWN_LEFT_AWAY || this->getState() == KOOPA_THROWN_RIGHT_AWAY) return;
+
 	//if (this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT || this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
 		tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_block, _dt);
 		if (get<0>(collisionResult) == true) {
@@ -631,6 +664,8 @@ void Koopa::handleBlockCollision(Component* _block, float _dt)
 
 void Koopa::handleGoombaCollision(Goomba* _goomba, float _dt)
 {
+	if (this->getState() == KOOPA_THROWN_LEFT_AWAY || this->getState() == KOOPA_THROWN_RIGHT_AWAY) return;
+
 	if (_goomba->getState() == TRAMPLED_GOOMBA
 		|| _goomba->getState() == THROWN_LEFT_AWAY_GOOMBA
 		|| _goomba->getState() == THROWN_RIGHT_AWAY_GOOMBA
@@ -667,6 +702,8 @@ void Koopa::handleGoombaCollision(Goomba* _goomba, float _dt)
 
 void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 {
+	if (this->getState() == KOOPA_THROWN_LEFT_AWAY || this->getState() == KOOPA_THROWN_RIGHT_AWAY) return;
+
 	if (_mario->getState() == DIE
 		|| _mario->getState() == DIE_JUMPING
 		|| _mario->getState() == DIE_DROPPING
@@ -741,5 +778,26 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 				
 				this->setupPointAnimPosition();
 			}
+	}
+}
+
+void Koopa::handleFireBallCollision(FireBall* _fireBall, float _dt)
+{
+	if (this->getState() == KOOPA_THROWN_LEFT_AWAY || this->getState() == KOOPA_THROWN_RIGHT_AWAY) return;
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_fireBall, _dt);
+
+	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_fireBall->getBounds())) {
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint() * this->getPointCoef(), this->getX(), this->getY())));
+		_fireBall->plusX(get<1>(collisionResult) * _fireBall->getVx());
+		_fireBall->plusY(get<1>(collisionResult) * _fireBall->getVy());
+		this->plusX(get<1>(collisionResult) * this->getVx());
+		this->plusX(get<1>(collisionResult) * this->getVx());
+
+		if (_fireBall->getState() == FIREBALL_FLYING_LEFT) {
+			this->setState(KoopaState::KOOPA_THROWN_LEFT_AWAY);
+		}
+		else if (_fireBall->getState() == FIREBALL_FLYING_RIGHT) {
+			this->setState(KoopaState::KOOPA_THROWN_RIGHT_AWAY);
+		}
 	}
 }

@@ -12,6 +12,7 @@
 
 class Mario; // Say Goomba exists without defining it.
 class Goomba;
+class FireBall;
 
 class Koopa : public Enemy
 {
@@ -29,6 +30,9 @@ private:
 	int countDown = 30, originCountDown = 30; // countDown to switch from standing to shaking, and from shaking to moving
 
 	bool isFlip = false, isGreenMode = false;
+
+	// Thrown away
+	float thrownX, startThrownY;
 
 public:
 	// Init
@@ -66,6 +70,7 @@ public:
 	void handleBlockCollision(Component* _block, float _dt);
 	void handleGoombaCollision(Goomba* _goomba, float _dt);
 	void handleMarioCollision(Mario* _mario, float _dt);
+	void handleFireBallCollision(FireBall* _fireBall, float _dt);
 };
 
 #endif // !KOOPA

@@ -1,6 +1,4 @@
 #include "FireBall.h"
-#include "Block.h"
-#include "Goomba.h"
 
 FireBall::FireBall(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id) : Component(_x, _y, _vx, _vy, _limitX, _limitY, _id)
 {
@@ -113,6 +111,11 @@ void FireBall::Draw(LPDIRECT3DTEXTURE9 _texture)
 	}
 }
 
+void FireBall::setTopAnchor(bool _topAnchor)
+{
+	this->topAnchor = _topAnchor;
+}
+
 void FireBall::handleHardComponentCollision(Component* _component, float _dt)
 {
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_component, _dt);
@@ -152,6 +155,28 @@ void FireBall::handleGoombaCollision(Goomba* _goomba, float _dt)
 		}
 		else if (this->getState() == FIREBALL_FLYING_RIGHT) {
 			_goomba->setState(THROWN_RIGHT_AWAY_GOOMBA);
+		}
+	}
+}
+
+void FireBall::handleKoopaCollision(Koopa* _koopa, float _dt)
+{
+	if (this->getState() == KOOPA_THROWN_LEFT_AWAY || this->getState() == KOOPA_THROWN_RIGHT_AWAY) return;
+
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_koopa, _dt);
+
+	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_koopa->getBounds())) {
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_koopa->getDefaultPoint() * _koopa->getPointCoef(), _koopa->getX(), _koopa->getY())));
+		this->plusX(get<1>(collisionResult) * this->getVx());
+		this->plusY(get<1>(collisionResult) * this->getVy());
+		_koopa->plusX(get<1>(collisionResult) * _koopa->getVx());
+		_koopa->plusX(get<1>(collisionResult) * _koopa->getVx());
+
+		if (this->getState() == FIREBALL_FLYING_LEFT) {
+			_koopa->setState(KoopaState::KOOPA_THROWN_LEFT_AWAY);
+		}
+		else if (this->getState() == FIREBALL_FLYING_RIGHT) {
+			_koopa->setState(KoopaState::KOOPA_THROWN_RIGHT_AWAY);
 		}
 	}
 }

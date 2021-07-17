@@ -80,7 +80,7 @@
 # superMarioLeftSpace, superMarioTopSpace, superMarioRightSpace,
 # superMarioFlyingLeftSpace, superMarioFlyingTopSpace, superMarioFlyingRightSpace,
 # firstFireBallVx, firstFireBallId)
-38,400,2816,470,4,3,2,4,3,2,3,5,1,10,6,1,3,1.5,1001
+38,400,2816,470,4,3,2,4,3,2,3,5,1,10,6,1,3,1,1001
 </MarioInfo>
 
 <GiftBrickFrames>
@@ -481,7 +481,7 @@
 187,0,16,16
 204,0,16,16
 221,0,16,16
-> 1 0 6
+> 1 0 8
 
 # GiftBrick empty box
 238,0,16,16
@@ -949,5 +949,13 @@
 238,170,16,24
 255,170,16,24
 > 78 0 12
+
+# Koopa Red Thrown Away
+0,203,16,16
+> 79 0 0
+
+# Koopa Green Thrown Away
+17,203,16,16
+> 80 0 0
 
 </AnimationBundle>

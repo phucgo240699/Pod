@@ -2,9 +2,13 @@
 #include "Component.h"
 #include "AnimationBundle.h"
 #include "FireBallState.h"
+#include "Block.h"
+#include "Goomba.h"
+#include "Koopa.h"
 
-class Block;
-class Goomba;
+//class Block;
+//class Goomba;
+//class Koopa;
 
 class FireBall : public Component
 {
@@ -36,6 +40,7 @@ public:
 	void resetToOriginalPosition();
 	void setIsOutOfGrid(bool _isOutOfGrid);
 	void setIsGoDown(bool _isGoDown);
+	void setTopAnchor(bool _topAnchor);
 
 	//void loadInfo(string line, char seperator);
 	void Update(float _dt);
@@ -46,4 +51,5 @@ public:
 	void handleHardComponentCollision(Component* _component, float _dt);
 	void handleBlockCollision(Block* _block, float _dt);
 	void handleGoombaCollision(Goomba* _goomba, float _dt);
+	void handleKoopaCollision(Koopa* _koopa, float _dt);
 };

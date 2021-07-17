@@ -1188,12 +1188,14 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 				if (this->getIsFlip()) {
 					this->firstFireBall->setX(this->getX());
 					this->firstFireBall->setY(this->getY());
+					this->firstFireBall->setTopAnchor(this->getY() - 16);
 					this->firstFireBall->setState(FireBallState::FIREBALL_FLYING_LEFT);
 					this->firstFireBall->setIsGoDown(true);
 				}
 				else {
 					this->firstFireBall->setX(this->getX() + this->getWidth());
 					this->firstFireBall->setY(this->getY());
+					this->firstFireBall->setTopAnchor(this->getY() - 16);
 					this->firstFireBall->setState(FireBallState::FIREBALL_FLYING_RIGHT);
 					this->firstFireBall->setIsGoDown(true);
 				}
@@ -1479,6 +1481,8 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 
 void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 {
+	if (_koopa->getState() == KOOPA_THROWN_LEFT_AWAY || _koopa->getState() == KOOPA_THROWN_RIGHT_AWAY) return;
+
 	if (this->getState() == DIE
 		|| this->getState() == DIE_JUMPING
 		|| this->getState() == DIE_DROPPING

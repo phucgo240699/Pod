@@ -444,6 +444,16 @@ Animation AnimationBundle::getGreenFlowerHalfSize()
 	return this->animations->at(78);
 }
 
+Animation AnimationBundle::getKoopaRedThrownAway()
+{
+	return this->animations->at(79);
+}
+
+Animation AnimationBundle::getKoopaGreenThrownAway()
+{
+	return this->animations->at(80);
+}
+
 Animation AnimationBundle::getSuperMarioFlyingWalking()
 {
 	return this->animations->at(49);

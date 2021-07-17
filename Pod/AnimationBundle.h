@@ -122,5 +122,8 @@ public:
 	Animation getGreenFireFlowerGrowingUpHalfSize();
 	Animation getGreenFireFlowerDroppingHalfSize();
 	Animation getGreenFlowerHalfSize();
+
+	Animation getKoopaRedThrownAway();
+	Animation getKoopaGreenThrownAway();
 };
 
