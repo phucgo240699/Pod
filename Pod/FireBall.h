@@ -1,10 +1,12 @@
 #pragma once
 #include "Component.h"
-#include "AnimationBundle.h"
+#include "AnimationCDPlayer.h"
 #include "FireBallState.h"
 #include "Block.h"
 #include "Goomba.h"
 #include "Koopa.h"
+#include "FireFlower.h"
+#include "Flower.h"
 
 //class Block;
 //class Goomba;
@@ -52,4 +54,6 @@ public:
 	void handleBlockCollision(Block* _block, float _dt);
 	void handleGoombaCollision(Goomba* _goomba, float _dt);
 	void handleKoopaCollision(Koopa* _koopa, float _dt);
+	void handleFireFlowerCollision(FireFlower* _fireFlower, float _dt);
+	void handleFlowerCollision(Flower* _flower, float _dt);
 };

@@ -36,16 +36,16 @@ private:
 
 	int beginFireFlowerId, endFireFlowerId;
 	int beginFireFlowerBallId, endFireFlowerBallId;
-	vector<FireFlower*>* fireFlowers;
+	unordered_set<FireFlower*>* fireFlowers;
 
 	int beginFlowerId, endFlowerId;
-	vector<Flower*>* flowers;
+	unordered_set<Flower*>* flowers;
 
 	int beginGreenPipeId, endGreenPipeId;
 	vector<GreenPipe*>* greenPipes;
 
 	int beginFireBallId, endFireBallId;
-	vector<FireBall*>* fireBalls;
+	//vector<FireBall*>* fireBalls;
 
 	//
 	// Enemies

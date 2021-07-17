@@ -67,6 +67,7 @@ public:
 	MarioSubState getSubState();
 	MarioState getPressureState(); // Hold state of mario before scaling up or scaling down
 	Animation* getCurrentAnimation();
+	FireBall* getFirstFireBall();
 	RECT getBounds();
 
 	float getBoundsWidth();

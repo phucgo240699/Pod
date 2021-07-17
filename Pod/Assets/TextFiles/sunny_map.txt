@@ -192,13 +192,13 @@
 
 <FireFlowerFrames>
 # (x, y, vy, topAnchor, bottomAnchor, leftAnchor, rightAnchor, halfSizeMode, greenMode, id, ballX, ballY, ballVx, ballVy, ballId)
-360,368,0.5,336,376,342,394,0,0,701,368,376,1,0.5,951
-1864,376,0.5,344,376,1846,1898,1,1,702,1872,384,1,0.5,952
+360,368,0.5,336,368,342,394,0,0,701,368,376,1,0.5,951
+1864,368,0.5,344,368,1846,1898,1,1,702,1872,384,1,0.5,952
 </FireFlowerFrames>
 
 <FlowerFrames>
 # (x, y, vy, topAnchor, bottomAnchor, leftAnchor, rightAnchor, halfSizeMode, greenMode, id)
-1800,392,0.5,360,392,1762,1834,1,1,751
+1800,384,0.5,360,384,1762,1834,1,1,751
 </FlowerFrames>
 
 <GreenPipeFrames>
@@ -957,5 +957,11 @@
 # Koopa Green Thrown Away
 17,203,16,16
 > 80 0 0
+
+# Fire Ball Splash
+34,203,16,16
+51,203,16,16
+85,203,16,16
+> 81 0 2
 
 </AnimationBundle>

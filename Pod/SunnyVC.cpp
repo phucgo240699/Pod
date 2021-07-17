@@ -54,9 +54,8 @@ void SunnyVC::viewDidLoad()
 	goombas = new unordered_set<Goomba*>();
 	koopas = new unordered_set<Koopa*>();
 	blocks = new vector<Block*>();
-	fireFlowers = new vector<FireFlower*>();
-	flowers = new vector<Flower*>();
-	fireBalls = new vector<FireBall*>();
+	fireFlowers = new unordered_set<FireFlower*>();
+	flowers = new unordered_set<Flower*>();
 
 	ScoreBoard::getInstance()->resetTimeTo300();
 
@@ -180,6 +179,12 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 				// Fire Flower
 				else if (beginFireFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerId) {
+					if (static_cast<FireFlower*>(*itr)->getState() == FIRE_FLOWER_DEAD) {
+						Grid::getInstance()->remove(*itr, i, j);
+						this->fireFlowers->erase(static_cast<FireFlower*>(*itr));
+						continue;
+					}
+
 					if (static_cast<FireFlower*>(*itr)->getCountDown() % 12 == 0 &&
 						(static_cast<FireFlower*>(*itr)->getState() == FIRE_FLOWER_STANDING_LOOK_UP || static_cast<FireFlower*>(*itr)->getState() == FIRE_FLOWER_STANDING_LOOK_DOWN)) {
 						if (this->mario->getY() + this->mario->getBoundsHeight() > (*itr)->getY()) {
@@ -226,6 +231,12 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 				// Flower
 				else if (beginFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFlowerId) {
+					if (static_cast<Flower*>(*itr)->getState() == FLOWER_DEAD) {
+						Grid::getInstance()->remove(*itr, i, j);
+						this->flowers->erase(static_cast<Flower*>(*itr));
+						continue;
+					}
+
 					if ((static_cast<Flower*>(*itr)->getState() == FLOWER_HIDING
 						&& (static_cast<Flower*>(*itr)->getLeftAnchor() > this->mario->getX() + this->mario->getWidth()
 							|| static_cast<Flower*>(*itr)->getRightAnchor() < this->mario->getX()
@@ -278,6 +289,12 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 				// Fire Ball
 				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
+					if (static_cast<FireBall*>(*itr)->getState() == FIREBALL_DISAPPEARED) {
+						Grid::getInstance()->remove(*itr, i, j);
+						static_cast<FireBall*>(*itr)->setIsOutOfGrid(true);
+						continue;
+					}
+
 					(*itr)->Update(_dt);
 
 					Grid::getInstance()->updateCellOf(*itr);
@@ -364,6 +381,8 @@ void SunnyVC::viewDidUpdate(float _dt)
 						this->mario->handleFireFlowerCollision(static_cast<FireFlower*>(*itr), _dt);
 						static_cast<FireFlower*>(*itr)->handleMarioCollision(this->mario, _dt);
 					}
+
+					static_cast<FireFlower*>(*itr)->handleFireBallCollision(this->mario->getFirstFireBall(), _dt);
 				}
 
 				// Fire Flower Ball
@@ -380,6 +399,8 @@ void SunnyVC::viewDidUpdate(float _dt)
 						this->mario->handleFlowerCollision(static_cast<Flower*>(*itr), _dt);
 						static_cast<Flower*>(*itr)->handleMarioCollision(this->mario, _dt);
 					}
+
+					static_cast<Flower*>(*itr)->handleFireBallCollsion(this->mario->getFirstFireBall(), _dt);
 				}
 
 				// Super Mushroom
@@ -588,6 +609,12 @@ void SunnyVC::viewDidUpdate(float _dt)
 								}
 								else if (beginKoopaId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endKoopaId) {
 									static_cast<FireBall*>(*itr)->handleKoopaCollision(static_cast<Koopa*>(*fireBallItr), _dt);
+								}
+								else if (beginFireFlowerId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endFireFlowerId) {
+									static_cast<FireBall*>(*itr)->handleFireFlowerCollision(static_cast<FireFlower*>(*fireBallItr), _dt);
+								}
+								else if (beginFlowerId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endFlowerId) {
+									static_cast<FireBall*>(*itr)->handleFlowerCollision(static_cast<Flower*>(*fireBallItr), _dt);
 								}
 							}
 						}
@@ -931,7 +958,7 @@ void SunnyVC::adaptData()
 			for (int i = 0; i < data.size(); ++i) {
 				FireFlower* fireFlower = new FireFlower(0, 0, 0, 0, 0, 0, 0);
 				fireFlower->loadInfo(data[i], ',');
-				fireFlowers->push_back(fireFlower);
+				fireFlowers->insert(fireFlower);
 			}
 			section = SECTION_NONE;
 		}
@@ -943,7 +970,7 @@ void SunnyVC::adaptData()
 			for (int i = 0; i < data.size(); ++i) {
 				Flower* flower = new Flower(0, 0, 0, 0, 0, 0, 0);
 				flower->loadInfo(data[i], ',');
-				flowers->push_back(flower);
+				flowers->insert(flower);
 			}
 			section = SECTION_NONE;
 		}
@@ -1057,15 +1084,17 @@ void SunnyVC::adaptAnimation()
 	}
 
 	// Fire Flowers
-	for (int i = 0; i < this->fireFlowers->size(); ++i) {
-		this->fireFlowers->at(i)->setState(FireFlowerState::FIRE_FLOWER_HIDING);
-		this->fireFlowers->at(i)->setFireFlowerBallState(FireFlowerBallState::FIRE_FLOWER_BALL_FLYING_STAYING);
-		this->fireFlowers->at(i)->setFireFlowerBallAnimation(new Animation(AnimationBundle::getInstance()->getFireFlowerBall()));
+	unordered_set<FireFlower*> ::iterator fireFlowerItr;
+	for (fireFlowerItr = this->fireFlowers->begin(); fireFlowerItr != this->fireFlowers->end(); ++fireFlowerItr) {
+		(*fireFlowerItr)->setState(FireFlowerState::FIRE_FLOWER_HIDING);
+		(*fireFlowerItr)->setFireFlowerBallState(FireFlowerBallState::FIRE_FLOWER_BALL_FLYING_STAYING);
+		(*fireFlowerItr)->setFireFlowerBallAnimation(new Animation(AnimationBundle::getInstance()->getFireFlowerBall()));
 	}
 
 	// Flowers
-	for (int i = 0; i < this->flowers->size(); ++i) {
-		this->flowers->at(i)->setState(FlowerState::FLOWER_HIDING);
+	unordered_set<Flower*> ::iterator flowerItr;
+	for (flowerItr = this->flowers->begin(); flowerItr != this->flowers->end(); ++flowerItr) {
+		(*flowerItr)->setState(FlowerState::FLOWER_HIDING);
 	}
 
 	///
@@ -1130,14 +1159,16 @@ void SunnyVC::adaptToGrid()
 	}
 
 	// Fire Flowers
-	for (int i = 0; i < this->fireFlowers->size(); ++i) {
-		Grid::getInstance()->add(this->fireFlowers->at(i));
+	unordered_set<FireFlower*> ::iterator fireFlowerItr;
+	for (fireFlowerItr = this->fireFlowers->begin(); fireFlowerItr != this->fireFlowers->end(); ++fireFlowerItr) {
+		Grid::getInstance()->add(*fireFlowerItr);
 		//Grid::getInstance()->add(this->fireFlowers->at(i)->getFireFlowerBall());
 	}
 
 	// Flowers
-	for (int i = 0; i < this->flowers->size(); ++i) {
-		Grid::getInstance()->add(this->flowers->at(i));
+	unordered_set<Flower*> ::iterator flowerItr;
+	for (flowerItr = this->flowers->begin(); flowerItr != this->flowers->end(); ++flowerItr) {
+		Grid::getInstance()->add(*flowerItr);
 	}
 
 	///

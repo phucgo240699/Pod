@@ -1,5 +1,5 @@
 #pragma once
-#include "Component.h"
+#include "Enemy.h"
 #include "FireFlowerState.h"
 #include "AnimationBundle.h"
 #include "FireFlowerBall.h"
@@ -7,8 +7,9 @@
 
 class Mario;
 class Camera;
+class FireBall;
 
-class FireFlower : public Component
+class FireFlower : public Enemy
 {
 private:
 	Animation* animation;
@@ -19,6 +20,9 @@ private:
 	bool isFlip = false, isHalfSizeMode = false, isGreenMode = false;
 
 	FireFlowerBall* fireFlowerBall;
+
+	// Thrown away
+	float thrownX, startThrownY;
 
 public:
 	// Init
@@ -57,4 +61,5 @@ public:
 
 	// Collision
 	void handleMarioCollision(Mario* _mario, float _dt);
+	void handleFireBallCollision(FireBall* _fireBall, float _dt);
 };

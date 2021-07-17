@@ -787,9 +787,9 @@ void Koopa::handleFireBallCollision(FireBall* _fireBall, float _dt)
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_fireBall, _dt);
 
 	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_fireBall->getBounds())) {
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint() * this->getPointCoef(), this->getX(), this->getY())));
 		_fireBall->plusX(get<1>(collisionResult) * _fireBall->getVx());
 		_fireBall->plusY(get<1>(collisionResult) * _fireBall->getVy());
+
 		this->plusX(get<1>(collisionResult) * this->getVx());
 		this->plusX(get<1>(collisionResult) * this->getVx());
 
@@ -799,5 +799,9 @@ void Koopa::handleFireBallCollision(FireBall* _fireBall, float _dt)
 		else if (_fireBall->getState() == FIREBALL_FLYING_RIGHT) {
 			this->setState(KoopaState::KOOPA_THROWN_RIGHT_AWAY);
 		}
+
+		_fireBall->setState(FireBallState::FIREBALL_DISAPPEARED);
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint()* this->getPointCoef(), this->getX(), this->getY())));
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFireBallSplash()), _fireBall->getX(), _fireBall->getY())));
 	}
 }

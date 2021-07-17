@@ -24,6 +24,11 @@ MarioSubState Mario::getSubState()
 	return this->subState;
 }
 
+FireBall* Mario::getFirstFireBall()
+{
+	return this->firstFireBall;
+}
+
 MarioState Mario::getState()
 {
 	return this->state;

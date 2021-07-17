@@ -454,6 +454,11 @@ Animation AnimationBundle::getKoopaGreenThrownAway()
 	return this->animations->at(80);
 }
 
+Animation AnimationBundle::getFireBallSplash()
+{
+	return this->animations->at(81);
+}
+
 Animation AnimationBundle::getSuperMarioFlyingWalking()
 {
 	return this->animations->at(49);

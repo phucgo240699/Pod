@@ -2,9 +2,9 @@
 #include "Camera.h"
 #include "Mario.h"
 
-Flower::Flower(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id) : Component(_x, _y, _vx, _vy, _limitX, _limitY, _id)
+Flower::Flower(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id) : Enemy(_x, _y, _vx, _vy, _limitX, _limitY, _id)
 {
-	Component::Component(_x, _y, _vx, _vy, _limitX, _limitY, _id);
+	Enemy::Enemy(_x, _y, _vx, _vy, _limitX, _limitY, _id);
 	this->originVy = _vy;
 }
 
@@ -195,5 +195,28 @@ void Flower::handleMarioCollision(Mario* _mario, float _dt)
 
 	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_mario->getBounds())) {
 		_mario->setState(MarioState::DIE);
+	}
+}
+
+void Flower::handleFireBallCollsion(FireBall* _fireBall, float _dt)
+{
+	if (this->getState() == FLOWER_DEAD || this->getState() == FLOWER_HIDING || this->getState() == FLOWER_STANDING) return;
+	if (this->getState() == FLOWER_GROWING_UP || this->getState() == FLOWER_DROPPING) {
+		if (_fireBall->getY() + _fireBall->getVy() * _dt >= this->getBottomAnchor()) return;
+	}
+
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_fireBall, _dt);
+
+	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_fireBall->getBounds())) {
+		_fireBall->plusX(get<1>(collisionResult) * _fireBall->getVx());
+		_fireBall->plusY(get<1>(collisionResult) * _fireBall->getVy());
+		_fireBall->setState(FireBallState::FIREBALL_DISAPPEARED);
+
+		this->plusX(get<1>(collisionResult) * this->getVx());
+		this->plusX(get<1>(collisionResult) * this->getVx());
+		this->setState(FlowerState::FLOWER_DEAD);
+
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint() * this->getPointCoef(), this->getX(), this->getY())));
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFireBallSplash()), _fireBall->getX(), _fireBall->getY())));
 	}
 }

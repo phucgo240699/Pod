@@ -1,13 +1,14 @@
 #pragma once
-#include "Component.h"
+#include "Enemy.h"
 #include "FlowerState.h"
 #include "AnimationBundle.h"
 #include "Grid.h"
 
 class Mario;
 class Camera;
+class FireBall;
 
-class Flower : public Component
+class Flower : public Enemy
 {
 private:
 	Animation* animation;
@@ -51,4 +52,5 @@ public:
 
 	// Collision
 	void handleMarioCollision(Mario* _mario, float _dt);
+	void handleFireBallCollsion(FireBall* _fireBall, float _dt);
 };

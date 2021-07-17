@@ -125,5 +125,7 @@ public:
 
 	Animation getKoopaRedThrownAway();
 	Animation getKoopaGreenThrownAway();
+
+	Animation getFireBallSplash();
 };
 
