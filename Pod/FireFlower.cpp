@@ -312,6 +312,16 @@ void FireFlower::Draw(LPDIRECT3DTEXTURE9 _texture)
 
 void FireFlower::handleMarioCollision(Mario* _mario, float _dt)
 {
+	if (_mario->getState() == DIE
+		|| _mario->getState() == DIE_JUMPING
+		|| _mario->getState() == DIE_DROPPING
+		|| _mario->getState() == SCALING_UP
+		|| _mario->getState() == SCALING_DOWN
+		|| _mario->getState() == TRANSFERING_TO_FLY
+		|| _mario->getIsFlashMode()) {
+		return;
+	}
+
 	if (this->getState() == FIRE_FLOWER_HIDING) return;
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
 

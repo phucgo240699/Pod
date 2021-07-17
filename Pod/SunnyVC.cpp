@@ -251,10 +251,15 @@ void SunnyVC::viewWillUpdate(float _dt)
 						continue;
 					}
 
+
 					(*itr)->Update(_dt);
 
 					// update which cell in grid that it's belongs to
 					Grid::getInstance()->updateCellOf(*itr);
+
+					if ((*itr)->getY() + (*itr)->getHeight() > Camera::getInstance()->getLimitY()) {
+						Grid::getInstance()->remove(*itr, i, j);
+					}
 				}
 
 				// Koopas
@@ -460,9 +465,9 @@ void SunnyVC::viewDidUpdate(float _dt)
 							unordered_set<Component*> ::iterator goombaItr;
 							for (goombaItr = goombaCell.begin(); goombaItr != goombaCell.end(); ++goombaItr) {
 								if ((beginGroundId <= (*goombaItr)->getId() && (*goombaItr)->getId() <= endGroundId)
-								|| (beginGoldenBrickId <= (*goombaItr)->getId() && (*goombaItr)->getId() <= endGoldenBrickId)
-								|| (beginGiftBrickId <= (*goombaItr)->getId() && (*goombaItr)->getId() <= endGiftBrickId)
-								|| (beginGreenPipeId <= (*goombaItr)->getId() && (*goombaItr)->getId() <= endGreenPipeId)) {
+									|| (beginGoldenBrickId <= (*goombaItr)->getId() && (*goombaItr)->getId() <= endGoldenBrickId)
+									|| (beginGiftBrickId <= (*goombaItr)->getId() && (*goombaItr)->getId() <= endGiftBrickId)
+									|| (beginGreenPipeId <= (*goombaItr)->getId() && (*goombaItr)->getId() <= endGreenPipeId)) {
 									static_cast<Goomba*>(*itr)->handleHardComponentCollision(*goombaItr, _dt);
 								}
 								else if (beginBlockId <= (*goombaItr)->getId() && (*goombaItr)->getId() <= endBlockId) {
@@ -470,6 +475,9 @@ void SunnyVC::viewDidUpdate(float _dt)
 								}
 								else if (beginKoopaId <= (*goombaItr)->getId() && (*goombaItr)->getId() < endKoopaId) {
 									static_cast<Goomba*>(*itr)->handleKoopaCollision(static_cast<Koopa*>(*goombaItr), _dt);
+								}
+								else if (beginFireBallId <= (*goombaItr)->getId() && (*goombaItr)->getId() <= endFireBallId) {
+									static_cast<Goomba*>(*itr)->handleFireBallCollision(static_cast<FireBall*>(*goombaItr), _dt);
 								}
 							}
 						}
@@ -535,19 +543,53 @@ void SunnyVC::viewDidUpdate(float _dt)
 						else if (static_cast<Koopa*>(*itr)->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT) {
 							static_cast<Koopa*>(*itr)->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_RIGHT);
 						}
-						else if (static_cast<Koopa*>(*itr) ->getIsGreenMode() && static_cast<Koopa*>(*itr)->getState() == KOOPA_MOVING_LEFT) {
+						else if (static_cast<Koopa*>(*itr)->getIsGreenMode() && static_cast<Koopa*>(*itr)->getState() == KOOPA_MOVING_LEFT) {
 							static_cast<Koopa*>(*itr)->setState(KoopaState::KOOPA_DROPPING_LEFT);
 						}
 						else if (static_cast<Koopa*>(*itr)->getIsGreenMode() && static_cast<Koopa*>(*itr)->getState() == KOOPA_MOVING_RIGHT) {
 							static_cast<Koopa*>(*itr)->setState(KoopaState::KOOPA_DROPPING_RIGHT);
 						}
 					}
-										
+
+				}
+
+				// Fire Ball
+				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
+					// FireBall to others
+					int beginRowFireball = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int endRowFireball = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int beginColFireball = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int endColFireball = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+
+					beginRowFireball = beginRowFireball < 0 ? 0 : beginRowFireball;
+					endRowFireball = endRowFireball > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowFireball;
+					beginColFireball = beginColFireball < 0 ? 0 : beginColFireball;
+					endColFireball = endColFireball > Grid::getInstance()->getTotalCols() ? Grid::getInstance()->getTotalCols() : endColFireball;
+
+					for (int r = beginRowFireball; r < endRowFireball; ++r) {
+						for (int c = beginColFireball; c < endColFireball; ++c) {
+							unordered_set<Component*> fireBallCell = Grid::getInstance()->getCell(r, c);
+							unordered_set<Component*> ::iterator fireBallItr;
+
+							for (fireBallItr = fireBallCell.begin(); fireBallItr != fireBallCell.end(); ++fireBallItr) {
+								if ((beginGroundId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endGroundId)
+									|| (beginGoldenBrickId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endGoldenBrickId)
+									|| (beginGreenPipeId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endGreenPipeId)) {
+									static_cast<FireBall*>(*itr)->handleHardComponentCollision(*fireBallItr, _dt);
+								}
+								else if (beginBlockId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endBlockId) {
+									static_cast<FireBall*>(*itr)->handleBlockCollision(static_cast<Block*>(*fireBallItr), _dt);
+								}
+								else if (beginGoombaId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endGoombaId) {
+									static_cast<FireBall*>(*itr)->handleGoombaCollision(static_cast<Goomba*>(*fireBallItr), _dt);
+								}
+							}
+						}
+					}
 				}
 			}
 		}
 	}
-
 	if ((mario->getState() == WALKING || mario->getState() == STANDING) && this->mario->getIsStandOnSurface() == false) {
 		this->mario->setState(MarioState::DROPPING);
 	}

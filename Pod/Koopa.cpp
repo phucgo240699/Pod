@@ -282,21 +282,6 @@ void Koopa::setIsFlip(bool _isFlip)
 	this->isFlip = _isFlip;
 }
 
-//void Koopa::setPointX(float _pointX)
-//{
-//	this->pointX = _pointX;
-//}
-//
-//void Koopa::setPointY(float _pointY)
-//{
-//	this->pointY = _pointY;
-//}
-//
-//void Koopa::setEndPointJumpUp(float _endPointJumpUp)
-//{
-//	this->endPointJumpUp = _endPointJumpUp;
-//}
-
 void Koopa::setupPointAnimPosition()
 {
 	AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint() * this->getPointCoef(), this->getX(), this->getY())));
@@ -647,7 +632,8 @@ void Koopa::handleBlockCollision(Component* _block, float _dt)
 void Koopa::handleGoombaCollision(Goomba* _goomba, float _dt)
 {
 	if (_goomba->getState() == TRAMPLED_GOOMBA
-		|| _goomba->getState() == THROWN_AWAY_GOOMBA
+		|| _goomba->getState() == THROWN_LEFT_AWAY_GOOMBA
+		|| _goomba->getState() == THROWN_RIGHT_AWAY_GOOMBA
 		|| _goomba->getState() == DEAD_GOOMBA) {
 		return;
 	}
@@ -662,13 +648,18 @@ void Koopa::handleGoombaCollision(Goomba* _goomba, float _dt)
 				this->convertMovingState();
 				_goomba->convertMovingState();
 			}
-			else if (this->getState() == KOOPA_SHRINKAGE_MOVING_LEFT
-				|| this->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT
-				|| this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT
-				|| this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
+			else {
 				AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_goomba->getDefaultPoint() * _goomba->getPointCoef(), _goomba->getX(), _goomba->getY())));
 				AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(_goomba->getX(), _goomba->getY())));
-				_goomba->setState(GoombaState::THROWN_AWAY_GOOMBA);
+
+				if (this->getState() == KOOPA_SHRINKAGE_MOVING_LEFT
+					|| this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT) {
+					_goomba->setState(GoombaState::THROWN_LEFT_AWAY_GOOMBA);
+				}
+				else if (this->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT
+					|| this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
+					_goomba->setState(GoombaState::THROWN_RIGHT_AWAY_GOOMBA);
+				}
 			}
 		}
 	}
@@ -676,9 +667,16 @@ void Koopa::handleGoombaCollision(Goomba* _goomba, float _dt)
 
 void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 {
-	//if (_mario->getIsFlashMode()) {
-	//	return;
-	//}
+	if (_mario->getState() == DIE
+		|| _mario->getState() == DIE_JUMPING
+		|| _mario->getState() == DIE_DROPPING
+		|| _mario->getState() == SCALING_UP
+		|| _mario->getState() == SCALING_DOWN
+		|| _mario->getState() == TRANSFERING_TO_FLY
+		|| _mario->getIsFlashMode()) {
+		return;
+	}
+
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
 	if (get<0>(collisionResult) == true) {
 			CollisionEdge edge = get<2>(collisionResult)[0];

@@ -227,6 +227,16 @@ void SuperMushroom::handleBlockCollision(Block* _block, float _dt)
 
 void SuperMushroom::handleMarioCollision(Mario* _mario, float _dt)
 {
+	if (_mario->getState() == DIE
+		|| _mario->getState() == DIE_JUMPING
+		|| _mario->getState() == DIE_DROPPING
+		|| _mario->getState() == SCALING_UP
+		|| _mario->getState() == SCALING_DOWN
+		|| _mario->getState() == TRANSFERING_TO_FLY
+		|| _mario->getIsFlashMode()) {
+		return;
+	}
+
 	if (this->getState() == SUPER_MUSHROOM_BEING_EARNED
 	|| this->getState() == SUPER_MUSHROOM_DISAPPEARED) return;
 

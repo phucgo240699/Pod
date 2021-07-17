@@ -196,7 +196,7 @@ void Mario::loadInfo(string line, char seperator)
 	this->setSuperMarioFlyingRightSpace(stof(v[15]));
 	//this->setState(Tool::getMarioStateFromString(v[4]));
 
-	this->firstFireBall = new FireBall(0, 0, stof(v[16]), 0, 0, 0, stoi(v[17]));
+	this->firstFireBall = new FireBall(0, 0, stof(v[16]), stof(v[17]), 0, 0, stoi(v[18]));
 }
 
 void Mario::setIsFlip(bool _isFlip)
@@ -1189,11 +1189,13 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 					this->firstFireBall->setX(this->getX());
 					this->firstFireBall->setY(this->getY());
 					this->firstFireBall->setState(FireBallState::FIREBALL_FLYING_LEFT);
+					this->firstFireBall->setIsGoDown(true);
 				}
 				else {
 					this->firstFireBall->setX(this->getX() + this->getWidth());
 					this->firstFireBall->setY(this->getY());
 					this->firstFireBall->setState(FireBallState::FIREBALL_FLYING_RIGHT);
+					this->firstFireBall->setIsGoDown(true);
 				}
 				Grid::getInstance()->add(this->firstFireBall);
 				Grid::getInstance()->updateCellOf(this->firstFireBall);
@@ -1421,6 +1423,23 @@ void Mario::handleGreenPipeCollision(GreenPipe* _greenPipe, float _dt)
 
 void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 {
+	if (this->getState() == DIE
+		|| this->getState() == DIE_JUMPING
+		|| this->getState() == DIE_DROPPING
+		|| this->getState() == SCALING_UP
+		|| this->getState() == SCALING_DOWN
+		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getIsFlashMode()) {
+		return;
+	}
+
+	if (_goomba->getState() == TRAMPLED_GOOMBA
+		|| _goomba->getState() == THROWN_LEFT_AWAY_GOOMBA
+		|| _goomba->getState() == THROWN_RIGHT_AWAY_GOOMBA
+		|| _goomba->getState() == DEAD_GOOMBA) {
+		return;
+	}
+
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_goomba, _dt);
 	if (get<0>(collisionResult) == true) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
@@ -1460,9 +1479,16 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 
 void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 {
-	//if (this->getIsFlashMode()) {
-	//	return;
-	//}
+	if (this->getState() == DIE
+		|| this->getState() == DIE_JUMPING
+		|| this->getState() == DIE_DROPPING
+		|| this->getState() == SCALING_UP
+		|| this->getState() == SCALING_DOWN
+		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getIsFlashMode()) {
+		return;
+	}
+
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_koopa, _dt);
 
 	if (get<0>(collisionResult) == true) {
@@ -1535,6 +1561,16 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 
 void Mario::handleSuperMushroomCollision(SuperMushroom* _superMushroom, float _dt)
 {
+	if (this->getState() == DIE
+		|| this->getState() == DIE_JUMPING
+		|| this->getState() == DIE_DROPPING
+		|| this->getState() == SCALING_UP
+		|| this->getState() == SCALING_DOWN
+		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getIsFlashMode()) {
+		return;
+	}
+
 	if (_superMushroom->getState() == SUPER_MUSHROOM_BEING_EARNED
 	||_superMushroom->getState() == SUPER_MUSHROOM_DISAPPEARED) return;
 
@@ -1553,6 +1589,16 @@ void Mario::handleSuperMushroomCollision(SuperMushroom* _superMushroom, float _d
 
 void Mario::handleSuperLeafCollision(SuperLeaf* _superLeaf, float _dt)
 {
+	if (this->getState() == DIE
+		|| this->getState() == DIE_JUMPING
+		|| this->getState() == DIE_DROPPING
+		|| this->getState() == SCALING_UP
+		|| this->getState() == SCALING_DOWN
+		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getIsFlashMode()) {
+		return;
+	}
+
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_superLeaf, _dt);
 
 	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_superLeaf->getBounds())) {
@@ -1568,6 +1614,16 @@ void Mario::handleSuperLeafCollision(SuperLeaf* _superLeaf, float _dt)
 
 void Mario::handleFireFlowerCollision(FireFlower* _fireFlower, float _dt)
 {
+	if (this->getState() == DIE
+		|| this->getState() == DIE_JUMPING
+		|| this->getState() == DIE_DROPPING
+		|| this->getState() == SCALING_UP
+		|| this->getState() == SCALING_DOWN
+		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getIsFlashMode()) {
+		return;
+	}
+
 	if (_fireFlower->getState() == FIRE_FLOWER_HIDING) return;
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_fireFlower, _dt);
 
@@ -1578,6 +1634,16 @@ void Mario::handleFireFlowerCollision(FireFlower* _fireFlower, float _dt)
 
 void Mario::handleFireFlowerBallCollision(FireFlowerBall* _fireFlowerBall, float _dt)
 {
+	if (this->getState() == DIE
+		|| this->getState() == DIE_JUMPING
+		|| this->getState() == DIE_DROPPING
+		|| this->getState() == SCALING_UP
+		|| this->getState() == SCALING_DOWN
+		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getIsFlashMode()) {
+		return;
+	}
+
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_fireFlowerBall, _dt);
 
 	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_fireFlowerBall->getBounds())) {
@@ -1589,6 +1655,15 @@ void Mario::handleFireFlowerBallCollision(FireFlowerBall* _fireFlowerBall, float
 
 void Mario::handleFlowerCollision(Flower* _flower, float _dt)
 {
+	if (this->getState() == DIE
+		|| this->getState() == DIE_JUMPING
+		|| this->getState() == DIE_DROPPING
+		|| this->getState() == SCALING_UP
+		|| this->getState() == SCALING_DOWN
+		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getIsFlashMode()) {
+		return;
+	}
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_flower, _dt);
 
 	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_flower->getBounds())) {

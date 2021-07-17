@@ -3,16 +3,17 @@
 #include "AnimationBundle.h"
 #include "FireBallState.h"
 
-class Mario;
+class Block;
+class Goomba;
 
 class FireBall : public Component
 {
 private:
 	Animation* animation;
 	FireBallState state;
-	float originVx;
-	float originX, originY;
-	bool isOutOfGrid = true;
+	float originVx, originVy;
+	float originX, originY, topAnchor;
+	bool isOutOfGrid = true, isGoDown = true;
 
 public:
 	// Init
@@ -26,6 +27,7 @@ public:
 	float getBoundsWidth();
 	float getBoundsHeight();
 	bool getIsOutOfGrid();
+	bool getIsGoDown();
 
 
 	// Setter
@@ -33,6 +35,7 @@ public:
 	void setState(FireBallState _state);
 	void resetToOriginalPosition();
 	void setIsOutOfGrid(bool _isOutOfGrid);
+	void setIsGoDown(bool _isGoDown);
 
 	//void loadInfo(string line, char seperator);
 	void Update(float _dt);
@@ -40,5 +43,7 @@ public:
 
 
 	// Collision
-	void handleMarioCollision(Mario* _mario, float _dt);
+	void handleHardComponentCollision(Component* _component, float _dt);
+	void handleBlockCollision(Block* _block, float _dt);
+	void handleGoombaCollision(Goomba* _goomba, float _dt);
 };
