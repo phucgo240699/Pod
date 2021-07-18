@@ -191,10 +191,15 @@ void Flower::handleMarioCollision(Mario* _mario, float _dt)
 		return;
 	}
 
-	if (this->getState() == FLOWER_HIDING) return;
+	if (this->getState() == FLOWER_HIDING || this->getState() == FLOWER_DEAD) return;
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
 
-	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_mario->getBounds())) {
+	if (get<0>(collisionResult) == true) {
+		_mario->plusX(_mario->getVx() * get<1>(collisionResult));
+		_mario->plusY(_mario->getVy() * get<1>(collisionResult));
+		_mario->setState(MarioState::DIE);
+	}
+	else if (this->isCollidingByBounds(_mario->getBounds())) {
 		_mario->setState(MarioState::DIE);
 	}
 }

@@ -28,7 +28,7 @@ public:
 	Animation getGoldenBrick();
 	Animation getFullGiftBrick();
 	Animation getEmptyGiftBrick();
-	Animation getCoin();
+	Animation getCoinGiftBrick();
 	Animation getGoombaMoving();
 	Animation getTrampledGoomba();
 	Animation getGreenPipe3Floor();
@@ -135,5 +135,7 @@ public:
 	Animation getSuperMarioFlyingUp();
 	Animation getSuperMarioFirePreFlyingUp();
 	Animation getSuperMarioFireFlyingUp();
+
+	Animation getCoin();
 };
 

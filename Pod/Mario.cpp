@@ -565,6 +565,7 @@ void Mario::setState(MarioState _state)
 	{
 		delete currentAnimation;
 
+		this->setIsPreFlyingUpMode(false);
 		this->setIsFlyingUpMode(false);
 		// Store old state to pressureState variable
 		this->setPressureState(MarioState(this->getState()));
@@ -1035,6 +1036,10 @@ void Mario::Update(float _dt)
 
 	// Navigate to WorldVC when Mario drop out of map to far
 	if (this->getY() >= this->getLimitY() + 200) {
+		this->setIsSuperMode(false);
+		this->setIsFlyingMode(false);
+		this->setIsPreFlyingUpMode(false);
+		this->setIsFlyingUpMode(false);
 		Setting::getInstance()->setIsTransfering(true);
 		Setting::getInstance()->setSceneName(SceneName::WorldScene);
 		ScoreBoard::getInstance()->minusMarioLife();
@@ -1905,14 +1910,30 @@ void Mario::handleSuperLeafCollision(SuperLeaf* _superLeaf, float _dt)
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_superLeaf, _dt);
 
-	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_superLeaf->getBounds())) {
-		_superLeaf->plusX(_superLeaf->getVx() * get<1>(collisionResult));
-		_superLeaf->plusY(_superLeaf->getVy() * get<1>(collisionResult));
+	if (get<0>(collisionResult) == true) {
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(AnimationBundle::getInstance()->get1000Points(), _superLeaf->getX(), _superLeaf->getY())));
+		ScoreBoard::getInstance()->plusPoint(1000);
+
+		/*_superLeaf->plusX(_superLeaf->getVx() * get<1>(collisionResult));
+		_superLeaf->plusY(_superLeaf->getVy() * get<1>(collisionResult));*/
 		_superLeaf->setState(SuperLeafState::SUPER_LEAF_BEING_EARNED);
 		this->plusX(this->getVx() * get<1>(collisionResult));
 		this->plusY(this->getVy() * get<1>(collisionResult));
-		this->setState(MarioState::TRANSFERING_TO_FLY);
+
+		if (this->getIsFlyingMode() == false) {
+			this->setState(MarioState::TRANSFERING_TO_FLY);
+		}
+
+	}
+	else if (this->isCollidingByBounds(_superLeaf->getBounds())) {
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(AnimationBundle::getInstance()->get1000Points(), _superLeaf->getX(), _superLeaf->getY())));
 		ScoreBoard::getInstance()->plusPoint(1000);
+
+		_superLeaf->setState(SuperLeafState::SUPER_LEAF_BEING_EARNED);
+
+		if (this->getIsFlyingMode() == false) {
+			this->setState(MarioState::TRANSFERING_TO_FLY);
+		}
 	}
 }
 
@@ -1931,9 +1952,12 @@ void Mario::handleFireFlowerCollision(FireFlower* _fireFlower, float _dt)
 	if (_fireFlower->getState() == FIRE_FLOWER_HIDING || _fireFlower->getState() == FIRE_FLOWER_DEAD) return;
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_fireFlower, _dt);
 
-	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_fireFlower->getBounds())) {
+	if (get<0>(collisionResult) == true) {
 		this->plusX(this->getVx() * get<1>(collisionResult));
 		this->plusY(this->getVy() * get<1>(collisionResult));
+		this->setState(MarioState::DIE);
+	}
+	else if (this->isCollidingByBounds(_fireFlower->getBounds())) {
 		this->setState(MarioState::DIE);
 	}
 }
@@ -1970,10 +1994,19 @@ void Mario::handleFlowerCollision(Flower* _flower, float _dt)
 		|| this->getIsFlashMode()) {
 		return;
 	}
+
+	if (_flower->getState() == FLOWER_HIDING || _flower->getState() == FLOWER_DEAD) return;
+
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_flower, _dt);
 
-	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_flower->getBounds())) {
+	if (get<0>(collisionResult) == true) {
+		this->plusX(this->getVx() * get<1>(collisionResult));
+		this->plusY(this->getVy() * get<1>(collisionResult));
 		this->setState(MarioState::DIE);
+	}
+	else if (this->isCollidingByBounds(_flower->getBounds())) {
+		this->setState(MarioState::DIE);
+
 	}
 }
 

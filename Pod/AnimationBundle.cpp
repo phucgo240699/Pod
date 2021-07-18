@@ -129,7 +129,7 @@ Animation AnimationBundle::getEmptyGiftBrick()
 	return this->animations->at(2);
 }
 
-Animation AnimationBundle::getCoin()
+Animation AnimationBundle::getCoinGiftBrick()
 {
 	return this->animations->at(3);
 }
@@ -566,4 +566,9 @@ Animation AnimationBundle::get800Points()
 Animation AnimationBundle::get1000Points()
 {
 	return this->animations->at(17);
+}
+
+Animation AnimationBundle::getCoin()
+{
+	return this->animations->at(88);
 }

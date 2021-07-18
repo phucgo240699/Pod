@@ -81,7 +81,7 @@ void GiftBrick::setState(GiftBrickState _state)
 			//delete boxAnimation;
 			this->boxAnimation = new Animation(AnimationBundle::getInstance()->getEmptyGiftBrick());
 			if (this->getGiftType() == Point100Gift) {
-				this->coinAnimation = new Animation(AnimationBundle::getInstance()->getCoin());
+				this->coinAnimation = new Animation(AnimationBundle::getInstance()->getCoinGiftBrick());
 				this->pointAnimation = new Animation(AnimationBundle::getInstance()->get100Points());
 			}
 			this->state = _state;

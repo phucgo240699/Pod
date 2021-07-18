@@ -126,13 +126,28 @@ void SuperLeaf::handleMarioCollision(Mario* _mario, float _dt)
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
 
-	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_mario->getBounds())) {
-		this->plusX(this->getVx() * get<1>(collisionResult));
-		this->plusY(this->getVy() * get<1>(collisionResult));
+	if (get<0>(collisionResult) == true) {
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(AnimationBundle::getInstance()->get1000Points(), this->getX(), this->getY())));
+		ScoreBoard::getInstance()->plusPoint(1000);
+
+		/*this->plusX(this->getVx() * get<1>(collisionResult));
+		this->plusY(this->getVy() * get<1>(collisionResult));*/
 		this->setState(SuperLeafState::SUPER_LEAF_BEING_EARNED);
 		_mario->plusX(_mario->getVx() * get<1>(collisionResult));
 		_mario->plusY(_mario->getVy() * get<1>(collisionResult));
-		_mario->setState(MarioState::TRANSFERING_TO_FLY);
+
+		if (_mario->getIsFlyingMode() == false) {
+			_mario->setState(MarioState::TRANSFERING_TO_FLY);
+		}
+	}
+	else if (this->isCollidingByBounds(_mario->getBounds())) {
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(AnimationBundle::getInstance()->get1000Points(), this->getX(), this->getY())));
 		ScoreBoard::getInstance()->plusPoint(1000);
+
+		this->setState(SuperLeafState::SUPER_LEAF_BEING_EARNED);
+
+		if (_mario->getIsFlyingMode() == false) {
+			_mario->setState(MarioState::TRANSFERING_TO_FLY);
+		}
 	}
 }
