@@ -799,6 +799,14 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 				this->setupPointAnimPosition();
 			}
 	}
+	else if (this->isCollidingByBounds(_mario->getBounds()) && _mario->getState() != DROPPING && this->getState() != KOOPA_SHRINKAGE && this->getState() != KOOPA_SHRINKAGE_SHAKING) {
+		this->plusX(2 * get<1>(collisionResult) * this->getVx());
+		if (_mario->getIsSuperMode() == false) {
+			this->setState(KoopaState::KOOPA_STANDING);
+		}
+		_mario->plusX(get<1>(collisionResult) * _mario->getVx());
+		_mario->setState(MarioState::DIE);
+	}
 }
 
 void Koopa::handleFireBallCollision(FireBall* _fireBall, float _dt)

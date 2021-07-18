@@ -414,6 +414,14 @@ void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 			}
 		}
 	}
+	else if (this->isCollidingByBounds(_mario->getBounds()) && _mario->getState() != DROPPING) {
+		this->plusX(2 * get<1>(collisionResult) * this->getVx());
+		if (_mario->getIsSuperMode() == false) {
+			this->setState(GoombaState::GOOMBA_STANDING);
+		}
+		_mario->plusX(get<1>(collisionResult) * _mario->getVx());
+		_mario->setState(MarioState::DIE);
+	}
 }
 
 void Goomba::handleFireBallCollision(FireBall* _fireBall, float _dt)

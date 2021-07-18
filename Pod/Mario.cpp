@@ -232,8 +232,8 @@ void Mario::setFirstFireBallAnimation(Animation* _animation)
 void Mario::setState(MarioState _state)
 {
  	if (currentAnimation != NULL) {
-		this->oldFrameWidth = this->currentAnimation->getCurrentFrameWidth();
-		this->oldFrameHeight = this->currentAnimation->getCurrentFrameHeight();
+		this->oldFrameWidth = this->currentAnimation->getCurrentBoundsWidth();
+		this->oldFrameHeight = this->currentAnimation->getCurrentBoundsHeight();
 	}
 	
 	if (this->getState() == TRANSFERING_TO_FLY) {
@@ -441,6 +441,8 @@ void Mario::setState(MarioState _state)
 		else {
 			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioDie());
 		}
+
+		this->turnOffFireSkin(_state);
 		this->setTargetVx(0);
 		this->setTargetVy(0);
 		this->setAccelerationX(0);
@@ -547,8 +549,9 @@ void Mario::setState(MarioState _state)
 
 
 	// Change position when frame anim size change
-	this->newFrameWidth = this->currentAnimation->getCurrentFrameWidth();
-	this->newFrameHeight = this->currentAnimation->getCurrentFrameHeight();
+	this->newFrameWidth = this->currentAnimation->getCurrentBoundsWidth();
+	this->newFrameHeight = this->currentAnimation->getCurrentBoundsHeight();
+
 	if (oldFrameWidth != newFrameWidth) {
 		this->plusX(oldFrameWidth - newFrameWidth);
 	}
@@ -723,6 +726,14 @@ void Mario::turnOnFireSkin(MarioState _state)
 		break;
 	}
 
+	case DIE:
+	case DIE_DROPPING:
+	case DIE_JUMPING:
+	{
+		this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioFireDie());
+		break;
+	}
+
 	default:
 		break;
 	}
@@ -805,6 +816,14 @@ void Mario::turnOffFireSkin(MarioState _state)
 		else {
 			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioDropping());
 		}
+		break;
+	}
+
+	case DIE:
+	case DIE_DROPPING:
+	case DIE_JUMPING:
+	{
+		this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioDie());
 		break;
 	}
 
@@ -1576,6 +1595,14 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 			this->setState(MarioState::DIE);
 		}
 	}
+	else if (this->isCollidingByBounds(_goomba->getBounds()) && this->getState() != DROPPING) {
+		_goomba->plusX(2 * get<1>(collisionResult) * _goomba->getVx());
+		if (this->getIsSuperMode() == false) {
+			_goomba->setState(GoombaState::GOOMBA_STANDING);
+		}
+		this->plusX(get<1>(collisionResult) * this->getVx());
+		this->setState(MarioState::DIE);
+	}
 }
 
 void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
@@ -1665,6 +1692,14 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 			_koopa->setupPointAnimPosition();
 		}
 	}
+	else if (this->isCollidingByBounds(_koopa->getBounds()) && this->getState() != DROPPING && _koopa->getState() != KOOPA_SHRINKAGE && _koopa->getState() != KOOPA_SHRINKAGE_SHAKING) {
+		_koopa->plusX(2 * get<1>(collisionResult) * _koopa->getVx());
+		if (this->getIsSuperMode() == false) {
+			_koopa->setState(KoopaState::KOOPA_STANDING);
+		}
+		this->plusX(get<1>(collisionResult) * this->getVx());
+		this->setState(MarioState::DIE);
+	}
 }
 
 void Mario::handleSuperMushroomCollision(SuperMushroom* _superMushroom, float _dt)
@@ -1688,8 +1723,8 @@ void Mario::handleSuperMushroomCollision(SuperMushroom* _superMushroom, float _d
 		_superMushroom->plusX(this->getVx() * get<1>(collisionResult));
 		_superMushroom->plusY(this->getVy() * get<1>(collisionResult));
 		_superMushroom->setState(SuperMushroomState::SUPER_MUSHROOM_BEING_EARNED);
-		/*this->plusX(this->getVx() * get<1>(collisionResult));
-		this->plusY(this->getVy() * get<1>(collisionResult));*/
+		this->plusX(this->getVx() * get<1>(collisionResult));
+		this->plusY(this->getVy() * get<1>(collisionResult));
 		this->setState(MarioState::SCALING_UP);
 		ScoreBoard::getInstance()->plusPoint(1000);
 	}
