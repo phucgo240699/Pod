@@ -1976,3 +1976,31 @@ void Mario::handleFlowerCollision(Flower* _flower, float _dt)
 		this->setState(MarioState::DIE);
 	}
 }
+
+void Mario::handleCoinCollision(Coin* _coin, float _dt)
+{
+	if (this->getState() == DIE
+		|| this->getState() == DIE_JUMPING
+		|| this->getState() == DIE_DROPPING
+		|| this->getState() == SCALING_UP
+		|| this->getState() == SCALING_DOWN
+		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getIsFlashMode()) {
+		return;
+	}
+
+	if (_coin->getState() == COIN_BEING_EARNED) return;
+
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_coin, _dt);
+
+	if (get<0>(collisionResult) == true) {
+		_coin->setState(CoinState::COIN_BEING_EARNED);
+		this->plusX(get<1>(collisionResult) * this->getVx());
+		this->plusY(get<1>(collisionResult) * this->getVy());
+	}
+	else {
+		if (this->isCollidingByBounds(_coin->getBounds())) {
+			_coin->setState(CoinState::COIN_BEING_EARNED);
+		}
+	}
+}

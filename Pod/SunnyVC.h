@@ -11,6 +11,7 @@
 #include "FireFlower.h"
 #include "Flower.h"
 #include "FireBall.h"
+#include "Coin.h"
 
 class SunnyVC : public ViewController
 {
@@ -46,6 +47,9 @@ private:
 
 	int beginFireBallId, endFireBallId;
 	//vector<FireBall*>* fireBalls;
+
+	int beginCoinId, endCoinId;
+	unordered_set<Coin*>* coins;
 
 	//
 	// Enemies

@@ -5,7 +5,6 @@
 #include "MarioState.h"
 #include "KeyType.h"
 #include "Camera.h"
-#include "Animation.h"
 #include "MainCharacter.h"
 #include "Ground.h"
 #include "GoldenBrick.h"
@@ -19,6 +18,7 @@
 #include "FireFlower.h"
 #include "Flower.h"
 #include "FireBall.h"
+#include "Coin.h"
 #include <unordered_map>
 
 using namespace std;
@@ -210,6 +210,7 @@ public:
 	void handleFireFlowerCollision(FireFlower* _fireFlower, float _dt);
 	void handleFireFlowerBallCollision(FireFlowerBall* _fireFlowerBall, float _dt);
 	void handleFlowerCollision(Flower* _flower, float _dt);
+	void handleCoinCollision(Coin* _coin, float _dt);
 };
 
 #endif // !MARIO_H

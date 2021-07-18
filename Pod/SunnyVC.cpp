@@ -56,6 +56,7 @@ void SunnyVC::viewDidLoad()
 	blocks = new vector<Block*>();
 	fireFlowers = new unordered_set<FireFlower*>();
 	flowers = new unordered_set<Flower*>();
+	coins = new unordered_set<Coin*>();
 
 	ScoreBoard::getInstance()->resetTimeTo300();
 
@@ -303,6 +304,18 @@ void SunnyVC::viewWillUpdate(float _dt)
 						Grid::getInstance()->remove(*itr, i, j);
 						static_cast<FireBall*>(*itr)->setIsOutOfGrid(true);
 					}
+				}
+
+				// Coin
+				else if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
+					if (static_cast<Coin*>(*itr)->getState() == COIN_BEING_EARNED) {
+						Grid::getInstance()->remove(*itr, i, j);
+						continue;
+					}
+
+					(*itr)->Update(_dt);
+
+					Grid::getInstance()->updateCellOf(*itr);
 				}
 			}
 		}
@@ -621,6 +634,12 @@ void SunnyVC::viewDidUpdate(float _dt)
 						}
 					}
 				}
+
+				// Coin
+				else if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
+					this->mario->handleCoinCollision(static_cast<Coin*>(*itr), _dt);
+					static_cast<Coin*>(*itr)->handleMarioCollision(this->mario, _dt);
+				}
 			}
 		}
 	}
@@ -702,6 +721,11 @@ void SunnyVC::viewWillRender()
 
 					// Fire Ball
 					else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
+						(*itr)->Draw(map->getTexture());
+					}
+
+					// Coin
+					else if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
 						(*itr)->Draw(map->getTexture());
 					}
 				}
@@ -809,6 +833,11 @@ void SunnyVC::adaptRangeID(vector<string> data, char seperator)
 			this->endFireBallId = v[1];
 			this->beginFireFlowerBallId = v[2];
 			this->endFireFlowerBallId = v[3];
+		}
+		else if (i == 11) {
+			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
+			this->beginCoinId = v[0];
+			this->endCoinId = v[1];
 		}
 	}
 }
@@ -975,6 +1004,18 @@ void SunnyVC::adaptData()
 			}
 			section = SECTION_NONE;
 		}
+		else if (line == "<CoinFrames>") {
+			section = SECTION_COIN_FRAMES;
+			continue;
+		}
+		else if (line == "</CoinFrames>") {
+			for (int i = 0; i < data.size(); ++i) {
+				Coin* coin = new Coin(0, 0, 0, 0, 0, 0, 0, 0);
+				coin->loadInfo(data[i], ',');
+				this->coins->insert(coin);
+			}
+			section = SECTION_NONE;
+		}
 		else if (line == "<GridInfo>") {
 			section = SECTION_GRID_INFO;
 			continue;
@@ -1046,6 +1087,9 @@ void SunnyVC::adaptData()
 		case SECTION_FLOWER_FRAMES:
 			data.push_back(line);
 			break;
+		case SECTION_COIN_FRAMES:
+			data.push_back(line);
+			break;
 		case SECTION_GRID_INFO:
 			Grid::getInstance()->loadInfo(line, ',');
 			break;
@@ -1097,6 +1141,14 @@ void SunnyVC::adaptAnimation()
 	for (flowerItr = this->flowers->begin(); flowerItr != this->flowers->end(); ++flowerItr) {
 		(*flowerItr)->setState(FlowerState::FLOWER_HIDING);
 	}
+
+	// Coins
+	unordered_set<Coin*> ::iterator coinItr;
+	for (coinItr = this->coins->begin(); coinItr != this->coins->end(); ++coinItr) {
+		(*coinItr)->setAnimation(new Animation(AnimationBundle::getInstance()->getCoin()));
+	}
+
+
 
 	///
 	/// --------------------------- Enemies ---------------------------
@@ -1171,6 +1223,14 @@ void SunnyVC::adaptToGrid()
 	for (flowerItr = this->flowers->begin(); flowerItr != this->flowers->end(); ++flowerItr) {
 		Grid::getInstance()->add(*flowerItr);
 	}
+
+	// Coins
+	unordered_set<Coin*> ::iterator coinItr;
+	for (coinItr = this->coins->begin(); coinItr != this->coins->end(); ++coinItr) {
+		Grid::getInstance()->add(*coinItr);
+	}
+
+
 
 	///
 	/// --------------------------- Enemies ---------------------------

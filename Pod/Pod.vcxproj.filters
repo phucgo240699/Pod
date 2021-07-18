@@ -226,6 +226,12 @@
     <Filter Include="Source Files\Components\ScoreBoard">
       <UniqueIdentifier>{c4e12c99-9fbe-4ee8-87d7-567bd7785df2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\Map\Coin">
+      <UniqueIdentifier>{0c65a0e8-4ddf-4b03-ab0d-17b03b6b61dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Map\Coin">
+      <UniqueIdentifier>{223f6ae4-c98b-454d-8650-a6e959ddae65}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -356,6 +362,9 @@
     </ClCompile>
     <ClCompile Include="FireBall.cpp">
       <Filter>Source Files\Components\Mario\FireBall</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>Source Files\Components\Map\Coin</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -534,6 +543,12 @@
       <Filter>Header Files\Components\Mario\FireBall</Filter>
     </ClInclude>
     <ClInclude Include="FireBallState.h">
+      <Filter>Header Files\System\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>Header Files\Components\Map\Coin</Filter>
+    </ClInclude>
+    <ClInclude Include="CoinState.h">
       <Filter>Header Files\System\Enums</Filter>
     </ClInclude>
   </ItemGroup>
