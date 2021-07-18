@@ -518,10 +518,10 @@ void SunnyVC::viewDidUpdate(float _dt)
 				else if (beginKoopaId <= (*itr)->getId() && (*itr)->getId() <= endKoopaId) {
 
 					// Mario vs Koopa
-					if (this->mario->getIsFlashMode() == false) {
-						this->mario->handleKoopaCollision(static_cast<Koopa*>(*itr), _dt);
-						static_cast<Koopa*>(*itr)->handleMarioCollision(this->mario, _dt);
-					}
+					//if (this->mario->getIsFlashMode() == false) {
+					this->mario->handleKoopaCollision(static_cast<Koopa*>(*itr), _dt);
+					static_cast<Koopa*>(*itr)->handleMarioCollision(this->mario, _dt);
+					//}
 
 					// Koopa to others
 					int beginRowKoopa = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
@@ -545,7 +545,7 @@ void SunnyVC::viewDidUpdate(float _dt)
 									static_cast<Koopa*>(*itr)->handleHardComponentCollision(*koopaItr, _dt);
 								}
 								else if (beginGiftBrickId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGiftBrickId) {
-									static_cast<Koopa*>(*itr)->handleGiftBrickCollision(static_cast<GiftBrick*>(*itr), this->mario, _dt);
+									static_cast<Koopa*>(*itr)->handleGiftBrickCollision(static_cast<GiftBrick*>(*koopaItr), this->mario, _dt);
 								}
 								else if (beginBlockId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endBlockId) {
 									static_cast<Koopa*>(*itr)->handleBlockCollision(*koopaItr, _dt);

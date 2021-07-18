@@ -1,11 +1,11 @@
 <ScoreBoard>
 # (x, y, marioLifeX, marioLiftY, coinX, coinY, pointX, pointY, timeX, timeY, marioLife, coin, point, time, boardWidth, boardHeight)
-0,150,46,20,142,12,62,20,134,20,4,0,0,300,236,38
+0,186,46,20,142,12,62,20,134,20,4,0,0,300,236,38
 </ScoreBoard>
 
 <ScoreBoardFrames>
 # Main board
-MB-0,0,236,38
+MB-0,0,256,38
 
 # Character
 0-0,39,8,7

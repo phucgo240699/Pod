@@ -1461,6 +1461,7 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 			ScoreBoard::getInstance()->plusPoint(_goomba->getDefaultPoint() * _goomba->getPointCoef());
 		}
 		else if (edge == leftEdge) {
+			_goomba->plusX(2 * get<1>(collisionResult) * _goomba->getVx());
 			if (this->getIsSuperMode() == false) {
 				_goomba->setState(GoombaState::GOOMBA_STANDING);
 			}
@@ -1468,6 +1469,7 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 			this->setState(MarioState::DIE);
 		}
 		else if (edge == rightEdge) {
+			_goomba->plusX(2 * get<1>(collisionResult) * _goomba->getVx());
 			if (this->getIsSuperMode() == false) {
 				_goomba->setState(GoombaState::GOOMBA_STANDING);
 			}
@@ -1475,6 +1477,8 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 			this->setState(MarioState::DIE);
 		}
 		else if (edge == topEdge) {
+			_goomba->plusX(2 * get<1>(collisionResult) * _goomba->getVx());
+			_goomba->plusY(2 * get<1>(collisionResult) * _goomba->getVy());
 			if (this->getIsSuperMode() == false) {
 				_goomba->setState(GoombaState::GOOMBA_STANDING);
 			}
@@ -1529,14 +1533,19 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 					_koopa->plusX(get<1>(collisionResult) * _koopa->getVx());
 					_koopa->setState(KoopaState::KOOPA_STANDING);
 				}
+				this->plusX(get<1>(collisionResult)* this->getVx());
 				this->setState(MarioState::DIE);
-				this->plusX(get<1>(collisionResult) * this->getVx());
 			}
 		}
 		else if (edge == topEdge) {
 			if (this->getIsSuperMode() == false) {
+				_koopa->plusX(get<1>(collisionResult) * _koopa->getVx());
+				_koopa->plusY(get<1>(collisionResult) * _koopa->getVy());
 				_koopa->setState(KoopaState::KOOPA_STANDING);
 			}
+
+			this->plusX(get<1>(collisionResult)* this->getVx());
+			this->plusY(get<1>(collisionResult) * this->getVy());
 			this->setState(MarioState::DIE);
 		}
 		else if (edge == bottomEdge && this->getState() == DROPPING) {
@@ -1634,10 +1643,12 @@ void Mario::handleFireFlowerCollision(FireFlower* _fireFlower, float _dt)
 		return;
 	}
 
-	if (_fireFlower->getState() == FIRE_FLOWER_HIDING) return;
+	if (_fireFlower->getState() == FIRE_FLOWER_HIDING || _fireFlower->getState() == FIRE_FLOWER_DEAD) return;
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_fireFlower, _dt);
 
 	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_fireFlower->getBounds())) {
+		this->plusX(this->getVx() * get<1>(collisionResult));
+		this->plusY(this->getVy() * get<1>(collisionResult));
 		this->setState(MarioState::DIE);
 	}
 }

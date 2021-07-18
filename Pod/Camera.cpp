@@ -90,19 +90,19 @@ void Camera::follow(Component* _target, float _dt)
 	}
 
 	// If target run through half of camera's height, and new location of camera not outside of map
-	if (_target->getY() > this->getHeight() / 2 &&
-		_target->getY() < this->getLimitY() - (this->getHeight() / 2) &&
-		0 <= this->getY() + _target->getVy() &&
-		this->getY() + this->getHeight() + _target->getVy() <= this->getLimitY()) {
-		if ((_target->getVy() * _dt) > _target->getY() - (this->getHeight() / 2)) { // may cause when target move too fast
-			this->plusY(_target->getY() - (this->getHeight() / 2));
-		}
-		else {
-			//this->plusY(_target->getVy() * _dt);
-			this->setY(_target->getY() - (this->getHeight() / 2));
-		}
-	}
-	else if (_target->getY() > this->getLimitY() - (this->getHeight() / 2)) {
+	//if (_target->getY() > this->getHeight() / 2 &&
+	//	_target->getY() < this->getLimitY() - (this->getHeight() / 2) &&
+	//	0 <= this->getY() + _target->getVy() &&
+	//	this->getY() + this->getHeight() + _target->getVy() <= this->getLimitY()) {
+	//	if ((_target->getVy() * _dt) > _target->getY() - (this->getHeight() / 2)) { // may cause when target move too fast
+	//		this->plusY(_target->getY() - (this->getHeight() / 2));
+	//	}
+	//	else {
+	//		//this->plusY(_target->getVy() * _dt);
+	//		this->setY(_target->getY() - (this->getHeight() / 2));
+	//	}
+	//}
+	if (_target->getY() > this->getLimitY() - (this->getHeight() / 2)) {
 		if (this->getY() + this->getHeight() < this->getLimitY()) {
 			this->setY(this->getLimitY() - this->getHeight());
 		}

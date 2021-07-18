@@ -45,6 +45,8 @@ public:
 	KoopaState getState();
 	float getWidth();
 	float getHeight();
+	float getBoundsWidth();
+	float getBoundsHeight();
 	bool getIsFlip();
 	bool getIsStandOnSurface();
 	bool getHasCollideMario();

@@ -331,7 +331,12 @@ void Goomba::handleKoopaCollision(Koopa* _koopa, float _dt)
 				|| _koopa->getState() == KOOPA_MOVING_RIGHT
 				|| _koopa->getState() == KOOPA_DROPPING_LEFT
 				|| _koopa->getState() == KOOPA_DROPPING_RIGHT) {
+				_koopa->plusX(_koopa->getVx() * get<1>(collisionResult));
+				_koopa->plusY(_koopa->getVy() * get<1>(collisionResult));
 				_koopa->convertMovingState();
+
+				this->plusX(this->getVx() * get<1>(collisionResult));
+				this->plusY(this->getVy() * get<1>(collisionResult));
 				this->convertMovingState();
 			}
 		}
@@ -374,6 +379,7 @@ void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == bottomEdge) {
+				this->plusY(2 * get<1>(collisionResult) * this->getVy());
 				if (_mario->getIsSuperMode() == false) {
 					this->setState(GoombaState::GOOMBA_STANDING);
 				}
@@ -381,6 +387,7 @@ void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 				this->plusY(get<1>(collisionResult) * this->getVy());
 			}
 			else if (edge == leftEdge) {
+				this->plusX(2 * get<1>(collisionResult) * this->getVx());
 				if (_mario->getIsSuperMode() == false) {
 					this->setState(GoombaState::GOOMBA_STANDING);
 				}
@@ -388,6 +395,7 @@ void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 				this->plusX(get<1>(collisionResult) * this->getVx());
 			}
 			else if (edge == rightEdge) {
+				this->plusX(2 * get<1>(collisionResult) * this->getVx());
 				if (_mario->getIsSuperMode() == false) {
 					this->setState(GoombaState::GOOMBA_STANDING);
 				}

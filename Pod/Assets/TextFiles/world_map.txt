@@ -1,6 +1,6 @@
 <Camera>
 #(x,y,vX,vY,width,height,limitX,limitY)
--16,-6,0,0,236,188,224,144
+-16,-24,0,0,236,208,224,144
 </Camera>
 
 <MapInfo>

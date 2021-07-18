@@ -322,8 +322,8 @@ void FireFlower::handleMarioCollision(Mario* _mario, float _dt)
 		|| _mario->getIsFlashMode()) {
 		return;
 	}
+	if (this->getState() == FIRE_FLOWER_DEAD || this->getState() == FIRE_FLOWER_HIDING) return;
 
-	if (this->getState() == FIRE_FLOWER_HIDING) return;
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
 
 	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_mario->getBounds())) {
