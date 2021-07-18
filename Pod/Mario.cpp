@@ -165,6 +165,11 @@ int Mario::getSuperMarioFlyingRightSpace()
 	return this->superMarioFlyingRightSpace;
 }
 
+int Mario::getMomentumToFly()
+{
+	return this->momentumToFly;
+}
+
 bool Mario::getIsFlashMode()
 {
 	return this->isFlashMode;
@@ -188,6 +193,11 @@ bool Mario::getIsFlyingMode()
 bool Mario::getIsTurningAround()
 {
 	return this->isTurningAround;
+}
+
+bool Mario::getIsPressA()
+{
+	return this->isPressA;
 }
 
 void Mario::loadInfo(string line, char seperator)
@@ -559,6 +569,10 @@ void Mario::setState(MarioState _state)
 		this->plusY(oldFrameHeight - newFrameHeight);
 	}
 
+	if (_state == SCALING_UP) {
+		this->plusY(-1);
+	}
+
 	// Space between bounds and frame
 	if (this->getState() == SCALING_DOWN) {
 		this->setLeftSpace(this->getMarioLeftSpace());
@@ -857,10 +871,14 @@ void Mario::setIsTurningAround(bool _isTurningAround)
 	this->isTurningAround = _isTurningAround;
 }
 
+void Mario::setIsPressA(bool _isPressA)
+{
+	this->isPressA = _isPressA;
+}
+
 void Mario::turnOnTurningAroundSkin()
 {
-	this->setIsTurningAround(true);
-	this->setPressureAnimation(*currentAnimation);
+	this->setPressureState(MarioState(this->getState()));
 	if (this->getIsFireMode()) {
 		this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingFireTurningAround());
 	}
@@ -871,7 +889,7 @@ void Mario::turnOnTurningAroundSkin()
 
 void Mario::turnOffTurningAroundSkin()
 {
-	this->currentAnimation = this->getPressureAnimation();
+	this->setState(this->getPressureState());
 }
 
 void Mario::Update(float _dt)
@@ -883,7 +901,13 @@ void Mario::Update(float _dt)
 	if (this->getIsTurningAround()) {
 		if (this->currentAnimation->getCurrentIndexFrame() >= this->currentAnimation->getTotalFrames() - 1
 			&& this->currentAnimation->getAnimCount() >= this->currentAnimation->getAnimDelay()) {
+			this->setIsTurningAround(false);
 			this->turnOffTurningAroundSkin();
+		}
+	}
+	if (this->getIsPressA()) {
+		if (this->getState() == WALKING) {
+			++momentumToFly;
 		}
 	}
 
@@ -1162,10 +1186,13 @@ void Mario::onKeyUp()
 			this->setTargetVx(0);
 		}
 	}
+
+	this->momentumToFly = 0;
 }
 
 void Mario::onKeyUp(vector<KeyType> _keyTypes)
 {
+	bool noLeft = false, noRight = false;
 	for (int i = 0; i < _keyTypes.size(); ++i) {
 		if (_keyTypes[i] == KeyType::key_S) {
 			if (this->getState() == JUMPING) {
@@ -1173,18 +1200,25 @@ void Mario::onKeyUp(vector<KeyType> _keyTypes)
 			}
 		}
 		else if (_keyTypes[i] == KeyType::right) {
+			noRight = true;
 			if (this->getSubState() == PUSHING) {
 				this->setSubState(MarioSubState::NONE);
 			}
 		}
 		else if (_keyTypes[i] == KeyType::left) {
+			noLeft = true;
 			if (this->getSubState() == PUSHING) {
 				this->setSubState(MarioSubState::NONE);
 			}
 		}
 		else if (_keyTypes[i] == KeyType::key_A) {
-			this->setIsTurningAround(false);
+			this->momentumToFly = 0;
+			this->setIsPressA(false);
 		}
+	}
+	
+	if (noLeft && noRight) {
+		this->momentumToFly = 0;
 	}
 }
 
@@ -1268,7 +1302,9 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 		
 		// Turning around
 		else if (_keyTypes[i] == KeyType::key_A) {
-			if (this->getIsFlyingMode() && this->getIsTurningAround() == false) {
+			if (this->getIsFlyingMode() && this->getIsPressA() == false) {
+				this->setIsTurningAround(true);
+				this->setIsPressA(true);
 				this->turnOnTurningAroundSkin();
 			}
 		}

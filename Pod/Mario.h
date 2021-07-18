@@ -35,7 +35,7 @@ private:
 	FireBall* firstFireBall;
 
 	// Control
-	bool isStandOnSurface = false, isReduceWalking = false, isConverting = false, isTurningAround = false;
+	bool isStandOnSurface = false, isReduceWalking = false, isConverting = false, isTurningAround = false, isPressA = false;
 	bool isFlip; // false: Left side - true: Right side. Default is false
 
 	// Mode
@@ -47,7 +47,7 @@ private:
 
 	// Point
 	int pointCoef = 0;
-	int countDownFlash = 512;
+	int countDownFlash = 120;
 
 	// Bounds vs Frame
 	int leftSpace, topSpace, rightSpace;
@@ -55,6 +55,8 @@ private:
 	int superMarioLeftSpace, superMarioTopSpace, superMarioRightSpace;
 	int superMarioFlyingLeftSpace, superMarioFlyingTopSpace, superMarioFlyingRightSpace;
 
+	// Momentum to fly
+	int momentumToFly = 0;
 
 public:
 	// Init
@@ -82,6 +84,8 @@ public:
 	bool getIsConverting();
 	bool getIsReduceWalking();
 	bool getIsStandOnSurface();
+	bool getIsTurningAround();
+	bool getIsPressA();
 	
 	// Mode
 	bool getIsSuperMode();
@@ -89,7 +93,6 @@ public:
 	bool getIsFireMode();
 	bool getIsCloudMode();
 	bool getIsFlyingMode();
-	bool getIsTurningAround();
 
 
 	// Point
@@ -110,6 +113,10 @@ public:
 	int getSuperMarioFlyingRightSpace();
 
 
+	// Momentum to fly
+	int getMomentumToFly();
+
+
 	//
 	// =============== Setter ===============
 	//
@@ -125,6 +132,8 @@ public:
 	void setIsReduceWalking(bool _isReduceWalking);
 	void setIsStandOnSurface(bool _isStandOnSurface);
 	void setupReduceWalking(bool _isReduceWalking);
+	void setIsTurningAround(bool _isTurningAround);
+	void setIsPressA(bool _isPressA);
 	
 	// Mode
 	void setIsSuperMode(bool _isSuperMode);
@@ -135,7 +144,6 @@ public:
 	void setIsCloudMode(bool _isCloudMode);
 	void setIsFlyingMode(bool _isFlyingMode);
 	void toggleFlyingMode();
-	void setIsTurningAround(bool _isTurningAround);
 	void turnOnTurningAroundSkin();
 	void turnOffTurningAroundSkin();
 

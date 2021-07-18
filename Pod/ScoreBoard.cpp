@@ -21,6 +21,48 @@ int ScoreBoard::getHeight()
 	return this->height;
 }
 
+int ScoreBoard::getMomentumLevel(int _momentum, int _space)
+{
+	int result = _momentum / _space;
+	if (result < 0) {
+		return 0;
+	}
+	else if (result > 7) {
+		return 7;
+	}
+	else {
+		return result;
+	}
+}
+
+string ScoreBoard::getMomentumKey(int _momentumLevel)
+{
+	if (_momentumLevel == 1) {
+		return "m1";
+	}
+	else if (_momentumLevel == 2) {
+		return "m2";
+	}
+	else if (_momentumLevel == 3) {
+		return "m3";
+	}
+	else if (_momentumLevel == 4) {
+		return "m4";
+	}
+	else if (_momentumLevel == 5) {
+		return "m5";
+	}
+	else if (_momentumLevel == 6) {
+		return "m6";
+	}
+	else if (_momentumLevel == 7) {
+		return "m7";
+	}
+	else {
+		return "m0";
+	}
+}
+
 ScoreBoard* ScoreBoard::instance;
 
 ScoreBoard* ScoreBoard::getInstance()
@@ -94,20 +136,23 @@ void ScoreBoard::loadInfo(string line, char seperator)
 {
 	vector<int> v = Tool::splitToVectorIntegerFrom(line, seperator);
 	this->position = D3DXVECTOR3(v[0], v[1], 0);
-	this->marioLifeX = v[2];
-	this->marioLifeY = v[3];
-	this->coinX = v[4];
-	this->coinY = v[5];
-	this->pointX = v[6];
-	this->pointY = v[7];
-	this->timeX = v[8];
-	this->timeY = v[9];
-	this->marioLife = v[10];
-	this->coin = v[11];
-	this->point = v[12];
-	this->time = v[13];
-	this->width = v[14];
-	this->height = v[15];
+	this->momentumX = v[2];
+	this->momentumY = v[3];
+	this->marioLifeX = v[4];
+	this->marioLifeY = v[5];
+	this->coinX = v[6];
+	this->coinY = v[7];
+	this->pointX = v[8];
+	this->pointY = v[9];
+	this->timeX = v[10];
+	this->timeY = v[11];
+	this->momentum = v[12];
+	this->marioLife = v[13];
+	this->coin = v[14];
+	this->point = v[15];
+	this->time = v[16];
+	this->width = v[17];
+	this->height = v[18];
 }
 
 void ScoreBoard::Update(float _dt)
@@ -123,6 +168,7 @@ void ScoreBoard::Update(float _dt)
 void ScoreBoard::Draw()
 {
  	Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame("MB"), this->position);
+	this->DrawMomentum();
 	this->DrawMarioLife();
 	this->DrawCoin();
 	this->DrawPoint();
@@ -132,37 +178,52 @@ void ScoreBoard::Draw()
 void ScoreBoard::DrawMarioLife()
 {
 	string str = Tool::getStringNumberFrom(marioLife, 1);
+	drawingPosition.y = this->position.y + marioLifeY;
 
 	for (int i = 0; i < str.size(); ++i) {
-		Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame(str.substr(i, 1)), D3DXVECTOR3(this->position.x + marioLifeX + i * 8, this->position.y + marioLifeY, 0));
+		drawingPosition.x = this->position.x + marioLifeX + i * 8;
+		Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame(str.substr(i, 1)), drawingPosition);
 	}
 }
 
 void ScoreBoard::DrawCoin()
 {
 	string str = Tool::getStringNumberFrom(coin, 2);
+	drawingPosition.y = this->position.y + coinY;
 
 	for (int i = 0; i < str.size(); ++i) {
-		Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame(str.substr(i, 1)), D3DXVECTOR3(this->position.x + coinX + i * 8, this->position.y + coinY, 0));
+		drawingPosition.x = this->position.x + coinX + i * 8;
+		Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame(str.substr(i, 1)), drawingPosition);
 	}
 }
 
 void ScoreBoard::DrawPoint()
 {
 	string str = Tool::getStringNumberFrom(point, 7);
+	drawingPosition.y = this->position.y + pointY;
 
 	for (int i = 0; i < str.size(); ++i) {
-		Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame(str.substr(i, 1)), D3DXVECTOR3(this->position.x + pointX + i * 8, this->position.y + pointY, 0));
+		drawingPosition.x = this->position.x + pointX + i * 8;
+		Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame(str.substr(i, 1)), drawingPosition);
 	}
 }
 
 void ScoreBoard::DrawTime()
 {
 	string str = Tool::getStringNumberFrom(time, 3);
+	drawingPosition.y = this->position.y + timeY;
 
 	for (int i = 0; i < str.size(); ++i) {
-		Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame(str.substr(i, 1)), D3DXVECTOR3(this->position.x + timeX + i * 8, this->position.y + timeY, 0));
+		drawingPosition.x = this->position.x + timeX + i * 8;
+		Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame(str.substr(i, 1)), drawingPosition);
 	}
+}
+
+void ScoreBoard::DrawMomentum()
+{
+	drawingPosition.x = this->position.x + momentumX;
+	drawingPosition.y = this->position.y + momentumY;
+	Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame(this->getMomentumKey(this->getMomentumLevel(this->momentum, 16))), drawingPosition);
 }
 
 RECT ScoreBoard::getFrame(string keyword)
@@ -207,4 +268,9 @@ void ScoreBoard::resetTimeToZero()
 void ScoreBoard::resetTimeTo300()
 {
 	this->time = 300;
+}
+
+void ScoreBoard::setMomentum(int _momentum)
+{
+	this->momentum = _momentum;
 }

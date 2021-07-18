@@ -94,12 +94,6 @@
     <Filter Include="Source Files\ViewController\SunnyVC\SunnyMap">
       <UniqueIdentifier>{628be196-b193-49a8-bed8-cdd3b45c11fa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Components\Map\ScoreBoard">
-      <UniqueIdentifier>{c2f2c955-baac-46a6-8232-bb9cc032630e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Components\Map\ScoreBoard">
-      <UniqueIdentifier>{c4e12c99-9fbe-4ee8-87d7-567bd7785df2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\ViewController\WorldVC">
       <UniqueIdentifier>{6722c219-c792-4452-aaf7-51628ed226a2}</UniqueIdentifier>
     </Filter>
@@ -202,29 +196,35 @@
     <Filter Include="Source Files\Components\Map\SuperLeaf">
       <UniqueIdentifier>{e422f749-c16e-4580-8d9d-6e13a8401bdc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Components\Map\FireFlower">
-      <UniqueIdentifier>{dfcfc68f-4abb-488d-801f-1e84612c3683}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Components\Map\FireFlower">
-      <UniqueIdentifier>{fd53d658-9678-4ae1-908a-946ea4558395}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Components\Map\FireFlowerBall">
       <UniqueIdentifier>{e2616ce0-16d3-41be-93db-df9467cc0a60}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Components\Map\FireFlowerBall">
       <UniqueIdentifier>{7d876df3-9ea3-4756-9c4b-83def9ab6ce7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Components\Map\Flower">
-      <UniqueIdentifier>{5c0f5393-22da-4bc1-82fd-4c1c81d26253}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Components\Map\Flower">
-      <UniqueIdentifier>{6fcddf0b-9da3-4a47-b73c-09219c9ca46f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Components\Mario\FireBall">
       <UniqueIdentifier>{93fe9dde-f529-42f0-a2bb-8ebb7d6e745a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Components\Mario\FireBall">
       <UniqueIdentifier>{02b00d23-9ab4-4d0e-9609-3677884fa4e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Enemies\FireFlower">
+      <UniqueIdentifier>{dfcfc68f-4abb-488d-801f-1e84612c3683}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Enemies\Flower">
+      <UniqueIdentifier>{5c0f5393-22da-4bc1-82fd-4c1c81d26253}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Enemies\FireFlower">
+      <UniqueIdentifier>{fd53d658-9678-4ae1-908a-946ea4558395}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Enemies\Flower">
+      <UniqueIdentifier>{6fcddf0b-9da3-4a47-b73c-09219c9ca46f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\ScoreBoard">
+      <UniqueIdentifier>{c2f2c955-baac-46a6-8232-bb9cc032630e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\ScoreBoard">
+      <UniqueIdentifier>{c4e12c99-9fbe-4ee8-87d7-567bd7785df2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -283,7 +283,7 @@
       <Filter>Source Files\ViewController\SunnyVC\SunnyMap</Filter>
     </ClCompile>
     <ClCompile Include="ScoreBoard.cpp">
-      <Filter>Source Files\Components\Map\ScoreBoard</Filter>
+      <Filter>Source Files\Components\ScoreBoard</Filter>
     </ClCompile>
     <ClCompile Include="WorldVC.cpp">
       <Filter>Source Files\ViewController\WorldVC</Filter>
@@ -346,13 +346,13 @@
       <Filter>Source Files\Components\Map\SuperLeaf</Filter>
     </ClCompile>
     <ClCompile Include="FireFlower.cpp">
-      <Filter>Source Files\Components\Map\FireFlower</Filter>
+      <Filter>Source Files\Components\Enemies\FireFlower</Filter>
     </ClCompile>
     <ClCompile Include="FireFlowerBall.cpp">
       <Filter>Source Files\Components\Map\FireFlowerBall</Filter>
     </ClCompile>
     <ClCompile Include="Flower.cpp">
-      <Filter>Source Files\Components\Map\Flower</Filter>
+      <Filter>Source Files\Components\Enemies\Flower</Filter>
     </ClCompile>
     <ClCompile Include="FireBall.cpp">
       <Filter>Source Files\Components\Mario\FireBall</Filter>
@@ -426,7 +426,7 @@
       <Filter>Header Files\ViewController\SunnyVC\SunnyMap</Filter>
     </ClInclude>
     <ClInclude Include="ScoreBoard.h">
-      <Filter>Header Files\Components\Map\ScoreBoard</Filter>
+      <Filter>Header Files\Components\ScoreBoard</Filter>
     </ClInclude>
     <ClInclude Include="WorldVC.h">
       <Filter>Header Files\ViewController\WorldVC</Filter>
@@ -513,7 +513,7 @@
       <Filter>Header Files\Components\Map\SuperLeaf</Filter>
     </ClInclude>
     <ClInclude Include="FireFlower.h">
-      <Filter>Header Files\Components\Map\FireFlower</Filter>
+      <Filter>Header Files\Components\Enemies\FireFlower</Filter>
     </ClInclude>
     <ClInclude Include="FireFlowerState.h">
       <Filter>Header Files\System\Enums</Filter>
@@ -525,7 +525,7 @@
       <Filter>Header Files\Components\Map\FireFlowerBall</Filter>
     </ClInclude>
     <ClInclude Include="Flower.h">
-      <Filter>Header Files\Components\Map\Flower</Filter>
+      <Filter>Header Files\Components\Enemies\Flower</Filter>
     </ClInclude>
     <ClInclude Include="FlowerState.h">
       <Filter>Header Files\System\Enums</Filter>
