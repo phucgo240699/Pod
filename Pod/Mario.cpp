@@ -19,6 +19,11 @@ Animation* Mario::getCurrentAnimation()
 	return this->currentAnimation;
 }
 
+Animation* Mario::getPressureAnimation()
+{
+	return this->pressureAnimation;
+}
+
 MarioSubState Mario::getSubState()
 {
 	return this->subState;
@@ -178,6 +183,11 @@ bool Mario::getIsCloudMode()
 bool Mario::getIsFlyingMode()
 {
 	return this->isFlyingMode;
+}
+
+bool Mario::getIsTurningAround()
+{
+	return this->isTurningAround;
 }
 
 void Mario::loadInfo(string line, char seperator)
@@ -543,7 +553,7 @@ void Mario::setState(MarioState _state)
 		this->plusX(oldFrameWidth - newFrameWidth);
 	}
 	if (oldFrameHeight != newFrameHeight) {
-		this->plusY(oldFrameHeight - newFrameHeight-4);
+		this->plusY(oldFrameHeight - newFrameHeight);
 	}
 
 	// Space between bounds and frame
@@ -576,6 +586,11 @@ void Mario::setState(MarioState _state)
 void Mario::setPressureState(MarioState _pressureState)
 {
 	this->pressureState = _pressureState;
+}
+
+void Mario::setPressureAnimation(Animation _animation)
+{
+	this->pressureAnimation = new Animation(_animation);
 }
 
 void Mario::setSubState(MarioSubState _subState)
@@ -630,12 +645,16 @@ void Mario::setIsFlashMode(bool _isFlashMode)
 
 void Mario::turnOnFireSkin(MarioState _state)
 {
+	this->setIsFireMode(true);
 	switch (_state)
 	{
 	case STANDING:
 	{
 		delete currentAnimation;
-		if (this->getIsSuperMode()) {
+		if (this->getIsFlyingMode()) {
+			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingFireStanding());
+		}
+		else if (this->getIsSuperMode()) {
 			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireStanding());
 		}
 		else {
@@ -647,7 +666,15 @@ void Mario::turnOnFireSkin(MarioState _state)
 	case WALKING:
 	{
 		delete currentAnimation;
-		if (this->getIsSuperMode()) {
+		if (this->getIsFlyingMode()) {
+			if (this->getIsConverting()) {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingFireConverting());
+			}
+			else {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingFireWalking());
+			}
+		}
+		else if (this->getIsSuperMode()) {
 			if (this->getIsConverting()) {
 				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireConverting());
 			}
@@ -669,7 +696,10 @@ void Mario::turnOnFireSkin(MarioState _state)
 	case JUMPING:
 	{
 		delete currentAnimation;
-		if (this->getIsSuperMode()) {
+		if (this->getIsFlyingMode()) {
+			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingFireJumping());
+		}
+		else if (this->getIsSuperMode()) {
 			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireJumping());
 		}
 		else {
@@ -681,7 +711,10 @@ void Mario::turnOnFireSkin(MarioState _state)
 	case DROPPING:
 	{
 		delete currentAnimation;
-		if (this->getIsSuperMode()) {
+		if (this->getIsFlyingMode()) {
+			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingFireDropping());
+		}
+		else if (this->getIsSuperMode()) {
 			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireDropping());
 		}
 		else {
@@ -697,12 +730,16 @@ void Mario::turnOnFireSkin(MarioState _state)
 
 void Mario::turnOffFireSkin(MarioState _state)
 {
+	this->setIsFireMode(false);
 	switch (_state)
 	{
 	case STANDING:
 	{
 		delete currentAnimation;
-		if (this->getIsSuperMode()) {
+		if (this->getIsFlyingMode()) {
+			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingStanding());
+		}
+		else if (this->getIsSuperMode()) {
 			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioStanding());
 		}
 		else {
@@ -714,7 +751,15 @@ void Mario::turnOffFireSkin(MarioState _state)
 	case WALKING:
 	{
 		delete currentAnimation;
-		if (this->getIsSuperMode()) {
+		if (this->getIsFlyingMode()) {
+			if (this->getIsConverting()) {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingConverting());
+			}
+			else {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingWalking());
+			}
+		}
+		else if (this->getIsSuperMode()) {
 			if (this->getIsConverting()) {
 				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioConverting());
 			}
@@ -736,7 +781,10 @@ void Mario::turnOffFireSkin(MarioState _state)
 	case JUMPING:
 	{
 		delete currentAnimation;
-		if (this->getIsSuperMode()) {
+		if (this->getIsFlyingMode()) {
+			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingJumping());
+		}
+		else if (this->getIsSuperMode()) {
 			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioJumping());
 		}
 		else {
@@ -748,7 +796,10 @@ void Mario::turnOffFireSkin(MarioState _state)
 	case DROPPING:
 	{
 		delete currentAnimation;
-		if (this->getIsSuperMode()) {
+		if (this->getIsFlyingMode()) {
+			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingDropping());
+		}
+		else if (this->getIsSuperMode()) {
 			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioDropping());
 		}
 		else {
@@ -782,11 +833,41 @@ void Mario::toggleFlyingMode()
 	this->isFlyingMode = !(this->isFlyingMode);
 }
 
+void Mario::setIsTurningAround(bool _isTurningAround)
+{
+	this->isTurningAround = _isTurningAround;
+}
+
+void Mario::turnOnTurningAroundSkin()
+{
+	this->setIsTurningAround(true);
+	this->setPressureAnimation(*currentAnimation);
+	if (this->getIsFireMode()) {
+		this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingFireTurningAround());
+	}
+	else {
+		this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingTurningAround());
+	}
+}
+
+void Mario::turnOffTurningAroundSkin()
+{
+	this->currentAnimation = this->getPressureAnimation();
+}
+
 void Mario::Update(float _dt)
 {
 	if (currentAnimation == NULL) {
 		return;
 	}
+
+	if (this->getIsTurningAround()) {
+		if (this->currentAnimation->getCurrentIndexFrame() >= this->currentAnimation->getTotalFrames() - 1
+			&& this->currentAnimation->getAnimCount() >= this->currentAnimation->getAnimDelay()) {
+			this->turnOffTurningAroundSkin();
+		}
+	}
+
 	// Update animation frame
 	this->currentAnimation->Update(_dt);
 
@@ -1067,7 +1148,7 @@ void Mario::onKeyUp()
 void Mario::onKeyUp(vector<KeyType> _keyTypes)
 {
 	for (int i = 0; i < _keyTypes.size(); ++i) {
-		if (_keyTypes[i] == KeyType::space) {
+		if (_keyTypes[i] == KeyType::key_S) {
 			if (this->getState() == JUMPING) {
 				this->setState(MarioState::DROPPING);
 			}
@@ -1081,6 +1162,9 @@ void Mario::onKeyUp(vector<KeyType> _keyTypes)
 			if (this->getSubState() == PUSHING) {
 				this->setSubState(MarioSubState::NONE);
 			}
+		}
+		else if (_keyTypes[i] == KeyType::key_A) {
+			this->setIsTurningAround(false);
 		}
 	}
 }
@@ -1163,8 +1247,15 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 			}
 		}
 		
+		// Turning around
+		else if (_keyTypes[i] == KeyType::key_A) {
+			if (this->getIsFlyingMode() && this->getIsTurningAround() == false) {
+				this->turnOnTurningAroundSkin();
+			}
+		}
+
 		// Space
-		else if (_keyTypes[i] == KeyType::space) {
+		else if (_keyTypes[i] == KeyType::key_S) {
 			if (this->getState() == DROPPING) {
 				return;
 			}
@@ -1172,23 +1263,9 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 				this->setState(MarioState::JUMPING);
 			}
 		}
-		
-		// Fire Mode
-		else if (_keyTypes[i] == KeyType::F3) {
-			if (this->getIsFireMode() == false) {
-				this->setIsFireMode(true);
-				this->turnOnFireSkin(this->getState());
-			}
-		}
-		else if (_keyTypes[i] == KeyType::F4) {
-			if (this->getIsFireMode() == true) {
-				this->setIsFireMode(false);
-				this->turnOffFireSkin(this->getState());
-			}
-		}
 
 		// Shoot Fire Ball
-		else if (_keyTypes[i] == KeyType::key_S) {
+		else if (_keyTypes[i] == KeyType::key_D) {
 			if (this->getIsFireMode() && this->firstFireBall->getIsOutOfGrid()) {
 				if (this->getIsFlip()) {
 					this->firstFireBall->setX(this->getX());
@@ -1209,6 +1286,19 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 				this->firstFireBall->setIsOutOfGrid(false);
 			}
 		}
+
+		// Fire Mode
+		else if (_keyTypes[i] == KeyType::F3) {
+			if (this->getIsFireMode() == false) {
+				this->turnOnFireSkin(this->getState());
+			}
+		}
+		else if (_keyTypes[i] == KeyType::F4) {
+			if (this->getIsFireMode() == true) {
+				this->turnOffFireSkin(this->getState());
+			}
+		}
+
 	}
 	
 

@@ -1,5 +1,5 @@
 #pragma once
 
 enum KeyType {
-	space, up, down, left, right, enter, F3, F4, key_S,
+	up, down, left, right, enter, F3, F4, key_S, key_A, key_D
 };

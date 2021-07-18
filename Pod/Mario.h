@@ -31,10 +31,11 @@ private:
 	MarioSubState subState;
 	MarioState pressureState; // Hold state of mario before scaling up or scaling down
 	Animation* currentAnimation;
+	Animation* pressureAnimation;
 	FireBall* firstFireBall;
 
 	// Control
-	bool isStandOnSurface = false, isReduceWalking = false, isConverting = false;
+	bool isStandOnSurface = false, isReduceWalking = false, isConverting = false, isTurningAround = false;
 	bool isFlip; // false: Left side - true: Right side. Default is false
 
 	// Mode
@@ -67,6 +68,7 @@ public:
 	MarioSubState getSubState();
 	MarioState getPressureState(); // Hold state of mario before scaling up or scaling down
 	Animation* getCurrentAnimation();
+	Animation* getPressureAnimation();
 	FireBall* getFirstFireBall();
 	RECT getBounds();
 
@@ -87,6 +89,8 @@ public:
 	bool getIsFireMode();
 	bool getIsCloudMode();
 	bool getIsFlyingMode();
+	bool getIsTurningAround();
+
 
 	// Point
 	int getPointCoef();
@@ -113,6 +117,7 @@ public:
 	void setState(MarioState _state);
 	void setSubState(MarioSubState _subState);
 	void setPressureState(MarioState _pressureState);
+	void setPressureAnimation(Animation _animation);
 
 	// Control
 	void setIsFlip(bool _isFlip);
@@ -130,6 +135,9 @@ public:
 	void setIsCloudMode(bool _isCloudMode);
 	void setIsFlyingMode(bool _isFlyingMode);
 	void toggleFlyingMode();
+	void setIsTurningAround(bool _isTurningAround);
+	void turnOnTurningAroundSkin();
+	void turnOffTurningAroundSkin();
 
 
 	// Point

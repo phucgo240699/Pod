@@ -127,5 +127,8 @@ public:
 	Animation getKoopaGreenThrownAway();
 
 	Animation getFireBallSplash();
+
+	Animation getSuperMarioFlyingTurningAround();
+	Animation getSuperMarioFlyingFireTurningAround();
 };
 

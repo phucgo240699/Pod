@@ -623,7 +623,7 @@ void SunnyVC::viewDidUpdate(float _dt)
 			}
 		}
 	}
-	if ((mario->getState() == WALKING || mario->getState() == STANDING) && this->mario->getIsStandOnSurface() == false) {
+	if ((mario->getState() == WALKING || mario->getState() == STANDING) && this->mario->getIsTurningAround() == false && this->mario->getIsStandOnSurface() == false) {
 		this->mario->setState(MarioState::DROPPING);
 	}
 }
