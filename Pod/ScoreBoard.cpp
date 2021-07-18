@@ -223,7 +223,7 @@ void ScoreBoard::DrawMomentum()
 {
 	drawingPosition.x = this->position.x + momentumX;
 	drawingPosition.y = this->position.y + momentumY;
-	Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame(this->getMomentumKey(this->getMomentumLevel(this->momentum, 16))), drawingPosition);
+	Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame(this->getMomentumKey(this->momentumLevel)), drawingPosition);
 }
 
 RECT ScoreBoard::getFrame(string keyword)
@@ -273,4 +273,9 @@ void ScoreBoard::resetTimeTo300()
 void ScoreBoard::setMomentum(int _momentum)
 {
 	this->momentum = _momentum;
+}
+
+void ScoreBoard::setMomentumLevel(int _momentumLevel)
+{
+	this->momentumLevel = _momentumLevel;
 }

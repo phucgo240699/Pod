@@ -170,6 +170,11 @@ int Mario::getMomentumToFly()
 	return this->momentumToFly;
 }
 
+int Mario::getMomentumLevelToFly()
+{
+	return this->momentumLevelToFly;
+}
+
 bool Mario::getIsFlashMode()
 {
 	return this->isFlashMode;
@@ -188,6 +193,16 @@ bool Mario::getIsCloudMode()
 bool Mario::getIsFlyingMode()
 {
 	return this->isFlyingMode;
+}
+
+bool Mario::getIsPreFlyingUpMode()
+{
+	return this->isPreFlyingUpMode;
+}
+
+bool Mario::getIsFlyingUpMode()
+{
+	return this->isFlyingUpMode;
 }
 
 bool Mario::getIsTurningAround()
@@ -254,6 +269,7 @@ void Mario::setState(MarioState _state)
 	{
 	case STANDING:
 	{
+		this->setIsFlyingUpMode(false);
 		if (this->getState() != STANDING || this->currentAnimation == NULL) {
 			if (this->getVx() != 0 && this->getState() == DROPPING) {
 				this->setState(MarioState::WALKING);
@@ -303,6 +319,7 @@ void Mario::setState(MarioState _state)
 	{
 		delete currentAnimation;
 
+		this->setIsFlyingUpMode(false);
 		if (this->getIsFlyingMode()) {
 			if (this->getIsConverting()) {
 				if (this->getIsFireMode()) {
@@ -365,10 +382,18 @@ void Mario::setState(MarioState _state)
 
 	case JUMPING:
 	{
-		if (this->getState() != DROPPING) {
+		if (this->getState() != DROPPING || this->getIsFlyingUpMode()) {
 			delete currentAnimation;
-
-			if (this->getIsFlyingMode()) {
+			
+			if (this->getIsFlyingUpMode()) {
+				if (this->getIsFireMode()) {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireFlyingUp());
+				}
+				else {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingUp());
+				}
+			}
+			else if (this->getIsFlyingMode()) {
 				if (this->getIsFireMode()) {
 					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingFireJumping());
 				}
@@ -510,6 +535,7 @@ void Mario::setState(MarioState _state)
 	case SCALING_DOWN:
 	{
 		this->setIsFlashMode(true);
+		this->setIsFlyingUpMode(false);
 
 		// Store old state to pressureState variable
 		this->setPressureState(MarioState(this->getState()));
@@ -539,6 +565,7 @@ void Mario::setState(MarioState _state)
 	{
 		delete currentAnimation;
 
+		this->setIsFlyingUpMode(false);
 		// Store old state to pressureState variable
 		this->setPressureState(MarioState(this->getState()));
 
@@ -892,6 +919,35 @@ void Mario::turnOffTurningAroundSkin()
 	this->setState(this->getPressureState());
 }
 
+void Mario::turnOnPreFlyingUpSkin()
+{
+	this->setPressureState(MarioState(this->getState()));
+	if (this->getIsFireMode()) {
+		this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFirePreFlyingUp());
+	}
+	else {
+		this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioPreFlyingUp());
+	}
+}
+
+void Mario::turnOffPreFlyingUpSkin()
+{
+	this->setState(this->getPressureState());
+}
+
+void Mario::setIsPreFlyingUpMode(bool _isPreFlyingUpMode)
+{
+	this->isPreFlyingUpMode = _isPreFlyingUpMode;
+}
+
+void Mario::setIsFlyingUpMode(bool _isFlyingUpMode)
+{
+	this->isFlyingUpMode = _isFlyingUpMode;
+	if (_isFlyingUpMode == false) {
+		this->setIsPreFlyingUpMode(false);
+	}
+}
+
 void Mario::Update(float _dt)
 {
 	if (currentAnimation == NULL) {
@@ -907,7 +963,21 @@ void Mario::Update(float _dt)
 	}
 	if (this->getIsPressA()) {
 		if (this->getState() == WALKING) {
-			++momentumToFly;
+			this->plusMomentum(1);
+			if (this->getIsTurningAround() == false) {
+				if (this->getMomentumLevelToFly() >= 7) {
+					if (this->getIsPreFlyingUpMode() == false) {
+						this->setIsPreFlyingUpMode(true);
+						if (this->getIsPreFlyingUpMode()) {
+							this->turnOnPreFlyingUpSkin();
+						}
+						else {
+							this->turnOffPreFlyingUpSkin();
+						}
+					}
+				}
+				this->currentAnimation->Update(_dt);
+			}
 		}
 	}
 
@@ -1168,6 +1238,46 @@ void Mario::setFirstFireBallState(FireBallState _state)
 	this->firstFireBall->setState(_state);
 }
 
+void Mario::setMomentumLevel(int _momentumLevel)
+{
+	this->momentumLevelToFly = _momentumLevel;
+	if (this->momentumLevelToFly < 7) {
+		if (this->getIsPreFlyingUpMode()) {
+			this->setIsPreFlyingUpMode(false);
+			if (this->getIsPreFlyingUpMode()) {
+				this->turnOnPreFlyingUpSkin();
+			}
+			else {
+				this->turnOffPreFlyingUpSkin();
+			}
+		}
+	}
+}
+
+void Mario::setMomentum(int _momentum)
+{
+	this->momentumToFly = _momentum;
+	this->setMomentumLevel(this->momentumToFly / this->momentumSpace);
+	if (this->momentumLevelToFly < 0) {
+		this->setMomentumLevel(0);
+	}
+	else if (this->momentumLevelToFly > 7) {
+		this->setMomentumLevel(7);
+	}
+}
+
+void Mario::plusMomentum(int _momentum)
+{
+	this->momentumToFly += _momentum;
+	this->setMomentumLevel(this->momentumToFly / this->momentumSpace);
+	if (this->momentumLevelToFly < 0) {
+		this->setMomentumLevel(0);
+	}
+	else if (this->momentumLevelToFly > 7) {
+		this->setMomentumLevel(7);
+	}
+}
+
 void Mario::onKeyUp()
 {
 	if (this->getState() == WALKING) {
@@ -1187,7 +1297,9 @@ void Mario::onKeyUp()
 		}
 	}
 
-	this->momentumToFly = 0;
+	if (this->getIsFlyingUpMode() == false) {
+		this->setMomentum(0);
+	}
 }
 
 void Mario::onKeyUp(vector<KeyType> _keyTypes)
@@ -1212,13 +1324,17 @@ void Mario::onKeyUp(vector<KeyType> _keyTypes)
 			}
 		}
 		else if (_keyTypes[i] == KeyType::key_A) {
-			this->momentumToFly = 0;
+			if (this->getIsFlyingUpMode() == false) {
+				this->setMomentum(0);
+			}
 			this->setIsPressA(false);
 		}
 	}
 	
 	if (noLeft && noRight) {
-		this->momentumToFly = 0;
+		if (this->getIsFlyingUpMode() == false) {
+			this->setMomentum(0);
+		}
 	}
 }
 
@@ -1309,12 +1425,20 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 			}
 		}
 
-		// Space
+		// Jump
 		else if (_keyTypes[i] == KeyType::key_S) {
-			if (this->getState() == DROPPING) {
+			if (this->getIsPreFlyingUpMode()) {
+				if (this->getIsFlyingUpMode() == false) {
+					this->setIsFlyingUpMode(true);
+				}
+				if (this->getIsFlyingUpMode()) {
+					this->setState(MarioState::JUMPING);
+				}
+			}
+			else if (this->getState() == DROPPING) {
 				return;
 			}
-			if (this->getState() == STANDING || this->getState() == WALKING) {
+			else if (this->getState() == STANDING || this->getState() == WALKING) {
 				this->setState(MarioState::JUMPING);
 			}
 		}

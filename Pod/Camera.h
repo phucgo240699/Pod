@@ -1,6 +1,8 @@
 #pragma once
 #include "Component.h"
 
+class Mario;
+
 // Singleton
 class Camera : public Component
 {
@@ -19,7 +21,7 @@ public:
 	void plusX(float _x);
 	void plusY(float _y);
 	void setPositionBy(Component* _target);
-	void follow(Component* _target, float _dt);
+	void follow(Mario* _target, float _dt);
 
 	void load(string line, char seperator);
 };

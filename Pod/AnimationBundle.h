@@ -130,5 +130,10 @@ public:
 
 	Animation getSuperMarioFlyingTurningAround();
 	Animation getSuperMarioFlyingFireTurningAround();
+
+	Animation getSuperMarioPreFlyingUp();
+	Animation getSuperMarioFlyingUp();
+	Animation getSuperMarioFirePreFlyingUp();
+	Animation getSuperMarioFireFlyingUp();
 };
 

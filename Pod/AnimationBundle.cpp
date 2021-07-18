@@ -469,6 +469,26 @@ Animation AnimationBundle::getSuperMarioFlyingTurningAround()
 	return this->animations->at(82);
 }
 
+Animation AnimationBundle::getSuperMarioPreFlyingUp()
+{
+	return this->animations->at(84);
+}
+
+Animation AnimationBundle::getSuperMarioFlyingUp()
+{
+	return this->animations->at(85);
+}
+
+Animation AnimationBundle::getSuperMarioFirePreFlyingUp()
+{
+	return this->animations->at(86);
+}
+
+Animation AnimationBundle::getSuperMarioFireFlyingUp()
+{
+	return this->animations->at(87);
+}
+
 Animation AnimationBundle::getSuperMarioFlyingWalking()
 {
 	return this->animations->at(49);

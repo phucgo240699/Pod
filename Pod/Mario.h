@@ -39,7 +39,7 @@ private:
 	bool isFlip; // false: Left side - true: Right side. Default is false
 
 	// Mode
-	bool isSuperMode = false, isFlashMode = false, debugMode = true, isFireMode = false, isCloudMode = false, isFlyingMode = false;
+	bool isSuperMode = false, isFlashMode = false, debugMode = true, isFireMode = false, isCloudMode = false, isFlyingMode = false, isPreFlyingUpMode = false, isFlyingUpMode = false;
 
 	// Validate Animation
 	int oldFrameHeight, oldFrameWidth;
@@ -57,6 +57,8 @@ private:
 
 	// Momentum to fly
 	int momentumToFly = 0;
+	int momentumSpace = 12;
+	int momentumLevelToFly = 0;
 
 public:
 	// Init
@@ -93,6 +95,8 @@ public:
 	bool getIsFireMode();
 	bool getIsCloudMode();
 	bool getIsFlyingMode();
+	bool getIsPreFlyingUpMode();
+	bool getIsFlyingUpMode();
 
 
 	// Point
@@ -115,6 +119,7 @@ public:
 
 	// Momentum to fly
 	int getMomentumToFly();
+	int getMomentumLevelToFly();
 
 
 	//
@@ -146,6 +151,10 @@ public:
 	void toggleFlyingMode();
 	void turnOnTurningAroundSkin();
 	void turnOffTurningAroundSkin();
+	void turnOnPreFlyingUpSkin();
+	void turnOffPreFlyingUpSkin();
+	void setIsPreFlyingUpMode(bool _isPreFlyingUpMode);
+	void setIsFlyingUpMode(bool _isFlyingUpMode);
 
 
 	// Point
@@ -166,6 +175,12 @@ public:
 	void setSuperMarioFlyingTopSpace(int _space);
 	void setSuperMarioFlyingRightSpace(int _space);
 	void setFirstFireBallState(FireBallState _state);
+
+
+	// Momentum to fly
+	void setMomentumLevel(int _momentumLevel);
+	void setMomentum(int _momentum);
+	void plusMomentum(int _momentum);
 
 
 	// Update & Draw

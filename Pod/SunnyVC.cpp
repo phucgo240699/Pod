@@ -318,7 +318,7 @@ void SunnyVC::viewWillUpdate(float _dt)
 		return;
 	}
 	ScoreBoard::getInstance()->Update(_dt);
-	ScoreBoard::getInstance()->setMomentum(this->mario->getMomentumToFly());
+	ScoreBoard::getInstance()->setMomentumLevel(this->mario->getMomentumLevelToFly());
 }
 
 void SunnyVC::viewDidUpdate(float _dt)
