@@ -66,7 +66,7 @@ private:
 	unordered_set<Koopa*>* koopas;
 
 	bool isPressedPButton = false, isRestoredGoldenBrick = false, isRestoredCamera = false;
-	int countDownGoldenBrickBeingCoin = 320;
+	int countDownGoldenBrickBeingCoin = 340;
 	float camShakingValue = 2;
 
 public:

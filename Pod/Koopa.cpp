@@ -905,7 +905,7 @@ void Koopa::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 			this->plusX(get<1>(collisionResult) * this->getVx());
 
 			if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING
-				&& (this->getState() == KOOPA_SHRINKAGE_MOVING_LEFT || this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT)) {
+				&& (this->getState() == KOOPA_SHRINKAGE_MOVING_LEFT || this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT || this->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT || this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT)) {
 				_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARING);
 			}
 		}
@@ -922,7 +922,7 @@ void Koopa::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 			this->plusX(get<1>(collisionResult) * this->getVx());
 
 			if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING
-				&& (this->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT || this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT)) {
+				&& (this->getState() == KOOPA_SHRINKAGE_MOVING_LEFT || this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT || this->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT || this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT)) {
 				_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARING);
 			}
 		}

@@ -357,7 +357,7 @@ void SunnyVC::viewWillUpdate(float _dt)
 			this->setIsRestoredGoldenBrick(true);
 		}
 		if (this->isRestoredCamera == false) {
-			if (this->countDownGoldenBrickBeingCoin >= 300) {
+			if (this->countDownGoldenBrickBeingCoin >= 320) {
 				if (this->countDownGoldenBrickBeingCoin % 2 == 0) {
 					Camera::getInstance()->plusX(camShakingValue);
 					camShakingValue *= -1;
@@ -692,7 +692,7 @@ void SunnyVC::viewDidUpdate(float _dt)
 
 					if (this->getIsPressedPButton() == false && static_cast<PButton*>(*itr)->getState() == PBUTTON_OFF) {
 						this->setIsPressedPButton(true);
-						countDownGoldenBrickBeingCoin = 320;
+						countDownGoldenBrickBeingCoin = 340;
 
 						unordered_set<GoldenBrick*> ::iterator goldenBrickItr;
 						for (goldenBrickItr = this->goldenBricks->begin(); goldenBrickItr != this->goldenBricks->end(); ++goldenBrickItr) {
