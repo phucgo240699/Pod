@@ -27,6 +27,11 @@ bool SuperMushroom::getIsStandOnSurface()
 	return this->isStandOnSurface;
 }
 
+int SuperMushroom::getDefaultPoints()
+{
+	return this->defaultPoints;
+}
+
 void SuperMushroom::setAnimation(Animation* _animation)
 {
 	this->animation = _animation;
@@ -38,42 +43,42 @@ void SuperMushroom::setState(SuperMushroomState _state)
 	{
 	case SUPER_MUSHROOM_GROWING_UP:
 	{
-		if (animation == NULL) {
+		/*if (animation == NULL) {
 			this->animation = new Animation(AnimationBundle::getInstance()->getSuperMushroom());
-		}
+		}*/
 		this->setVy(-1 * abs(this->getVy()));
 		break;
 	}
 	case SUPER_MUSHROOM_MOVING_LEFT:
 	{
-		if (animation == NULL) {
+		/*if (animation == NULL) {
 			this->animation = new Animation(AnimationBundle::getInstance()->getSuperMushroom());
-		}
+		}*/
 		this->setVx(-1 * abs(this->getVx()));
 		break;
 	}
 	case SUPER_MUSHROOM_MOVING_RIGHT:
 	{
-		if (animation == NULL) {
+		/*if (animation == NULL) {
 			this->animation = new Animation(AnimationBundle::getInstance()->getSuperMushroom());
-		}
+		}*/
 		this->setVx(abs(this->getVx()));
 		break;
 	}
 	case SUPER_MUSHROOM_DROPPING_LEFT:
 	{
-		if (animation == NULL) {
+		/*if (animation == NULL) {
 			this->animation = new Animation(AnimationBundle::getInstance()->getSuperMushroom());
-		}
+		}*/
 		this->setVx(-abs(this->getVx()));
 		this->setVy(abs(this->getVy()));
 		break;
 	}
 	case SUPER_MUSHROOM_DROPPING_RIGHT:
 	{
-		if (animation == NULL) {
+		/*if (animation == NULL) {
 			this->animation = new Animation(AnimationBundle::getInstance()->getSuperMushroom());
-		}
+		}*/
 		this->setVx(abs(this->getVx()));
 		this->setVy(abs(this->getVy()));
 		break;
@@ -92,6 +97,11 @@ void SuperMushroom::setState(SuperMushroomState _state)
 void SuperMushroom::setIsStandOnSurface(bool _isStandOnSurface)
 {
 	this->isStandOnSurface = _isStandOnSurface;
+}
+
+void SuperMushroom::setDefaultPoints(int _defaultPoints)
+{
+	this->defaultPoints = _defaultPoints;
 }
 
 void SuperMushroom::Update(float _dt)
@@ -242,13 +252,28 @@ void SuperMushroom::handleMarioCollision(Mario* _mario, float _dt)
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
 
-	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_mario->getBounds())) {
-		this->plusX(this->getVx() * get<1>(collisionResult));
-		this->plusY(this->getVy() * get<1>(collisionResult));
+	if (get<0>(collisionResult) == true) {
+		int xPoint = this->getX();
+		int yPoint = this->getY();
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoints(), xPoint, yPoint)));
+		ScoreBoard::getInstance()->plusPoint(1000);
+
+		//this->plusX(this->getVx() * get<1>(collisionResult));
+		//this->plusY(this->getVy() * get<1>(collisionResult));
 		this->setState(SuperMushroomState::SUPER_MUSHROOM_BEING_EARNED);
 		_mario->plusX(this->getVx() * get<1>(collisionResult));
 		_mario->plusY(this->getVy() * get<1>(collisionResult));
 		_mario->setState(MarioState::SCALING_UP);
+	}
+	else if (this->isCollidingByBounds(_mario->getBounds())) {
+		int xPoint = this->getX();
+		int yPoint = this->getY();
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoints(), xPoint, yPoint)));
 		ScoreBoard::getInstance()->plusPoint(1000);
+
+		this->setState(SuperMushroomState::SUPER_MUSHROOM_BEING_EARNED);
+		if (_mario->getIsSuperMode() == false) {
+			_mario->setState(MarioState::SCALING_UP);
+		}
 	}
 }

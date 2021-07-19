@@ -27,6 +27,9 @@ void GiftBrick::loadInfo(string line, char seperator)
 	if (this->getGiftType() == NotPoint) {
 		superMushroom = new SuperMushroom(this->getX(), this->getY(), v[6], v[7], v[8], v[9], v[10]);
 		superLeaf = new SuperLeaf(this->getX(), this->getY(), v[11], v[12], v[13], v[14], v[15]);
+
+		superMushroom->setDefaultPoints(v[16]);
+		superLeaf->setDefaultPoints(v[17]);
 		return;
 	}
 
@@ -37,6 +40,16 @@ void GiftBrick::loadInfo(string line, char seperator)
 
 	// Points
 	this->pointY = this->getY() - 16;
+}
+
+SuperMushroom* GiftBrick::getSuperMushroom()
+{
+	return this->superMushroom;
+}
+
+SuperLeaf* GiftBrick::getSuperLeaf()
+{
+	return this->superLeaf;
 }
 
 GiftBrickState GiftBrick::getState()

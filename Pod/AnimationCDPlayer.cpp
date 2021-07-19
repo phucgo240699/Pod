@@ -13,12 +13,16 @@ void AnimationCDPlayer::Update(float _dt)
 	for (auto cd = listCD.begin(); cd != listCD.end();) {
 		(*cd).second->Update(_dt);
 
-		// Check is CD finish
-		if ((*cd).second->getIsFinish()) {
-			this->listCD.erase(cd++);
-		}
-		else {
-			++cd;
+		//// Check is CD finish
+		//if ((*cd).second->getIsFinish()) {
+		//	this->listCD.erase(cd++);
+		//}
+		//else {
+		//	++cd;
+		//}
+		auto currentCd = cd++;
+		if ((*currentCd).second->getIsFinish()) {
+			listCD.erase(currentCd);
 		}
 	}
 }

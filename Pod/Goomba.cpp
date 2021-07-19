@@ -414,7 +414,9 @@ void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 			}
 		}
 	}
-	else if (this->isCollidingByBounds(_mario->getBounds()) && _mario->getState() != DROPPING) {
+	else if (this->isCollidingByBounds(_mario->getBounds())
+		&& (_mario->getState() == WALKING && _mario->getState() == STANDING)
+		&& this->getState() != TRAMPLED_GOOMBA) {
 		this->plusX(2 * get<1>(collisionResult) * this->getVx());
 		if (_mario->getIsSuperMode() == false) {
 			this->setState(GoombaState::GOOMBA_STANDING);

@@ -28,6 +28,8 @@ public:
 	void loadInfo(string line, char seperator);
 
 	// Getter
+	SuperMushroom* getSuperMushroom();
+	SuperLeaf* getSuperLeaf();
 	GiftBrickState getState();
 	GiftType getGiftType();
 

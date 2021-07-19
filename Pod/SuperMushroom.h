@@ -23,6 +23,8 @@ private:
 	// Collision
 	bool isStandOnSurface = false;
 
+	int defaultPoints;
+
 public:
 	// Init
 	SuperMushroom(float _x, float _y, float _width, float _height, float _vx, float _vy, int _id);
@@ -30,11 +32,13 @@ public:
 	// Getter
 	SuperMushroomState getState();
 	bool getIsStandOnSurface();
+	int getDefaultPoints();
 
 	// Setter
 	void setAnimation(Animation* _animation);
 	void setState(SuperMushroomState _state);
 	void setIsStandOnSurface(bool _isStandOnSurface);
+	void setDefaultPoints(int _defaultPoints);
 
 	void Update(float _dt);
 	void Draw(LPDIRECT3DTEXTURE9 _texture);

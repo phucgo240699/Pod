@@ -24,6 +24,11 @@ SuperLeafState SuperLeaf::getState()
 	return this->state;
 }
 
+int SuperLeaf::getDefaultPoints()
+{
+	return this->defaultPoints;
+}
+
 void SuperLeaf::setIsFlip(bool _isFlip)
 {
 	this->isFlip = _isFlip;
@@ -39,16 +44,16 @@ void SuperLeaf::setState(SuperLeafState _state)
 	switch (_state)
 	{
 	case SUPER_LEAF_POPPING_UP:
-		if (animation == NULL) {
+		/*if (animation == NULL) {
 			this->animation = new Animation(AnimationBundle::getInstance()->getSuperLeaf());
-		}
+		}*/
 		this->setVx(0);
 		this->setVy(-2 * abs(originVy));
 		break;
 	case SUPER_LEAF_DROPPING:
-		if (animation == NULL) {
+		/*if (animation == NULL) {
 			this->animation = new Animation(AnimationBundle::getInstance()->getSuperLeaf());
-		}
+		}*/
 		this->setVx(0);
 		this->setVy(abs(originVy));
 		this->topY = this->getY();
@@ -57,6 +62,11 @@ void SuperLeaf::setState(SuperLeafState _state)
 		break;
 	}
 	this->state = _state;
+}
+
+void SuperLeaf::setDefaultPoints(int _defaultPoints)
+{
+	this->defaultPoints = _defaultPoints;
 }
 
 void SuperLeaf::Update(float _dt)
@@ -127,11 +137,13 @@ void SuperLeaf::handleMarioCollision(Mario* _mario, float _dt)
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
 
 	if (get<0>(collisionResult) == true) {
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(AnimationBundle::getInstance()->get1000Points(), this->getX(), this->getY())));
+		//int xPoint = this->getX();
+		//int yPoint = this->getY();
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoints(), this->getX(), this->getY())));
 		ScoreBoard::getInstance()->plusPoint(1000);
 
-		/*this->plusX(this->getVx() * get<1>(collisionResult));
-		this->plusY(this->getVy() * get<1>(collisionResult));*/
+		this->plusX(this->getVx() * get<1>(collisionResult));
+		this->plusY(this->getVy() * get<1>(collisionResult));
 		this->setState(SuperLeafState::SUPER_LEAF_BEING_EARNED);
 		_mario->plusX(_mario->getVx() * get<1>(collisionResult));
 		_mario->plusY(_mario->getVy() * get<1>(collisionResult));
@@ -141,7 +153,9 @@ void SuperLeaf::handleMarioCollision(Mario* _mario, float _dt)
 		}
 	}
 	else if (this->isCollidingByBounds(_mario->getBounds())) {
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(AnimationBundle::getInstance()->get1000Points(), this->getX(), this->getY())));
+		//int xPoint = this->getX();
+		//int yPoint = this->getY();
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoints(), this->getX(), this->getY())));
 		ScoreBoard::getInstance()->plusPoint(1000);
 
 		this->setState(SuperLeafState::SUPER_LEAF_BEING_EARNED);

@@ -270,6 +270,8 @@ void Mario::setState(MarioState _state)
 	case STANDING:
 	{
 		this->setIsFlyingUpMode(false);
+		this->setIsReduceWalking(false);
+		this->resetPointCoef();
 		if (this->getState() != STANDING || this->currentAnimation == NULL) {
 			if (this->getVx() != 0 && this->getState() == DROPPING) {
 				this->setState(MarioState::WALKING);
@@ -302,8 +304,6 @@ void Mario::setState(MarioState _state)
 				}
 			}
 
-			this->setIsReduceWalking(false);
-			this->resetPointCoef();
 			this->setTargetVx(0);
 			this->setTargetVy(0);
 			this->setAccelerationY(0);
@@ -1760,7 +1760,9 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 			this->setState(MarioState::DIE);
 		}
 	}
-	else if (this->isCollidingByBounds(_goomba->getBounds()) && this->getState() != DROPPING) {
+	else if (this->isCollidingByBounds(_goomba->getBounds())
+		&& (this->getState() == WALKING || this->getState() == STANDING)
+		&& _goomba->getState() != TRAMPLED_GOOMBA) {
 		_goomba->plusX(2 * get<1>(collisionResult) * _goomba->getVx());
 		if (this->getIsSuperMode() == false) {
 			_goomba->setState(GoombaState::GOOMBA_STANDING);
@@ -1857,7 +1859,9 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 			_koopa->setupPointAnimPosition();
 		}
 	}
-	else if (this->isCollidingByBounds(_koopa->getBounds()) && this->getState() != DROPPING && _koopa->getState() != KOOPA_SHRINKAGE && _koopa->getState() != KOOPA_SHRINKAGE_SHAKING) {
+	else if (this->isCollidingByBounds(_koopa->getBounds())
+		&& (this->getState() == WALKING || this->getState() == STANDING)
+			&& _koopa->getState() != KOOPA_SHRINKAGE && _koopa->getState() != KOOPA_SHRINKAGE_SHAKING) {
 		_koopa->plusX(2 * get<1>(collisionResult) * _koopa->getVx());
 		if (this->getIsSuperMode() == false) {
 			_koopa->setState(KoopaState::KOOPA_STANDING);
@@ -1884,14 +1888,33 @@ void Mario::handleSuperMushroomCollision(SuperMushroom* _superMushroom, float _d
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_superMushroom, _dt);
 
-	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_superMushroom->getBounds())) {
-		_superMushroom->plusX(this->getVx() * get<1>(collisionResult));
-		_superMushroom->plusY(this->getVy() * get<1>(collisionResult));
+	if (get<0>(collisionResult) == true) {
+		int xPoint = _superMushroom->getX();
+		int yPoint = _superMushroom->getY();
+
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_superMushroom->getDefaultPoints(), xPoint, yPoint)));
+		ScoreBoard::getInstance()->plusPoint(1000);
+
+		//_superMushroom->plusX(this->getVx() * get<1>(collisionResult));
+		//_superMushroom->plusY(this->getVy() * get<1>(collisionResult));
 		_superMushroom->setState(SuperMushroomState::SUPER_MUSHROOM_BEING_EARNED);
 		this->plusX(this->getVx() * get<1>(collisionResult));
 		this->plusY(this->getVy() * get<1>(collisionResult));
-		this->setState(MarioState::SCALING_UP);
+		if (this->getIsSuperMode() == false) {
+			this->setState(MarioState::SCALING_UP);
+		}
+	}
+	else if (this->isCollidingByBounds(_superMushroom->getBounds())) {
+		int xPoint = _superMushroom->getX();
+		int yPoint = _superMushroom->getY();
+
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_superMushroom->getDefaultPoints(), xPoint, yPoint)));
 		ScoreBoard::getInstance()->plusPoint(1000);
+
+		_superMushroom->setState(SuperMushroomState::SUPER_MUSHROOM_BEING_EARNED);
+		if (this->getIsSuperMode() == false) {
+			this->setState(MarioState::SCALING_UP);
+		}
 	}
 }
 
@@ -1911,11 +1934,14 @@ void Mario::handleSuperLeafCollision(SuperLeaf* _superLeaf, float _dt)
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_superLeaf, _dt);
 
 	if (get<0>(collisionResult) == true) {
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(AnimationBundle::getInstance()->get1000Points(), _superLeaf->getX(), _superLeaf->getY())));
+		//int xPoint = _superLeaf->getX();
+		//int yPoint = _superLeaf->getY();
+
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_superLeaf->getDefaultPoints(), _superLeaf->getX(), _superLeaf->getY())));
 		ScoreBoard::getInstance()->plusPoint(1000);
 
-		/*_superLeaf->plusX(_superLeaf->getVx() * get<1>(collisionResult));
-		_superLeaf->plusY(_superLeaf->getVy() * get<1>(collisionResult));*/
+		_superLeaf->plusX(_superLeaf->getVx() * get<1>(collisionResult));
+		_superLeaf->plusY(_superLeaf->getVy() * get<1>(collisionResult));
 		_superLeaf->setState(SuperLeafState::SUPER_LEAF_BEING_EARNED);
 		this->plusX(this->getVx() * get<1>(collisionResult));
 		this->plusY(this->getVy() * get<1>(collisionResult));
@@ -1926,7 +1952,10 @@ void Mario::handleSuperLeafCollision(SuperLeaf* _superLeaf, float _dt)
 
 	}
 	else if (this->isCollidingByBounds(_superLeaf->getBounds())) {
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(AnimationBundle::getInstance()->get1000Points(), _superLeaf->getX(), _superLeaf->getY())));
+		//int xPoint = _superLeaf->getX();
+		//int yPoint = _superLeaf->getY();
+
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_superLeaf->getDefaultPoints(), _superLeaf->getX(), _superLeaf->getY())));
 		ScoreBoard::getInstance()->plusPoint(1000);
 
 		_superLeaf->setState(SuperLeafState::SUPER_LEAF_BEING_EARNED);

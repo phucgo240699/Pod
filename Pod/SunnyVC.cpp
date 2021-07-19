@@ -321,12 +321,13 @@ void SunnyVC::viewWillUpdate(float _dt)
 		}
 	}
 
-	AnimationCDPlayer::getInstance()->Update(_dt);
-
 	if (mario != NULL) {
 		mario->Update(_dt);
 		Camera::getInstance()->follow(mario, _dt);
 	}
+
+	AnimationCDPlayer::getInstance()->Update(_dt);
+
 	if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN) {
 		return;
 	}
@@ -747,11 +748,11 @@ void SunnyVC::viewWillRender()
 			}
 		}
 
-		AnimationCDPlayer::getInstance()->Draw(map->getTexture());
-
 		if (mario != NULL) {
 			mario->Draw();
 		}
+
+		AnimationCDPlayer::getInstance()->Draw(map->getTexture());
 
 		ScoreBoard::getInstance()->Draw();
 
@@ -1117,7 +1118,10 @@ void SunnyVC::adaptAnimation()
 	// Gift Bricks
 	for (int i = 0; i < this->giftBricks->size(); ++i) {
 		this->giftBricks->at(i)->setState(GiftBrickState::FULLGIFTBRICK);
-		if (this->giftBricks->at(i)->getGiftType() == NotPoint) { // Super Mushroom
+		if (this->giftBricks->at(i)->getGiftType() == NotPoint) { // Super Mushroom, super leaf
+			this->giftBricks->at(i)->getSuperMushroom()->setAnimation(new Animation(AnimationBundle::getInstance()->getSuperMushroom()));
+			this->giftBricks->at(i)->getSuperLeaf()->setAnimation(new Animation(AnimationBundle::getInstance()->getSuperLeaf()));
+
 			this->giftBricks->at(i)->setSuperMushroomState(SuperMushroomState::SUPER_MUSHROOM_GROWING_UP);
 			this->giftBricks->at(i)->setSuperLeafState(SuperLeafState::SUPER_LEAF_POPPING_UP);
 		}

@@ -196,7 +196,7 @@ void Koopa::setState(KoopaState _state)
 			//this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
 		}
 		this->setIsFlip(true);
-		this->setVx(-6 * abs(this->originVx));
+		this->setVx(-4 * abs(this->originVx));
 		this->setVy(0);
 		break;
 	}
@@ -214,7 +214,7 @@ void Koopa::setState(KoopaState _state)
 			//this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
 		}
 		this->setIsFlip(false);
-		this->setVx(6 * abs(this->originVx));
+		this->setVx(4 * abs(this->originVx));
 		this->setVy(0);
 		break;
 	}
@@ -232,7 +232,7 @@ void Koopa::setState(KoopaState _state)
 			//this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
 		}
 		this->setIsFlip(true);
-		this->setVx(-6 * abs(this->originVx));
+		this->setVx(-4 * abs(this->originVx));
 		this->setVy(2 * abs(this->originVy));
 		break;
 	}
@@ -250,7 +250,7 @@ void Koopa::setState(KoopaState _state)
 			//this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
 		}
 		this->setIsFlip(true);
-		this->setVx(6 * abs(this->originVx));
+		this->setVx(4 * abs(this->originVx));
 		this->setVy(2 * abs(this->originVy));
 		break;
 	}
@@ -799,7 +799,9 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 				this->setupPointAnimPosition();
 			}
 	}
-	else if (this->isCollidingByBounds(_mario->getBounds()) && _mario->getState() != DROPPING && this->getState() != KOOPA_SHRINKAGE && this->getState() != KOOPA_SHRINKAGE_SHAKING) {
+	else if (this->isCollidingByBounds(_mario->getBounds())
+		&& (_mario->getState() == WALKING || _mario->getState() == STANDING)
+		&& this->getState() != KOOPA_SHRINKAGE && this->getState() != KOOPA_SHRINKAGE_SHAKING) {
 		this->plusX(2 * get<1>(collisionResult) * this->getVx());
 		if (_mario->getIsSuperMode() == false) {
 			this->setState(KoopaState::KOOPA_STANDING);
