@@ -163,8 +163,11 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 					// update which cell in grid that it's belongs to
 					Grid::getInstance()->updateCellOf(*itr);
-				}
 
+					if ((*itr)->getY() + (*itr)->getHeight() > Camera::getInstance()->getLimitY()) {
+						Grid::getInstance()->remove(*itr, i, j);
+					}
+				}
 
 				// ==========================================================================================
 				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getState() == TRANSFERING_TO_FLY) {
@@ -292,6 +295,10 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 					// update which cell in grid that it's belongs to
 					Grid::getInstance()->updateCellOf(*itr);
+
+					if ((*itr)->getY() + (*itr)->getHeight() > Camera::getInstance()->getLimitY()) {
+						Grid::getInstance()->remove(*itr, i, j);
+					}
 				}
 
 				// Fire Ball
@@ -348,6 +355,17 @@ void SunnyVC::viewWillUpdate(float _dt)
 				}
 			}
 			this->setIsRestoredGoldenBrick(true);
+		}
+		if (this->isRestoredCamera == false) {
+			if (this->countDownGoldenBrickBeingCoin >= 300) {
+				if (this->countDownGoldenBrickBeingCoin % 2 == 0) {
+					Camera::getInstance()->plusX(camShakingValue);
+					camShakingValue *= -1;
+				}
+			}
+			else {
+				this->isRestoredCamera = true;
+			}
 		}
 		--countDownGoldenBrickBeingCoin;
 	}
@@ -608,10 +626,10 @@ void SunnyVC::viewDidUpdate(float _dt)
 						else if (static_cast<Koopa*>(*itr)->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT) {
 							static_cast<Koopa*>(*itr)->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_RIGHT);
 						}
-						else if (static_cast<Koopa*>(*itr)->getIsGreenMode() && static_cast<Koopa*>(*itr)->getState() == KOOPA_MOVING_LEFT) {
+						else if (/*static_cast<Koopa*>(*itr)->getIsGreenMode() && */static_cast<Koopa*>(*itr)->getState() == KOOPA_MOVING_LEFT) {
 							static_cast<Koopa*>(*itr)->setState(KoopaState::KOOPA_DROPPING_LEFT);
 						}
-						else if (static_cast<Koopa*>(*itr)->getIsGreenMode() && static_cast<Koopa*>(*itr)->getState() == KOOPA_MOVING_RIGHT) {
+						else if (/*static_cast<Koopa*>(*itr)->getIsGreenMode() && */static_cast<Koopa*>(*itr)->getState() == KOOPA_MOVING_RIGHT) {
 							static_cast<Koopa*>(*itr)->setState(KoopaState::KOOPA_DROPPING_RIGHT);
 						}
 					}
@@ -674,7 +692,7 @@ void SunnyVC::viewDidUpdate(float _dt)
 
 					if (this->getIsPressedPButton() == false && static_cast<PButton*>(*itr)->getState() == PBUTTON_OFF) {
 						this->setIsPressedPButton(true);
-						countDownGoldenBrickBeingCoin = 240;
+						countDownGoldenBrickBeingCoin = 320;
 
 						unordered_set<GoldenBrick*> ::iterator goldenBrickItr;
 						for (goldenBrickItr = this->goldenBricks->begin(); goldenBrickItr != this->goldenBricks->end(); ++goldenBrickItr) {

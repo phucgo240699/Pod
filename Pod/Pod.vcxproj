@@ -157,7 +157,6 @@
     <ClCompile Include="AnimationCDPlayer.cpp" />
     <ClCompile Include="AppController.cpp" />
     <ClCompile Include="Block.cpp" />
-    <ClCompile Include="GoldenBrickFragmentsUpCD.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Color.cpp" />
@@ -205,7 +204,6 @@
     <ClInclude Include="AnimationCDPlayer.h" />
     <ClInclude Include="AppController.h" />
     <ClInclude Include="Block.h" />
-    <ClInclude Include="GoldenBrickFragmentsUpCD.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="CoinState.h" />

@@ -145,6 +145,8 @@ void Koopa::setState(KoopaState _state)
 				this->animation = new Animation(AnimationBundle::getInstance()->getKoopaMoving());
 			}
 		}
+		
+		this->isOutOfFirstStage = true;
 		this->setIsFlip(true);
 		this->setVx(-abs(this->originVx));
 		this->setVy(abs(this->originVy));
@@ -162,6 +164,8 @@ void Koopa::setState(KoopaState _state)
 				this->animation = new Animation(AnimationBundle::getInstance()->getKoopaMoving());
 			}
 		}
+
+		this->isOutOfFirstStage = true;
 		this->setIsFlip(true);
 		this->setVx(abs(this->originVx));
 		this->setVy(abs(this->originVy));
@@ -186,7 +190,6 @@ void Koopa::setState(KoopaState _state)
 	case KOOPA_SHRINKAGE_MOVING_LEFT:
 	{
 		if (this->getState() == KOOPA_SHRINKAGE || this->getState() == KOOPA_SHRINKAGE_SHAKING) {
-			this->isOutOfFirstStage = true;
 			delete animation;
 			if (this->getIsGreenMode()) {
 				this->animation = new Animation(AnimationBundle::getInstance()->getKoopaGreenShrinkageMoving());
@@ -205,7 +208,6 @@ void Koopa::setState(KoopaState _state)
 	case KOOPA_SHRINKAGE_MOVING_RIGHT:
 	{
 		if (this->getState() == KOOPA_SHRINKAGE || this->getState() == KOOPA_SHRINKAGE_SHAKING) {
-			this->isOutOfFirstStage = true;
 			delete animation;
 			if (this->getIsGreenMode()) {
 				this->animation = new Animation(AnimationBundle::getInstance()->getKoopaGreenShrinkageMoving());
@@ -233,6 +235,8 @@ void Koopa::setState(KoopaState _state)
 			}
 			//this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
 		}
+
+		this->isOutOfFirstStage = true;
 		this->setIsFlip(true);
 		this->setVx(-4 * abs(this->originVx));
 		this->setVy(2 * abs(this->originVy));
@@ -251,6 +255,8 @@ void Koopa::setState(KoopaState _state)
 			}
 			//this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
 		}
+
+		this->isOutOfFirstStage = true;
 		this->setIsFlip(true);
 		this->setVx(4 * abs(this->originVx));
 		this->setVy(2 * abs(this->originVy));
@@ -858,8 +864,9 @@ void Koopa::handleFireBallCollision(FireBall* _fireBall, float _dt)
 
 void Koopa::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 {
-
+	if (_goldenBrick->getState() == GOLDEN_BRICK_BEING_COIN || _goldenBrick->getState() == GOLDEN_BRICK_DISAPPEARING || _goldenBrick->getState() == GOLDEN_BRICK_DEAD) return;
 	if (this->getState() == KOOPA_THROWN_LEFT_AWAY || this->getState() == KOOPA_THROWN_RIGHT_AWAY) return;
+	
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_goldenBrick, _dt);
 	if (get<0>(collisionResult) == true) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
@@ -897,7 +904,8 @@ void Koopa::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 			}
 			this->plusX(get<1>(collisionResult) * this->getVx());
 
-			if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING) {
+			if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING
+				&& (this->getState() == KOOPA_SHRINKAGE_MOVING_LEFT || this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT)) {
 				_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARING);
 			}
 		}
@@ -913,7 +921,8 @@ void Koopa::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 			}
 			this->plusX(get<1>(collisionResult) * this->getVx());
 
-			if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING) {
+			if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING
+				&& (this->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT || this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT)) {
 				_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARING);
 			}
 		}

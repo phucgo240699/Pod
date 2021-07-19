@@ -65,8 +65,9 @@ private:
 	int beginKoopaId, endKoopaId;
 	unordered_set<Koopa*>* koopas;
 
-	bool isPressedPButton = false, isRestoredGoldenBrick = false;;
-	int countDownGoldenBrickBeingCoin = 240;
+	bool isPressedPButton = false, isRestoredGoldenBrick = false, isRestoredCamera = false;
+	int countDownGoldenBrickBeingCoin = 320;
+	float camShakingValue = 2;
 
 public:
 	// Getter
