@@ -8,7 +8,7 @@ SuperMushroom::SuperMushroom(float _x, float _y, float _width, float _height, fl
 	this->setId(_id);
 	this->setWidth(_width);
 	this->setHeight(_height);
-	this->endGrowUpY = this->getY() - this->getHeight();
+	this->endGrowUpY = this->getY() - this->getHeight() - 1;
 
 	// Random number
 	srand(time(NULL));
@@ -51,41 +51,28 @@ void SuperMushroom::setState(SuperMushroomState _state)
 	}
 	case SUPER_MUSHROOM_MOVING_LEFT:
 	{
-		/*if (animation == NULL) {
-			this->animation = new Animation(AnimationBundle::getInstance()->getSuperMushroom());
-		}*/
 		this->setVx(-1 * abs(this->getVx()));
 		break;
 	}
 	case SUPER_MUSHROOM_MOVING_RIGHT:
 	{
-		/*if (animation == NULL) {
-			this->animation = new Animation(AnimationBundle::getInstance()->getSuperMushroom());
-		}*/
 		this->setVx(abs(this->getVx()));
 		break;
 	}
 	case SUPER_MUSHROOM_DROPPING_LEFT:
 	{
-		/*if (animation == NULL) {
-			this->animation = new Animation(AnimationBundle::getInstance()->getSuperMushroom());
-		}*/
 		this->setVx(-abs(this->getVx()));
 		this->setVy(abs(this->getVy()));
 		break;
 	}
 	case SUPER_MUSHROOM_DROPPING_RIGHT:
 	{
-		/*if (animation == NULL) {
-			this->animation = new Animation(AnimationBundle::getInstance()->getSuperMushroom());
-		}*/
 		this->setVx(abs(this->getVx()));
 		this->setVy(abs(this->getVy()));
 		break;
 	}
 	case SUPER_MUSHROOM_BEING_EARNED:
 	{
-		//delete animation;
 		break;
 	}
 	default:
@@ -124,11 +111,11 @@ void SuperMushroom::Update(float _dt)
 				return;
 			}
 		}
-		this->plusY(this->getVy()* _dt);
+		this->plusYNoRound(this->getVy()* _dt);
 		this->animation->Update(_dt);
 	}
 	else if (this->getState() == SUPER_MUSHROOM_MOVING_LEFT || this->getState() == SUPER_MUSHROOM_MOVING_RIGHT) {
-		this->plusX(this->getVx() * _dt);
+		this->plusXNoRound(this->getVx() * _dt);
 		this->animation->Update(_dt);
 	}
 	else if (this->getState() == SUPER_MUSHROOM_DROPPING_LEFT || this->getState() == SUPER_MUSHROOM_DROPPING_RIGHT) {
@@ -153,6 +140,8 @@ void SuperMushroom::Draw(LPDIRECT3DTEXTURE9 _texture)
 
 void SuperMushroom::handleHardComponentCollision(Component* _component, float _dt)
 {
+	if (this->getState() == SUPER_MUSHROOM_GROWING_UP || this->getState() == SUPER_MUSHROOM_BEING_EARNED || this->getState() == SUPER_MUSHROOM_DISAPPEARED) return;
+
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_component, _dt);
 	if (get<0>(collisionResult) == true) {
 		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
@@ -203,6 +192,8 @@ void SuperMushroom::handleHardComponentCollision(Component* _component, float _d
 
 void SuperMushroom::handleBlockCollision(Block* _block, float _dt)
 {
+	if (this->getState() == SUPER_MUSHROOM_GROWING_UP || this->getState() == SUPER_MUSHROOM_BEING_EARNED || this->getState() == SUPER_MUSHROOM_DISAPPEARED) return;
+
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_block, _dt);
 	if (get<0>(collisionResult) == true) {
 		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {

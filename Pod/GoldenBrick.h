@@ -3,12 +3,18 @@
 #include "Camera.h"
 #include "AnimationBundle.h"
 #include "GoldenBrickState.h"
+#include "PButton.h"
+
+class Grid;
 
 class GoldenBrick : public Component
 {
 private:
 	Animation* animation;
 	GoldenBrickState state;
+	PButton* pButton;
+
+	bool hasPButton;
 
 public:
 	// Init
@@ -17,9 +23,13 @@ public:
 
 	// Getter
 	GoldenBrickState getState();
+	bool getHasPButton();
+	PButton* getPButton();
+
 
 	// Setter
 	void setState(GoldenBrickState _state);
+	void setHasPButton(bool _hasPButton);
 
 
 	void loadInfo(string line, char seperator);

@@ -494,6 +494,16 @@ Animation AnimationBundle::getGoldenBrickFragment()
 	return this->animations->at(89);
 }
 
+Animation AnimationBundle::getPButtonOn()
+{
+	return this->animations->at(90);
+}
+
+Animation AnimationBundle::getPButtonOff()
+{
+	return this->animations->at(91);
+}
+
 Animation AnimationBundle::getSuperMarioFlyingWalking()
 {
 	return this->animations->at(49);

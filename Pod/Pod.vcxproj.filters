@@ -232,6 +232,12 @@
     <Filter Include="Source Files\Components\Map\Coin">
       <UniqueIdentifier>{223f6ae4-c98b-454d-8650-a6e959ddae65}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\Map\PButton">
+      <UniqueIdentifier>{2bc97ef6-d040-40fc-bfb9-46e12783a308}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Map\PButton">
+      <UniqueIdentifier>{26360526-6873-4423-8e47-9b43042f89ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -368,6 +374,9 @@
     </ClCompile>
     <ClCompile Include="GoldenBrickFragmentsUpCD.cpp">
       <Filter>Source Files\System\AnimationCDPlayer\AnimationCD</Filter>
+    </ClCompile>
+    <ClCompile Include="PButton.cpp">
+      <Filter>Source Files\Components\Map\PButton</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -559,6 +568,12 @@
     </ClInclude>
     <ClInclude Include="GoldenBrickFragmentsUpCD.h">
       <Filter>Header Files\System\AnimationCDPlayer\AnimationCD</Filter>
+    </ClInclude>
+    <ClInclude Include="PButtonState.h">
+      <Filter>Header Files\System\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="PButton.h">
+      <Filter>Header Files\Components\Map\PButton</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -51,6 +51,8 @@ private:
 	int beginCoinId, endCoinId;
 	unordered_set<Coin*>* coins;
 
+	int beginPButtonId, endPButtonId;
+
 	//
 	// Enemies
 	//

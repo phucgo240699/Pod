@@ -19,6 +19,7 @@
 #include "Flower.h"
 #include "FireBall.h"
 #include "Coin.h"
+#include "PButton.h"
 #include <unordered_map>
 
 using namespace std;
@@ -224,6 +225,7 @@ public:
 	void handleFireFlowerBallCollision(FireFlowerBall* _fireFlowerBall, float _dt);
 	void handleFlowerCollision(Flower* _flower, float _dt);
 	void handleCoinCollision(Coin* _coin, float _dt);
+	void handlePButtonCollision(PButton* _pButton, float _dt);
 };
 
 #endif // !MARIO_H

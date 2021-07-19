@@ -138,5 +138,7 @@ public:
 
 	Animation getCoin();
 	Animation getGoldenBrickFragment();
+	Animation getPButtonOn();
+	Animation getPButtonOff();
 };
 

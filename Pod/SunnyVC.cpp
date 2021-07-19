@@ -318,7 +318,12 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 					(*itr)->Update(_dt);
 
-					Grid::getInstance()->updateCellOf(*itr);
+					//Grid::getInstance()->updateCellOf(*itr);
+				}
+
+				// PButton
+				else if (beginPButtonId <= (*itr)->getId() && (*itr)->getId() <= endPButtonId) {
+					(*itr)->Update(_dt);
 				}
 			}
 		}
@@ -644,6 +649,11 @@ void SunnyVC::viewDidUpdate(float _dt)
 					this->mario->handleCoinCollision(static_cast<Coin*>(*itr), _dt);
 					static_cast<Coin*>(*itr)->handleMarioCollision(this->mario, _dt);
 				}
+
+				// PButton
+				else if (beginPButtonId <= (*itr)->getId() && (*itr)->getId() <= endPButtonId) {
+					this->mario->handlePButtonCollision(static_cast<PButton*>(*itr), _dt);
+				}
 			}
 		}
 	}
@@ -730,6 +740,11 @@ void SunnyVC::viewWillRender()
 
 					// Coin
 					else if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
+						(*itr)->Draw(map->getTexture());
+					}
+
+					// PButton
+					else if (beginPButtonId <= (*itr)->getId() && (*itr)->getId() <= endPButtonId) {
 						(*itr)->Draw(map->getTexture());
 					}
 				}
@@ -842,6 +857,11 @@ void SunnyVC::adaptRangeID(vector<string> data, char seperator)
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginCoinId = v[0];
 			this->endCoinId = v[1];
+		}
+		else if (i == 12) {
+			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
+			this->beginPButtonId = v[0];
+			this->endPButtonId = v[1];
 		}
 	}
 }
@@ -1115,7 +1135,10 @@ void SunnyVC::adaptAnimation()
 {
 	// Golden Bricks
 	for (int i = 0; i < this->goldenBricks->size(); ++i) {
-		this->goldenBricks->at(i)->setAnimation(new Animation(AnimationBundle::getInstance()->getGoldenBrick()));
+		this->goldenBricks->at(i)->setState(GoldenBrickState::GOLDEN_BRICK_STAYING);
+		if (this->goldenBricks->at(i)->getHasPButton()) {
+			this->goldenBricks->at(i)->getPButton()->setState(PButtonState::PBUTTON_ON);
+		}
 	}
 
 	// Gift Bricks
@@ -1236,7 +1259,6 @@ void SunnyVC::adaptToGrid()
 	for (coinItr = this->coins->begin(); coinItr != this->coins->end(); ++coinItr) {
 		Grid::getInstance()->add(*coinItr);
 	}
-
 
 
 	///

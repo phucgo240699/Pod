@@ -1609,6 +1609,8 @@ void Mario::handleBlockCollision(Block* _block, float _dt)
 
 void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 {
+	if (_goldenBrick->getState() == GOLDEN_BRICK_DISAPPEARED) return;
+
 	if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING && this->getIsTurningAround()) {
 		if (get<0>(this->sweptAABBByFrame(_goldenBrick, _dt)) || this->isCollidingByFrame(_goldenBrick->getFrame())) {
 			if (this->getIsFlip()) {
@@ -1616,12 +1618,18 @@ void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 					&& _goldenBrick->getX() + _goldenBrick->getWidth() >= this->getX() - this->getLeftSpace()
 					&& this->getBounds().top + this->getTailMarginTop() >= _goldenBrick->getY()
 					&& this->getBounds().bottom - this->getTailMarginBottom() <= _goldenBrick->getY() + _goldenBrick->getHeight()) {
-					_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARED);
-					
-
-					//AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(100, _goldenBrick->getX(), _goldenBrick->getY())));
-					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::BrickFragmentsUpCDType, new GoldenBrickFragmentsUpCD(_goldenBrick->getX(), _goldenBrick->getX() + (_goldenBrick->getWidth() / 2), _goldenBrick->getY(), _goldenBrick->getY() + (_goldenBrick->getHeight() / 2))));
-					return;
+					if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING) {
+						if (_goldenBrick->getHasPButton()) {
+							_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_EMPTY);
+							Grid::getInstance()->add(_goldenBrick->getPButton());
+							return;
+						}
+						else {
+							_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARED);
+							AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::BrickFragmentsUpCDType, new GoldenBrickFragmentsUpCD(_goldenBrick->getX(), _goldenBrick->getX() + (_goldenBrick->getWidth() / 2), _goldenBrick->getY(), _goldenBrick->getY() + (_goldenBrick->getHeight() / 2))));
+							return;
+						}
+					}
 				}
 			}
 			else { // -->
@@ -1629,15 +1637,24 @@ void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 					&& _goldenBrick->getX() <= this->getX() + this->getBoundsWidth() + this->getLeftSpace()
 					&& this->getBounds().top +  this->getTailMarginTop() >= _goldenBrick->getY()
 					&& this->getBounds().bottom - this->getTailMarginBottom() <= _goldenBrick->getY() + _goldenBrick->getHeight()) {
-					_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARED);
-
-					//AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(100, _goldenBrick->getX(), _goldenBrick->getY())));
-					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::BrickFragmentsUpCDType, new GoldenBrickFragmentsUpCD(_goldenBrick->getX(), _goldenBrick->getX() + (_goldenBrick->getWidth() / 2), _goldenBrick->getY(), _goldenBrick->getY() + (_goldenBrick->getHeight() / 2))));
-					return;
+					if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING) {
+						if (_goldenBrick->getHasPButton()) {
+							_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_EMPTY);
+							Grid::getInstance()->add(_goldenBrick->getPButton());
+							return;
+						}
+						else {
+							_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARED);
+							AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::BrickFragmentsUpCDType, new GoldenBrickFragmentsUpCD(_goldenBrick->getX(), _goldenBrick->getX() + (_goldenBrick->getWidth() / 2), _goldenBrick->getY(), _goldenBrick->getY() + (_goldenBrick->getHeight() / 2))));
+							return;
+						}
+					}
 				}
 			}
 		}
 	}
+
+
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_goldenBrick, _dt);
 	if (get<0>(collisionResult) == true) {
 		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
@@ -1646,6 +1663,11 @@ void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 				this->setState(MarioState::DROPPING);
 				this->setY(_goldenBrick->getY() + _goldenBrick->getHeight());
 				this->setVy(0);
+
+				if (_goldenBrick->getHasPButton()) {
+					_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_EMPTY);
+					Grid::getInstance()->add(_goldenBrick->getPButton());
+				}
 			}
 			else if (edge == bottomEdge) {
 				this->setState(MarioState::STANDING);
@@ -2121,8 +2143,7 @@ void Mario::handleCoinCollision(Coin* _coin, float _dt)
 		|| this->getState() == DIE_DROPPING
 		|| this->getState() == SCALING_UP
 		|| this->getState() == SCALING_DOWN
-		|| this->getState() == TRANSFERING_TO_FLY
-		|| this->getIsFlashMode()) {
+		|| this->getState() == TRANSFERING_TO_FLY) {
 		return;
 	}
 
@@ -2142,5 +2163,25 @@ void Mario::handleCoinCollision(Coin* _coin, float _dt)
 			_coin->setState(CoinState::COIN_BEING_EARNED);
 			ScoreBoard::getInstance()->plusPoint(50);
 		}
+	}
+}
+
+void Mario::handlePButtonCollision(PButton* _pButton, float _dt)
+{
+	if (this->getState() == DIE
+		|| this->getState() == DIE_JUMPING
+		|| this->getState() == DIE_DROPPING
+		|| this->getState() == SCALING_UP
+		|| this->getState() == SCALING_DOWN
+		|| this->getState() == TRANSFERING_TO_FLY) {
+		return;
+	}
+
+	if (_pButton->getState() == PBUTTON_OFF) return;
+
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_pButton, _dt);
+
+	if (get<0>(collisionResult) == true && get<2>(collisionResult)[0] == bottomEdge) {
+		_pButton->setState(PButtonState::PBUTTON_OFF);
 	}
 }

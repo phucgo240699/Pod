@@ -1,4 +1,5 @@
 #include "GoldenBrick.h"
+#include "Grid.h"
 
 GoldenBrick::GoldenBrick(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id) : Component(_x, _y, _vx, _vy, _limitX, _limitY)
 {
@@ -13,9 +14,40 @@ GoldenBrickState GoldenBrick::getState()
 	return this->state;
 }
 
+bool GoldenBrick::getHasPButton()
+{
+	return this->hasPButton;
+}
+
+PButton* GoldenBrick::getPButton()
+{
+	return this->pButton;
+}
+
 void GoldenBrick::setState(GoldenBrickState _state)
 {
+	switch (_state)
+	{
+	case GOLDEN_BRICK_STAYING:
+		this->animation = new Animation(AnimationBundle::getInstance()->getGoldenBrick());
+		break;
+	case GOLDEN_BRICK_DISAPPEARED:
+		break;
+	case GOLDEN_BRICK_EMPTY:
+		if (this->getState() != GOLDEN_BRICK_EMPTY) {
+			delete animation;
+			this->animation = new Animation(AnimationBundle::getInstance()->getEmptyGiftBrick());
+		}
+		break;
+	default:
+		break;
+	}
 	this->state = _state;
+}
+
+void GoldenBrick::setHasPButton(bool _hasPButton)
+{
+	this->hasPButton = _hasPButton;
 }
 
 void GoldenBrick::loadInfo(string line, char seperator)
@@ -26,7 +58,12 @@ void GoldenBrick::loadInfo(string line, char seperator)
 	this->setY(v[1]);
 	this->setWidth(v[2]);
 	this->setHeight(v[3]);
-	this->setId(v[4]);
+	this->setHasPButton(v[4] == 1);
+	this->setId(v[5]);
+
+	if (this->getHasPButton()) {
+		this->pButton = new PButton(v[6], v[7], 0, 0, 0, 0, v[8]);
+	}
 }
 
 void GoldenBrick::setAnimation(Animation* _animation)
@@ -41,8 +78,5 @@ void GoldenBrick::Update(float _dt)
 
 void GoldenBrick::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
-	/*D3DXVECTOR3 position = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->getY() - Camera::getInstance()->getY(), 0);
-	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), &position);*/
-
 	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), this->getPosition());
 }
