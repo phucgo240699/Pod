@@ -489,6 +489,11 @@ Animation AnimationBundle::getSuperMarioFireFlyingUp()
 	return this->animations->at(87);
 }
 
+Animation AnimationBundle::getGoldenBrickFragment()
+{
+	return this->animations->at(89);
+}
+
 Animation AnimationBundle::getSuperMarioFlyingWalking()
 {
 	return this->animations->at(49);

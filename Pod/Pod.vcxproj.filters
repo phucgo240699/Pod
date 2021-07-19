@@ -366,6 +366,9 @@
     <ClCompile Include="Coin.cpp">
       <Filter>Source Files\Components\Map\Coin</Filter>
     </ClCompile>
+    <ClCompile Include="GoldenBrickFragmentsUpCD.cpp">
+      <Filter>Source Files\System\AnimationCDPlayer\AnimationCD</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tool.h">
@@ -553,6 +556,9 @@
     </ClInclude>
     <ClInclude Include="GoldenBrickState.h">
       <Filter>Header Files\System\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="GoldenBrickFragmentsUpCD.h">
+      <Filter>Header Files\System\AnimationCDPlayer\AnimationCD</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

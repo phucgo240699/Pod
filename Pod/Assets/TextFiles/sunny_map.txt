@@ -83,8 +83,8 @@
 # superMarioLeftSpace, superMarioTopSpace, superMarioRightSpace,
 # superMarioFlyingLeftSpace, superMarioFlyingTopSpace, superMarioFlyingRightSpace,
 # firstFireBallVx, firstFireBallVy, firstFireBallId,
-# tailTopAnchor, tailBottomAnchor)
-36,400,2816,470,4,3,2,4,3,2,3,5,1,10,6,1,4,1,1001
+# tailMarginTop, tailMarginBottom, tailHeight, tailWidth)
+36,400,2816,470,4,3,2,4,3,2,3,5,1,10,6,1,4,1,1001,20,6,4
 </MarioInfo>
 
 <GiftBrickFrames>
@@ -1133,5 +1133,11 @@
 136,203,16,16
 153,203,16,16
 > 88 0 4
+
+# Golden Grick Frament
+170,203,16,16
+187,207,16,16
+> 89 0 4
+
 
 </AnimationBundle>

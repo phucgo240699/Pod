@@ -175,6 +175,21 @@ int Mario::getMomentumLevelToFly()
 	return this->momentumLevelToFly;
 }
 
+int Mario::getTailMarginTop()
+{
+	return this->tailMarginTop;
+}
+
+int Mario::getTailHeight()
+{
+	return this->tailHeight;
+}
+
+int Mario::getTailMarginBottom()
+{
+	return this->tailMarginBottom;
+}
+
 bool Mario::getIsFlashMode()
 {
 	return this->isFlashMode;
@@ -237,6 +252,9 @@ void Mario::loadInfo(string line, char seperator)
 	//this->setState(Tool::getMarioStateFromString(v[4]));
 
 	this->firstFireBall = new FireBall(0, 0, stof(v[16]), stof(v[17]), 0, 0, stoi(v[18]));
+	this->setTailMarginTop(stoi(v[19]));
+	this->setTailMarginBottom(stoi(v[20]));
+	this->setTailHeight(stoi(v[21]));
 }
 
 void Mario::setIsFlip(bool _isFlip)
@@ -913,6 +931,10 @@ void Mario::turnOnTurningAroundSkin()
 {
 	//this->setPressureState(MarioState(this->getState()));
 	this->setPressureAnimation(*currentAnimation);
+	if (this->getIsFlip() == false) {
+		this->plusX(-1);
+	}
+	delete currentAnimation;
 	if (this->getIsFireMode()) {
 		this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingFireTurningAround());
 	}
@@ -1290,6 +1312,21 @@ void Mario::plusMomentum(int _momentum)
 	}
 }
 
+void Mario::setTailMarginTop(int _tailMarginTop)
+{
+	this->tailMarginTop = _tailMarginTop;
+}
+
+void Mario::setTailHeight(int _tailHeight)
+{
+	this->tailHeight = _tailHeight;
+}
+
+void Mario::setTailMarginBottom(int _tailMarginBottom)
+{
+	this->tailMarginBottom = _tailMarginBottom;
+}
+
 void Mario::onKeyUp()
 {
 	if (this->getState() == WALKING) {
@@ -1574,8 +1611,31 @@ void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 {
 	if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING && this->getIsTurningAround()) {
 		if (get<0>(this->sweptAABBByFrame(_goldenBrick, _dt)) || this->isCollidingByFrame(_goldenBrick->getFrame())) {
-			_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARED);
-			return;
+			if (this->getIsFlip()) {
+				if (_goldenBrick->getX() <= this->getX()
+					&& _goldenBrick->getX() + _goldenBrick->getWidth() >= this->getX() - this->getLeftSpace()
+					&& this->getBounds().top + this->getTailMarginTop() >= _goldenBrick->getY()
+					&& this->getBounds().bottom - this->getTailMarginBottom() <= _goldenBrick->getY() + _goldenBrick->getHeight()) {
+					_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARED);
+					
+
+					//AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(100, _goldenBrick->getX(), _goldenBrick->getY())));
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::BrickFragmentsUpCDType, new GoldenBrickFragmentsUpCD(_goldenBrick->getX(), _goldenBrick->getX() + (_goldenBrick->getWidth() / 2), _goldenBrick->getY(), _goldenBrick->getY() + (_goldenBrick->getHeight() / 2))));
+					return;
+				}
+			}
+			else { // -->
+				if (_goldenBrick->getX() >= this->getX()
+					&& _goldenBrick->getX() <= this->getX() + this->getBoundsWidth() + this->getLeftSpace()
+					&& this->getBounds().top +  this->getTailMarginTop() >= _goldenBrick->getY()
+					&& this->getBounds().bottom - this->getTailMarginBottom() <= _goldenBrick->getY() + _goldenBrick->getHeight()) {
+					_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARED);
+
+					//AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(100, _goldenBrick->getX(), _goldenBrick->getY())));
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::BrickFragmentsUpCDType, new GoldenBrickFragmentsUpCD(_goldenBrick->getX(), _goldenBrick->getX() + (_goldenBrick->getWidth() / 2), _goldenBrick->getY(), _goldenBrick->getY() + (_goldenBrick->getHeight() / 2))));
+					return;
+				}
+			}
 		}
 	}
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_goldenBrick, _dt);
@@ -2074,10 +2134,13 @@ void Mario::handleCoinCollision(Coin* _coin, float _dt)
 		_coin->setState(CoinState::COIN_BEING_EARNED);
 		this->plusX(get<1>(collisionResult) * this->getVx());
 		this->plusY(get<1>(collisionResult) * this->getVy());
+
+		ScoreBoard::getInstance()->plusPoint(50);
 	}
 	else {
 		if (this->isCollidingByBounds(_coin->getBounds())) {
 			_coin->setState(CoinState::COIN_BEING_EARNED);
+			ScoreBoard::getInstance()->plusPoint(50);
 		}
 	}
 }

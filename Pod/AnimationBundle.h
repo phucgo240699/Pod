@@ -137,5 +137,6 @@ public:
 	Animation getSuperMarioFireFlyingUp();
 
 	Animation getCoin();
+	Animation getGoldenBrickFragment();
 };
 

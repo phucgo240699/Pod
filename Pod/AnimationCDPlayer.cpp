@@ -10,17 +10,6 @@ AnimationCDPlayer* AnimationCDPlayer::getInstance()
 
 void AnimationCDPlayer::Update(float _dt)
 {
-
-	//for (auto cd = listCD.begin(); cd != listCD.end();) {
-	//	// Check is CD finish
-	//	if ((*cd).second->getIsFinish()) {
-	//		this->listCD.erase(cd++);
-	//	}
-	//	else {
-	//		++cd;
-	//	}
-	//}
-
 	for (auto cd = listCD.begin(); cd != listCD.end();) {
 		//if ((*cd).second->getIsFinish() == false) {
 			if ((*cd).second->getIsFinish()) {

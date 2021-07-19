@@ -60,6 +60,9 @@ private:
 	int momentumSpace = 12;
 	int momentumLevelToFly = 0;
 
+	// Tail
+	int tailMarginTop, tailMarginBottom, tailWidth, tailHeight;
+
 public:
 	// Init
 	Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state);
@@ -122,6 +125,11 @@ public:
 	int getMomentumLevelToFly();
 
 
+	// Tail
+	int getTailMarginTop();
+	int getTailHeight();
+	int getTailMarginBottom();
+
 	//
 	// =============== Setter ===============
 	//
@@ -181,6 +189,11 @@ public:
 	void setMomentumLevel(int _momentumLevel);
 	void setMomentum(int _momentum);
 	void plusMomentum(int _momentum);
+
+	// Tail
+	void setTailMarginTop(int _tailMarginTop);
+	void setTailHeight(int _tailHeight);
+	void setTailMarginBottom(int _tailMarginBottom);
 
 
 	// Update & Draw

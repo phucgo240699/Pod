@@ -48,7 +48,7 @@ void Grid::loadInfo(string line, char seperator)
 	this->totalCol = v[1];
 	this->cellHeight = v[2];
 	this->cellWidth = v[3];
-
+	
 	this->cells = vector<vector<unordered_set<Component*>>>();
 
 	for (int i = 0; i < this->totalRow; ++i) {

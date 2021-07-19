@@ -2,6 +2,7 @@
 #include "CDType.h"
 #include "PointUpCD.h"
 #include "FlashLightCD.h"
+#include "GoldenBrickFragmentsUpCD.h"
 #include <unordered_map>
 
 class AnimationCDPlayer

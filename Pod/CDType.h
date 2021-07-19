@@ -2,5 +2,5 @@
 
 enum CDType
 {
-	PointUpCDType, FlashLightCDType
+	PointUpCDType, FlashLightCDType, BrickFragmentsUpCDType
 };
