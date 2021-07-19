@@ -898,7 +898,7 @@ void Koopa::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 			this->plusX(get<1>(collisionResult) * this->getVx());
 
 			if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING) {
-				_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARED);
+				_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARING);
 			}
 		}
 		else if (edge == rightEdge) {
@@ -914,7 +914,7 @@ void Koopa::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 			this->plusX(get<1>(collisionResult) * this->getVx());
 
 			if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING) {
-				_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARED);
+				_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARING);
 			}
 		}
 	}

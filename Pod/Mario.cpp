@@ -1554,12 +1554,14 @@ void Mario::handleGroundCollision(Ground* _ground, float _dt)
 	if (get<0>(collisionResult) == true) {
 		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
-			if (edge == topEdge) {
+			if (edge == topEdge
+				&& this->getX() != _ground->getX() + _ground->getWidth() && this->getX() + this->getBoundsWidth() != _ground->getX()) {
 				this->setState(MarioState::DROPPING);
 				this->setY(_ground->getY() + _ground->getHeight());
 				this->setVy(0);
 			}
-			else if (edge == bottomEdge) {
+			else if (edge == bottomEdge
+				&& this->getX() != _ground->getX() + _ground->getWidth() && this->getX() + this->getBoundsWidth() != _ground->getX()) {
 				this->setState(MarioState::STANDING);
 				this->setY(_ground->getY() - this->getBoundsHeight() - Setting::getInstance()->getCollisionSafeSpace());
 				this->setIsStandOnSurface(true);
@@ -1595,7 +1597,8 @@ void Mario::handleBlockCollision(Block* _block, float _dt)
 	if (get<0>(collisionResult) == true) {
 		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
-			if (edge == bottomEdge) {
+			if (edge == bottomEdge
+				&& this->getX() != _block->getX() + _block->getWidth() && this->getX() + this->getBoundsWidth() != _block->getX()) {
 				this->setState(MarioState::STANDING);
 				this->setY(_block->getY() - this->getBoundsHeight() - Setting::getInstance()->getCollisionSafeSpace());
 				this->setIsStandOnSurface(true);
@@ -1619,9 +1622,10 @@ void Mario::handleBlockCollision(Block* _block, float _dt)
 
 void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 {
-	if (_goldenBrick->getState() == GOLDEN_BRICK_DISAPPEARED) return;
+	if (_goldenBrick->getState() == GOLDEN_BRICK_DISAPPEARING || _goldenBrick->getState() == GOLDEN_BRICK_DEAD) return;
 
 	
+	// When mario turning around
 	if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING && this->getIsTurningAround()) {
 		if (get<0>(this->sweptAABBByFrame(_goldenBrick, _dt)) || this->isCollidingByFrame(_goldenBrick->getFrame())) {
 			if (this->getIsFlip()) {
@@ -1629,18 +1633,15 @@ void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 					&& _goldenBrick->getX() + _goldenBrick->getWidth() >= this->getX() - this->getLeftSpace()
 					&& this->getBounds().top + this->getTailMarginTop() >= _goldenBrick->getY()
 					&& this->getBounds().bottom - this->getTailMarginBottom() <= _goldenBrick->getY() + _goldenBrick->getHeight()) {
-					//if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING) {
 						if (_goldenBrick->getHasPButton()) {
 							_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_EMPTY);
 							Grid::getInstance()->add(_goldenBrick->getPButton());
 							return;
 						}
 						else {
-							_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARED);
-							AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::BrickFragmentsUpCDType, new GoldenBrickFragmentsUpCD(_goldenBrick->getX(), _goldenBrick->getX() + (_goldenBrick->getWidth() / 2), _goldenBrick->getY(), _goldenBrick->getY() + (_goldenBrick->getHeight() / 2))));
+							_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARING);
 							return;
 						}
-					//}
 				}
 			}
 			else { // -->
@@ -1648,18 +1649,15 @@ void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 					&& _goldenBrick->getX() <= this->getX() + this->getBoundsWidth() + this->getLeftSpace()
 					&& this->getBounds().top +  this->getTailMarginTop() >= _goldenBrick->getY()
 					&& this->getBounds().bottom - this->getTailMarginBottom() <= _goldenBrick->getY() + _goldenBrick->getHeight()) {
-					//if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING) {
 						if (_goldenBrick->getHasPButton()) {
 							_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_EMPTY);
 							Grid::getInstance()->add(_goldenBrick->getPButton());
 							return;
 						}
 						else {
-							_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARED);
-							AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::BrickFragmentsUpCDType, new GoldenBrickFragmentsUpCD(_goldenBrick->getX(), _goldenBrick->getX() + (_goldenBrick->getWidth() / 2), _goldenBrick->getY(), _goldenBrick->getY() + (_goldenBrick->getHeight() / 2))));
+							_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARING);
 							return;
 						}
-					//}
 				}
 			}
 		}
@@ -1676,14 +1674,15 @@ void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 
 	if (get<0>(collisionResult) == true) {
 		if (_goldenBrick->getState() == GOLDEN_BRICK_BEING_COIN) {
-			_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARED);
+			_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DEAD);
 			ScoreBoard::getInstance()->plusPoint(50);
 			return;
 		}
 
 		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
-			if (edge == topEdge) {
+			if (edge == topEdge
+				&& this->getX() != _goldenBrick->getX() + _goldenBrick->getWidth() && this->getX() + this->getBoundsWidth() != _goldenBrick->getX()) {
 				this->setState(MarioState::DROPPING);
 				this->setY(_goldenBrick->getY() + _goldenBrick->getHeight());
 				this->setVy(0);
@@ -1693,7 +1692,8 @@ void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 					Grid::getInstance()->add(_goldenBrick->getPButton());
 				}
 			}
-			else if (edge == bottomEdge) {
+			else if (edge == bottomEdge
+				&& this->getX() != _goldenBrick->getX() + _goldenBrick->getWidth() && this->getX() + this->getBoundsWidth() != _goldenBrick->getX()) {
 				this->setState(MarioState::STANDING);
 				this->setY(_goldenBrick->getY() - this->getBoundsHeight() - Setting::getInstance()->getCollisionSafeSpace());
 				this->setIsStandOnSurface(true);
@@ -1734,7 +1734,8 @@ void Mario::handleGiftBrickCollision(GiftBrick* _giftBrick, float _dt)
 	if (get<0>(collisionResult) == true) {
 		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
-			if (edge == topEdge) {
+			if (edge == topEdge
+				&& this->getX() != _giftBrick->getX() + _giftBrick->getWidth() && this->getX() + this->getBoundsWidth() != _giftBrick->getX()) {
 				if (_giftBrick->getState() == FULLGIFTBRICK) {
 					if (_giftBrick->getGiftType() == NotPoint) {
 						if (this->getIsSuperMode() == false) {
@@ -1755,7 +1756,8 @@ void Mario::handleGiftBrickCollision(GiftBrick* _giftBrick, float _dt)
 				this->setY(_giftBrick->getY() + _giftBrick->getHeight());
 				this->setVy(0);
 			}
-			else if (edge == bottomEdge) {
+			else if (edge == bottomEdge
+				&& this->getX() != _giftBrick->getX() + _giftBrick->getWidth() && this->getX() + this->getBoundsWidth() != _giftBrick->getX()) {
 				this->setState(MarioState::STANDING);
 				this->setY(_giftBrick->getY() - this->getBoundsHeight() - Setting::getInstance()->getCollisionSafeSpace());
 				this->setIsStandOnSurface(true);
@@ -1791,12 +1793,14 @@ void Mario::handleGreenPipeCollision(GreenPipe* _greenPipe, float _dt)
 	if (get<0>(collisionResult) == true) {
 		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
-			if (edge == topEdge) {
+			if (edge == topEdge
+				&& this->getX() != _greenPipe->getX() + _greenPipe->getWidth() && this->getX() + this->getBoundsWidth() != _greenPipe->getX()) {
 				this->setState(MarioState::DROPPING);
 				this->setY(_greenPipe->getY() + _greenPipe->getHeight());
 				this->setVy(0);
 			}
-			else if (edge == bottomEdge) {
+			else if (edge == bottomEdge
+				&& this->getX() != _greenPipe->getX() + _greenPipe->getWidth() && this->getX() + this->getBoundsWidth() != _greenPipe->getX()) {
 				this->setState(MarioState::STANDING);
 				this->setY(_greenPipe->getY() - this->getBoundsHeight() - Setting::getInstance()->getCollisionSafeSpace());
 				this->setIsStandOnSurface(true);
@@ -2178,7 +2182,7 @@ void Mario::handleCoinCollision(Coin* _coin, float _dt)
 
 	if (_coin->getState() == COIN_BEING_EARNED) return;
 
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_coin, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_coin, _dt);
 
 	if (get<0>(collisionResult) == true) {
 		_coin->setState(CoinState::COIN_BEING_EARNED);

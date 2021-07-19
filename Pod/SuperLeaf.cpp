@@ -118,6 +118,7 @@ void SuperLeaf::Update(float _dt)
 
 void SuperLeaf::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
+	if (this->getState() == SUPER_LEAF_BEING_EARNED);
 	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), this->getPosition(), this->getIsFlip());
 }
 

@@ -16,6 +16,16 @@ private:
 
 	bool hasPButton;
 
+
+	// For Fragments Animation
+	float xLeft = 0, xRight = 0, originXLeft, originXRight;
+	float y1 = 0, y2 = 0, y3 = 0, y4 = 0, originYTop, originYBottom;
+	// 1	2
+	// 3	4
+	Animation* brickFragment1, * brickFragment2, * brickFragment3, * brickFragment4;
+	bool isFinishFragmentAnimation = false, startFragmentAnimation = false;
+	D3DXVECTOR3 drawingPos = D3DXVECTOR3(0, 0, 0);
+
 public:
 	// Init
 	GoldenBrick(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id = 0);
