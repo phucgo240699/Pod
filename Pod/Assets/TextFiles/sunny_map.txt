@@ -82,8 +82,9 @@
 # marioLeftSpace, marioTopSpace, marioRightSpace,
 # superMarioLeftSpace, superMarioTopSpace, superMarioRightSpace,
 # superMarioFlyingLeftSpace, superMarioFlyingTopSpace, superMarioFlyingRightSpace,
-# firstFireBallVx, firstFireBallVy, firstFireBallId)
-2036,300,2816,470,4,3,2,4,3,2,3,5,1,10,6,1,4,1,1001
+# firstFireBallVx, firstFireBallVy, firstFireBallId,
+# tailTopAnchor, tailBottomAnchor)
+36,400,2816,470,4,3,2,4,3,2,3,5,1,10,6,1,4,1,1001
 </MarioInfo>
 
 <GiftBrickFrames>

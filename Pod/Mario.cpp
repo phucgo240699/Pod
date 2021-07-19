@@ -263,6 +263,10 @@ void Mario::setState(MarioState _state)
 	
 	if (this->getState() == TRANSFERING_TO_FLY) {
 		this->toggleFlyingMode();
+		if (this->getIsFlyingMode() == false) {
+			this->setIsFlashMode(true);
+			this->countDownFlash = 120;
+		}
 	}
 
 	switch (_state)
@@ -535,6 +539,8 @@ void Mario::setState(MarioState _state)
 	case SCALING_DOWN:
 	{
 		this->setIsFlashMode(true);
+		this->countDownFlash = 120;
+
 		this->setIsFlyingUpMode(false);
 
 		// Store old state to pressureState variable
@@ -550,7 +556,6 @@ void Mario::setState(MarioState _state)
 			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioScalingDown());
 		}
 
-		this->countDownFlash = 120;
 
 		this->setTargetVx(0);
 		this->setTargetVy(0);
@@ -906,7 +911,8 @@ void Mario::setIsPressA(bool _isPressA)
 
 void Mario::turnOnTurningAroundSkin()
 {
-	this->setPressureState(MarioState(this->getState()));
+	//this->setPressureState(MarioState(this->getState()));
+	this->setPressureAnimation(*currentAnimation);
 	if (this->getIsFireMode()) {
 		this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingFireTurningAround());
 	}
@@ -917,7 +923,8 @@ void Mario::turnOnTurningAroundSkin()
 
 void Mario::turnOffTurningAroundSkin()
 {
-	this->setState(this->getPressureState());
+	//this->setState(this->getPressureState());
+	this->currentAnimation = this->getPressureAnimation();
 }
 
 void Mario::turnOnPreFlyingUpSkin()
@@ -1565,6 +1572,12 @@ void Mario::handleBlockCollision(Block* _block, float _dt)
 
 void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 {
+	if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING && this->getIsTurningAround()) {
+		if (get<0>(this->sweptAABBByFrame(_goldenBrick, _dt)) || this->isCollidingByFrame(_goldenBrick->getFrame())) {
+			_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARED);
+			return;
+		}
+	}
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_goldenBrick, _dt);
 	if (get<0>(collisionResult) == true) {
 		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
@@ -2002,6 +2015,8 @@ void Mario::handleFireFlowerBallCollision(FireFlowerBall* _fireFlowerBall, float
 		|| this->getIsFlashMode()) {
 		return;
 	}
+
+	if (_fireFlowerBall->getState() == FIRE_FLOWER_BALL_FLYING_STAYING) return;
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_fireFlowerBall, _dt);
 

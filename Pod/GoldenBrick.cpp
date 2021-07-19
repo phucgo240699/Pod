@@ -8,6 +8,16 @@ GoldenBrick::GoldenBrick(D3DXVECTOR3 _position, float _vx, float _vy, float _lim
 {
 }
 
+GoldenBrickState GoldenBrick::getState()
+{
+	return this->state;
+}
+
+void GoldenBrick::setState(GoldenBrickState _state)
+{
+	this->state = _state;
+}
+
 void GoldenBrick::loadInfo(string line, char seperator)
 {
 	vector<int> v = Tool::splitToVectorIntegerFrom(line, seperator);

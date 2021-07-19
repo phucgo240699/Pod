@@ -551,5 +551,8 @@
     <ClInclude Include="CoinState.h">
       <Filter>Header Files\System\Enums</Filter>
     </ClInclude>
+    <ClInclude Include="GoldenBrickState.h">
+      <Filter>Header Files\System\Enums</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -133,6 +133,9 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 				// Golden Brick
 				if (beginGoldenBrickId <= (*itr)->getId() && (*itr)->getId() <= endGoldenBrickId) {
+					if (static_cast<GoldenBrick*>(*itr)->getState() == GOLDEN_BRICK_DISAPPEARED) {
+						Grid::getInstance()->remove(*itr, i, j);
+					}
 					(*itr)->Update(_dt);
 				}
 

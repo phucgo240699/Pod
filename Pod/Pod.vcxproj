@@ -226,6 +226,7 @@
     <ClInclude Include="GiftBrickState.h" />
     <ClInclude Include="GiftType.h" />
     <ClInclude Include="GoldenBrick.h" />
+    <ClInclude Include="GoldenBrickState.h" />
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="GreenPipe.h" />
     <ClInclude Include="Grid.h" />
