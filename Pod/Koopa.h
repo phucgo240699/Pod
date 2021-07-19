@@ -33,6 +33,7 @@ private:
 
 	// Thrown away
 	float thrownX, startThrownY;
+	bool isOutOfFirstStage = false; // Just for red mode
 
 public:
 	// Init
