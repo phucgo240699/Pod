@@ -1,5 +1,6 @@
 #include "GoldenBrickFragmentsUpCD.h"
 #include "Camera.h"
+#include "ScoreBoard.h"
 
 GoldenBrickFragmentsUpCD::GoldenBrickFragmentsUpCD(int _originXLeft, int _originXRight, int _originYTop, int _originYBottom) : AnimationCD(Animation(0,0,0))
 {
@@ -44,8 +45,8 @@ void GoldenBrickFragmentsUpCD::Update(float _dt)
 	y3 = (-1 * (32 - (pow(xLeft + 16, 2) / 8)));
 	y4 = (-1 * (32 - (pow(xRight - 16, 2) / 8)));
 	
-	cameraLimitY = Camera::getInstance()->getLimitY();
-	if (y1 > cameraLimitY && y2 > cameraLimitY && y3 > cameraLimitY && y4 > cameraLimitY) {
+	limitY = Camera::getInstance()->getLimitY() - ScoreBoard::getInstance()->getHeight();
+	if (y1 > limitY && y2 > limitY && y3 > limitY && y4 > limitY) {
 		this->setIsFinish(true);
 	}
 }

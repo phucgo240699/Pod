@@ -8,7 +8,7 @@ class GoldenBrickFragmentsUpCD : public AnimationCD
 private:
 	float xLeft, xRight, originXLeft, originXRight;
 	float y1, y2, y3, y4, originYTop, originYBottom;
-	float cameraLimitY;
+	float limitY;
 	// 1	2
 	// 3	4
 	Animation* brickFragment1, * brickFragment2, * brickFragment3, * brickFragment4;

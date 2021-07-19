@@ -39,6 +39,11 @@ void GoldenBrick::setState(GoldenBrickState _state)
 			this->animation = new Animation(AnimationBundle::getInstance()->getEmptyGiftBrick());
 		}
 		break;
+	case GOLDEN_BRICK_BEING_COIN:
+		if (this->getState() == GOLDEN_BRICK_STAYING) {
+			delete animation;
+			this->animation = new Animation(AnimationBundle::getInstance()->getCoin());
+		}
 	default:
 		break;
 	}

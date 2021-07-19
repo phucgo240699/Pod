@@ -295,6 +295,9 @@ void Mario::setState(MarioState _state)
 		this->setIsReduceWalking(false);
 		this->resetPointCoef();
 		if (this->getState() != STANDING || this->currentAnimation == NULL) {
+			if (this->getIsTurningAround()) {
+				this->setIsTurningAround(false);
+			}
 			if (this->getVx() != 0 && this->getState() == DROPPING) {
 				this->setState(MarioState::WALKING);
 				return;
@@ -341,6 +344,9 @@ void Mario::setState(MarioState _state)
 	{
 		delete currentAnimation;
 
+		if (this->getIsTurningAround()) {
+			this->setIsTurningAround(false);
+		}
 		this->setIsFlyingUpMode(false);
 		if (this->getIsFlyingMode()) {
 			if (this->getIsConverting()) {
@@ -406,7 +412,10 @@ void Mario::setState(MarioState _state)
 	{
 		if (this->getState() != DROPPING || this->getIsFlyingUpMode()) {
 			delete currentAnimation;
-			
+
+			if (this->getIsTurningAround()) {
+				this->setIsTurningAround(false);
+			}
 			if (this->getIsFlyingUpMode()) {
 				if (this->getIsFireMode()) {
 					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireFlyingUp());
@@ -945,8 +954,9 @@ void Mario::turnOnTurningAroundSkin()
 
 void Mario::turnOffTurningAroundSkin()
 {
-	//this->setState(this->getPressureState());
-	this->currentAnimation = this->getPressureAnimation();
+	if (this->getIsTurningAround()) {
+		this->currentAnimation = this->getPressureAnimation();
+	}
 }
 
 void Mario::turnOnPreFlyingUpSkin()
@@ -987,8 +997,8 @@ void Mario::Update(float _dt)
 	if (this->getIsTurningAround()) {
 		if (this->currentAnimation->getCurrentIndexFrame() >= this->currentAnimation->getTotalFrames() - 1
 			&& this->currentAnimation->getAnimCount() >= this->currentAnimation->getAnimDelay()) {
-			this->setIsTurningAround(false);
 			this->turnOffTurningAroundSkin();
+			this->setIsTurningAround(false);
 		}
 	}
 	if (this->getIsPressA()) {
@@ -1611,6 +1621,7 @@ void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 {
 	if (_goldenBrick->getState() == GOLDEN_BRICK_DISAPPEARED) return;
 
+	
 	if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING && this->getIsTurningAround()) {
 		if (get<0>(this->sweptAABBByFrame(_goldenBrick, _dt)) || this->isCollidingByFrame(_goldenBrick->getFrame())) {
 			if (this->getIsFlip()) {
@@ -1618,7 +1629,7 @@ void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 					&& _goldenBrick->getX() + _goldenBrick->getWidth() >= this->getX() - this->getLeftSpace()
 					&& this->getBounds().top + this->getTailMarginTop() >= _goldenBrick->getY()
 					&& this->getBounds().bottom - this->getTailMarginBottom() <= _goldenBrick->getY() + _goldenBrick->getHeight()) {
-					if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING) {
+					//if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING) {
 						if (_goldenBrick->getHasPButton()) {
 							_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_EMPTY);
 							Grid::getInstance()->add(_goldenBrick->getPButton());
@@ -1629,7 +1640,7 @@ void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 							AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::BrickFragmentsUpCDType, new GoldenBrickFragmentsUpCD(_goldenBrick->getX(), _goldenBrick->getX() + (_goldenBrick->getWidth() / 2), _goldenBrick->getY(), _goldenBrick->getY() + (_goldenBrick->getHeight() / 2))));
 							return;
 						}
-					}
+					//}
 				}
 			}
 			else { // -->
@@ -1637,7 +1648,7 @@ void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 					&& _goldenBrick->getX() <= this->getX() + this->getBoundsWidth() + this->getLeftSpace()
 					&& this->getBounds().top +  this->getTailMarginTop() >= _goldenBrick->getY()
 					&& this->getBounds().bottom - this->getTailMarginBottom() <= _goldenBrick->getY() + _goldenBrick->getHeight()) {
-					if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING) {
+					//if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING) {
 						if (_goldenBrick->getHasPButton()) {
 							_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_EMPTY);
 							Grid::getInstance()->add(_goldenBrick->getPButton());
@@ -1648,15 +1659,28 @@ void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 							AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::BrickFragmentsUpCDType, new GoldenBrickFragmentsUpCD(_goldenBrick->getX(), _goldenBrick->getX() + (_goldenBrick->getWidth() / 2), _goldenBrick->getY(), _goldenBrick->getY() + (_goldenBrick->getHeight() / 2))));
 							return;
 						}
-					}
+					//}
 				}
 			}
 		}
 	}
 
 
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_goldenBrick, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult;
+	if (_goldenBrick->getState() == GOLDEN_BRICK_BEING_COIN) {
+		collisionResult = this->sweptAABBByFrame(_goldenBrick, _dt);
+	}
+	else {
+		collisionResult = this->sweptAABBByBounds(_goldenBrick, _dt);
+	}
+
 	if (get<0>(collisionResult) == true) {
+		if (_goldenBrick->getState() == GOLDEN_BRICK_BEING_COIN) {
+			_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARED);
+			ScoreBoard::getInstance()->plusPoint(50);
+			return;
+		}
+
 		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == topEdge) {
@@ -1683,9 +1707,14 @@ void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 				this->setSubState(MarioSubState::PUSHING);
 			}
 		}
+	
 	}
 	else {
 		// if mario walk out of ground's top surface, it will drop
+		if (_goldenBrick->getState() == GOLDEN_BRICK_BEING_COIN) {
+			if (this->isCollidingByFrame(_goldenBrick->getFrame()));
+			return;
+		}
 		if (this->getState() == WALKING || this->getState() == STANDING) {
 			if (this->getIsStandOnSurface() == false) {
 				if ((_goldenBrick->getX() <= this->getX() + this->getBoundsWidth() && this->getX() + this->getBoundsWidth() <= _goldenBrick->getX() + _goldenBrick->getWidth())

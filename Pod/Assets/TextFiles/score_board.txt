@@ -1,6 +1,6 @@
 <ScoreBoard>
 # (x, y, momentumX, momentumY, marioLifeX, marioLiftY, coinX, coinY, pointX, pointY, timeX, timeY, momentum, marioLife, coin, point, time, boardWidth, boardHeight)
-0,186,61,12,46,20,142,12,62,20,134,20,0,4,0,0,300,236,38
+0,186,61,12,46,20,142,12,62,20,134,20,0,4,0,0,300,256,38
 </ScoreBoard>
 
 <ScoreBoardFrames>

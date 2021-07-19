@@ -855,3 +855,87 @@ void Koopa::handleFireBallCollision(FireBall* _fireBall, float _dt)
 		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFireBallSplash()), _fireBall->getX(), _fireBall->getY())));
 	}
 }
+
+void Koopa::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
+{
+
+	if (this->getState() == KOOPA_THROWN_LEFT_AWAY || this->getState() == KOOPA_THROWN_RIGHT_AWAY) return;
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_goldenBrick, _dt);
+	if (get<0>(collisionResult) == true) {
+		CollisionEdge edge = get<2>(collisionResult)[0];
+		if (edge == bottomEdge) {
+			this->setIsStandOnSurface(true);
+			if (this->isOutOfFirstStage == true) {
+				this->leftAnchor = _goldenBrick->getX();
+				this->rightAnchor = _goldenBrick->getX() + _goldenBrick->getWidth();
+			}
+
+			if (this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT) {
+				this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
+			}
+			else if (this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
+				this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
+			}
+			else if (this->getState() == KOOPA_DROPPING_LEFT) {
+				this->setState(KoopaState::KOOPA_MOVING_LEFT);
+			}
+			else if (this->getState() == KOOPA_DROPPING_RIGHT) {
+				this->setState(KoopaState::KOOPA_MOVING_RIGHT);
+			}
+
+			this->setY(_goldenBrick->getY() - this->getHeight());
+		}
+		else if (edge == leftEdge) {
+			if (this->getState() == KOOPA_MOVING_LEFT) {
+				this->setState(KoopaState::KOOPA_MOVING_RIGHT);
+			}
+			else if (this->getState() == KOOPA_SHRINKAGE_MOVING_LEFT) {
+				this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
+			}
+			else if (this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT) {
+				this->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_RIGHT);
+			}
+			this->plusX(get<1>(collisionResult) * this->getVx());
+
+			if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING) {
+				_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARED);
+			}
+		}
+		else if (edge == rightEdge) {
+			if (this->getState() == KOOPA_MOVING_RIGHT) {
+				this->setState(KoopaState::KOOPA_MOVING_LEFT);
+			}
+			else if (this->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT) {
+				this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
+			}
+			else if (this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
+				this->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_LEFT);
+			}
+			this->plusX(get<1>(collisionResult) * this->getVx());
+
+			if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING) {
+				_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARED);
+			}
+		}
+	}
+	else {
+		// if supermushroom walk out of ground's top surface, it will drop
+		if (this->getState() == KOOPA_SHRINKAGE_MOVING_LEFT
+			|| this->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT
+			|| this->getState() == KOOPA_MOVING_LEFT
+			|| this->getState() == KOOPA_MOVING_RIGHT) {
+			if (this->getIsStandOnSurface() == false) {
+				if ((_goldenBrick->getX() <= this->getX() + this->getBoundsWidth() && this->getX() + this->getBoundsWidth() <= _goldenBrick->getX() + _goldenBrick->getWidth())
+					|| (_goldenBrick->getX() <= this->getX() && this->getX() <= _goldenBrick->getX() + _goldenBrick->getWidth())) { // this is check which ground that mario is standing on
+					if (this->getY() + this->getHeight() == _goldenBrick->getY()) {
+						this->setIsStandOnSurface(true);
+						if (this->isOutOfFirstStage == true) {
+							this->leftAnchor = _goldenBrick->getX();
+							this->rightAnchor = _goldenBrick->getX() + _goldenBrick->getWidth();
+						}
+					}
+				}
+			}
+		}
+	}
+}

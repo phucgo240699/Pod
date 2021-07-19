@@ -27,7 +27,7 @@ private:
 	vector<Block*>* blocks;
 
 	int beginGoldenBrickId, endGoldenBrickId;
-	vector<GoldenBrick*>* goldenBricks;
+	unordered_set<GoldenBrick*>* goldenBricks;
 
 	int beginSuperMushroomId, endSuperMushroomId;
 	int beginSuperLeafId, endSuperLeafId;
@@ -65,9 +65,21 @@ private:
 	int beginKoopaId, endKoopaId;
 	unordered_set<Koopa*>* koopas;
 
+	bool isPressedPButton = false, isRestoredGoldenBrick = false;;
+	int countDownGoldenBrickBeingCoin = 240;
+
 public:
+	// Getter
+	bool getIsPressedPButton();
+	bool getIsRestoredGoldenBrick();
+
+	// Setter
+	void setIsPressedPButton(bool _isPressedPButton);
+	void setIsRestoredGoldenBrick(bool _isRestoreGoldenBrick);
+
 	// De init
 	//~SunnyVC();
+
 
 	void viewDidLoad();
 	void viewReceiveKeyUp();

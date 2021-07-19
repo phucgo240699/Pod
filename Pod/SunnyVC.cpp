@@ -1,5 +1,6 @@
 #include "SunnyVC.h"
 
+
 //SunnyVC::~SunnyVC()
 //{
 //	delete mario;
@@ -48,7 +49,7 @@ void SunnyVC::viewDidLoad()
 	mario = new Mario(0, 0, 0, 0, 0, 0, ImagePath::getInstance()->mario, D3DCOLOR_XRGB(255, 0, 255), DROPPING);
 	map = new SunnyMap(ImagePath::getInstance()->sunny_map, D3DCOLOR_XRGB(255, 0, 255));
 	grounds = new vector<Ground*>();
-	goldenBricks = new vector<GoldenBrick*>();
+	goldenBricks = new unordered_set<GoldenBrick*>();
 	giftBricks = new vector<GiftBrick*>();
 	greenPipes = new vector<GreenPipe*>();
 	goombas = new unordered_set<Goomba*>();
@@ -135,6 +136,8 @@ void SunnyVC::viewWillUpdate(float _dt)
 				if (beginGoldenBrickId <= (*itr)->getId() && (*itr)->getId() <= endGoldenBrickId) {
 					if (static_cast<GoldenBrick*>(*itr)->getState() == GOLDEN_BRICK_DISAPPEARED) {
 						Grid::getInstance()->remove(*itr, i, j);
+						this->goldenBricks->erase(static_cast<GoldenBrick*>(*itr));
+						continue;
 					}
 					(*itr)->Update(_dt);
 				}
@@ -335,6 +338,19 @@ void SunnyVC::viewWillUpdate(float _dt)
 	}
 
 	AnimationCDPlayer::getInstance()->Update(_dt);
+
+	if (this->getIsPressedPButton() && this->getIsRestoredGoldenBrick() == false) {
+		if (this->countDownGoldenBrickBeingCoin <= 0) {
+			unordered_set<GoldenBrick*> ::iterator goldenBrickItr;
+			for (goldenBrickItr = this->goldenBricks->begin(); goldenBrickItr != this->goldenBricks->end(); ++goldenBrickItr) {
+				if ((*goldenBrickItr)->getState() == GOLDEN_BRICK_BEING_COIN) {
+					(*goldenBrickItr)->setState(GoldenBrickState::GOLDEN_BRICK_STAYING);
+				}
+			}
+			this->setIsRestoredGoldenBrick(true);
+		}
+		--countDownGoldenBrickBeingCoin;
+	}
 
 	if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN) {
 		return;
@@ -563,7 +579,6 @@ void SunnyVC::viewDidUpdate(float _dt)
 							unordered_set<Component*> ::iterator koopaItr;
 							for (koopaItr = koopaCell.begin(); koopaItr != koopaCell.end(); ++koopaItr) {
 								if ((beginGroundId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGroundId)
-									|| (beginGoldenBrickId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGoldenBrickId)
 									|| (beginGreenPipeId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGreenPipeId)) {
 									static_cast<Koopa*>(*itr)->handleHardComponentCollision(*koopaItr, _dt);
 								}
@@ -578,6 +593,9 @@ void SunnyVC::viewDidUpdate(float _dt)
 								}
 								else if (beginFireBallId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endFireBallId) {
 									static_cast<Koopa*>(*itr)->handleFireBallCollision(static_cast<FireBall*>(*koopaItr), _dt);
+								}
+								else if (beginGoldenBrickId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGoldenBrickId) {
+									static_cast<Koopa*>(*itr)->handleGoldenBrickCollision(static_cast<GoldenBrick*>(*koopaItr), _dt);
 								}
 							}
 						}
@@ -653,6 +671,18 @@ void SunnyVC::viewDidUpdate(float _dt)
 				// PButton
 				else if (beginPButtonId <= (*itr)->getId() && (*itr)->getId() <= endPButtonId) {
 					this->mario->handlePButtonCollision(static_cast<PButton*>(*itr), _dt);
+
+					if (this->getIsPressedPButton() == false && static_cast<PButton*>(*itr)->getState() == PBUTTON_OFF) {
+						this->setIsPressedPButton(true);
+						countDownGoldenBrickBeingCoin = 240;
+
+						unordered_set<GoldenBrick*> ::iterator goldenBrickItr;
+						for (goldenBrickItr = this->goldenBricks->begin(); goldenBrickItr != this->goldenBricks->end(); ++goldenBrickItr) {
+							if ((*goldenBrickItr)->getState() == GOLDEN_BRICK_STAYING) {
+								(*goldenBrickItr)->setState(GoldenBrickState::GOLDEN_BRICK_BEING_COIN);
+							}
+						}
+					}
 				}
 			}
 		}
@@ -780,6 +810,26 @@ void SunnyVC::viewWillRender()
 	}
 
 	d3ddev->Present(NULL, NULL, NULL, NULL);
+}
+
+bool SunnyVC::getIsPressedPButton()
+{
+	return this->isPressedPButton;
+}
+
+bool SunnyVC::getIsRestoredGoldenBrick()
+{
+	return this->isRestoredGoldenBrick;
+}
+
+void SunnyVC::setIsPressedPButton(bool _isPressedPButton)
+{
+	this->isPressedPButton = _isPressedPButton;
+}
+
+void SunnyVC::setIsRestoredGoldenBrick(bool _isRestoreGoldenBrick)
+{
+	this->isRestoredGoldenBrick = _isRestoreGoldenBrick;
 }
 
 void SunnyVC::viewDidRender()
@@ -952,7 +1002,7 @@ void SunnyVC::adaptData()
 			for (int i = 0; i < data.size(); ++i) {
 				GoldenBrick* goldenBrick = new GoldenBrick(0, 0, 0, 0, 0, 0, 0);
 				goldenBrick->loadInfo(data[i], ',');
-				this->goldenBricks->push_back(goldenBrick);
+				this->goldenBricks->insert(goldenBrick);
 			}
 			section = SECTION_NONE;
 		}
@@ -1134,10 +1184,11 @@ void SunnyVC::adaptData()
 void SunnyVC::adaptAnimation()
 {
 	// Golden Bricks
-	for (int i = 0; i < this->goldenBricks->size(); ++i) {
-		this->goldenBricks->at(i)->setState(GoldenBrickState::GOLDEN_BRICK_STAYING);
-		if (this->goldenBricks->at(i)->getHasPButton()) {
-			this->goldenBricks->at(i)->getPButton()->setState(PButtonState::PBUTTON_ON);
+	unordered_set<GoldenBrick*> ::iterator goldenBrickItr;
+	for (goldenBrickItr = this->goldenBricks->begin(); goldenBrickItr != this->goldenBricks->end(); ++goldenBrickItr) {
+		(*goldenBrickItr)->setState(GoldenBrickState::GOLDEN_BRICK_STAYING);
+		if ((*goldenBrickItr)->getHasPButton()) {
+			(*goldenBrickItr)->getPButton()->setState(PButtonState::PBUTTON_ON);
 		}
 	}
 
@@ -1227,8 +1278,9 @@ void SunnyVC::adaptToGrid()
 	}
 
 	// Golden Bricks
-	for (int i = 0; i < this->goldenBricks->size(); ++i) {
-		Grid::getInstance()->add(this->goldenBricks->at(i));
+	unordered_set<GoldenBrick*> ::iterator goldenBrickItr;
+	for (goldenBrickItr = this->goldenBricks->begin(); goldenBrickItr != this->goldenBricks->end(); ++goldenBrickItr) {
+		Grid::getInstance()->add(*goldenBrickItr);
 	}
 
 	// Gift Bricks
