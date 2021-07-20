@@ -103,11 +103,12 @@
 </GiftBrickFrames>
 
 <GoombaFrames>
-# (x, y, width, height, vx, vy, defaultPoint, id)
-240,400,16,16,-1,1,100,101
-560,400,16,16,-1,1,100,102
-800,384,16,16,-1,1,100,103
-912,384,16,16,-1,1,100,104
+# (x, y, width, height, vx, vy, defaultPoint, id, isFlyingMode)
+240,400,16,16,-1,1,100,101,0
+560,400,16,16,-1,1,100,102,0
+800,384,16,16,-1,1,100,103,0
+912,384,16,16,-1,1,100,104,0
+1032,376,20,24,-1,1,100,105,1
 </GoombaFrames>
 
 <KoopaFrames>
@@ -291,6 +292,9 @@
 
 > 104
 7,4
+
+> 105
+8,4
 
 # Koopa
 > 201
@@ -1190,5 +1194,9 @@
 # Goomba Red Trampled
 190,225,8,8,186,221,16,16
 > 95 0 0
+
+# Goomba Red Thrown Away
+203,221,16,16
+> 96 0 0
 
 </AnimationBundle>

@@ -1886,13 +1886,45 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 		return;
 	}
 
+	if (_goomba->getState() == GOOMBA_FLYING_LEFT || _goomba->getState() == GOOMBA_FLYING_RIGHT || _goomba->getState() == GOOMBA_DROPPING_LEFT || _goomba->getState() == GOOMBA_DROPPING_RIGHT) {
+		_goomba->setStoredVy(_goomba->getVy());
+		_goomba->setVy(-abs(_goomba->getOriginVy()));
+	}
+
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_goomba, _dt);
+
+	if (_goomba->getState() == GOOMBA_FLYING_LEFT || _goomba->getState() == GOOMBA_FLYING_RIGHT || _goomba->getState() == GOOMBA_DROPPING_LEFT || _goomba->getState() == GOOMBA_DROPPING_RIGHT) {
+		_goomba->setVy(_goomba->getStoredVy());
+	}
+
 	if (get<0>(collisionResult) == true) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
 		if (edge == bottomEdge && this->getState() == DROPPING) {
 			this->plusY(get<1>(collisionResult) * this->getVy() + _goomba->getHeight() / 4);
 			this->setState(MarioState::JUMPING);
-			_goomba->setState(GoombaState::TRAMPLED_GOOMBA);
+			
+			if (_goomba->getIsFlyingMode()) {
+				if (_goomba->getState() == GOOMBA_FLYING_LEFT || _goomba->getState() == GOOMBA_POPPING_LEFT) {
+					_goomba->plusY(2 * get<1>(collisionResult) * abs(this->getVy()));
+					_goomba->setState(GoombaState::GOOMBA_DROPPING_LEFT);
+				}
+				else if (_goomba->getState() == GOOMBA_FLYING_RIGHT || _goomba->getState() == GOOMBA_POPPING_RIGHT) {
+					_goomba->plusY(2 * get<1>(collisionResult) * abs(this->getVy()));
+					_goomba->setState(GoombaState::GOOMBA_DROPPING_RIGHT);
+				}
+				else if (_goomba->getState() == GOOMBA_MOVING_LEFT) {
+					_goomba->setState(GoombaState::GOOMBA_MOVING_LEFT);
+				}
+				else if (_goomba->getState() == GOOMBA_MOVING_RIGHT) {
+					_goomba->setState(GoombaState::GOOMBA_MOVING_RIGHT);
+				}
+			}
+			else {
+				_goomba->setState(GoombaState::TRAMPLED_GOOMBA);
+			}
+
+			// Must be put this here. After set goomba state
+			_goomba->setIsFlyingMode(false);
 
 			// Calculate points
 			this->increasePointCoef();
@@ -1927,7 +1959,12 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 	}
 	else if (this->isCollidingByBounds(_goomba->getBounds())
 		&& (this->getState() == WALKING || this->getState() == STANDING)
-		&& _goomba->getState() != TRAMPLED_GOOMBA) {
+		&& _goomba->getState() != TRAMPLED_GOOMBA
+		&& _goomba->getState() != DEAD_GOOMBA
+		&& _goomba->getState() != GOOMBA_POPPING_LEFT
+		&& _goomba->getState() != GOOMBA_POPPING_RIGHT
+		&& _goomba->getState() != GOOMBA_FLYING_LEFT
+		&& _goomba->getState() != GOOMBA_FLYING_RIGHT) {
 		_goomba->plusX(2 * get<1>(collisionResult) * _goomba->getVx());
 		if (this->getIsSuperMode() == false) {
 			_goomba->setState(GoombaState::GOOMBA_STANDING);

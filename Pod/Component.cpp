@@ -111,6 +111,16 @@ void Component::setLimitY(float _limitY)
 	this->limitY = round(_limitY);
 }
 
+void Component::setXNoRound(float _x)
+{
+	this->position.x = _x;
+}
+
+void Component::setYNoRound(float _y)
+{
+	this->position.y = _y;
+}
+
 void Component::plusX(float _x)
 {
 	this->position.x += round(_x);
@@ -184,6 +194,16 @@ float Component::getWidth()
 }
 
 float Component::getHeight()
+{
+	return this->height;
+}
+
+float Component::getBoundsWidth()
+{
+	return this->width;
+}
+
+float Component::getBoundsHeight()
 {
 	return this->height;
 }

@@ -276,7 +276,7 @@ void SunnyVC::viewWillUpdate(float _dt)
 						continue;
 					}
 
-
+					static_cast<Goomba*>(*itr)->setMarioX(this->mario->getX());
 					(*itr)->Update(_dt);
 
 					// update which cell in grid that it's belongs to
@@ -1267,15 +1267,28 @@ void SunnyVC::adaptAnimation()
 	// Goombas
 	unordered_set<Goomba*> ::iterator goombaItr;
 	for (goombaItr = this->goombas->begin(); goombaItr != this->goombas->end(); ++goombaItr) {
-		if ((*goombaItr)->getVx() > 0) {
-			(*goombaItr)->setState(GoombaState::GOOMBA_MOVING_RIGHT);
+		/*if ((*goombaItr)->getIsFlyingMode()) {
+			if ((*goombaItr)->getVx() > 0) {
+				(*goombaItr)->setState(GoombaState::GOOMBA_POPPING_RIGHT);
+			}
+			else if ((*goombaItr)->getVx() < 0) {
+				(*goombaItr)->setState(GoombaState::GOOMBA_POPPING_LEFT);
+			}
+			else {
+				(*goombaItr)->setState(GoombaState::GOOMBA_STANDING);
+			}
 		}
-		else if ((*goombaItr)->getVx() < 0) {
-			(*goombaItr)->setState(GoombaState::GOOMBA_MOVING_LEFT);
-		}
-		else {
-			(*goombaItr)->setState(GoombaState::GOOMBA_STANDING);
-		}
+		else {*/
+			if ((*goombaItr)->getVx() > 0) {
+				(*goombaItr)->setState(GoombaState::GOOMBA_MOVING_RIGHT);
+			}
+			else if ((*goombaItr)->getVx() < 0) {
+				(*goombaItr)->setState(GoombaState::GOOMBA_MOVING_LEFT);
+			}
+			else {
+				(*goombaItr)->setState(GoombaState::GOOMBA_STANDING);
+			}
+		//}
 	}
 
 	// Koopas

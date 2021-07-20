@@ -305,7 +305,7 @@ void Koopa::setState(KoopaState _state)
 		}
 		countFlyingX = 0;
 		startFlyingY = this->getY();
-		this->setVx(-abs(this->originVx));
+		this->setVx(-1.5 * abs(this->originVx));
 		this->setVy(-abs(this->originVy));
 		break;
 	}
@@ -319,7 +319,7 @@ void Koopa::setState(KoopaState _state)
 		countFlyingX = 0;
 		startFlyingY = this->getY();
 
-		this->setVx(abs(this->originVx));
+		this->setVx(1.5 * abs(this->originVx));
 		this->setVy(-abs(this->originVy));
 		break;
 	}
@@ -513,9 +513,9 @@ void Koopa::Update(float _dt)
 	else if (this->getState() == KOOPA_FLYING_LEFT) {
 		// vx now is < 0
 		countFlyingX += (this->getVx() * _dt);
-		float moreY = (-1 * (32 - (pow(countFlyingX + 16, 2) / 8)));
+		float moreY = (-1 * (48 - (pow(countFlyingX + 24, 2) / 12)));
 		this->plusXNoRound(this->getVx() * _dt);
-		this->setY(startFlyingY + moreY);
+		this->setYNoRound(startFlyingY + moreY);
 		
 		if (moreY <= -31 && this->getVy() < 0) {
 			this->setVy(abs(this->originVy));
@@ -524,9 +524,9 @@ void Koopa::Update(float _dt)
 	else if (this->getState() == KOOPA_FLYING_RIGHT) {
 		// vx now is > 0
 		countFlyingX += (this->getVx() * _dt);
-		float moreY = (-1 * (32 - (pow(countFlyingX - 16, 2) / 8)));
+		float moreY = (-1 * (48 - (pow(countFlyingX - 24, 2) / 12)));
 		this->plusXNoRound(this->getVx() * _dt);
-		this->setY(startFlyingY + moreY);
+		this->setYNoRound(startFlyingY + moreY);
 
 		if (moreY <= -31 && this->getVy() < 0) {
 			this->setVy(abs(this->originVy));

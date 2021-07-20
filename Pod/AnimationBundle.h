@@ -142,5 +142,10 @@ public:
 	Animation getPButtonOff();
 
 	Animation getKoopaFlying();
+
+	Animation getGoombaRedFlying();
+	Animation getGoombaRedMoving();
+	Animation getGoombaRedTrampled();
+	Animation getGoombaRedThrownAway();
 };
 

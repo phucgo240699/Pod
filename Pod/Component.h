@@ -46,6 +46,9 @@ public:
 	void setVy(float _vy);
 	void setLimitX(float _limitX);
 	void setLimitY(float _limitY);
+	void setXNoRound(float _x);
+	void setYNoRound(float _y);
+	
 
 	void setId(int _id);
 
@@ -63,6 +66,8 @@ public:
 	virtual RECT getBounds();
 	virtual float getWidth();
 	virtual float getHeight();
+	virtual float getBoundsWidth();
+	virtual float getBoundsHeight();
 	virtual void setWidth(float _width);
 	virtual void setHeight(float _height);
 

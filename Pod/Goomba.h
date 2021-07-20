@@ -23,6 +23,12 @@ private:
 	int countDownToDead = 0;
 	float thrownX, startThrownY;
 
+	// Flying
+	bool isFlyingMode = false, isUseRedSkin = false;
+	float countFlyingX, startFlyingY, countPoppingX, startPoppingY, countPopping, countDownFromMovingToFlying = 40;
+	float storedVy;
+	float marioX;
+
 public:
 	// Init
 	Goomba(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id = 0);
@@ -33,9 +39,21 @@ public:
 	// Getter
 	GoombaState getState();
 	bool getIsStandOnSurface();
+	bool getIsFlyingMode();
+	float getMarioX();
+	float getWidth();
+	float getHeight();
+	float getBoundsWidth();
+	float getBoundsHeight();
+	float getStoredVy();
+	float getOriginVx();
+	float getOriginVy();
 
 	// Setter
 	void setState(GoombaState _state);
+	void setIsFlyingMode(bool _isFlyingMode);
+	void setMarioX(float _marioX);
+	void setStoredVy(float _storedVy);
 
 
 	void convertMovingState();

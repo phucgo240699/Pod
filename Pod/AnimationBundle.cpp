@@ -509,6 +509,26 @@ Animation AnimationBundle::getKoopaFlying()
 	return this->animations->at(92);
 }
 
+Animation AnimationBundle::getGoombaRedFlying()
+{
+	return this->animations->at(93);
+}
+
+Animation AnimationBundle::getGoombaRedMoving()
+{
+	return this->animations->at(94);
+}
+
+Animation AnimationBundle::getGoombaRedTrampled()
+{
+	return this->animations->at(95);
+}
+
+Animation AnimationBundle::getGoombaRedThrownAway()
+{
+	return this->animations->at(96);
+}
+
 Animation AnimationBundle::getSuperMarioFlyingWalking()
 {
 	return this->animations->at(49);

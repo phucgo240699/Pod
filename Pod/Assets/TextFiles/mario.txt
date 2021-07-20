@@ -1,8 +1,8 @@
-#(x, y, limitX, limitY, leftSpace, topSpace, rightSpace,
+# (x, y, limitX, limitY, leftSpace, topSpace, rightSpace,
 # marioLeftSpace, marioTopSpace, marioRightSpace,
 # superMarioLeftSpace, superMarioTopSpace, superMarioRightSpace,
 # superMarioFlyingLeftSpace, superMarioFlyingTopSpace, superMarioFlyingRightSpace,
 # firstFireBallVx, firstFireBallVy, firstFireBallId,
 # tailMarginTop, tailMarginBottom, tailHeight, tailWidth,
 # isFireMode, isSuperMode, isFlyingMode)
-36,368,2816,470,4,3,2,4,3,2,3,5,1,10,6,1,4,1,1001,20,6,4,0,0,0
+980,368,2816,470,4,3,2,4,3,2,3,5,1,10,6,1,4,1,1001,20,6,4,1,1,0
