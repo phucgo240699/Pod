@@ -10,8 +10,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "dxgraphics.h"
-#include "SunnyVC.h"
 #include "WorldVC.h"
+#include "SunnyVC.h"
+#include "UndergroundVC.h"
 
 
 // Read keyboard command
@@ -26,6 +27,10 @@ private:
 
 	WorldVC* worldVC;
 	SunnyVC* sunnyVC;
+	UndergroundVC* undergroundVC;
+
+
+
 public:
 
 	// Getter
@@ -33,6 +38,9 @@ public:
 	SceneName getSceneName();
 	WorldVC* getWorldVC();
 	SunnyVC* getSunnyVC();
+	UndergroundVC* getUndergroundVC();
+
+
 
 
 	// Setter
@@ -40,6 +48,9 @@ public:
 	void setSceneName(SceneName _sceneName);
 	void setWorldVC(WorldVC* _worldVC);
 	void setSunnyVC(SunnyVC* _sunnyVC);
+	void setUndergroundVC(UndergroundVC* _undergroundVC);
+
+
 
 
 	// Prototypes function

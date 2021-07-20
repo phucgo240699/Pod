@@ -170,3 +170,22 @@ void Camera::loadSunnyMap()
 
 	fs.close();
 }
+
+void Camera::loadUndergroundMap()
+{
+	fstream fs;
+	fs.open(FilePath::getInstance()->camera_underground_map, ios::in);
+
+	vector<string> v;
+	string line;
+
+	while (!fs.eof())
+	{
+		getline(fs, line);
+		if (line[0] == '#') continue; // Comment
+		if (line == "") continue; // Empty
+		this->load(line, ',');
+	}
+
+	fs.close();
+}

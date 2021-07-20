@@ -49,6 +49,9 @@ void Grid::loadSunnyMap()
 	vector<string> data = vector<string>();
 	string line;
 
+	this->cells.clear();
+	this->matrixId.clear();
+
 	while (!fs.eof()) { // End of line
 		getline(fs, line);
 		if (line[0] == '#') continue; // Comment
@@ -82,6 +85,56 @@ void Grid::loadSunnyMap()
 				data.push_back(line);
 				break;
 			}
+		}
+	}
+	fs.close();
+}
+
+void Grid::loadUnderGroundMap()
+{
+	fstream fs;
+	fs.open(FilePath::getInstance()->grid_underground_map, ios::in);
+
+	SectionFileType section = SECTION_NONE;
+	vector<string> data = vector<string>();
+	string line;
+
+	this->cells.clear();
+	this->matrixId.clear();
+
+	while (!fs.eof()) { // End of line
+		getline(fs, line);
+		if (line[0] == '#') continue; // Comment
+		if (line == "") continue; // Empty
+
+		if (line == "<GridInfo>") {
+			section = SECTION_GRID_INFO;
+			continue;
+		}
+		else if (line == "</GridInfo>") {
+			section = SECTION_NONE;
+		}
+		else if (line == "<GridMatrixId>") {
+			section = SECTION_GRID_MATRIX_ID;
+			continue;
+		}
+		else if (line == "</GridMatrixId>") {
+			this->loadMatrixId(data, '>', '_', ',');
+			section = SECTION_NONE;
+		}
+
+		switch (section)
+		{
+		case SECTION_GRID_INFO:
+		{
+			this->loadInfo(line, ',');
+			break;
+		}
+		case SECTION_GRID_MATRIX_ID:
+		{
+			data.push_back(line);
+			break;
+		}
 		}
 	}
 	fs.close();

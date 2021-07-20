@@ -31,9 +31,6 @@ void WorldVC::viewDidLoad()
 	helpLabel = new StaticAnim();
 	wMario = new WMario(0, 0, 0, 0, 0, 0);
 	wTurtle = new WTurtle(0, 0, 0, 0, 0, 0);
-	
-	ScoreBoard::getInstance()->resetTimeToZero();
-	Camera::getInstance()->loadWorldMap();
 
 	this->adaptData();
 	this->adaptAnimation();

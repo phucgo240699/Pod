@@ -26,4 +26,5 @@ public:
 	void load(string line, char seperator);
 	void loadWorldMap();
 	void loadSunnyMap();
+	void loadUndergroundMap();
 };

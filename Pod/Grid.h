@@ -31,6 +31,7 @@ public:
 	int getTotalCols();
 
 	void loadSunnyMap();
+	void loadUnderGroundMap();
 	void loadInfo(string line, char seperator);
 	void loadMatrixId(vector<string> data, char beginSeperator, char pairSeperator, char seperator);
 	void add(Component* _component);

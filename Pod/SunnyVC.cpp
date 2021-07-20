@@ -59,51 +59,54 @@ void SunnyVC::viewDidLoad()
 	flowers = new unordered_set<Flower*>();
 	coins = new unordered_set<Coin*>();
 
-	ScoreBoard::getInstance()->resetTimeTo300();
-	Camera::getInstance()->loadSunnyMap();
 	this->mario->load();
-	Grid::getInstance()->loadSunnyMap();
 
 	this->adaptData();
 	this->adaptAnimation();
-	this->adaptToGrid();
 }
 
 void SunnyVC::viewReceiveKeyUp()
 {
-	if (this->mario->getState() == DIE
-		|| this->mario->getState() == DIE_JUMPING
-		|| this->mario->getState() == DIE_DROPPING
-		|| this->mario->getState() == SCALING_UP
-		|| this->mario->getState() == SCALING_DOWN
-		|| this->mario->getState() == TRANSFERING_TO_FLY) {
-		return;
-	}
+	//if (this->mario->getState() == DIE
+	//	|| this->mario->getState() == DIE_JUMPING
+	//	|| this->mario->getState() == DIE_DROPPING
+	//	|| this->mario->getState() == SCALING_UP
+	//	|| this->mario->getState() == SCALING_DOWN
+	//	|| this->mario->getState() == TRANSFERING_TO_FLY) {
+	//	return;
+	//}
 	mario->onKeyUp();
 }
 
 void SunnyVC::viewReceiveKeyUp(vector<KeyType> _keyTypes)
 {
-	if (this->mario->getState() == DIE
-		|| this->mario->getState() == DIE_JUMPING
-		|| this->mario->getState() == DIE_DROPPING
-		|| this->mario->getState() == SCALING_UP
-		|| this->mario->getState() == SCALING_DOWN
-		|| this->mario->getState() == TRANSFERING_TO_FLY) {
-		return;
-	}
+	//if (this->mario->getState() == DIE
+	//	|| this->mario->getState() == DIE_JUMPING
+	//	|| this->mario->getState() == DIE_DROPPING
+	//	|| this->mario->getState() == SCALING_UP
+	//	|| this->mario->getState() == SCALING_DOWN
+	//	|| this->mario->getState() == TRANSFERING_TO_FLY) {
+	//	return;
+	//}
 	mario->onKeyUp(_keyTypes);
 }
 
 void SunnyVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 {
-	if (this->mario->getState() == DIE
-		|| this->mario->getState() == DIE_JUMPING
-		|| this->mario->getState() == DIE_DROPPING
-		|| this->mario->getState() == SCALING_UP
-		|| this->mario->getState() == SCALING_DOWN
-		|| this->mario->getState() == TRANSFERING_TO_FLY) {
-		return;
+	//if (this->mario->getState() == DIE
+	//	|| this->mario->getState() == DIE_JUMPING
+	//	|| this->mario->getState() == DIE_DROPPING
+	//	|| this->mario->getState() == SCALING_UP
+	//	|| this->mario->getState() == SCALING_DOWN
+	//	|| this->mario->getState() == TRANSFERING_TO_FLY) {
+	//	return;
+	//}
+	
+	for (int i = 0; i < _keyTypes.size(); ++i) {
+		if (_keyTypes[i] == KeyType::down) {
+			this->navigateTo(SceneName::UndergroundScene);
+			return;
+		}
 	}
 	mario->onKeyDown(_keyTypes);
 }
@@ -368,7 +371,8 @@ void SunnyVC::viewWillUpdate(float _dt)
 	}
 
 	AnimationCDPlayer::getInstance()->Update(_dt);
-
+	
+	// PButton
 	if (this->getIsPressedPButton() && this->getIsRestoredGoldenBrick() == false) {
 		if (this->countDownGoldenBrickBeingCoin <= 0) {
 			unordered_set<GoldenBrick*> ::iterator goldenBrickItr;
@@ -789,11 +793,6 @@ void SunnyVC::viewWillRender()
 						}
 					}
 
-					// Fire Flower Ball
-					else if (beginFireFlowerBallId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerBallId) {
-						(*itr)->Draw(map->getTexture());
-					}
-
 					// Flower
 					else if (beginFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFlowerId) {
 						(*itr)->Draw(map->getTexture());
@@ -806,11 +805,6 @@ void SunnyVC::viewWillRender()
 
 					// Koopas
 					else if (beginKoopaId <= (*itr)->getId() && (*itr)->getId() <= endKoopaId) {
-						(*itr)->Draw(map->getTexture());
-					}
-
-					// Fire Ball
-					else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
 						(*itr)->Draw(map->getTexture());
 					}
 
@@ -836,6 +830,27 @@ void SunnyVC::viewWillRender()
 				for (itr = cell.begin(); itr != cell.end(); ++itr) {
 					// Green Pipe
 					if (beginGreenPipeId <= (*itr)->getId() && (*itr)->getId() <= endGreenPipeId) {
+						(*itr)->Draw(map->getTexture());
+					}
+				}
+			}
+		}
+
+		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
+			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
+
+				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
+				unordered_set<Component*> ::iterator itr;
+				for (itr = cell.begin(); itr != cell.end(); ++itr) {
+					
+					// Fire Flower Ball
+					if (beginFireFlowerBallId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerBallId) {
+						(*itr)->Draw(map->getTexture());
+					}
+
+					// Fire Ball
+					else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
 						(*itr)->Draw(map->getTexture());
 					}
 				}
@@ -979,11 +994,11 @@ void SunnyVC::adaptData()
 		if (line[0] == '#') continue; // Comment
 		if (line == "") continue; // Empty
 
-		if (line == "<SunnyVC>") {
-			section = SECTION_SUNNY_VC;
+		if (line == "<ViewController>") {
+			section = SECTION_VIEW_CONTROLLER;
 			continue;
 		}
-		else if (line == "</SunnyVC>") {
+		else if (line == "</ViewController>") {
 			this->adaptRangeID(data, ',');
 			section = SECTION_NONE;
 		}
@@ -1165,7 +1180,7 @@ void SunnyVC::adaptData()
 		case SECTION_NONE:
 			data.clear();
 			break;
-		case SECTION_SUNNY_VC:
+		case SECTION_VIEW_CONTROLLER:
 			data.push_back(line);
 			break;
 		//case SECTION_CAMERA:

@@ -16,7 +16,7 @@
 class SunnyVC : public ViewController
 {
 private:
-	int componentIdStanded = 0; // this is the component that mario is standing on
+	//int componentIdStanded = 0; // this is the component that mario is standing on
 	Mario* mario;
 	Map* map;
 

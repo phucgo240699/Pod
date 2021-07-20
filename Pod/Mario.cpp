@@ -1387,6 +1387,15 @@ void Mario::setComponentIdStandingOn(int _componentIdStandingOn)
 
 void Mario::onKeyUp()
 {
+	if (this->getState() == DIE
+		|| this->getState() == DIE_JUMPING
+		|| this->getState() == DIE_DROPPING
+		|| this->getState() == SCALING_UP
+		|| this->getState() == SCALING_DOWN
+		|| this->getState() == TRANSFERING_TO_FLY) {
+		return;
+	}
+
 	if (this->getState() == WALKING) {
 		//this->setState(MarioState::STANDING);
 		this->setupReduceWalking(true);
@@ -1411,6 +1420,15 @@ void Mario::onKeyUp()
 
 void Mario::onKeyUp(vector<KeyType> _keyTypes)
 {
+	if (this->getState() == DIE
+		|| this->getState() == DIE_JUMPING
+		|| this->getState() == DIE_DROPPING
+		|| this->getState() == SCALING_UP
+		|| this->getState() == SCALING_DOWN
+		|| this->getState() == TRANSFERING_TO_FLY) {
+		return;
+	}
+
 	bool noLeft = false, noRight = false;
 	for (int i = 0; i < _keyTypes.size(); ++i) {
 		if (_keyTypes[i] == KeyType::key_S) {
@@ -1447,6 +1465,15 @@ void Mario::onKeyUp(vector<KeyType> _keyTypes)
 
 void Mario::onKeyDown(vector<KeyType> _keyTypes)
 {
+	if (this->getState() == DIE
+		|| this->getState() == DIE_JUMPING
+		|| this->getState() == DIE_DROPPING
+		|| this->getState() == SCALING_UP
+		|| this->getState() == SCALING_DOWN
+		|| this->getState() == TRANSFERING_TO_FLY) {
+		return;
+	}
+
 	bool hasKeyRight = false;
 	bool hasKeyLeft = false;
 

@@ -39,6 +39,11 @@ SunnyVC* AppController::getSunnyVC()
 	return this->sunnyVC;
 }
 
+UndergroundVC* AppController::getUndergroundVC()
+{
+	return this->undergroundVC;
+}
+
 int AppController::Game_Init(HWND hwnd)
 {
 	//this->setRootViewController(Setting::getInstance()->getSceneName());
@@ -46,8 +51,11 @@ int AppController::Game_Init(HWND hwnd)
 	this->setWorldVC(new WorldVC());
 	this->getWorldVC()->viewDidLoad();
 
-	/*this->sunnyVC = new SunnyVC();
-	this->sunnyVC->viewDidLoad();*/
+	ScoreBoard::getInstance()->resetTimeToZero();
+	Camera::getInstance()->loadWorldMap();
+
+	//this->setUndergroundVC(new UndergroundVC());
+	//this->getUndergroundVC()->viewDidLoad();
 
 	return 1;
 }
@@ -64,23 +72,38 @@ void AppController::Game_Run(HWND hwnd, float _dt)
 	this->rootViewController->viewWillRender();
 	this->rootViewController->viewDidRender();*/
 
+
+	// WorldScene
 	if (this->getSceneName() == WorldScene) {
 		this->getWorldVC()->viewWillUpdate(_dt);
-		if (this->getSceneName() == SunnyScene) return;
+		if (this->getSceneName() != WorldScene) return;
 		this->getWorldVC()->viewDidUpdate(_dt);
-		if (this->getSceneName() == SunnyScene) return;
+		if (this->getSceneName() != WorldScene) return;
 		this->getWorldVC()->viewWillRender();
-		if (this->getSceneName() == SunnyScene) return;
+		if (this->getSceneName() != WorldScene) return;
 		this->getWorldVC()->viewDidRender();
 	}
+
+	// SunnyScene
 	else if (this->getSceneName() == SunnyScene) {
 		this->getSunnyVC()->viewWillUpdate(_dt);
-		if (this->getSceneName() == WorldScene) return;
+		if (this->getSceneName() != SunnyScene) return;
 		this->getSunnyVC()->viewDidUpdate(_dt);
-		if (this->getSceneName() == WorldScene) return;
+		if (this->getSceneName() != SunnyScene) return;
 		this->getSunnyVC()->viewWillRender();
-		if (this->getSceneName() == WorldScene) return;
+		if (this->getSceneName() != SunnyScene) return;
 		this->getSunnyVC()->viewDidRender();
+	}
+	
+	// UndergroundScene
+	else if (this->getSceneName() == UndergroundScene) {
+		this->getUndergroundVC()->viewWillUpdate(_dt);
+		if (this->getSceneName() != UndergroundScene) return;
+		this->getUndergroundVC()->viewDidUpdate(_dt);
+		if (this->getSceneName() != UndergroundScene) return;
+		this->getUndergroundVC()->viewWillRender();
+		if (this->getSceneName() != UndergroundScene) return;
+		this->getUndergroundVC()->viewDidRender();
 	}
 }
 
@@ -101,6 +124,12 @@ void AppController::setSunnyVC(SunnyVC* _sunnyVC)
 	this->sunnyVC->setAppController(this);
 }
 
+void AppController::setUndergroundVC(UndergroundVC* _undergroundVC)
+{
+	this->undergroundVC = _undergroundVC;
+	this->undergroundVC->setAppController(this);
+}
+
 void AppController::Game_End(HWND hwnd)
 {
 	//this->rootViewController->viewWillRelease();
@@ -110,6 +139,9 @@ void AppController::Game_End(HWND hwnd)
 	}
 	else if (this->getSceneName() == SunnyScene) {
 		this->getSunnyVC()->viewWillRelease();
+	}
+	else if (this->getSceneName() ==  UndergroundScene) {
+		this->getUndergroundVC()->viewWillRelease();
 	}
 }
 
@@ -236,6 +268,9 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		else if (this->getSceneName() == SunnyScene) {
 			this->getSunnyVC()->viewReceiveKeyDown(keyDowns);
 		}
+		else if (this->getSceneName() == UndergroundScene) {
+			this->getUndergroundVC()->viewReceiveKeyDown(keyDowns);
+		}
 	}
 	if (keyUps.size() > 0) {
 		//this->rootViewController->viewReceiveKeyUp(keyUps);
@@ -246,6 +281,9 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		else if (this->getSceneName() == SunnyScene) {
 			this->getSunnyVC()->viewReceiveKeyUp(keyUps);
 		}
+		else if (this->getSceneName() == UndergroundScene) {
+			this->getUndergroundVC()->viewReceiveKeyUp(keyUps);
+		}
 	}
 	if (!hasKeyDown) {
 		//this->rootViewController->viewReceiveKeyUp();
@@ -255,6 +293,9 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		}
 		else if (this->getSceneName() == SunnyScene) {
 			this->getSunnyVC()->viewReceiveKeyUp();
+		}
+		else if (this->getSceneName() == UndergroundScene) {
+			this->getUndergroundVC()->viewReceiveKeyUp();
 		}
 	}
 }

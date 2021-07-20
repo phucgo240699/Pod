@@ -7,8 +7,18 @@ void ViewController::navigateTo(SceneName _sceneName)
 	{
 	case SceneName::WorldScene:
 	{
-		Camera::getInstance()->loadWorldMap();
 		ScoreBoard::getInstance()->resetTimeToZero();
+		Camera::getInstance()->loadWorldMap();
+		break;
+	}
+
+	case SceneName::UndergroundScene:
+	{
+		this->appController->setUndergroundVC(new UndergroundVC());
+		Camera::getInstance()->loadUndergroundMap();
+		Grid::getInstance()->loadUnderGroundMap();
+		this->appController->getUndergroundVC()->viewDidLoad();
+		this->appController->getUndergroundVC()->adaptToGrid();
 		break;
 	}
 
@@ -16,7 +26,11 @@ void ViewController::navigateTo(SceneName _sceneName)
 	{
 		if (this->appController->getSceneName() == SceneName::WorldScene) {
 			this->appController->setSunnyVC(new SunnyVC());
+			ScoreBoard::getInstance()->resetTimeTo300();
+			Camera::getInstance()->loadSunnyMap();
+			Grid::getInstance()->loadSunnyMap();
 			this->appController->getSunnyVC()->viewDidLoad();
+			this->appController->getSunnyVC()->adaptToGrid();
 		}
 		break;
 	}
