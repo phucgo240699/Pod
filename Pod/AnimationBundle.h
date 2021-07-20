@@ -13,7 +13,7 @@ public:
 	AnimationBundle(const AnimationBundle&) = delete; // 3. delete copy constructor
 	static AnimationBundle* getInstance();	  // 4. public function for client code usage
 
-
+	void load();
 	void loadAnimations(vector<string> data, char endSperator, char seperator);
 
 	//Animation getAnimationAt(int index);

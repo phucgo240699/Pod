@@ -84,7 +84,7 @@ void Grid::loadSunnyMap()
 			}
 		}
 	}
-
+	fs.close();
 }
 
 void Grid::loadInfo(string line, char seperator)

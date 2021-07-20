@@ -148,6 +148,8 @@ void Camera::loadWorldMap()
 		if (line == "") continue; // Empty
 		this->load(line, ',');
 	}
+
+	fs.close();
 }
 
 void Camera::loadSunnyMap()
@@ -165,4 +167,6 @@ void Camera::loadSunnyMap()
 		if (line == "") continue; // Empty
 		this->load(line, ',');
 	}
+
+	fs.close();
 }

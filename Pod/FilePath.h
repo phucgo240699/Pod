@@ -31,4 +31,7 @@ public:
 
 	// Grid
 	string grid_sunny_map = "./Assets/TextFiles/grid_sunny_map.txt";
+
+	// Animation Bundle
+	string animation_bundle = "./Assets/TextFiles/animation_bundle.txt";
 };

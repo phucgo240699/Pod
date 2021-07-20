@@ -1151,14 +1151,14 @@ void SunnyVC::adaptData()
 			Grid::getInstance()->loadMatrixId(data, '>', '_', ',');
 			section = SECTION_NONE;
 		}*/
-		else if (line == "<AnimationBundle>") {
+		/*else if (line == "<AnimationBundle>") {
 			section = SECTION_ANIMATION_BUNDLE;
 			continue;
 		}
 		else if (line == "</AnimationBundle>") {
 			AnimationBundle::getInstance()->loadAnimations(data, '>', ',');
 			section = SECTION_NONE;
-		}
+		}*/
 
 		switch (section)
 		{
@@ -1216,9 +1216,9 @@ void SunnyVC::adaptData()
 		//case SECTION_GRID_MATRIX_ID:
 		//	data.push_back(line);
 		//	break;
-		case SECTION_ANIMATION_BUNDLE:
+		/*case SECTION_ANIMATION_BUNDLE:
 			data.push_back(line);
-			break;
+			break;*/
 		default:
 			break;
 		}

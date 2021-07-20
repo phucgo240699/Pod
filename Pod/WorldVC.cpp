@@ -186,14 +186,14 @@ void WorldVC::adaptData()
 		else if (line == "</WTurtleInfo>") {
 			section = SECTION_NONE;
 		}
-		else if (line == "<AnimationBundle>") {
-			section = SECTION_ANIMATION_BUNDLE;
-			continue;
-		}
-		else if (line == "</AnimationBundle>") {
-			AnimationBundle::getInstance()->loadAnimations(data, '>', ',');
-			section = SECTION_NONE;
-		}
+		//else if (line == "<AnimationBundle>") {
+		//	section = SECTION_ANIMATION_BUNDLE;
+		//	continue;
+		//}
+		//else if (line == "</AnimationBundle>") {
+		//	AnimationBundle::getInstance()->loadAnimations(data, '>', ',');
+		//	section = SECTION_NONE;
+		//}
 
 
 		switch (section)
@@ -225,9 +225,9 @@ void WorldVC::adaptData()
 		case SECTION_WTURTLE_INFO:
 			wTurtle->loadInfo(line, ',');
 			break;
-		case SECTION_ANIMATION_BUNDLE:
-			data.push_back(line);
-			break;
+		//case SECTION_ANIMATION_BUNDLE:
+		//	data.push_back(line);
+		//	break;
 		default:
 			break;
 		}

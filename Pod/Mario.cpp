@@ -251,6 +251,8 @@ void Mario::load()
 		v = Tool::splitToVectorStringFrom(line, ',');
 	}
 
+	fs.close();
+
 	this->setX(stof(v[0]));
 	this->setY(stof(v[1]));
 	this->setLimitX(stof(v[2]));

@@ -10,6 +10,26 @@ AnimationBundle* AnimationBundle::getInstance()
 	return instance;
 }
 
+void AnimationBundle::load()
+{
+	fstream fs;
+	fs.open(FilePath::getInstance()->animation_bundle, ios::in);
+
+	vector<string> data = vector<string>();
+	string line;
+
+	while (!fs.eof()) { // End of line
+		getline(fs, line);
+		if (line[0] == '#') continue; // Comment
+		if (line == "") continue; // Empty
+		data.push_back(line);
+	}
+
+	fs.close();
+
+	this->loadAnimations(data, '>', ',');
+}
+
 void AnimationBundle::loadAnimations(vector<string> data, char endSperator, char seperator)
 {
 	int id = 0;
@@ -61,22 +81,22 @@ void AnimationBundle::loadAnimations(vector<string> data, char endSperator, char
 
 Animation AnimationBundle::getWMario()
 {
-	return this->animations->at(0);
+	return this->animations->at(97);
 }
 
 Animation AnimationBundle::getGrasses()
 {
-	return this->animations->at(1);
+	return this->animations->at(98);
 }
 
 Animation AnimationBundle::getHelpLabel()
 {
-	return this->animations->at(2);
+	return this->animations->at(99);
 }
 
 Animation AnimationBundle::getWTurtle()
 {
-	return this->animations->at(3);
+	return this->animations->at(100);
 }
 
 //Animation AnimationBundle::getAnimationAt(int index)

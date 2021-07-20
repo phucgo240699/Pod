@@ -42,7 +42,7 @@ SunnyVC* AppController::getSunnyVC()
 int AppController::Game_Init(HWND hwnd)
 {
 	//this->setRootViewController(Setting::getInstance()->getSceneName());
-
+	AnimationBundle::getInstance()->load();
 	this->setWorldVC(new WorldVC());
 	this->getWorldVC()->viewDidLoad();
 
