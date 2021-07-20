@@ -53,15 +53,15 @@ bool Setting::getDebugMode()
 	return this->debugMode;
 }
 
-SceneName Setting::getSceneName()
-{
-	return this->sceneName;
-}
+//SceneName Setting::getSceneName()
+//{
+//	return this->sceneName;
+//}
 
-bool Setting::getIsTransfering()
-{
-	return this->isTransfering;
-}
+//bool Setting::getIsTransfering()
+//{
+//	return this->isTransfering;
+//}
 
 float Setting::getCollisionSafeSpace()
 {
@@ -98,15 +98,15 @@ void Setting::setDebugMode(bool _debugMode)
 	this->debugMode = _debugMode;
 }
 
-void Setting::setSceneName(SceneName _sceneName)
-{
-	this->sceneName = _sceneName;
-}
+//void Setting::setSceneName(SceneName _sceneName)
+//{
+//	this->sceneName = _sceneName;
+//}
 
-void Setting::setIsTransfering(int _isTransfering)
-{
-	this->isTransfering = _isTransfering;
-}
+//void Setting::setIsTransfering(int _isTransfering)
+//{
+//	this->isTransfering = _isTransfering;
+//}
 
 void Setting::toggleDebugMode()
 {
@@ -142,12 +142,12 @@ void Setting::load()
 		this->setDebugMode(v[6] == "1" ? true : false);
 		this->setCollisionSafeSpace(stoi(v[7]));
 
-		if (v[8] == "SunnyScene") {
+		/*if (v[8] == "SunnyScene") {
 			setSceneName(SceneName::SunnyScene);
 		}
 		else {
 			setSceneName(SceneName::WorldScene);
-		}
+		}*/
 	}
 
 	fs.close();

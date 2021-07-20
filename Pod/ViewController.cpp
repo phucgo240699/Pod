@@ -1,4 +1,34 @@
 #include "ViewController.h"
+#include "AppController.h"
+
+void ViewController::navigateTo(SceneName _sceneName)
+{
+	switch (_sceneName)
+	{
+	case SceneName::WorldScene:
+	{
+		break;
+	}
+
+	case SceneName::SunnyScene:
+	{
+		if (this->appController->getSceneName() == SceneName::WorldScene) {
+			this->appController->setSunnyVC(new SunnyVC());
+			this->appController->getSunnyVC()->viewDidLoad();
+		}
+		break;
+	}
+	default:
+		break;
+	}
+
+	this->appController->setSceneName(_sceneName);
+}
+
+void ViewController::setAppController(AppController* _appController)
+{
+	this->appController = _appController;
+}
 
 void ViewController::viewDidLoad()
 {

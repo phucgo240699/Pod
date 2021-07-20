@@ -17,6 +17,7 @@ public:
 	// Map
 	string sunny_map = "./Assets/TextFiles/sunny_map.txt";
 	string world_map = "./Assets/TextFiles/world_map.txt";
+	string underground = "./Assets/TextFiles/underground.txt";
 
 	// Scoreboard
 	string score_board = "./Assets/TextFiles/score_board.txt";

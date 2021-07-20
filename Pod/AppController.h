@@ -12,7 +12,6 @@
 #include "dxgraphics.h"
 #include "SunnyVC.h"
 #include "WorldVC.h"
-#include "SceneName.h"
 
 
 // Read keyboard command
@@ -22,17 +21,26 @@
 class AppController {
 	// Name of program
 private:
-	ViewController* rootViewController;
+	//ViewController* rootViewController;
+	SceneName sceneName = WorldScene;
 
-	//WorldVC* worldVC;
-	//SunnyVC* sunnyVC;
+	WorldVC* worldVC;
+	SunnyVC* sunnyVC;
 public:
 
 	// Getter
-	ViewController* getRootViewController();
+	//ViewController* getRootViewController();
+	SceneName getSceneName();
+	WorldVC* getWorldVC();
+	SunnyVC* getSunnyVC();
+
 
 	// Setter
-	void setRootViewController(SceneName _sceneName);
+	//void setRootViewController(SceneName _sceneName);
+	void setSceneName(SceneName _sceneName);
+	void setWorldVC(WorldVC* _worldVC);
+	void setSunnyVC(SunnyVC* _sunnyVC);
+
 
 	// Prototypes function
 	int Game_Init(HWND hwnd);

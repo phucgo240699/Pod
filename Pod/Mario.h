@@ -64,6 +64,9 @@ private:
 	// Tail
 	int tailMarginTop, tailMarginBottom, tailWidth, tailHeight;
 
+	// Detect component standing on
+	int componentIdStandingOn;
+
 public:
 	// Init
 	Mario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, LPCWSTR _imagePath, D3DCOLOR _transcolor, MarioState _state);
@@ -131,6 +134,11 @@ public:
 	int getTailHeight();
 	int getTailMarginBottom();
 
+	// Detect component standing on
+	int getComponentIdStandingOn();
+
+
+
 	//
 	// =============== Setter ===============
 	//
@@ -197,6 +205,11 @@ public:
 	void setTailHeight(int _tailHeight);
 	void setTailMarginBottom(int _tailMarginBottom);
 
+	// Detect component standing on
+	void setComponentIdStandingOn(int _componentIdStandingOn);
+
+
+
 
 	// Update & Draw
 	void updateVelocity();
@@ -209,7 +222,7 @@ public:
 	void onKeyDown(vector<KeyType> _keyTypes);
 
 
-	void loadInfo();
+	void load();
 
 
 	// Collision

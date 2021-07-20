@@ -28,10 +28,10 @@ private:
 	Color* defaultBackgroundColorViewController = new Color(black);
 	bool debugMode = false;
 	float collisionSafeSpace = 1;
-	SceneName sceneName = SunnyScene;
+	//SceneName sceneName = SunnyScene;
 
 
-	bool isTransfering = false;
+	//bool isTransfering = false;
 public:
 	Setting(const Setting&) = delete; // 3. delete copy constructor
 	static Setting* getInstance();	  // 4. public function for client code usage
@@ -46,9 +46,9 @@ public:
 	Color* getDefaultBackgroundColorViewController();
 	bool getDebugMode();
 	float getCollisionSafeSpace();
-	SceneName getSceneName();
+	//SceneName getSceneName();
 
-	bool getIsTransfering();
+	//bool getIsTransfering();
 
 	// Setter
 	void setDt(float _dt);
@@ -60,9 +60,9 @@ public:
 	void setDebugMode(bool _debugMode);
 	void toggleDebugMode();
 	void setCollisionSafeSpace(float _value);
-	void setSceneName(SceneName _sceneName);
+	//void setSceneName(SceneName _sceneName);
 
-	void setIsTransfering(int _isTransfering);
+	//void setIsTransfering(int _isTransfering);
 
 	// Others
 	void load();

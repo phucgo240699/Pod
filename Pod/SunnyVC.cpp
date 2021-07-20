@@ -1207,7 +1207,7 @@ void SunnyVC::adaptData()
 
 	fs.close();
 
-	this->mario->loadInfo();
+	this->mario->load();
 }
 
 void SunnyVC::adaptAnimation()

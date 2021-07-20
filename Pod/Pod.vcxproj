@@ -191,6 +191,7 @@
     <ClCompile Include="SunnyVC.cpp" />
     <ClCompile Include="SuperLeaf.cpp" />
     <ClCompile Include="SuperMushroom.cpp" />
+    <ClCompile Include="UndergroundVC.cpp" />
     <ClCompile Include="ViewController.cpp" />
     <ClCompile Include="WMario.cpp" />
     <ClCompile Include="WorldMap.cpp" />
@@ -256,6 +257,7 @@
     <ClInclude Include="SuperMushroom.h" />
     <ClInclude Include="SuperMushroomState.h" />
     <ClInclude Include="Tool.h" />
+    <ClInclude Include="UndergroundVC.h" />
     <ClInclude Include="ViewController.h" />
     <ClInclude Include="WMario.h" />
     <ClInclude Include="WMarioState.h" />

@@ -238,6 +238,12 @@
     <Filter Include="Source Files\Components\Map\PButton">
       <UniqueIdentifier>{26360526-6873-4423-8e47-9b43042f89ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ViewController\UndergroundVC">
+      <UniqueIdentifier>{6f19d6b8-56fb-479c-aa2a-2eb2d2b1facf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ViewController\UndergroundVC">
+      <UniqueIdentifier>{c443675c-08df-4824-80be-bfacb38606f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -374,6 +380,9 @@
     </ClCompile>
     <ClCompile Include="PButton.cpp">
       <Filter>Source Files\Components\Map\PButton</Filter>
+    </ClCompile>
+    <ClCompile Include="UndergroundVC.cpp">
+      <Filter>Source Files\ViewController\UndergroundVC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -568,6 +577,9 @@
     </ClInclude>
     <ClInclude Include="PButton.h">
       <Filter>Header Files\Components\Map\PButton</Filter>
+    </ClInclude>
+    <ClInclude Include="UndergroundVC.h">
+      <Filter>Header Files\ViewController\UndergroundVC</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

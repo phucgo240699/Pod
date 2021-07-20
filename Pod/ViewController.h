@@ -5,12 +5,19 @@
 #include "Camera.h"
 #include "Map.h"
 #include "Grid.h"
+#include "SceneName.h"
+
+class AppController;
 
 class ViewController
 {
 protected:
+	AppController* appController;
 
 public:
+
+	void navigateTo(SceneName _sceneName);
+	void setAppController(AppController* _appController);
 
 	// Life cycle
 	virtual void viewDidLoad();

@@ -190,6 +190,11 @@ int Mario::getTailMarginBottom()
 	return this->tailMarginBottom;
 }
 
+int Mario::getComponentIdStandingOn()
+{
+	return this->componentIdStandingOn;
+}
+
 bool Mario::getIsFlashMode()
 {
 	return this->isFlashMode;
@@ -230,7 +235,7 @@ bool Mario::getIsPressA()
 	return this->isPressA;
 }
 
-void Mario::loadInfo()
+void Mario::load()
 {
 	fstream fs;
 	fs.open(FilePath::getInstance()->mario, ios::in);
@@ -1116,8 +1121,9 @@ void Mario::Update(float _dt)
 		this->setIsFlyingMode(false);
 		this->setIsPreFlyingUpMode(false);
 		this->setIsFlyingUpMode(false);
-		Setting::getInstance()->setIsTransfering(true);
-		Setting::getInstance()->setSceneName(SceneName::WorldScene);
+		/*Setting::getInstance()->setIsTransfering(true);
+		Setting::getInstance()->setSceneName(SceneName::WorldScene);*/
+
 		ScoreBoard::getInstance()->minusMarioLife();
 	}
 }
@@ -1374,6 +1380,11 @@ void Mario::setTailMarginBottom(int _tailMarginBottom)
 	this->tailMarginBottom = _tailMarginBottom;
 }
 
+void Mario::setComponentIdStandingOn(int _componentIdStandingOn)
+{
+	this->componentIdStandingOn = _componentIdStandingOn;
+}
+
 void Mario::onKeyUp()
 {
 	if (this->getState() == WALKING) {
@@ -1573,7 +1584,6 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 				this->turnOffFireSkin(this->getState());
 			}
 		}
-
 	}
 	
 
@@ -1602,6 +1612,7 @@ void Mario::handleGroundCollision(Ground* _ground, float _dt)
 				this->setState(MarioState::STANDING);
 				this->setY(_ground->getY() - this->getBoundsHeight() - Setting::getInstance()->getCollisionSafeSpace());
 				this->setIsStandOnSurface(true);
+				this->setComponentIdStandingOn(_ground->getId());
 			}
 			else if (edge == leftEdge && this->getY() + this->getBoundsHeight() != _ground->getY()) {
 				this->setX(_ground->getX() + _ground->getWidth());
@@ -1639,6 +1650,7 @@ void Mario::handleBlockCollision(Block* _block, float _dt)
 				this->setState(MarioState::STANDING);
 				this->setY(_block->getY() - this->getBoundsHeight() - Setting::getInstance()->getCollisionSafeSpace());
 				this->setIsStandOnSurface(true);
+				this->setComponentIdStandingOn(_block->getId());
 			}
 		}
 	}
@@ -1734,6 +1746,7 @@ void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 				this->setState(MarioState::STANDING);
 				this->setY(_goldenBrick->getY() - this->getBoundsHeight() - Setting::getInstance()->getCollisionSafeSpace());
 				this->setIsStandOnSurface(true);
+				this->setComponentIdStandingOn(_goldenBrick->getId());
 			}
 			else if (edge == leftEdge && this->getY() + this->getBoundsHeight() != _goldenBrick->getY()) {
 				this->setX(_goldenBrick->getX() + _goldenBrick->getWidth());
@@ -1798,6 +1811,7 @@ void Mario::handleGiftBrickCollision(GiftBrick* _giftBrick, float _dt)
 				this->setState(MarioState::STANDING);
 				this->setY(_giftBrick->getY() - this->getBoundsHeight() - Setting::getInstance()->getCollisionSafeSpace());
 				this->setIsStandOnSurface(true);
+				this->setComponentIdStandingOn(_giftBrick->getId());
 			}
 			else if (edge == leftEdge && this->getY() + this->getBoundsHeight() != _giftBrick->getY()/* && (this->getState() == JUMPING || this->getState() == DROPPING) */) {
 				this->setX(_giftBrick->getX() + _giftBrick->getWidth());
@@ -1841,6 +1855,7 @@ void Mario::handleGreenPipeCollision(GreenPipe* _greenPipe, float _dt)
 				this->setState(MarioState::STANDING);
 				this->setY(_greenPipe->getY() - this->getBoundsHeight() - Setting::getInstance()->getCollisionSafeSpace());
 				this->setIsStandOnSurface(true);
+				this->setComponentIdStandingOn(_greenPipe->getId());
 			}
 			else if (edge == leftEdge && this->getY() + this->getBoundsHeight() != _greenPipe->getY()) {
 				this->setX(_greenPipe->getX() + _greenPipe->getWidth());

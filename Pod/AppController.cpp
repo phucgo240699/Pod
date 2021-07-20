@@ -1,63 +1,60 @@
 #include"AppController.h"
 
-ViewController* AppController::getRootViewController()
+//ViewController* AppController::getRootViewController()
+//{
+//	return this->rootViewController;
+//}
+//
+//void AppController::setRootViewController(SceneName _sceneName)
+//{
+//	switch (Setting::getInstance()->getSceneName())
+//	{
+//	case WorldScene:
+//		delete rootViewController;
+//		this->rootViewController = new WorldVC();
+//		this->rootViewController->viewDidLoad();
+//		break;
+//	case SunnyScene:
+//		delete rootViewController;
+//		this->rootViewController = new SunnyVC();
+//		this->rootViewController->viewDidLoad();
+//		break;
+//	default:
+//		break;
+//	}
+//}
+
+SceneName AppController::getSceneName()
 {
-	return this->rootViewController;
+	return this->sceneName;
 }
 
-void AppController::setRootViewController(SceneName _sceneName)
+WorldVC* AppController::getWorldVC()
 {
-	switch (Setting::getInstance()->getSceneName())
-	{
-	case WorldScene:
-		//if (this->worldVC == NULL) {
-		//	this->worldVC = new WorldVC();
-		//}
+	return this->worldVC;
+}
 
-		//if (this->sunnyVC != NULL) {
-		//	this->sunnyVC->~SunnyVC();
-		//}
-		////delete sunnyVC;
-
-		//this->rootViewController = this->worldVC;
-		//this->rootViewController->viewDidLoad();
-
-		delete rootViewController;
-		this->rootViewController = new WorldVC();
-		this->rootViewController->viewDidLoad();
-		break;
-	case SunnyScene:
-		//if (this->sunnyVC == NULL) {
-		//	this->sunnyVC = new SunnyVC();
-		//	this->sunnyVC->viewDidLoad();
-		//}
-
-		//if (this->worldVC != NULL) {
-		//	this->worldVC->~WorldVC();
-		//}
-		////delete worldVC;
-
-		//this->rootViewController = sunnyVC;
-		//this->rootViewController->viewDidLoad();
-
-		delete rootViewController;
-		this->rootViewController = new SunnyVC();
-		this->rootViewController->viewDidLoad();
-		break;
-	default:
-		break;
-	}
+SunnyVC* AppController::getSunnyVC()
+{
+	return this->sunnyVC;
 }
 
 int AppController::Game_Init(HWND hwnd)
 {
-	this->setRootViewController(Setting::getInstance()->getSceneName());
+	//this->setRootViewController(Setting::getInstance()->getSceneName());
+
+	this->setWorldVC(new WorldVC());
+	this->getWorldVC()->viewDidLoad();
+
+	/*this->sunnyVC = new SunnyVC();
+	this->sunnyVC->viewDidLoad();*/
+
 	return 1;
 }
 
 void AppController::Game_Run(HWND hwnd, float _dt)
 {
-	if (Setting::getInstance()->getIsTransfering() == true) {
+	/*if (Setting::getInstance()->getIsTransfering() == true) {
 		Setting::getInstance()->setIsTransfering(false);
 		this->setRootViewController(Setting::getInstance()->getSceneName());
 	}
@@ -65,12 +62,49 @@ void AppController::Game_Run(HWND hwnd, float _dt)
 	this->rootViewController->viewWillUpdate(_dt);
 	this->rootViewController->viewDidUpdate(_dt);
 	this->rootViewController->viewWillRender();
-	this->rootViewController->viewDidRender();
+	this->rootViewController->viewDidRender();*/
+
+	if (this->getSceneName() == WorldScene) {
+		this->getWorldVC()->viewWillUpdate(_dt);
+		this->getWorldVC()->viewDidUpdate(_dt);
+		this->getWorldVC()->viewWillRender();
+		this->getWorldVC()->viewDidRender();
+	}
+	else if (this->getSceneName() == SunnyScene) {
+		this->getSunnyVC()->viewWillUpdate(_dt);
+		this->getSunnyVC()->viewDidUpdate(_dt);
+		this->getSunnyVC()->viewWillRender();
+		this->getSunnyVC()->viewDidRender();
+	}
+}
+
+void AppController::setSceneName(SceneName _sceneName)
+{
+	this->sceneName = _sceneName;
+}
+
+void AppController::setWorldVC(WorldVC* _worldVC)
+{
+	this->worldVC = _worldVC;
+	this->worldVC->setAppController(this);
+}
+
+void AppController::setSunnyVC(SunnyVC* _sunnyVC)
+{
+	this->sunnyVC = _sunnyVC;
+	this->sunnyVC->setAppController(this);
 }
 
 void AppController::Game_End(HWND hwnd)
 {
-	this->rootViewController->viewWillRelease();
+	//this->rootViewController->viewWillRelease();
+
+	if (this->getSceneName() == WorldScene) {
+		this->getWorldVC()->viewWillRelease();
+	}
+	else if (this->getSceneName() == SunnyScene) {
+		this->getSunnyVC()->viewWillRelease();
+	}
 }
 
 void AppController::Handler_Keyboard(HWND hwnd)
@@ -185,22 +219,36 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		keyUps.push_back(KeyType::right);
 	}
 
-	//// SPACE
-	//if (KEY_DOWN(VK_SPACE) == 1) {
-	//	keyDowns.push_back(KeyType::space);
-	//	hasKeyDown = true;
-	//}
-	//else {
-	//	keyUps.push_back(KeyType::space);
-	//}
+
 
 	if (keyDowns.size() > 0) {
-		this->rootViewController->viewReceiveKeyDown(keyDowns);
+		//this->rootViewController->viewReceiveKeyDown(keyDowns);
+
+		if (this->getSceneName() == WorldScene) {
+			this->getWorldVC()->viewReceiveKeyDown(keyDowns);
+		}
+		else if (this->getSceneName() == SunnyScene) {
+			this->getSunnyVC()->viewReceiveKeyDown(keyDowns);
+		}
 	}
 	if (keyUps.size() > 0) {
-		this->rootViewController->viewReceiveKeyUp(keyUps);
+		//this->rootViewController->viewReceiveKeyUp(keyUps);
+
+		if (this->getSceneName() == WorldScene) {
+			this->getWorldVC()->viewReceiveKeyUp(keyUps);
+		}
+		else if (this->getSceneName() == SunnyScene) {
+			this->getSunnyVC()->viewReceiveKeyUp(keyUps);
+		}
 	}
 	if (!hasKeyDown) {
-		this->rootViewController->viewReceiveKeyUp();
+		//this->rootViewController->viewReceiveKeyUp();
+
+		if (this->getSceneName() == WorldScene) {
+			this->getWorldVC()->viewReceiveKeyUp();
+		}
+		else if (this->getSceneName() == SunnyScene) {
+			this->getSunnyVC()->viewReceiveKeyUp();
+		}
 	}
 }
