@@ -139,6 +139,7 @@ public:
 	void setSubState(MarioSubState _subState);
 	void setPressureState(MarioState _pressureState);
 	void setPressureAnimation(Animation _animation);
+	void setAnimation(Animation* _animation);
 
 	// Control
 	void setIsFlip(bool _isFlip);
@@ -208,7 +209,7 @@ public:
 	void onKeyDown(vector<KeyType> _keyTypes);
 
 
-	void loadInfo(string line, char seperator);
+	void loadInfo();
 
 
 	// Collision

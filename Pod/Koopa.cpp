@@ -864,14 +864,14 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 	}
 
 
-	if (this->getState() == KOOPA_FLYING_LEFT || this->getState() == KOOPA_FLYING_RIGHT /*|| this->getState() == KOOPA_DROPPING_LEFT || this->getState() == KOOPA_DROPPING_RIGHT*/) {
+	if (this->getState() == KOOPA_FLYING_LEFT || this->getState() == KOOPA_FLYING_RIGHT || this->getState() == KOOPA_DROPPING_LEFT || this->getState() == KOOPA_DROPPING_RIGHT) {
 		this->setStoredVy(this->getVy());
 		this->setVy(-abs(this->originVy));
 	}
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
 
-	if (this->getState() == KOOPA_FLYING_LEFT || this->getState() == KOOPA_FLYING_RIGHT /*|| this->getState() == KOOPA_DROPPING_LEFT || this->getState() == KOOPA_DROPPING_RIGHT*/) {
+	if (this->getState() == KOOPA_FLYING_LEFT || this->getState() == KOOPA_FLYING_RIGHT || this->getState() == KOOPA_DROPPING_LEFT || this->getState() == KOOPA_DROPPING_RIGHT) {
 		this->setVy(this->getStoredVy());
 	}
 
@@ -938,9 +938,11 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 				}
 			}
 			else if (this->getState() == KOOPA_FLYING_LEFT) {
+				this->plusY(2 * get<1>(collisionResult) * abs(_mario->getVy()));
 				this->setState(KoopaState::KOOPA_DROPPING_LEFT);
 			}
 			else if (this->getState() == KOOPA_FLYING_RIGHT) {
+				this->plusY(2 * get<1>(collisionResult) * abs(_mario->getVy()));
 				this->setState(KoopaState::KOOPA_DROPPING_RIGHT);
 			}
 			else {

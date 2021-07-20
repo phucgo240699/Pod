@@ -230,9 +230,22 @@ bool Mario::getIsPressA()
 	return this->isPressA;
 }
 
-void Mario::loadInfo(string line, char seperator)
+void Mario::loadInfo()
 {
-	vector<string> v = Tool::splitToVectorStringFrom(line, seperator);
+	fstream fs;
+	fs.open(FilePath::getInstance()->mario, ios::in);
+
+	vector<string> v;
+	string line;
+
+	while (!fs.eof())
+	{
+		getline(fs, line);
+		if (line[0] == '#') continue; // Comment
+		if (line == "") continue; // Empty
+		v = Tool::splitToVectorStringFrom(line, ',');
+	}
+
 	this->setX(stof(v[0]));
 	this->setY(stof(v[1]));
 	this->setLimitX(stof(v[2]));
@@ -255,6 +268,26 @@ void Mario::loadInfo(string line, char seperator)
 	this->setTailMarginTop(stoi(v[19]));
 	this->setTailMarginBottom(stoi(v[20]));
 	this->setTailHeight(stoi(v[21]));
+
+	this->setIsFireMode(stoi(v[22]) == 1);
+	this->setIsSuperMode(stoi(v[23]) == 1);
+	this->setIsFlyingMode(stoi(v[24]) == 1);
+
+	if (this->getIsFlyingMode()) {
+		this->setLeftSpace(this->getSuperMarioFlyingLeftSpace());
+		this->setTopSpace(this->getSuperMarioFlyingTopSpace());
+		this->setRightSpace(this->getSuperMarioFlyingRightSpace());
+	}
+	else if (this->getIsSuperMode()) {
+		this->setLeftSpace(this->getSuperMarioLeftSpace());
+		this->setTopSpace(this->getSuperMarioTopSpace());
+		this->setRightSpace(this->getSuperMarioRightSpace());
+	}
+	else {
+		this->setLeftSpace(this->getMarioLeftSpace());
+		this->setTopSpace(this->getMarioTopSpace());
+		this->setRightSpace(this->getMarioRightSpace());
+	}
 }
 
 void Mario::setIsFlip(bool _isFlip)
@@ -668,6 +701,11 @@ void Mario::setPressureState(MarioState _pressureState)
 void Mario::setPressureAnimation(Animation _animation)
 {
 	this->pressureAnimation = new Animation(_animation);
+}
+
+void Mario::setAnimation(Animation* _animation)
+{
+	this->currentAnimation = _animation;
 }
 
 void Mario::setSubState(MarioSubState _subState)
@@ -1914,14 +1952,14 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 		return;
 	}
 
-	if (_koopa->getState() == KOOPA_FLYING_LEFT || _koopa->getState() == KOOPA_FLYING_RIGHT /*|| _koopa->getState() == KOOPA_DROPPING_LEFT || _koopa->getState() == KOOPA_DROPPING_RIGHT*/) {
+	if (_koopa->getState() == KOOPA_FLYING_LEFT || _koopa->getState() == KOOPA_FLYING_RIGHT || _koopa->getState() == KOOPA_DROPPING_LEFT || _koopa->getState() == KOOPA_DROPPING_RIGHT) {
 		_koopa->setStoredVy(_koopa->getVy());
 		_koopa->setVy(-abs(_koopa->getOriginVy()));
 	}
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_koopa, _dt);
 
-	if (_koopa->getState() == KOOPA_FLYING_LEFT || _koopa->getState() == KOOPA_FLYING_RIGHT /*|| _koopa->getState() == KOOPA_DROPPING_LEFT || _koopa->getState() == KOOPA_DROPPING_RIGHT*/) {
+	if (_koopa->getState() == KOOPA_FLYING_LEFT || _koopa->getState() == KOOPA_FLYING_RIGHT || _koopa->getState() == KOOPA_DROPPING_LEFT || _koopa->getState() == KOOPA_DROPPING_RIGHT) {
 		_koopa->setVy(_koopa->getStoredVy());
 	}
 
@@ -1990,9 +2028,11 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 				}
 			}
 			else if (_koopa->getState() == KOOPA_FLYING_LEFT) {
+				_koopa->plusY(2 * get<1>(collisionResult) * abs(this->getVy()));
 				_koopa->setState(KoopaState::KOOPA_DROPPING_LEFT);
 			}
 			else if (_koopa->getState() == KOOPA_FLYING_RIGHT) {
+				_koopa->plusY(2 * get<1>(collisionResult) * abs(this->getVy()));
 				_koopa->setState(KoopaState::KOOPA_DROPPING_RIGHT);
 			}
 			else {
