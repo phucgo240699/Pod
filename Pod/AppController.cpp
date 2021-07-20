@@ -54,8 +54,8 @@ int AppController::Game_Init(HWND hwnd)
 	ScoreBoard::getInstance()->resetTimeToZero();
 	Camera::getInstance()->loadWorldMap();
 
-	//this->setUndergroundVC(new UndergroundVC());
-	//this->getUndergroundVC()->viewDidLoad();
+	this->setUndergroundVC(new UndergroundVC());
+	this->getUndergroundVC()->viewDidLoad();
 
 	return 1;
 }

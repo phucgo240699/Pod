@@ -66,6 +66,7 @@ private:
 
 	// Detect component standing on
 	int componentIdStandingOn;
+	int endDroppingDownPipe;
 
 public:
 	// Init
@@ -136,6 +137,7 @@ public:
 
 	// Detect component standing on
 	int getComponentIdStandingOn();
+	int getEndDroppingDownPipe();
 
 
 

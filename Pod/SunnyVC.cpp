@@ -103,8 +103,8 @@ void SunnyVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 	//}
 	
 	for (int i = 0; i < _keyTypes.size(); ++i) {
-		if (_keyTypes[i] == KeyType::down) {
-			this->navigateTo(SceneName::UndergroundScene);
+		if (_keyTypes[i] == KeyType::down && this->mario->getComponentIdStandingOn() == this->greenPipeIdToUnderground) {
+			this->mario->setState(MarioState::DROPPING_DOWN_PIPE);
 			return;
 		}
 	}
@@ -160,7 +160,16 @@ void SunnyVC::viewWillUpdate(float _dt)
 						continue;
 					}
 
-					if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_DOWN || this->mario->getState() == TRANSFERING_TO_FLY) {
+					if (this->mario->getState() == DIE
+						|| this->mario->getState() == DIE_JUMPING
+						|| this->mario->getState() == DIE_DROPPING
+						|| this->mario->getState() == SCALING_DOWN
+						|| this->mario->getState() == TRANSFERING_TO_FLY
+						|| this->mario->getState() == DROPPING_DOWN_PIPE
+						|| this->mario->getState() == POPPING_UP_PIPE
+						|| this->mario->getState() == JUMPING_UP_TO_CLOUND
+						|| this->mario->getState() == DROPPING_DOWN_WIN
+						|| this->mario->getState() == MOVING_RIGHT_WIN) {
 						continue;
 					}
 
@@ -181,7 +190,16 @@ void SunnyVC::viewWillUpdate(float _dt)
 						continue;
 					}
 
-					if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_DOWN || this->mario->getState() == TRANSFERING_TO_FLY) {
+					if (this->mario->getState() == DIE
+						|| this->mario->getState() == DIE_JUMPING
+						|| this->mario->getState() == DIE_DROPPING
+						|| this->mario->getState() == SCALING_DOWN
+						|| this->mario->getState() == TRANSFERING_TO_FLY
+						|| this->mario->getState() == DROPPING_DOWN_PIPE
+						|| this->mario->getState() == POPPING_UP_PIPE
+						|| this->mario->getState() == JUMPING_UP_TO_CLOUND
+						|| this->mario->getState() == DROPPING_DOWN_WIN
+						|| this->mario->getState() == MOVING_RIGHT_WIN) {
 						continue;
 					}
 
@@ -192,7 +210,17 @@ void SunnyVC::viewWillUpdate(float _dt)
 				}
 
 				// ==========================================================================================
-				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getState() == TRANSFERING_TO_FLY) {
+				if (this->mario->getState() == DIE
+					|| this->mario->getState() == DIE_JUMPING
+					|| this->mario->getState() == DIE_DROPPING
+					|| this->mario->getState() == SCALING_UP
+					|| this->mario->getState() == SCALING_DOWN
+					|| this->mario->getState() == TRANSFERING_TO_FLY
+					|| this->mario->getState() == DROPPING_DOWN_PIPE
+					|| this->mario->getState() == POPPING_UP_PIPE
+					|| this->mario->getState() == JUMPING_UP_TO_CLOUND
+					|| this->mario->getState() == DROPPING_DOWN_WIN
+					|| this->mario->getState() == MOVING_RIGHT_WIN) {
 					continue;
 				}
 
@@ -352,22 +380,28 @@ void SunnyVC::viewWillUpdate(float _dt)
 	if (mario != NULL) {
 		mario->Update(_dt);
 
-		// Navigate to WorldVC when Mario drop out of map to far
-		if (this->mario->getY() >= Camera::getInstance()->getLimitY() + 100) {
-			this->mario->setIsSuperMode(false);
-			this->mario->setIsFlyingMode(false);
-			this->mario->setIsPreFlyingUpMode(false);
-			this->mario->setIsFlyingUpMode(false);
-			/*Setting::getInstance()->setIsTransfering(true);
-			Setting::getInstance()->setSceneName(SceneName::WorldScene);*/
-
-			ScoreBoard::getInstance()->minusMarioLife();
-
-			this->navigateTo(SceneName::WorldScene);
-			return;
+		if (this->mario->getState() == DROPPING_DOWN_PIPE) {
+			if (this->mario->getY() >= this->mario->getEndDroppingDownPipe()) {
+				this->navigateTo(SceneName::UndergroundScene);
+				return;
+			}
 		}
+		else {
 
-		Camera::getInstance()->follow(mario, _dt);
+			// Navigate to WorldVC when Mario drop out of map to far
+			if (this->mario->getY() >= Camera::getInstance()->getLimitY() + 100) {
+				this->mario->setIsSuperMode(false);
+				this->mario->setIsFlyingMode(false);
+				this->mario->setIsPreFlyingUpMode(false);
+				this->mario->setIsFlyingUpMode(false);
+
+				ScoreBoard::getInstance()->minusMarioLife();
+
+				this->navigateTo(SceneName::WorldScene);
+				return;
+			}
+			Camera::getInstance()->follow(mario, _dt);
+		}
 	}
 
 	AnimationCDPlayer::getInstance()->Update(_dt);
@@ -397,7 +431,16 @@ void SunnyVC::viewWillUpdate(float _dt)
 		--countDownGoldenBrickBeingCoin;
 	}
 
-	if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN) {
+	if (this->mario->getState() == DIE
+		|| this->mario->getState() == DIE_JUMPING
+		|| this->mario->getState() == DIE_DROPPING
+		|| this->mario->getState() == SCALING_UP
+		|| this->mario->getState() == SCALING_DOWN
+		|| this->mario->getState() == DROPPING_DOWN_PIPE
+		|| this->mario->getState() == POPPING_UP_PIPE
+		|| this->mario->getState() == JUMPING_UP_TO_CLOUND
+		|| this->mario->getState() == DROPPING_DOWN_WIN
+		|| this->mario->getState() == MOVING_RIGHT_WIN) {
 		return;
 	}
 	ScoreBoard::getInstance()->Update(_dt);
@@ -406,7 +449,17 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 void SunnyVC::viewDidUpdate(float _dt)
 {
-	if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getState() == TRANSFERING_TO_FLY)
+	if (this->mario->getState() == DIE
+		|| this->mario->getState() == DIE_JUMPING
+		|| this->mario->getState() == DIE_DROPPING
+		|| this->mario->getState() == SCALING_UP
+		|| this->mario->getState() == SCALING_DOWN
+		|| this->mario->getState() == TRANSFERING_TO_FLY
+		|| this->mario->getState() == DROPPING_DOWN_PIPE
+		|| this->mario->getState() == POPPING_UP_PIPE
+		|| this->mario->getState() == JUMPING_UP_TO_CLOUND
+		|| this->mario->getState() == DROPPING_DOWN_WIN
+		|| this->mario->getState() == MOVING_RIGHT_WIN)
 	{
 		return;
 	}
@@ -821,6 +874,11 @@ void SunnyVC::viewWillRender()
 			}
 		}
 
+
+		if (mario != NULL) {
+			mario->Draw();
+		}
+
 		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
 			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
 				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
@@ -855,10 +913,6 @@ void SunnyVC::viewWillRender()
 					}
 				}
 			}
-		}
-
-		if (mario != NULL) {
-			mario->Draw();
 		}
 
 		AnimationCDPlayer::getInstance()->Draw(map->getTexture());
@@ -946,6 +1000,7 @@ void SunnyVC::adaptRangeID(vector<string> data, char seperator)
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginGreenPipeId = v[0];
 			this->endGreenPipeId = v[1];
+			this->greenPipeIdToUnderground = v[2];
 		}
 		else if (i == 1) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);

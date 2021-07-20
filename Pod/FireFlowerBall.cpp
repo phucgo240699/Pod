@@ -112,6 +112,11 @@ void FireFlowerBall::handleMarioCollision(Mario* _mario, float _dt)
 		|| _mario->getState() == SCALING_UP
 		|| _mario->getState() == SCALING_DOWN
 		|| _mario->getState() == TRANSFERING_TO_FLY
+		|| _mario->getState() == DROPPING_DOWN_PIPE
+		|| _mario->getState() == POPPING_UP_PIPE
+		|| _mario->getState() == JUMPING_UP_TO_CLOUND
+		|| _mario->getState() == DROPPING_DOWN_WIN
+		|| _mario->getState() == MOVING_RIGHT_WIN
 		|| _mario->getIsFlashMode()) {
 		return;
 	}

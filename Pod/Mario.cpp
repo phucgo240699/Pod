@@ -195,6 +195,11 @@ int Mario::getComponentIdStandingOn()
 	return this->componentIdStandingOn;
 }
 
+int Mario::getEndDroppingDownPipe()
+{
+	return this->endDroppingDownPipe;
+}
+
 bool Mario::getIsFlashMode()
 {
 	return this->isFlashMode;
@@ -663,6 +668,12 @@ void Mario::setState(MarioState _state)
 		break;
 	}
 
+	case DROPPING_DOWN_PIPE:
+	{
+		this->endDroppingDownPipe = this->getY() + 30;
+		break;
+	}
+
 	default:
 		break;
 	}
@@ -1046,6 +1057,11 @@ void Mario::setIsFlyingUpMode(bool _isFlyingUpMode)
 void Mario::Update(float _dt)
 {
 	if (currentAnimation == NULL) {
+		return;
+	}
+
+	if (this->getState() == DROPPING_DOWN_PIPE) {
+		this->plusY(1);
 		return;
 	}
 
@@ -1917,6 +1933,11 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 		|| this->getState() == SCALING_UP
 		|| this->getState() == SCALING_DOWN
 		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getState() == DROPPING_DOWN_PIPE
+		|| this->getState() == POPPING_UP_PIPE
+		|| this->getState() == JUMPING_UP_TO_CLOUND
+		|| this->getState() == DROPPING_DOWN_WIN
+		|| this->getState() == MOVING_RIGHT_WIN
 		|| this->getIsFlashMode()) {
 		return;
 	}
@@ -2024,6 +2045,11 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 		|| this->getState() == SCALING_UP
 		|| this->getState() == SCALING_DOWN
 		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getState() == DROPPING_DOWN_PIPE
+		|| this->getState() == POPPING_UP_PIPE
+		|| this->getState() == JUMPING_UP_TO_CLOUND
+		|| this->getState() == DROPPING_DOWN_WIN
+		|| this->getState() == MOVING_RIGHT_WIN
 		|| this->getIsFlashMode()) {
 		return;
 	}
@@ -2141,6 +2167,11 @@ void Mario::handleSuperMushroomCollision(SuperMushroom* _superMushroom, float _d
 		|| this->getState() == SCALING_UP
 		|| this->getState() == SCALING_DOWN
 		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getState() == DROPPING_DOWN_PIPE
+		|| this->getState() == POPPING_UP_PIPE
+		|| this->getState() == JUMPING_UP_TO_CLOUND
+		|| this->getState() == DROPPING_DOWN_WIN
+		|| this->getState() == MOVING_RIGHT_WIN
 		|| this->getIsFlashMode()) {
 		return;
 	}
@@ -2188,6 +2219,11 @@ void Mario::handleSuperLeafCollision(SuperLeaf* _superLeaf, float _dt)
 		|| this->getState() == SCALING_UP
 		|| this->getState() == SCALING_DOWN
 		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getState() == DROPPING_DOWN_PIPE
+		|| this->getState() == POPPING_UP_PIPE
+		|| this->getState() == JUMPING_UP_TO_CLOUND
+		|| this->getState() == DROPPING_DOWN_WIN
+		|| this->getState() == MOVING_RIGHT_WIN
 		|| this->getIsFlashMode()
 		|| _superLeaf->getState() == SUPER_LEAF_DISAPPEARED
 		|| _superLeaf->getState() == SUPER_LEAF_BEING_EARNED) {
@@ -2243,6 +2279,11 @@ void Mario::handleFireFlowerCollision(FireFlower* _fireFlower, float _dt)
 		|| this->getState() == SCALING_UP
 		|| this->getState() == SCALING_DOWN
 		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getState() == DROPPING_DOWN_PIPE
+		|| this->getState() == POPPING_UP_PIPE
+		|| this->getState() == JUMPING_UP_TO_CLOUND
+		|| this->getState() == DROPPING_DOWN_WIN
+		|| this->getState() == MOVING_RIGHT_WIN
 		|| this->getIsFlashMode()) {
 		return;
 	}
@@ -2268,6 +2309,11 @@ void Mario::handleFireFlowerBallCollision(FireFlowerBall* _fireFlowerBall, float
 		|| this->getState() == SCALING_UP
 		|| this->getState() == SCALING_DOWN
 		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getState() == DROPPING_DOWN_PIPE
+		|| this->getState() == POPPING_UP_PIPE
+		|| this->getState() == JUMPING_UP_TO_CLOUND
+		|| this->getState() == DROPPING_DOWN_WIN
+		|| this->getState() == MOVING_RIGHT_WIN
 		|| this->getIsFlashMode()) {
 		return;
 	}
@@ -2291,6 +2337,11 @@ void Mario::handleFlowerCollision(Flower* _flower, float _dt)
 		|| this->getState() == SCALING_UP
 		|| this->getState() == SCALING_DOWN
 		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getState() == DROPPING_DOWN_PIPE
+		|| this->getState() == POPPING_UP_PIPE
+		|| this->getState() == JUMPING_UP_TO_CLOUND
+		|| this->getState() == DROPPING_DOWN_WIN
+		|| this->getState() == MOVING_RIGHT_WIN
 		|| this->getIsFlashMode()) {
 		return;
 	}
@@ -2317,7 +2368,12 @@ void Mario::handleCoinCollision(Coin* _coin, float _dt)
 		|| this->getState() == DIE_DROPPING
 		|| this->getState() == SCALING_UP
 		|| this->getState() == SCALING_DOWN
-		|| this->getState() == TRANSFERING_TO_FLY) {
+		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getState() == DROPPING_DOWN_PIPE
+		|| this->getState() == POPPING_UP_PIPE
+		|| this->getState() == JUMPING_UP_TO_CLOUND
+		|| this->getState() == DROPPING_DOWN_WIN
+		|| this->getState() == MOVING_RIGHT_WIN) {
 		return;
 	}
 
@@ -2347,7 +2403,12 @@ void Mario::handlePButtonCollision(PButton* _pButton, float _dt)
 		|| this->getState() == DIE_DROPPING
 		|| this->getState() == SCALING_UP
 		|| this->getState() == SCALING_DOWN
-		|| this->getState() == TRANSFERING_TO_FLY) {
+		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getState() == DROPPING_DOWN_PIPE
+		|| this->getState() == POPPING_UP_PIPE
+		|| this->getState() == JUMPING_UP_TO_CLOUND
+		|| this->getState() == DROPPING_DOWN_WIN
+		|| this->getState() == MOVING_RIGHT_WIN) {
 		return;
 	}
 

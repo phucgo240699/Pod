@@ -14,10 +14,10 @@ void ViewController::navigateTo(SceneName _sceneName)
 
 	case SceneName::UndergroundScene:
 	{
-		this->appController->setUndergroundVC(new UndergroundVC());
+		//this->appController->setUndergroundVC(new UndergroundVC());
 		Camera::getInstance()->loadUndergroundMap();
 		Grid::getInstance()->loadUnderGroundMap();
-		this->appController->getUndergroundVC()->viewDidLoad();
+		//this->appController->getUndergroundVC()->viewDidLoad();
 		this->appController->getUndergroundVC()->adaptToGrid();
 		break;
 	}
