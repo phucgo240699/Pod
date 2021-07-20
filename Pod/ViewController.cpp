@@ -7,6 +7,8 @@ void ViewController::navigateTo(SceneName _sceneName)
 	{
 	case SceneName::WorldScene:
 	{
+		Camera::getInstance()->loadWorldMap();
+		ScoreBoard::getInstance()->resetTimeToZero();
 		break;
 	}
 

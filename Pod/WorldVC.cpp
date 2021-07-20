@@ -33,6 +33,7 @@ void WorldVC::viewDidLoad()
 	wTurtle = new WTurtle(0, 0, 0, 0, 0, 0);
 	
 	ScoreBoard::getInstance()->resetTimeToZero();
+	Camera::getInstance()->loadWorldMap();
 
 	this->adaptData();
 	this->adaptAnimation();
@@ -105,7 +106,7 @@ void WorldVC::viewDidRender()
 
 void WorldVC::adaptData()
 {
-	Camera* camera = Camera::getInstance();
+	//Camera* camera = Camera::getInstance();
 	Setting* setting = Setting::getInstance();
 
 	fstream fs;
@@ -121,14 +122,14 @@ void WorldVC::adaptData()
 		if (line[0] == '#') continue; // Comment
 		if (line == "") continue; // Empty
 
-		if (line == "<Camera>") {
-			section = SECTION_CAMERA;
-			continue;
-		}
-		else if (line == "</Camera>") {
-			section = SECTION_NONE;
-		}
-		else if (line == "<MapInfo>") {
+		//if (line == "<Camera>") {
+		//	section = SECTION_CAMERA;
+		//	continue;
+		//}
+		//else if (line == "</Camera>") {
+		//	section = SECTION_NONE;
+		//}
+		if (line == "<MapInfo>") {
 			section = SECTION_MAP_INFO;
 			continue;
 		}
@@ -200,9 +201,9 @@ void WorldVC::adaptData()
 		case SECTION_NONE:
 			data.clear();
 			break;
-		case SECTION_CAMERA:
-			camera->load(line, ',');
-			break;
+		//case SECTION_CAMERA:
+		//	camera->load(line, ',');
+		//	break;
 		case SECTION_MAP_INFO:
 			map->loadInfo(line, ',');
 			break;

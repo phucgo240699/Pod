@@ -24,4 +24,11 @@ public:
 
 	// Setting
 	string settings = "./Assets/TextFiles/settings.txt";
+
+	// Camera
+	string camer_world_map = "./Assets/TextFiles/camera_world_map.txt";
+	string camera_sunny_map = "./Assets/TextFiles/camera_sunny_map.txt";
+
+	// Grid
+	string grid_sunny_map = "./Assets/TextFiles/grid_sunny_map.txt";
 };

@@ -66,14 +66,20 @@ void AppController::Game_Run(HWND hwnd, float _dt)
 
 	if (this->getSceneName() == WorldScene) {
 		this->getWorldVC()->viewWillUpdate(_dt);
+		if (this->getSceneName() == SunnyScene) return;
 		this->getWorldVC()->viewDidUpdate(_dt);
+		if (this->getSceneName() == SunnyScene) return;
 		this->getWorldVC()->viewWillRender();
+		if (this->getSceneName() == SunnyScene) return;
 		this->getWorldVC()->viewDidRender();
 	}
 	else if (this->getSceneName() == SunnyScene) {
 		this->getSunnyVC()->viewWillUpdate(_dt);
+		if (this->getSceneName() == WorldScene) return;
 		this->getSunnyVC()->viewDidUpdate(_dt);
+		if (this->getSceneName() == WorldScene) return;
 		this->getSunnyVC()->viewWillRender();
+		if (this->getSceneName() == WorldScene) return;
 		this->getSunnyVC()->viewDidRender();
 	}
 }

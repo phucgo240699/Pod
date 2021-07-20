@@ -1114,18 +1114,6 @@ void Mario::Update(float _dt)
 		this->plusX(this->getVx() * _dt);
 	}
 	this->plusY(this->getVy() * _dt);
-
-	// Navigate to WorldVC when Mario drop out of map to far
-	if (this->getY() >= this->getLimitY() + 200) {
-		this->setIsSuperMode(false);
-		this->setIsFlyingMode(false);
-		this->setIsPreFlyingUpMode(false);
-		this->setIsFlyingUpMode(false);
-		/*Setting::getInstance()->setIsTransfering(true);
-		Setting::getInstance()->setSceneName(SceneName::WorldScene);*/
-
-		ScoreBoard::getInstance()->minusMarioLife();
-	}
 }
 
 void Mario::Draw()

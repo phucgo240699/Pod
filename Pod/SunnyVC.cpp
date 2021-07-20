@@ -60,6 +60,9 @@ void SunnyVC::viewDidLoad()
 	coins = new unordered_set<Coin*>();
 
 	ScoreBoard::getInstance()->resetTimeTo300();
+	Camera::getInstance()->loadSunnyMap();
+	this->mario->load();
+	Grid::getInstance()->loadSunnyMap();
 
 	this->adaptData();
 	this->adaptAnimation();
@@ -345,6 +348,22 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 	if (mario != NULL) {
 		mario->Update(_dt);
+
+		// Navigate to WorldVC when Mario drop out of map to far
+		if (this->mario->getY() >= Camera::getInstance()->getLimitY() + 100) {
+			this->mario->setIsSuperMode(false);
+			this->mario->setIsFlyingMode(false);
+			this->mario->setIsPreFlyingUpMode(false);
+			this->mario->setIsFlyingUpMode(false);
+			/*Setting::getInstance()->setIsTransfering(true);
+			Setting::getInstance()->setSceneName(SceneName::WorldScene);*/
+
+			ScoreBoard::getInstance()->minusMarioLife();
+
+			this->navigateTo(SceneName::WorldScene);
+			return;
+		}
+
 		Camera::getInstance()->follow(mario, _dt);
 	}
 
@@ -945,7 +964,7 @@ void SunnyVC::adaptRangeID(vector<string> data, char seperator)
 
 void SunnyVC::adaptData()
 {
-	Camera* camera = Camera::getInstance();
+	//Camera* camera = Camera::getInstance();
 
 	fstream fs;
 	fs.open(FilePath::getInstance()->sunny_map, ios::in);
@@ -968,13 +987,13 @@ void SunnyVC::adaptData()
 			this->adaptRangeID(data, ',');
 			section = SECTION_NONE;
 		}
-		else if (line == "<Camera>") {
-			section = SECTION_CAMERA;
-			continue;
-		}
-		else if (line == "</Camera>") {
-			section = SECTION_NONE;
-		}
+		//else if (line == "<Camera>") {
+		//	section = SECTION_CAMERA;
+		//	continue;
+		//}
+		//else if (line == "</Camera>") {
+		//	section = SECTION_NONE;
+		//}
 		else if (line == "<MapInfo>") {
 			section = SECTION_MAP_INFO;
 			continue;
@@ -1117,7 +1136,7 @@ void SunnyVC::adaptData()
 			}
 			section = SECTION_NONE;
 		}
-		else if (line == "<GridInfo>") {
+		/*else if (line == "<GridInfo>") {
 			section = SECTION_GRID_INFO;
 			continue;
 		}
@@ -1131,7 +1150,7 @@ void SunnyVC::adaptData()
 		else if (line == "</GridMatrixId>") {
 			Grid::getInstance()->loadMatrixId(data, '>', '_', ',');
 			section = SECTION_NONE;
-		}
+		}*/
 		else if (line == "<AnimationBundle>") {
 			section = SECTION_ANIMATION_BUNDLE;
 			continue;
@@ -1149,9 +1168,9 @@ void SunnyVC::adaptData()
 		case SECTION_SUNNY_VC:
 			data.push_back(line);
 			break;
-		case SECTION_CAMERA:
-			camera->load(line, ',');
-			break;
+		//case SECTION_CAMERA:
+		//	camera->load(line, ',');
+		//	break;
 		case SECTION_MAP_INFO:
 			map->loadInfo(line, ',');
 			break;
@@ -1191,12 +1210,12 @@ void SunnyVC::adaptData()
 		case SECTION_COIN_FRAMES:
 			data.push_back(line);
 			break;
-		case SECTION_GRID_INFO:
-			Grid::getInstance()->loadInfo(line, ',');
-			break;
-		case SECTION_GRID_MATRIX_ID:
-			data.push_back(line);
-			break;
+		//case SECTION_GRID_INFO:
+		//	Grid::getInstance()->loadInfo(line, ',');
+		//	break;
+		//case SECTION_GRID_MATRIX_ID:
+		//	data.push_back(line);
+		//	break;
 		case SECTION_ANIMATION_BUNDLE:
 			data.push_back(line);
 			break;
@@ -1206,8 +1225,6 @@ void SunnyVC::adaptData()
 	}
 
 	fs.close();
-
-	this->mario->load();
 }
 
 void SunnyVC::adaptAnimation()

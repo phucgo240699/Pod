@@ -24,4 +24,6 @@ public:
 	void follow(Mario* _target, float _dt);
 
 	void load(string line, char seperator);
+	void loadWorldMap();
+	void loadSunnyMap();
 };

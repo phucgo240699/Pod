@@ -132,3 +132,37 @@ void Camera::load(string line, char seperator)
 	this->setLimitX(v[6]);
 	this->setLimitY(v[7]);
 }
+
+void Camera::loadWorldMap()
+{
+	fstream fs;
+	fs.open(FilePath::getInstance()->camer_world_map, ios::in);
+
+	vector<string> v;
+	string line;
+
+	while (!fs.eof())
+	{
+		getline(fs, line);
+		if (line[0] == '#') continue; // Comment
+		if (line == "") continue; // Empty
+		this->load(line, ',');
+	}
+}
+
+void Camera::loadSunnyMap()
+{
+	fstream fs;
+	fs.open(FilePath::getInstance()->camera_sunny_map, ios::in);
+
+	vector<string> v;
+	string line;
+
+	while (!fs.eof())
+	{
+		getline(fs, line);
+		if (line[0] == '#') continue; // Comment
+		if (line == "") continue; // Empty
+		this->load(line, ',');
+	}
+}
