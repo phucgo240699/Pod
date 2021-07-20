@@ -1959,8 +1959,6 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 	}
 	else if (this->isCollidingByBounds(_goomba->getBounds())
 		&& (this->getState() == WALKING || this->getState() == STANDING)
-		&& _goomba->getState() != TRAMPLED_GOOMBA
-		&& _goomba->getState() != DEAD_GOOMBA
 		&& _goomba->getState() != GOOMBA_POPPING_LEFT
 		&& _goomba->getState() != GOOMBA_POPPING_RIGHT
 		&& _goomba->getState() != GOOMBA_FLYING_LEFT
@@ -2080,7 +2078,10 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 	}
 	else if (this->isCollidingByBounds(_koopa->getBounds())
 		&& (this->getState() == WALKING || this->getState() == STANDING)
-			&& _koopa->getState() != KOOPA_SHRINKAGE && _koopa->getState() != KOOPA_SHRINKAGE_SHAKING) {
+		&& _koopa->getState() != KOOPA_SHRINKAGE
+		&& _koopa->getState() != KOOPA_SHRINKAGE_SHAKING
+		&& _koopa->getState() != KOOPA_FLYING_LEFT
+		&& _koopa->getState() != KOOPA_FLYING_RIGHT) {
 		_koopa->plusX(2 * get<1>(collisionResult) * _koopa->getVx());
 		if (this->getIsSuperMode() == false) {
 			_koopa->setState(KoopaState::KOOPA_STANDING);

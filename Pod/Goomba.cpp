@@ -726,9 +726,7 @@ void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 		}
 	}
 	else if (this->isCollidingByBounds(_mario->getBounds())
-		&& (_mario->getState() == WALKING && _mario->getState() == STANDING)
-		&& this->getState() != TRAMPLED_GOOMBA
-		&& this->getState() != DEAD_GOOMBA
+		&& (_mario->getState() == WALKING || _mario->getState() == STANDING)
 		&& this->getState() != GOOMBA_POPPING_LEFT
 		&& this->getState() != GOOMBA_POPPING_RIGHT
 		&& this->getState() != GOOMBA_FLYING_LEFT
