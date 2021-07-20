@@ -30,11 +30,15 @@ private:
 
 	int countDown = 30, originCountDown = 30; // countDown to switch from standing to shaking, and from shaking to moving
 
-	bool isFlip = false, isGreenMode = false;
+	bool isFlip = false, isGreenMode = false, isFlyingMode = false;
 
 	// Thrown away
 	float thrownX, startThrownY;
 	bool isOutOfFirstStage = false; // Just for red mode
+
+	// Flying
+	float countFlyingX, startFlyingY;
+	float storedVy;
 
 public:
 	// Init
@@ -53,16 +57,19 @@ public:
 	bool getIsStandOnSurface();
 	bool getHasCollideMario();
 	bool getIsGreenMode();
+	bool getIsFlyingMode();
+	float getOriginVy();
+	float getOriginVx();
+	float getStoredVy();
 
 	// Setter
 	void setState(KoopaState _state);
 	void setIsFlip(bool _isFlip);
-	//void setPointX(float _pointX);
-	//void setPointY(float _pointY);
-	//void setEndPointJumpUp(float _endPointJumpUp);
 	void setupPointAnimPosition();
 	void setHasCollideMario(bool _hasCollideMario);
 	void setIsGreenMode(bool _isGreenMode);
+	void setIsFlyingMode(bool _isFlyingMode);
+	void setStoredVy(float _storedVy);
 
 	void convertMovingState();
 	void Update(float _dt);
@@ -76,6 +83,7 @@ public:
 	void handleMarioCollision(Mario* _mario, float _dt);
 	void handleFireBallCollision(FireBall* _fireBall, float _dt);
 	void handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt);
+	void handleKoopaCollision(Koopa* _koopa, float _dt);
 };
 
 #endif // !KOOPA

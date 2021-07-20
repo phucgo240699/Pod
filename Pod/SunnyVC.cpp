@@ -615,11 +615,16 @@ void SunnyVC::viewDidUpdate(float _dt)
 								else if (beginGoldenBrickId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endGoldenBrickId) {
 									static_cast<Koopa*>(*itr)->handleGoldenBrickCollision(static_cast<GoldenBrick*>(*koopaItr), _dt);
 								}
+								else if (beginKoopaId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endKoopaId) {
+									if ((*itr)->getId() != (*koopaItr)->getId()) {
+										static_cast<Koopa*>(*itr)->handleKoopaCollision(static_cast<Koopa*>(*koopaItr), _dt);
+									}
+								}
 							}
 						}
 					}
 
-					if (static_cast<Koopa*>(*itr)->getIsStandOnSurface() == false) {
+					if (static_cast<Koopa*>(*itr)->getIsStandOnSurface() == false && static_cast<Koopa*>(*itr)->getState() != KOOPA_FLYING_LEFT && static_cast<Koopa*>(*itr)->getState() != KOOPA_FLYING_RIGHT) {
 						if (static_cast<Koopa*>(*itr)->getState() == KOOPA_SHRINKAGE_MOVING_LEFT) {
 							static_cast<Koopa*>(*itr)->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_LEFT);
 						}
@@ -1227,6 +1232,18 @@ void SunnyVC::adaptAnimation()
 		this->greenPipes->at(i)->setupAnimation();
 	}
 
+	// Coins
+	unordered_set<Coin*> ::iterator coinItr;
+	for (coinItr = this->coins->begin(); coinItr != this->coins->end(); ++coinItr) {
+		(*coinItr)->setAnimation(new Animation(AnimationBundle::getInstance()->getCoin()));
+	}
+
+
+
+	///
+	/// --------------------------- Enemies ---------------------------
+	///
+
 	// Fire Flowers
 	unordered_set<FireFlower*> ::iterator fireFlowerItr;
 	for (fireFlowerItr = this->fireFlowers->begin(); fireFlowerItr != this->fireFlowers->end(); ++fireFlowerItr) {
@@ -1240,18 +1257,6 @@ void SunnyVC::adaptAnimation()
 	for (flowerItr = this->flowers->begin(); flowerItr != this->flowers->end(); ++flowerItr) {
 		(*flowerItr)->setState(FlowerState::FLOWER_HIDING);
 	}
-
-	// Coins
-	unordered_set<Coin*> ::iterator coinItr;
-	for (coinItr = this->coins->begin(); coinItr != this->coins->end(); ++coinItr) {
-		(*coinItr)->setAnimation(new Animation(AnimationBundle::getInstance()->getCoin()));
-	}
-
-
-
-	///
-	/// --------------------------- Enemies ---------------------------
-	///
 
 	// Goombas
 	unordered_set<Goomba*> ::iterator goombaItr;
@@ -1270,11 +1275,21 @@ void SunnyVC::adaptAnimation()
 	// Koopas
 	unordered_set<Koopa*> ::iterator koopaItr;
 	for (koopaItr = this->koopas->begin(); koopaItr != this->koopas->end(); ++koopaItr) {
-		if ((*koopaItr)->getVx() >= 0) {
-			(*koopaItr)->setState(KoopaState::KOOPA_MOVING_RIGHT);
+		if ((*koopaItr)->getIsFlyingMode()) {
+			if ((*koopaItr)->getVx() >= 0) {
+				(*koopaItr)->setState(KoopaState::KOOPA_FLYING_RIGHT);
+			}
+			else if ((*koopaItr)->getVx() < 0) {
+				(*koopaItr)->setState(KoopaState::KOOPA_FLYING_LEFT);
+			}
 		}
-		else if ((*koopaItr)->getVx() < 0) {
-			(*koopaItr)->setState(KoopaState::KOOPA_MOVING_LEFT);
+		else {
+			if ((*koopaItr)->getVx() >= 0) {
+				(*koopaItr)->setState(KoopaState::KOOPA_MOVING_RIGHT);
+			}
+			else if ((*koopaItr)->getVx() < 0) {
+				(*koopaItr)->setState(KoopaState::KOOPA_MOVING_LEFT);
+			}
 		}
 	}
 

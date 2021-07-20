@@ -87,7 +87,7 @@
 # superMarioFlyingLeftSpace, superMarioFlyingTopSpace, superMarioFlyingRightSpace,
 # firstFireBallVx, firstFireBallVy, firstFireBallId,
 # tailMarginTop, tailMarginBottom, tailHeight, tailWidth)
-2036,300,2816,470,4,3,2,4,3,2,3,5,1,10,6,1,4,1,1001,20,6,4
+36,400,2816,470,4,3,2,4,3,2,3,5,1,10,6,1,4,1,1001,20,6,4
 </MarioInfo>
 
 <GiftBrickFrames>
@@ -121,11 +121,24 @@
 </GoombaFrames>
 
 <KoopaFrames>
-# (x, y, vx, vy, defaultPoint, id, isGreenMode, leftAnchor, rightAnchor)
-# In green mode, there is No any anchors
+# (x, y, vx, vy, defaultPoint, id, mode, leftAnchor, rightAnchor)
+# mode
+# 1: green
+# 2: flying
+# In green mode or flying mode, there is No any anchors
+# red
 512,357,0.5,2,100,201,0,512,608
+
+# green
 1440,389,-0.5,2,100,202,1
+
+# red
 2088,357,0.5,2,100,203,0,2088,2116
+
+# flying
+1408,292,-0.5,2,100,204,2
+1360,292,-0.5,2,100,205,2
+1312,324,-0.5,2,100,206,2
 </KoopaFrames>
 
 <Grounds>
@@ -297,6 +310,15 @@
 
 > 203
 16,3_16,4
+
+> 204
+11,3
+
+> 205
+10,3
+
+> 206
+10,3
 
 # GiftBrick
 > 301
@@ -1153,6 +1175,13 @@
 # P Button Off
 187,17,16,16
 > 91 0 0
+
+# Koopa Flying
+0,221,16,28
+34,221,16,28
+51,221,16,28
+17,221,16,28
+> 92 0 8
 
 
 </AnimationBundle>

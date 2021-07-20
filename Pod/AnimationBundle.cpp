@@ -504,6 +504,11 @@ Animation AnimationBundle::getPButtonOff()
 	return this->animations->at(91);
 }
 
+Animation AnimationBundle::getKoopaFlying()
+{
+	return this->animations->at(92);
+}
+
 Animation AnimationBundle::getSuperMarioFlyingWalking()
 {
 	return this->animations->at(49);

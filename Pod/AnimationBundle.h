@@ -140,5 +140,7 @@ public:
 	Animation getGoldenBrickFragment();
 	Animation getPButtonOn();
 	Animation getPButtonOff();
+
+	Animation getKoopaFlying();
 };
 

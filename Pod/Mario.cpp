@@ -1914,7 +1914,16 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 		return;
 	}
 
+	if (_koopa->getState() == KOOPA_FLYING_LEFT || _koopa->getState() == KOOPA_FLYING_RIGHT /*|| _koopa->getState() == KOOPA_DROPPING_LEFT || _koopa->getState() == KOOPA_DROPPING_RIGHT*/) {
+		_koopa->setStoredVy(_koopa->getVy());
+		_koopa->setVy(-abs(_koopa->getOriginVy()));
+	}
+
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_koopa, _dt);
+
+	if (_koopa->getState() == KOOPA_FLYING_LEFT || _koopa->getState() == KOOPA_FLYING_RIGHT /*|| _koopa->getState() == KOOPA_DROPPING_LEFT || _koopa->getState() == KOOPA_DROPPING_RIGHT*/) {
+		_koopa->setVy(_koopa->getStoredVy());
+	}
 
 	if (get<0>(collisionResult) == true) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
@@ -1979,6 +1988,12 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 				else {
 					_koopa->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
 				}
+			}
+			else if (_koopa->getState() == KOOPA_FLYING_LEFT) {
+				_koopa->setState(KoopaState::KOOPA_DROPPING_LEFT);
+			}
+			else if (_koopa->getState() == KOOPA_FLYING_RIGHT) {
+				_koopa->setState(KoopaState::KOOPA_DROPPING_RIGHT);
 			}
 			else {
 				_koopa->setState(KoopaState::KOOPA_SHRINKAGE);
