@@ -87,7 +87,7 @@
 # superMarioFlyingLeftSpace, superMarioFlyingTopSpace, superMarioFlyingRightSpace,
 # firstFireBallVx, firstFireBallVy, firstFireBallId,
 # tailMarginTop, tailMarginBottom, tailHeight, tailWidth)
-36,400,2816,470,4,3,2,4,3,2,3,5,1,10,6,1,4,1,1001,20,6,4
+1336,400,2816,470,4,3,2,4,3,2,3,5,1,10,6,1,4,1,1001,20,6,4
 </MarioInfo>
 
 <GiftBrickFrames>
@@ -143,6 +143,7 @@
 
 <Grounds>
 #(x, y, width, height, id)
+# every ground plus 32 into height
 0,416,624,48,401
 624,400,464,64,402
 1152,416,352,48,403
@@ -650,7 +651,7 @@
 > 4 0 3
 
 # Trampled Goomba
-34,136,16,16
+38,140,8,8,34,136,16,16
 > 5 0 0
 
 # Green Pipe 3 floors
@@ -1183,5 +1184,21 @@
 17,221,16,28
 > 92 0 8
 
+# Goomba Red Flying
+91,229,16,16,89,221,20,24
+133,229,16,16,131,221,20,24
+112,229,16,16,110,221,20,24
+70,229,16,16,68,221,20,24
+112,229,16,16,110,221,20,24
+> 93 0 4
+
+# Goomba Red
+156,225,8,8,152,221,16,16
+173,225,8,8,169,221,16,16
+> 94 0 3
+
+# Goomba Red Trampled
+190,225,8,8,186,221,16,16
+> 95 0 0
 
 </AnimationBundle>

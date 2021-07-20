@@ -1,0 +1,104 @@
+<UndergroundSunnyVC>
+# 0. beginGroundId, endGroundId
+0,100
+
+# 1. beginCoinId, endCoinId
+101,200
+
+# 2. beginBlackPipeId, endBlackPipeId
+201,300
+
+</UndergroundSunnyVC>
+
+<Camera>
+#(x,y,vX,vY,width,height,limitX,limitY)
+0,0,0,0,256,224,512,192
+</Camera>
+
+<MapInfo>
+#(tileSize, spaceBetweenTiles, tilesPerRowInTileSet, tilesPerColumnInTileSet, width, height)
+16,1,7,1,512,192
+</MapInfo>
+
+<MapIndexes>
+0 0 0 0 0 0 0 0 1 2 0 0 0 0 0 0 0 0 0 0 0 0 1 2 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 3 4 5 5 5 5 5 5 5 5 5 5 5 5 3 4 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 5 5 5 5 5 5 5 5 5 5 5 5 5 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 5 5 5 5 5 5 5 5 5 5 5 5 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 5 5 5 5 5 5 5 5 5 5 5 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 5 5 5 5 5 5 5 5 5 5 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 5 5 5 5 5 5 5 5 5 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 5 5 5 5 5 5 5 5 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+</MapIndexes>
+
+<MarioInfo>
+#(x, y, limitX, limitY, leftSpace, topSpace, rightSpace,
+# marioLeftSpace, marioTopSpace, marioRightSpace,
+# superMarioLeftSpace, superMarioTopSpace, superMarioRightSpace,
+# superMarioFlyingLeftSpace, superMarioFlyingTopSpace, superMarioFlyingRightSpace,
+# firstFireBallVx, firstFireBallVy, firstFireBallId,
+# tailMarginTop, tailMarginBottom, tailHeight, tailWidth)
+1336,400,2816,470,4,3,2,4,3,2,3,5,1,10,6,1,4,1,1001,20,6,4
+</MarioInfo>
+
+<Grounds>
+#(x, y, width, height, id)
+# every ground plus 32 into height
+0,0,128,192,0
+160,0,192,16,1
+128,160,128,32,2
+256,144,16,48,3
+272,128,16,64,4
+288,112,16,80,5
+304,96,16,96,6
+320,80,16,112,7
+336,64,48,128,8
+384,0,128,192,9
+</Grounds>
+
+<GridInfo>
+# (totalRow, totalCol, cellHeight, cellWidth)
+3,8,64,64
+</GridInfo>
+
+<GridMatrixId>
+# every pair
+# > id
+# cellX1,cellY1_cellX2,cellY2
+
+# Ground
+> 0
+0,0_0,1_0,2_0,3_1,0_1,1_1,2_1,3_2,0_2,1_2,2_2,3
+
+> 1
+2,0_3,0_4,0_5,0
+
+> 2
+2,2_2,3_3,2_3,3_4,2_4,3
+
+> 3
+4,2_4,3
+
+> 4
+4,2_4,3
+
+> 5
+4,1_4,2_4,3
+
+> 6
+4,1_4,2_4,3_5,1_5,2_5,3
+
+> 7
+5,1_5,2_5,3
+
+> 8
+5,1_5,2_5,3_6,1_6,2_6,3
+
+> 9
+6,0_6,1_6,2_6,3_7,0_7,1_7,2_7,3_8,0_8,1_8,2_8,3
+
+
+</GridMatrixId>

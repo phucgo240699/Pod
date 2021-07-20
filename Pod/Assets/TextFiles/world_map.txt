@@ -118,7 +118,7 @@ X X X 5 - O - 6 X X X X X X
 
 <WTurtleInfo>
 # (x, y, vx, vy, leftAnchor, rightAnchor, isFlip)
-144,96,0.5,0,144,168,false
+144,112,0.5,0,144,168,false
 </WTurtleInfo>
 
 <AnimationBundle>

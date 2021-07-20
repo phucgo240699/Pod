@@ -550,10 +550,6 @@ void Koopa::Draw(LPDIRECT3DTEXTURE9 _texture)
 	if (this->animation != NULL) {
 		Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), this->getPosition(), this->getIsFlip());
 	}
-	/*if (this->pointY == this->endPointJumpUp || this->pointY == -std::numeric_limits<float>::infinity()) {
-		return;
-	}*/
-	//Drawing::getInstance()->draw(_texture, this->pointAnimation.getCurrentFrame(), D3DXVECTOR3(this->pointX, this->pointY, 0));
 }
 
 void Koopa::handleHardComponentCollision(Component* _component, float _dt)
@@ -1118,6 +1114,5 @@ void Koopa::handleKoopaCollision(Koopa* _koopa, float _dt)
 
 			_koopa->setState(KoopaState::KOOPA_THROWN_RIGHT_AWAY);
 		}
-
 	}
 }
