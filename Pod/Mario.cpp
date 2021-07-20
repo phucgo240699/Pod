@@ -253,32 +253,32 @@ void Mario::load()
 
 	fs.close();
 
-	this->setX(stof(v[0]));
-	this->setY(stof(v[1]));
-	this->setLimitX(stof(v[2]));
-	this->setLimitY(stof(v[3]));
-	this->setLeftSpace(stof(v[4]));
-	this->setTopSpace(stof(v[5]));
-	this->setRightSpace(stof(v[6]));
-	this->setMarioLeftSpace(stof(v[7]));
-	this->setMarioTopSpace(stof(v[8]));
-	this->setMarioRightSpace(stof(v[9]));
-	this->setSuperMarioLeftSpace(stof(v[10]));
-	this->setSuperMarioTopSpace(stof(v[11]));
-	this->setSuperMarioRightSpace(stof(v[12]));
-	this->setSuperMarioFlyingLeftSpace(stof(v[13]));
-	this->setSuperMarioFlyingTopSpace(stof(v[14]));
-	this->setSuperMarioFlyingRightSpace(stof(v[15]));
+	//this->setX(stof(v[0]));
+	//this->setY(stof(v[1]));
+	//this->setLimitX(stof(v[2]));
+	//this->setLimitY(stof(v[3]));
+	this->setLeftSpace(stof(v[0]));
+	this->setTopSpace(stof(v[1]));
+	this->setRightSpace(stof(v[2]));
+	this->setMarioLeftSpace(stof(v[3]));
+	this->setMarioTopSpace(stof(v[4]));
+	this->setMarioRightSpace(stof(v[5]));
+	this->setSuperMarioLeftSpace(stof(v[6]));
+	this->setSuperMarioTopSpace(stof(v[7]));
+	this->setSuperMarioRightSpace(stof(v[8]));
+	this->setSuperMarioFlyingLeftSpace(stof(v[9]));
+	this->setSuperMarioFlyingTopSpace(stof(v[10]));
+	this->setSuperMarioFlyingRightSpace(stof(v[11]));
 	//this->setState(Tool::getMarioStateFromString(v[4]));
 
-	this->firstFireBall = new FireBall(0, 0, stof(v[16]), stof(v[17]), 0, 0, stoi(v[18]));
-	this->setTailMarginTop(stoi(v[19]));
-	this->setTailMarginBottom(stoi(v[20]));
-	this->setTailHeight(stoi(v[21]));
+	this->firstFireBall = new FireBall(0, 0, stof(v[12]), stof(v[13]), 0, 0, stoi(v[14]));
+	this->setTailMarginTop(stoi(v[15]));
+	this->setTailMarginBottom(stoi(v[16]));
+	this->setTailHeight(stoi(v[17]));
 
-	this->setIsFireMode(stoi(v[22]) == 1);
-	this->setIsSuperMode(stoi(v[23]) == 1);
-	this->setIsFlyingMode(stoi(v[24]) == 1);
+	this->setIsFireMode(stoi(v[18]) == 1);
+	this->setIsSuperMode(stoi(v[19]) == 1);
+	this->setIsFlyingMode(stoi(v[20]) == 1);
 
 	if (this->getIsFlyingMode()) {
 		this->setLeftSpace(this->getSuperMarioFlyingLeftSpace());
@@ -295,6 +295,16 @@ void Mario::load()
 		this->setTopSpace(this->getMarioTopSpace());
 		this->setRightSpace(this->getMarioRightSpace());
 	}
+}
+
+void Mario::loadInfo(string line, char seperator)
+{
+	vector<float> v = Tool::splitToVectorFloatFrom(line, seperator);
+
+	this->setX(v[0]);
+	this->setY(v[1]);
+	this->setLimitX(v[2]);
+	this->setLimitY(v[3]);
 }
 
 void Mario::setIsFlip(bool _isFlip)

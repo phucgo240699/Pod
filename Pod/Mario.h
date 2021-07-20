@@ -223,6 +223,7 @@ public:
 
 
 	void load();
+	void loadInfo(string line, char seperator);
 
 
 	// Collision

@@ -1009,13 +1009,13 @@ void SunnyVC::adaptData()
 			map->loadIndexes(data, ' ');
 			section = SECTION_NONE;
 		}
-		//else if (line == "<MarioInfo>") {
-		//	section = SECTION_MARIO_INFO;
-		//	continue;
-		//}
-		//else if (line == "</MarioInfo>") {
-		//	section = SECTION_NONE;
-		//}
+		else if (line == "<MarioInfo>") {
+			section = SECTION_MARIO_INFO;
+			continue;
+		}
+		else if (line == "</MarioInfo>") {
+			section = SECTION_NONE;
+		}
 		else if (line == "<Grounds>") {
 			section = SECTION_GROUNDS;
 			continue;
@@ -1177,9 +1177,9 @@ void SunnyVC::adaptData()
 		case SECTION_MAP_INDEXES:
 			data.push_back(line);
 			break;
-		//case SECTION_MARIO_INFO:
-		//	mario->loadInfo(line, ',');
-		//	break;
+		case SECTION_MARIO_INFO:
+			mario->loadInfo(line, ',');
+			break;
 		case SECTION_GROUNDS:
 			data.push_back(line);
 			break;
