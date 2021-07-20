@@ -73,11 +73,15 @@ void SuperMushroom::setState(SuperMushroomState _state)
 	}
 	case SUPER_MUSHROOM_BEING_EARNED:
 	{
+		this->pointAnimation = new Animation(AnimationBundle::getInstance()->get1000Points());
+		this->endPointJumpUp = this->getY() - 36;
+		this->pointPosition = D3DXVECTOR3(this->getX(), this->getY(), 0);
 		break;
 	}
 	default:
 		break;
 	}
+
 	this->state = _state;
 }
 
@@ -125,9 +129,12 @@ void SuperMushroom::Update(float _dt)
 	}
 
 	else if (this->getState() == SUPER_MUSHROOM_BEING_EARNED) {		
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(1000, this->getX(), this->getY())));
-		this->setState(SuperMushroomState::SUPER_MUSHROOM_DISAPPEARED);
-		
+		/*AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(1000, this->getX(), this->getY())));
+		this->setState(SuperMushroomState::SUPER_MUSHROOM_DISAPPEARED);*/
+		if (this->pointPosition.y <= this->endPointJumpUp) {
+			this->setState(SuperMushroomState::SUPER_MUSHROOM_DISAPPEARED);
+		}
+		this->pointPosition.y -= 2;
 	}
 }
 
@@ -135,6 +142,10 @@ void SuperMushroom::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
 	if (this->getState() == SUPER_MUSHROOM_DISAPPEARED) return;
 
+	if (this->getState() == SUPER_MUSHROOM_BEING_EARNED) {
+		Drawing::getInstance()->draw(_texture, this->pointAnimation->getCurrentFrame(), this->pointPosition);
+		return;
+	}
 	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), D3DXVECTOR3(round(this->getX()), round(this->getY()), 0));
 }
 
@@ -246,7 +257,7 @@ void SuperMushroom::handleMarioCollision(Mario* _mario, float _dt)
 	if (get<0>(collisionResult) == true) {
 		int xPoint = this->getX();
 		int yPoint = this->getY();
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoints(), xPoint, yPoint)));
+		//AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoints(), xPoint, yPoint)));
 		ScoreBoard::getInstance()->plusPoint(1000);
 
 		//this->plusX(this->getVx() * get<1>(collisionResult));
@@ -259,7 +270,7 @@ void SuperMushroom::handleMarioCollision(Mario* _mario, float _dt)
 	else if (this->isCollidingByBounds(_mario->getBounds())) {
 		int xPoint = this->getX();
 		int yPoint = this->getY();
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoints(), xPoint, yPoint)));
+		//AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoints(), xPoint, yPoint)));
 		ScoreBoard::getInstance()->plusPoint(1000);
 
 		this->setState(SuperMushroomState::SUPER_MUSHROOM_BEING_EARNED);

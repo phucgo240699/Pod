@@ -14,11 +14,12 @@ class Mario;
 class SuperMushroom : public Component
 {
 private:
-	Animation* animation;// , * pointAnimation;
+	Animation* animation , * pointAnimation;
 	SuperMushroomState state;
+	D3DXVECTOR3 pointPosition;// = D3DXVECTOR3(0, 0, 0);
 	bool moveLeftFirst;
 	int endGrowUpY, countDownToDisappear = 12;
-	//int endPointJumpUp, pointY;
+	int endPointJumpUp;// , pointY;
 
 	// Collision
 	bool isStandOnSurface = false;

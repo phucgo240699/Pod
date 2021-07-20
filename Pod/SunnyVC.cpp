@@ -149,8 +149,7 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 				// SuperMushroom
 				else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= endSuperMushroomId) {
-					if (static_cast<SuperMushroom*>(*itr)->getState() == SUPER_MUSHROOM_DISAPPEARED
-						|| static_cast<SuperMushroom*>(*itr)->getState() == SUPER_MUSHROOM_BEING_EARNED) {
+					if (static_cast<SuperMushroom*>(*itr)->getState() == SUPER_MUSHROOM_DISAPPEARED) {
 						Grid::getInstance()->remove(*itr, i, j);
 						continue;
 					}
@@ -169,23 +168,28 @@ void SunnyVC::viewWillUpdate(float _dt)
 					}
 				}
 
-				// ==========================================================================================
-				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getState() == TRANSFERING_TO_FLY) {
-					continue;
-				}
-
 				// SuperLeaf
 				else if (beginSuperLeafId <= (*itr)->getId() && (*itr)->getId() <= endSuperLeafId) {
-					if (static_cast<SuperLeaf*>(*itr)->getState() == SUPER_LEAF_BEING_EARNED) {
+					if (static_cast<SuperLeaf*>(*itr)->getState() == SUPER_LEAF_DISAPPEARED) {
 						Grid::getInstance()->remove(*itr, i, j);
 						continue;
 					}
-					
+
+					if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_DOWN || this->mario->getState() == TRANSFERING_TO_FLY) {
+						continue;
+					}
+
 					(*itr)->Update(_dt);
 
 					// update which cell in grid that it's belongs to
 					Grid::getInstance()->updateCellOf(*itr);
 				}
+
+				// ==========================================================================================
+				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getState() == TRANSFERING_TO_FLY) {
+					continue;
+				}
+
 
 				// Fire Flower
 				else if (beginFireFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerId) {

@@ -58,6 +58,11 @@ void SuperLeaf::setState(SuperLeafState _state)
 		this->setVy(abs(originVy));
 		this->topY = this->getY();
 		break;
+	case SUPER_LEAF_BEING_EARNED:
+		this->pointAnimation = new Animation(AnimationBundle::getInstance()->get1000Points());
+		this->pointPosition = D3DXVECTOR3(this->getX(), this->getY(), 0);
+		this->endPointJumpUpY = this->getY() - 36;
+		break;
 	default:
 		break;
 	}
@@ -114,11 +119,24 @@ void SuperLeaf::Update(float _dt)
 			this->setIsFlip(false);
 		}
 	}
+	else if (this->getState() == SUPER_LEAF_BEING_EARNED) {
+		if (this->pointPosition.y <= this->endPointJumpUpY) {
+			this->setState(SuperLeafState::SUPER_LEAF_DISAPPEARED);
+		}
+
+		this->pointPosition.y -= 2;
+	}
 }
 
 void SuperLeaf::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
-	if (this->getState() == SUPER_LEAF_BEING_EARNED);
+	if (this->getState() == SUPER_LEAF_DISAPPEARED) return;
+
+	if (this->getState() == SUPER_LEAF_BEING_EARNED) {
+		Drawing::getInstance()->draw(_texture, this->pointAnimation->getCurrentFrame(), this->pointPosition);
+		return;
+	}
+
 	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), this->getPosition(), this->getIsFlip());
 }
 
@@ -131,6 +149,7 @@ void SuperLeaf::handleMarioCollision(Mario* _mario, float _dt)
 		|| _mario->getState() == SCALING_DOWN
 		|| _mario->getState() == TRANSFERING_TO_FLY
 		|| _mario->getIsFlashMode()
+		|| this->getState() == SUPER_LEAF_DISAPPEARED
 		|| this->getState() == SUPER_LEAF_BEING_EARNED) {
 		return;
 	}
@@ -140,7 +159,7 @@ void SuperLeaf::handleMarioCollision(Mario* _mario, float _dt)
 	if (get<0>(collisionResult) == true) {
 		//int xPoint = this->getX();
 		//int yPoint = this->getY();
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoints(), this->getX(), this->getY())));
+		//AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoints(), this->getX(), this->getY())));
 		ScoreBoard::getInstance()->plusPoint(1000);
 
 		this->plusX(this->getVx() * get<1>(collisionResult));
@@ -149,20 +168,26 @@ void SuperLeaf::handleMarioCollision(Mario* _mario, float _dt)
 		_mario->plusX(_mario->getVx() * get<1>(collisionResult));
 		_mario->plusY(_mario->getVy() * get<1>(collisionResult));
 
-		if (_mario->getIsFlyingMode() == false) {
+		if (_mario->getIsFlyingMode() == false && _mario->getIsSuperMode()) {
 			_mario->setState(MarioState::TRANSFERING_TO_FLY);
+		}
+		else if (_mario->getIsFlyingMode() == false && _mario->getIsSuperMode() == false) {
+			_mario->setState(MarioState::SCALING_UP);
 		}
 	}
 	else if (this->isCollidingByBounds(_mario->getBounds())) {
 		//int xPoint = this->getX();
 		//int yPoint = this->getY();
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoints(), this->getX(), this->getY())));
+		//AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoints(), this->getX(), this->getY())));
 		ScoreBoard::getInstance()->plusPoint(1000);
 
 		this->setState(SuperLeafState::SUPER_LEAF_BEING_EARNED);
 
-		if (_mario->getIsFlyingMode() == false) {
+		if (_mario->getIsFlyingMode() == false && _mario->getIsSuperMode()) {
 			_mario->setState(MarioState::TRANSFERING_TO_FLY);
+		}
+		else if (_mario->getIsFlyingMode() == false && _mario->getIsSuperMode() == false) {
+			_mario->setState(MarioState::SCALING_UP);
 		}
 	}
 }

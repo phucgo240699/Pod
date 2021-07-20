@@ -1075,7 +1075,6 @@ void Mario::Update(float _dt)
 			this->setState(this->getPressureState());
 			//this->countDownFlash = this->getCurrentAnimation()->getTotalFrames() * 16;
 		}
-		this->countDownFlash -= 1;
 	}
 
 	else if (this->getIsFlashMode()) {
@@ -1141,7 +1140,7 @@ void Mario::Draw()
 
 	// Draw mario
 	if (this->getIsFlashMode()) {
-		this->currentAnimation->DrawMarioWithoutCamera(this->texture, this->getPosition(), D3DXVECTOR2(translateX, translateY), this->getLeftSpace(), this->getTopSpace(), this->getRightSpace(), this->getIsFlip(), (this->countDownFlash % 4 == 0 ? D3DCOLOR_ARGB(128, 255, 255, 255) : D3DCOLOR_XRGB(255, 255, 255)));
+		this->currentAnimation->DrawMarioWithoutCamera(this->texture, this->getPosition(), D3DXVECTOR2(translateX, translateY), this->getLeftSpace(), this->getTopSpace(), this->getRightSpace(), this->getIsFlip(), ((this->countDownFlash % 4 == 0 || this->countDownFlash % 3 == 0) ? D3DCOLOR_ARGB(128, 255, 255, 255) : D3DCOLOR_XRGB(255, 255, 255)));
 		//this->currentAnimation->DrawWithoutCamera(this->texture, this->getPosition(), D3DXVECTOR2(translateX - transX, translateY - this->getTopSpace()), this->getIsFlip(), (this->countDownFlash % 4 == 0 ? D3DCOLOR_ARGB(128, 255, 255, 255) : D3DCOLOR_XRGB(255, 255, 255)));
 	}
 	else if (this->getState() == SCALING_UP) {
@@ -2075,7 +2074,7 @@ void Mario::handleSuperMushroomCollision(SuperMushroom* _superMushroom, float _d
 		int xPoint = _superMushroom->getX();
 		int yPoint = _superMushroom->getY();
 
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_superMushroom->getDefaultPoints(), xPoint, yPoint)));
+		//AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_superMushroom->getDefaultPoints(), xPoint, yPoint)));
 		ScoreBoard::getInstance()->plusPoint(1000);
 
 		//_superMushroom->plusX(this->getVx() * get<1>(collisionResult));
@@ -2091,7 +2090,7 @@ void Mario::handleSuperMushroomCollision(SuperMushroom* _superMushroom, float _d
 		int xPoint = _superMushroom->getX();
 		int yPoint = _superMushroom->getY();
 
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_superMushroom->getDefaultPoints(), xPoint, yPoint)));
+		//AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_superMushroom->getDefaultPoints(), xPoint, yPoint)));
 		ScoreBoard::getInstance()->plusPoint(1000);
 
 		_superMushroom->setState(SuperMushroomState::SUPER_MUSHROOM_BEING_EARNED);
@@ -2110,6 +2109,7 @@ void Mario::handleSuperLeafCollision(SuperLeaf* _superLeaf, float _dt)
 		|| this->getState() == SCALING_DOWN
 		|| this->getState() == TRANSFERING_TO_FLY
 		|| this->getIsFlashMode()
+		|| _superLeaf->getState() == SUPER_LEAF_DISAPPEARED
 		|| _superLeaf->getState() == SUPER_LEAF_BEING_EARNED) {
 		return;
 	}
@@ -2120,7 +2120,7 @@ void Mario::handleSuperLeafCollision(SuperLeaf* _superLeaf, float _dt)
 		//int xPoint = _superLeaf->getX();
 		//int yPoint = _superLeaf->getY();
 
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_superLeaf->getDefaultPoints(), _superLeaf->getX(), _superLeaf->getY())));
+		//AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_superLeaf->getDefaultPoints(), _superLeaf->getX(), _superLeaf->getY())));
 		ScoreBoard::getInstance()->plusPoint(1000);
 
 		_superLeaf->plusX(_superLeaf->getVx() * get<1>(collisionResult));
@@ -2129,8 +2129,11 @@ void Mario::handleSuperLeafCollision(SuperLeaf* _superLeaf, float _dt)
 		this->plusX(this->getVx() * get<1>(collisionResult));
 		this->plusY(this->getVy() * get<1>(collisionResult));
 
-		if (this->getIsFlyingMode() == false) {
+		if (this->getIsFlyingMode() == false && this->getIsSuperMode()) {
 			this->setState(MarioState::TRANSFERING_TO_FLY);
+		}
+		else if (this->getIsFlyingMode() == false && this->getIsSuperMode() == false) {
+			this->setState(MarioState::SCALING_UP);
 		}
 
 	}
@@ -2138,13 +2141,16 @@ void Mario::handleSuperLeafCollision(SuperLeaf* _superLeaf, float _dt)
 		//int xPoint = _superLeaf->getX();
 		//int yPoint = _superLeaf->getY();
 
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_superLeaf->getDefaultPoints(), _superLeaf->getX(), _superLeaf->getY())));
+		//AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_superLeaf->getDefaultPoints(), _superLeaf->getX(), _superLeaf->getY())));
 		ScoreBoard::getInstance()->plusPoint(1000);
 
 		_superLeaf->setState(SuperLeafState::SUPER_LEAF_BEING_EARNED);
 
-		if (this->getIsFlyingMode() == false) {
+		if (this->getIsFlyingMode() == false && this->getIsSuperMode()) {
 			this->setState(MarioState::TRANSFERING_TO_FLY);
+		}
+		else if (this->getIsFlyingMode() == false && this->getIsSuperMode() == false) {
+			this->setState(MarioState::SCALING_UP);
 		}
 	}
 }

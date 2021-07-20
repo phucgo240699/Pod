@@ -11,8 +11,10 @@ class Mario;
 class SuperLeaf : public Component
 {
 private:
-	Animation* animation;
+	Animation* animation,* pointAnimation;
 	SuperLeafState state;
+	D3DXVECTOR3 pointPosition;
+	float endPointJumpUpY;
 
 	float originVx, originVy;
 
