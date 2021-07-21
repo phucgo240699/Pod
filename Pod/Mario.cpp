@@ -322,6 +322,88 @@ void Mario::loadInfo(string line, char seperator)
 	this->setLimitY(v[3]);
 }
 
+void Mario::save()
+{
+	vector<string> data = vector<string>();
+	string line = "";
+
+	data.push_back("# (leftSpace, topSpace, rightSpace,");
+	data.push_back("\n");
+	data.push_back("# marioLeftSpace, marioTopSpace, marioRightSpace,");
+	data.push_back("\n");
+	data.push_back("# superMarioLeftSpace, superMarioTopSpace, superMarioRightSpace,");
+	data.push_back("\n");
+	data.push_back("# superMarioFlyingLeftSpace, superMarioFlyingTopSpace, superMarioFlyingRightSpace,");
+	data.push_back("\n");
+	data.push_back("# firstFireBallVx, firstFireBallVy, firstFireBallId,");
+	data.push_back("\n");
+	data.push_back("# tailMarginTop, tailMarginBottom, tailHeight, tailWidth,");
+	data.push_back("\n");
+	data.push_back("# isFireMode, isSuperMode, isFlyingMode)");
+	data.push_back("\n");
+
+	/*line += to_string(this->getLeftSpace());
+	line += ",";
+	line += to_string(this->getTopSpace());
+	line += ",";
+	line += to_string(this->getRightSpace());
+	line += ",";
+	line += to_string(this->getMarioLeftSpace());
+	line += ",";
+	line += to_string(this->getMarioTopSpace());
+	line += ",";
+	line += to_string(this->getMarioRightSpace());
+	line += ",";
+	line += to_string(this->getSuperMarioLeftSpace());
+	line += ",";
+	line += to_string(this->getSuperMarioTopSpace());
+	line += ",";
+	line += to_string(this->getSuperMarioRightSpace());
+	line += ",";
+	line += to_string(this->getSuperMarioFlyingLeftSpace());
+	line += ",";
+	line += to_string(this->getSuperMarioFlyingTopSpace());
+	line += ",";
+	line += to_string(this->getSuperMarioFlyingRightSpace());
+	line += ",";
+	line += to_string(this->firstFireBall->getVx());
+	line += ",";
+	line += to_string(this->firstFireBall->getVy());
+	line += ",";
+	line += to_string(this->firstFireBall->getId());
+	line += ",";
+	line += to_string(this->getTailMarginTop());
+	line += ",";
+	line += to_string(this->getTailMarginBottom());
+	line += ",";
+	line += to_string(this->getTailHeight());
+	line += ",";
+	*/
+	line += "4,3,2,4,3,2,3,5,1,10,6,1,4,1,1001,20,6,4";
+	line += ",";
+	line += to_string(this->getIsFireMode());
+	line += ",";
+	line += to_string(this->getIsSuperMode());
+	line += ",";
+	line += to_string(this->getIsFlyingMode());
+
+	data.push_back(line);
+
+	fstream fs;
+	fs.open(FilePath::getInstance()->mario, ios::out);
+
+	for (int i = 0; i < data.size(); ++i) {
+		if (data[i] == "\n") {
+			fs << endl;
+		}
+		else {
+			fs << data[i];
+		}
+	}
+
+	fs.close();
+}
+
 void Mario::setIsFlip(bool _isFlip)
 {
 	this->isFlip = _isFlip;
@@ -699,10 +781,10 @@ void Mario::setState(MarioState _state)
 		}
 		else {
 			if (this->getIsFireMode()) {
-				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioDroppingDownPipe());
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioFireDroppingDownPipe());
 			}
 			else {
-				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioFireDroppingDownPipe());
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioDroppingDownPipe());
 			}
 		}
 		
@@ -731,10 +813,10 @@ void Mario::setState(MarioState _state)
 		}
 		else {
 			if (this->getIsFireMode()) {
-				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioDroppingDownPipe());
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioFireDroppingDownPipe());
 			}
 			else {
-				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioFireDroppingDownPipe());
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioDroppingDownPipe());
 			}
 		}
 		this->endPoppingUpPipe = this->getY() - this->getBoundsHeight();

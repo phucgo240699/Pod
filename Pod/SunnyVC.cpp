@@ -132,7 +132,7 @@ void SunnyVC::viewWillUpdate(float _dt)
 			if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
 			cell = Grid::getInstance()->getCell(i, j);
-			if (cell.size() <= 0) continue;
+
 			unordered_set<Component*> ::iterator itr;
 			for (itr = cell.begin(); itr != cell.end(); ++itr) {
 				// Gift Brick

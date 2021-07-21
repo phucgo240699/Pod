@@ -1,6 +1,11 @@
 #include "UndergroundVC.h"
 #include "SunnyMap.h"
 
+Mario* UndergroundVC::getMario()
+{
+	return this->mario;
+}
+
 void UndergroundVC::viewDidLoad()
 {
 	mario = new Mario(0, 0, 0, 0, 0, 0, ImagePath::getInstance()->mario, D3DCOLOR_XRGB(255, 0, 255), DROPPING);

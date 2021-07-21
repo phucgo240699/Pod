@@ -14,15 +14,17 @@ void ViewController::navigateTo(SceneName _sceneName)
 
 	case SceneName::UndergroundScene:
 	{
-		// If current scene is SunnyScene => Save Current Grid Sunny Map
+		// If current scene is SunnyScene => Save Current Grid Sunny Map, and save mario
 		if (this->appController->getSceneName() == SunnyScene) {
 			Grid::getInstance()->saveCurrentSunnyMap();
+			this->appController->getSunnyVC()->getMario()->save();
 		}
 
 		Camera::getInstance()->loadUndergroundMap();
 		Grid::getInstance()->loadOriginalUnderGroundMap();
 		this->appController->getUndergroundVC()->adaptToGrid();
-
+		this->appController->getUndergroundVC()->getMario()->load();
+		Camera::getInstance()->setPositionBy(this->appController->getUndergroundVC()->getMario());
 		break;
 	}
 
@@ -38,6 +40,11 @@ void ViewController::navigateTo(SceneName _sceneName)
 			Camera::getInstance()->setPositionBy(this->appController->getSunnyVC()->getMario());
 		}
 		else if (this->appController->getSceneName() == SceneName::UndergroundScene) {
+			// If current scene is UndergroundScene => Save  mario
+			if (this->appController->getSceneName() == SunnyScene) {
+				this->appController->getSunnyVC()->getMario()->save();
+			}
+
 			Camera::getInstance()->loadSunnyMap();
 
 			//this->appController->getSunnyVC()->setMario(new Mario(0, 0, 0, 0, 0, 0, ImagePath::getInstance()->mario, D3DCOLOR_XRGB(255, 0, 255), DROPPING));

@@ -23,6 +23,8 @@ private:
 	int beginFireBallId, endFireBallId;
 
 public:
+	Mario* getMario();
+
 	void viewDidLoad();
 	void viewReceiveKeyUp();
 	void viewReceiveKeyUp(vector<KeyType> _keyTypes);
