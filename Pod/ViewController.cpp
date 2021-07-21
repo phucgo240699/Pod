@@ -14,9 +14,15 @@ void ViewController::navigateTo(SceneName _sceneName)
 
 	case SceneName::UndergroundScene:
 	{
+		// If current scene is SunnyScene => Save Current Grid Sunny Map
+		if (this->appController->getSceneName() == SunnyScene) {
+			Grid::getInstance()->saveCurrentSunnyMap();
+		}
+
 		Camera::getInstance()->loadUndergroundMap();
-		Grid::getInstance()->loadUnderGroundMap();
+		Grid::getInstance()->loadOriginalUnderGroundMap();
 		this->appController->getUndergroundVC()->adaptToGrid();
+
 		break;
 	}
 
@@ -26,7 +32,7 @@ void ViewController::navigateTo(SceneName _sceneName)
 			this->appController->setSunnyVC(new SunnyVC());
 			ScoreBoard::getInstance()->resetTimeTo300();
 			Camera::getInstance()->loadSunnyMap();
-			Grid::getInstance()->loadSunnyMap();
+			Grid::getInstance()->loadOriginalSunnyMap();
 			this->appController->getSunnyVC()->viewDidLoad();
 			this->appController->getSunnyVC()->adaptToGrid();
 			Camera::getInstance()->setPositionBy(this->appController->getSunnyVC()->getMario());
@@ -43,7 +49,7 @@ void ViewController::navigateTo(SceneName _sceneName)
 
 			Camera::getInstance()->setPositionBy(this->appController->getSunnyVC()->getMario());
 
-			Grid::getInstance()->loadSunnyMap();
+			Grid::getInstance()->loadCurrentSunnyMap();
 			this->appController->getSunnyVC()->adaptToGrid();
 
 			//this->appController->getSunnyVC()->getMario()->setAnimation(new Animation(AnimationBundle::getInstance()->getMarioStanding()));
@@ -62,7 +68,7 @@ void ViewController::navigateTo(SceneName _sceneName)
 			this->appController->setThirdVC(new ThirdVC());
 			ScoreBoard::getInstance()->resetTimeTo300();
 			Camera::getInstance()->loadThirdMap();
-			Grid::getInstance()->loadThirdMap();
+			Grid::getInstance()->loadOriginalThirdMap();
 			this->appController->getThirdVC()->viewDidLoad();
 			this->appController->getThirdVC()->adaptToGrid();
 			Camera::getInstance()->setPositionBy(this->appController->getThirdVC()->getMario());

@@ -30,15 +30,21 @@ public:
 	int getTotalRows();
 	int getTotalCols();
 
-	void loadSunnyMap();
-	void loadUnderGroundMap();
-	void loadThirdMap();
+	void loadOriginalSunnyMap();
+	void loadOriginalUnderGroundMap();
+	void loadOriginalThirdMap();
 	void loadInfo(string line, char seperator);
 	void loadMatrixId(vector<string> data, char beginSeperator, char pairSeperator, char seperator);
 	void add(Component* _component);
 	void add(Component* _component, int row, int col);
 	void remove(Component* _component, int row, int col);
 	void updateCellOf(Component* _component);
+
+
+	// Current
+	void saveCurrentSunnyMap();
+
+	void loadCurrentSunnyMap();
 
 	bool checkExist(Component* _component, int beginRow, int endRow, int beginCol, int endCol);
 };

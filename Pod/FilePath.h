@@ -37,6 +37,8 @@ public:
 	string original_grid_underground_map = "./Assets/TextFiles/original_grid_underground_map.txt";
 	string original_grid_third_map = "./Assets/TextFiles/original_grid_third_map.txt";
 
+	string current_grid_sunny_map = "./Assets/TextFiles/current_grid_sunny_map.txt";
+
 	// Animation Bundle
 	string animation_bundle = "./Assets/TextFiles/animation_bundle.txt";
 };
