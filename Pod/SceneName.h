@@ -1,4 +1,4 @@
 #pragma once
 enum SceneName {
-	WorldScene, SunnyScene, UndergroundScene
+	WorldScene, SunnyScene, UndergroundScene, ThirdScene
 };

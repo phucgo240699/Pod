@@ -12,6 +12,7 @@
 #include "dxgraphics.h"
 #include "WorldVC.h"
 #include "SunnyVC.h"
+#include "ThirdVC.h"
 #include "UndergroundVC.h"
 
 
@@ -28,7 +29,7 @@ private:
 	WorldVC* worldVC;
 	SunnyVC* sunnyVC;
 	UndergroundVC* undergroundVC;
-
+	ThirdVC* thirdVC;
 
 
 public:
@@ -39,6 +40,7 @@ public:
 	WorldVC* getWorldVC();
 	SunnyVC* getSunnyVC();
 	UndergroundVC* getUndergroundVC();
+	ThirdVC* getThirdVC();
 
 
 
@@ -49,6 +51,7 @@ public:
 	void setWorldVC(WorldVC* _worldVC);
 	void setSunnyVC(SunnyVC* _sunnyVC);
 	void setUndergroundVC(UndergroundVC* _undergroundVC);
+	void setThirdVC(ThirdVC* _thirdVC);
 
 
 

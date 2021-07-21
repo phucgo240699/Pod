@@ -189,3 +189,22 @@ void Camera::loadUndergroundMap()
 
 	fs.close();
 }
+
+void Camera::loadThirdMap()
+{
+	fstream fs;
+	fs.open(FilePath::getInstance()->camera_third_map, ios::in);
+
+	vector<string> v;
+	string line;
+
+	while (!fs.eof())
+	{
+		getline(fs, line);
+		if (line[0] == '#') continue; // Comment
+		if (line == "") continue; // Empty
+		this->load(line, ',');
+	}
+
+	fs.close();
+}

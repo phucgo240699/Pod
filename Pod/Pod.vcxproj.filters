@@ -244,6 +244,12 @@
     <Filter Include="Source Files\ViewController\UndergroundVC">
       <UniqueIdentifier>{c443675c-08df-4824-80be-bfacb38606f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ViewController\ThirdVC">
+      <UniqueIdentifier>{93c2719c-1815-4f74-b9ee-b899c0c0885a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ViewController\ThirdVC">
+      <UniqueIdentifier>{dda34fdd-2951-4dd9-bcb5-0d75300cdfda}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -383,6 +389,9 @@
     </ClCompile>
     <ClCompile Include="UndergroundVC.cpp">
       <Filter>Source Files\ViewController\UndergroundVC</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdVC.cpp">
+      <Filter>Source Files\ViewController\ThirdVC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -580,6 +589,9 @@
     </ClInclude>
     <ClInclude Include="UndergroundVC.h">
       <Filter>Header Files\ViewController\UndergroundVC</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdVC.h">
+      <Filter>Header Files\ViewController\ThirdVC</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

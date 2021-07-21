@@ -15,6 +15,7 @@ public:
 	LPCWSTR world_map = L"./Assets/Images/world_map.png";
 	LPCWSTR sunny_map = L"./Assets/Images/sunny_map.png";
 	LPCWSTR underground_map = L"./Assets/Images/underground_map.png";
+	LPCWSTR third_map = L"./Assets/Images/third_map.png";
 	LPCWSTR mario = L"./Assets/Images/mario.png";
 	LPCWSTR debug_box = L"./Assets/Images/debug_box.png";
 	LPCWSTR board = L"./Assets/Images/board.png";

@@ -121,6 +121,7 @@ void SunnyVC::viewWillUpdate(float _dt)
 	}
 
 	// Check by cell in grid
+	unordered_set<Component*> cell;
 	int beginRow = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight());
 	int endRow = ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
 	int beginCol = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth());
@@ -130,7 +131,8 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 			if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
-			unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
+			cell = Grid::getInstance()->getCell(i, j);
+			if (cell.size() <= 0) continue;
 			unordered_set<Component*> ::iterator itr;
 			for (itr = cell.begin(); itr != cell.end(); ++itr) {
 				// Gift Brick

@@ -29,6 +29,7 @@ void ViewController::navigateTo(SceneName _sceneName)
 			Grid::getInstance()->loadSunnyMap();
 			this->appController->getSunnyVC()->viewDidLoad();
 			this->appController->getSunnyVC()->adaptToGrid();
+			Camera::getInstance()->setPositionBy(this->appController->getSunnyVC()->getMario());
 		}
 		else if (this->appController->getSceneName() == SceneName::UndergroundScene) {
 			Camera::getInstance()->loadSunnyMap();
@@ -52,6 +53,21 @@ void ViewController::navigateTo(SceneName _sceneName)
 
 
 		}
+		break;
+	}
+
+	case ThirdScene:
+	{
+		if (this->appController->getSceneName() == SceneName::WorldScene) {
+			this->appController->setThirdVC(new ThirdVC());
+			ScoreBoard::getInstance()->resetTimeTo300();
+			Camera::getInstance()->loadThirdMap();
+			Grid::getInstance()->loadThirdMap();
+			this->appController->getThirdVC()->viewDidLoad();
+			this->appController->getThirdVC()->adaptToGrid();
+			Camera::getInstance()->setPositionBy(this->appController->getThirdVC()->getMario());
+		}
+
 		break;
 	}
 	default:

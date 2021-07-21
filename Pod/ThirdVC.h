@@ -1,12 +1,14 @@
 #pragma once
-#include "Ground.h"
-#include "Coin.h"
 #include "ViewController.h"
 #include "Mario.h"
+#include "SectionFile.h"
+#include "AnimationBundle.h"
+#include "AnimationCDPlayer.h"
 
-class UndergroundVC : public ViewController
+class ThirdVC : public ViewController
 {
 private:
+	//int componentIdStanded = 0; // this is the component that mario is standing on
 	Mario* mario;
 	Map* map;
 	LPDIRECT3DTEXTURE9 sunnyMapTexture;
@@ -14,15 +16,19 @@ private:
 	int beginGroundId, endGroundId;
 	vector<Ground*>* grounds;
 
-	int beginCoinId, endCoinId;
-	unordered_set<Coin*>* coins;
-
-	int beginGreenPipeId, endGreenPipeId, greenPipeIdToUnderground, leftAnchorGreenPipeToUnderground, rightAnchorGreenPipeToUnderground;
-	vector<GreenPipe*>* greenPipes;
-
-	int beginFireBallId, endFireBallId;
 
 public:
+	// Getter
+	Mario* getMario();
+
+
+
+	// Setter
+	void setMario(Mario* _mario);
+
+	// De init
+
+
 	void viewDidLoad();
 	void viewReceiveKeyUp();
 	void viewReceiveKeyUp(vector<KeyType> _keyTypes);

@@ -8,6 +8,7 @@ void UndergroundVC::viewDidLoad()
 	grounds = new vector<Ground*>();
 	coins = new unordered_set<Coin*>();
 	greenPipes = new vector<GreenPipe*>();
+	sunnyMapTexture = LoadTextureFromImage(ImagePath::getInstance()->sunny_map, D3DCOLOR_XRGB(255, 0, 255));
 
 	this->mario->load();
 
@@ -54,6 +55,7 @@ void UndergroundVC::viewWillUpdate(float _dt)
 					continue;
 				}
 
+				// Coin
 				else if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
 					if (static_cast<Coin*>(*itr)->getState() == COIN_BEING_EARNED) {
 						Grid::getInstance()->remove(*itr, i, j);
@@ -63,6 +65,23 @@ void UndergroundVC::viewWillUpdate(float _dt)
 					(*itr)->Update(_dt);
 				}
 
+				// Fire Ball
+				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
+					if (static_cast<FireBall*>(*itr)->getState() == FIREBALL_DISAPPEARED) {
+						Grid::getInstance()->remove(*itr, i, j);
+						static_cast<FireBall*>(*itr)->setIsOutOfGrid(true);
+						continue;
+					}
+
+					(*itr)->Update(_dt);
+
+					Grid::getInstance()->updateCellOf(*itr);
+
+					if ((*itr)->isCollidingByFrame(Camera::getInstance()->getFrame()) == false) {
+						Grid::getInstance()->remove(*itr, i, j);
+						static_cast<FireBall*>(*itr)->setIsOutOfGrid(true);
+					}
+				}
 			}
 		}
 	}
@@ -93,6 +112,8 @@ void UndergroundVC::viewWillUpdate(float _dt)
 			Camera::getInstance()->follow(mario, _dt);
 		}
 	}
+
+	AnimationCDPlayer::getInstance()->Update(_dt);
 
 	if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN) {
 		return;
@@ -141,6 +162,35 @@ void UndergroundVC::viewDidUpdate(float _dt)
 				else if (beginGreenPipeId <= (*itr)->getId() && (*itr)->getId() <= endGreenPipeId) {
 					this->mario->handleGreenPipeDownCollision(static_cast<GreenPipe*>(*itr), this->greenPipeIdToUnderground, this->leftAnchorGreenPipeToUnderground, this->rightAnchorGreenPipeToUnderground, _dt);
 				}
+
+				// Fire Ball
+				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
+					// FireBall to others
+					int beginRowFireball = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int endRowFireball = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int beginColFireball = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int endColFireball = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+
+					beginRowFireball = beginRowFireball < 0 ? 0 : beginRowFireball;
+					endRowFireball = endRowFireball > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowFireball;
+					beginColFireball = beginColFireball < 0 ? 0 : beginColFireball;
+					endColFireball = endColFireball > Grid::getInstance()->getTotalCols() ? Grid::getInstance()->getTotalCols() : endColFireball;
+
+					unordered_set<Component*> fireBallCell;
+					for (int r = beginRowFireball; r < endRowFireball; ++r) {
+						for (int c = beginColFireball; c < endColFireball; ++c) {
+							fireBallCell = Grid::getInstance()->getCell(r, c);
+							unordered_set<Component*> ::iterator fireBallItr;
+
+							for (fireBallItr = fireBallCell.begin(); fireBallItr != fireBallCell.end(); ++fireBallItr) {
+								if ((beginGroundId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endGroundId)
+									|| (beginGreenPipeId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endGreenPipeId)) {
+									static_cast<FireBall*>(*itr)->handleHardComponentCollision(*fireBallItr, _dt);
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 	}
@@ -162,16 +212,33 @@ void UndergroundVC::viewWillRender()
 			map->Draw();
 		}
 
+		unordered_set<Component*> cell;
 		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
 			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
 				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
-				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
+				cell = Grid::getInstance()->getCell(i, j);
 				unordered_set<Component*> ::iterator itr;
 				for (itr = cell.begin(); itr != cell.end(); ++itr) {
 
 					// Coin
 					if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
+						(*itr)->Draw(map->getTexture());
+					}
+				}
+			}
+		}
+
+		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
+			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
+
+				cell = Grid::getInstance()->getCell(i, j);
+				unordered_set<Component*> ::iterator itr;
+				for (itr = cell.begin(); itr != cell.end(); ++itr) {
+
+					// Fire Ball
+					if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
 						(*itr)->Draw(map->getTexture());
 					}
 				}
@@ -197,7 +264,7 @@ void UndergroundVC::viewWillRender()
 			}
 		}
 
-		AnimationCDPlayer::getInstance()->Draw(map->getTexture());
+		AnimationCDPlayer::getInstance()->Draw(sunnyMapTexture);
 
 		ScoreBoard::getInstance()->Draw();
 
@@ -238,6 +305,11 @@ void UndergroundVC::adaptRangeID(vector<string> data, char seperator)
 			this->greenPipeIdToUnderground = v[2];
 			this->leftAnchorGreenPipeToUnderground = v[3];
 			this->rightAnchorGreenPipeToUnderground = v[4];
+		}
+		else if (i == 3) {
+			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
+			this->beginFireBallId = v[0];
+			this->endFireBallId = v[1];
 		}
 
 	}
@@ -380,7 +452,7 @@ void UndergroundVC::adaptAnimation()
 	this->mario->setAnimation(new Animation(AnimationBundle::getInstance()->getMarioStanding()));
 	this->mario->setState(MarioState::DROPPING);
 	this->mario->setFirstFireBallState(FireBallState::FIREBALL_STAYING);
-	this->mario->setFirstFireBallAnimation(new Animation(AnimationBundle::getInstance()->getFireBall()));
+	this->mario->setFirstFireBallAnimation(new Animation(AnimationBundle::getInstance()->getFireBallFromUnderground()));
 }
 
 void UndergroundVC::adaptToGrid()

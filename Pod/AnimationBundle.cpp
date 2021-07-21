@@ -579,6 +579,11 @@ Animation AnimationBundle::getOneUp()
 	return this->animations->at(106);
 }
 
+Animation AnimationBundle::getFireBallFromUnderground()
+{
+	return this->animations->at(107);
+}
+
 Animation AnimationBundle::getSuperMarioFlyingWalking()
 {
 	return this->animations->at(49);

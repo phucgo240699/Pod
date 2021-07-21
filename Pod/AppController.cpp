@@ -44,6 +44,11 @@ UndergroundVC* AppController::getUndergroundVC()
 	return this->undergroundVC;
 }
 
+ThirdVC* AppController::getThirdVC()
+{
+	return this->thirdVC;
+}
+
 int AppController::Game_Init(HWND hwnd)
 {
 	//this->setRootViewController(Setting::getInstance()->getSceneName());
@@ -105,6 +110,17 @@ void AppController::Game_Run(HWND hwnd, float _dt)
 		if (this->getSceneName() != UndergroundScene) return;
 		this->getUndergroundVC()->viewDidRender();
 	}
+
+	// ThirdScene
+	else if (this->getSceneName() == ThirdScene) {
+		this->getThirdVC()->viewWillUpdate(_dt);
+		if (this->getSceneName() != ThirdScene) return;
+		this->getThirdVC()->viewDidUpdate(_dt);
+		if (this->getSceneName() != ThirdScene) return;
+		this->getThirdVC()->viewWillRender();
+		if (this->getSceneName() != ThirdScene) return;
+		this->getThirdVC()->viewDidRender();
+	}
 }
 
 void AppController::setSceneName(SceneName _sceneName)
@@ -130,6 +146,12 @@ void AppController::setUndergroundVC(UndergroundVC* _undergroundVC)
 	this->undergroundVC->setAppController(this);
 }
 
+void AppController::setThirdVC(ThirdVC* _thirdVC)
+{
+	this->thirdVC = _thirdVC;
+	this->thirdVC->setAppController(this);
+}
+
 void AppController::Game_End(HWND hwnd)
 {
 	//this->rootViewController->viewWillRelease();
@@ -142,6 +164,9 @@ void AppController::Game_End(HWND hwnd)
 	}
 	else if (this->getSceneName() ==  UndergroundScene) {
 		this->getUndergroundVC()->viewWillRelease();
+	}
+	else if (this->getSceneName() == ThirdScene) {
+		this->getThirdVC()->viewWillRelease();
 	}
 }
 
@@ -271,6 +296,9 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		else if (this->getSceneName() == UndergroundScene) {
 			this->getUndergroundVC()->viewReceiveKeyDown(keyDowns);
 		}
+		else if (this->getSceneName() == ThirdScene) {
+			this->getThirdVC()->viewReceiveKeyDown(keyDowns);
+		}
 	}
 	if (keyUps.size() > 0) {
 		//this->rootViewController->viewReceiveKeyUp(keyUps);
@@ -284,6 +312,9 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		else if (this->getSceneName() == UndergroundScene) {
 			this->getUndergroundVC()->viewReceiveKeyUp(keyUps);
 		}
+		else if (this->getSceneName() == ThirdScene) {
+			this->getThirdVC()->viewReceiveKeyUp(keyUps);
+		}
 	}
 	if (!hasKeyDown) {
 		//this->rootViewController->viewReceiveKeyUp();
@@ -296,6 +327,9 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		}
 		else if (this->getSceneName() == UndergroundScene) {
 			this->getUndergroundVC()->viewReceiveKeyUp();
+		}
+		else if (this->getSceneName() == ThirdScene) {
+			this->getThirdVC()->viewReceiveKeyUp();
 		}
 	}
 }

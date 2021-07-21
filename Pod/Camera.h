@@ -27,4 +27,5 @@ public:
 	void loadWorldMap();
 	void loadSunnyMap();
 	void loadUndergroundMap();
+	void loadThirdMap();
 };

@@ -156,4 +156,5 @@ public:
 
 	Animation getSuperMushroomGreen();
 	Animation getOneUp();
+	Animation getFireBallFromUnderground();
 };
