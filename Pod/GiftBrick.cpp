@@ -244,13 +244,16 @@ void GiftBrick::Update(float _dt)
 					this->pointY = endCoinJumpUp;
 					if (this->getGiftType() == GiftType::MultiCoinGift) {
 						this->setIsPlayingPointAnimation(false);
+						if (countEatPoint >= 10) {
+							this->setState(GiftBrickState::EMPTYGIFTBRICK);
+						}
+						else {
+							this->setState(GiftBrickState::FULLGIFTBRICK);
+							++countEatPoint;
+						}
 					}
-					if (countEatPoint >= 10) {
+					else if (this->getGiftType() == GiftType::Point100Gift) {
 						this->setState(GiftBrickState::EMPTYGIFTBRICK);
-					}
-					else {
-						this->setState(GiftBrickState::FULLGIFTBRICK);
-						++countEatPoint;
 					}
 				}
 			}
