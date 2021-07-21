@@ -1821,13 +1821,16 @@ void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == topEdge
 				&& this->getX() != _goldenBrick->getX() + _goldenBrick->getWidth() && this->getX() + this->getBoundsWidth() != _goldenBrick->getX()) {
-				this->setState(MarioState::DROPPING);
-				this->setY(_goldenBrick->getY() + _goldenBrick->getHeight());
-				this->setVy(0);
-
+				
 				if (_goldenBrick->getHasPButton()) {
 					_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_EMPTY);
 					Grid::getInstance()->add(_goldenBrick->getPButton());
+					this->setState(MarioState::DROPPING);
+					this->setY(_goldenBrick->getY() + _goldenBrick->getHeight());
+					this->setVy(0);
+				}
+				else {
+					_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARING);
 				}
 			}
 			else if (edge == bottomEdge
@@ -1876,7 +1879,7 @@ void Mario::handleGiftBrickCollision(GiftBrick* _giftBrick, float _dt)
 			if (edge == topEdge
 				&& this->getX() != _giftBrick->getX() + _giftBrick->getWidth() && this->getX() + this->getBoundsWidth() != _giftBrick->getX()) {
 				if (_giftBrick->getState() == FULLGIFTBRICK) {
-					if (_giftBrick->getGiftType() == NotPoint) {
+					if (_giftBrick->getGiftType() == SuperMushroomOrSuperLeaf) {
 						if (this->getIsSuperMode() == false) {
 							_giftBrick->setGiftType(GiftType::SuperMushroomGift);
 						}
@@ -2232,28 +2235,38 @@ void Mario::handleSuperMushroomCollision(SuperMushroom* _superMushroom, float _d
 		int yPoint = _superMushroom->getY();
 
 		//AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_superMushroom->getDefaultPoints(), xPoint, yPoint)));
-		ScoreBoard::getInstance()->plusPoint(1000);
+		if (_superMushroom->getIsGreenMode()) {
+			ScoreBoard::getInstance()->plusMarioLife(1);
+		}
+		else {
+			ScoreBoard::getInstance()->plusPoint(1000);
+			this->plusX(this->getVx() * get<1>(collisionResult));
+			this->plusY(this->getVy() * get<1>(collisionResult));
+			if (this->getIsSuperMode() == false) {
+				this->setState(MarioState::SCALING_UP);
+			}
+		}
 
 		//_superMushroom->plusX(this->getVx() * get<1>(collisionResult));
 		//_superMushroom->plusY(this->getVy() * get<1>(collisionResult));
 		_superMushroom->setState(SuperMushroomState::SUPER_MUSHROOM_BEING_EARNED);
-		this->plusX(this->getVx() * get<1>(collisionResult));
-		this->plusY(this->getVy() * get<1>(collisionResult));
-		if (this->getIsSuperMode() == false) {
-			this->setState(MarioState::SCALING_UP);
-		}
 	}
 	else if (this->isCollidingByBounds(_superMushroom->getBounds())) {
 		int xPoint = _superMushroom->getX();
 		int yPoint = _superMushroom->getY();
 
 		//AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_superMushroom->getDefaultPoints(), xPoint, yPoint)));
-		ScoreBoard::getInstance()->plusPoint(1000);
+		if (_superMushroom->getIsGreenMode()) {
+			ScoreBoard::getInstance()->plusMarioLife(1);
+		}
+		else {
+			ScoreBoard::getInstance()->plusPoint(1000);
+			if (this->getIsSuperMode() == false) {
+				this->setState(MarioState::SCALING_UP);
+			}
+		}
 
 		_superMushroom->setState(SuperMushroomState::SUPER_MUSHROOM_BEING_EARNED);
-		if (this->getIsSuperMode() == false) {
-			this->setState(MarioState::SCALING_UP);
-		}
 	}
 }
 

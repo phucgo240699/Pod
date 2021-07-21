@@ -181,9 +181,9 @@ RECT Component::getBounds()
 {
 	RECT r = RECT();
 	r.top = this->getY();
-	r.bottom = r.top + this->getHeight();
+	r.bottom = r.top + this->getBoundsHeight();
 	r.left = this->getX();
-	r.right = r.left + this->getWidth();
+	r.right = r.left + this->getBoundsWidth();
 
 	return r;
 }

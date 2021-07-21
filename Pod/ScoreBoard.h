@@ -41,6 +41,7 @@ public:
 	void resetTimeTo300();
 	void setMomentum(int _momentum);
 	void setMomentumLevel(int _momentumLevel);
+	void plusMarioLife(int _value);
 
 
 	RECT getFrame(string keyword);

@@ -21,6 +21,9 @@ private:
 	int beginCoinJumpUp, endCoinJumpUp, coinY, pointY;
 	bool isBoxDropDown = false, isCoinDropDown = false, isPointsStartPopUp = false;	
 
+	// Mode
+	bool isFakeGoldenBrick = false;
+
 public:
 	GiftBrick(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY);
 	GiftBrick(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _limitY);

@@ -569,6 +569,16 @@ Animation AnimationBundle::getBlackPipe2FloorDown()
 	return this->animations->at(104);
 }
 
+Animation AnimationBundle::getSuperMushroomGreen()
+{
+	return this->animations->at(105);
+}
+
+Animation AnimationBundle::getOneUp()
+{
+	return this->animations->at(106);
+}
+
 Animation AnimationBundle::getSuperMarioFlyingWalking()
 {
 	return this->animations->at(49);

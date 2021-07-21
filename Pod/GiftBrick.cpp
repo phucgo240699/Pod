@@ -17,20 +17,28 @@ void GiftBrick::loadInfo(string line, char seperator)
 	this->setWidth(v[2]);
 	this->setHeight(v[3]);
 	this->setId(v[4]);
-	this->setGiftType(v[5]);
+	this->isFakeGoldenBrick = v[5] == 1;
+	this->setGiftType(v[6]);
 
 	// Box
 	this->endBoxJumpUp = this->getY() - 12;
 	this->beginBoxJumpUp = this->getY();
 
 	// Super mushroom
-	if (this->getGiftType() == NotPoint) {
-		superMushroom = new SuperMushroom(this->getX(), this->getY(), v[6], v[7], v[8], v[9], v[10]);
-		superLeaf = new SuperLeaf(this->getX(), this->getY(), v[11], v[12], v[13], v[14], v[15]);
+	if (this->getGiftType() == GiftType::SuperMushroomOrSuperLeaf) {
+		superMushroom = new SuperMushroom(this->getX(), this->getY(), v[7], v[8], v[9], v[10], v[11]);
+		superLeaf = new SuperLeaf(this->getX(), this->getY(), v[12], v[13], v[14], v[15], v[16]);
 
-		superMushroom->setDefaultPoints(v[16]);
-		superLeaf->setDefaultPoints(v[17]);
+		superMushroom->setDefaultPoints(v[17]);
+		superLeaf->setDefaultPoints(v[18]);
 		return;
+	}
+	else if (this->getGiftType() == GiftType::SuperMushroomGift) {
+		superMushroom = new SuperMushroom(this->getX(), this->getY(), v[7], v[8], v[9], v[10], v[11]);
+		superMushroom->setIsGreenMode(v[12] == 1);
+	}
+	else if (this->getGiftType() == GiftType::MultiCoinGift) {
+
 	}
 
 	// Coin
@@ -78,7 +86,12 @@ void GiftBrick::setState(GiftBrickState _state)
 	{
 	case FULLGIFTBRICK:
 		if (this->getState() != FULLGIFTBRICK || this->boxAnimation == NULL) {
-			this->boxAnimation = new Animation(AnimationBundle::getInstance()->getFullGiftBrick());
+			if (this->isFakeGoldenBrick) {
+				this->boxAnimation = new Animation(AnimationBundle::getInstance()->getGoldenBrick());
+			}
+			else {
+				this->boxAnimation = new Animation(AnimationBundle::getInstance()->getFullGiftBrick());
+			}
 			this->state = _state;
 		}
 		break;
@@ -92,7 +105,9 @@ void GiftBrick::setState(GiftBrickState _state)
 			}
 
 			//delete boxAnimation;
-			this->boxAnimation = new Animation(AnimationBundle::getInstance()->getEmptyGiftBrick());
+			if (this->getGiftType() != GiftType::MultiCoinGift) {
+				this->boxAnimation = new Animation(AnimationBundle::getInstance()->getEmptyGiftBrick());
+			}
 			if (this->getGiftType() == Point100Gift) {
 				this->coinAnimation = new Animation(AnimationBundle::getInstance()->getCoinGiftBrick());
 				this->pointAnimation = new Animation(AnimationBundle::getInstance()->get100Points());
@@ -121,10 +136,16 @@ void GiftBrick::setGiftType(GiftType _giftType)
 void GiftBrick::setGiftType(int _giftCode)
 {
 	if (_giftCode == 0) {
-		this->giftType = GiftType::NotPoint;
+		this->giftType = GiftType::SuperMushroomOrSuperLeaf;
+	}
+	else if (_giftCode == 1) {
+		this->giftType = GiftType::Point100Gift;
+	}
+	else if (_giftCode == 2) {
+		this->giftType = GiftType::SuperMushroomGift;
 	}
 	else {
-		this->giftType = GiftType::Point100Gift;
+		this->giftType = GiftType::MultiCoinGift;
 	}
 }
 

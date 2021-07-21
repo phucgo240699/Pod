@@ -26,6 +26,9 @@ private:
 
 	int defaultPoints;
 
+	// Mode
+	bool isGreenMode = false;
+
 public:
 	// Init
 	SuperMushroom(float _x, float _y, float _width, float _height, float _vx, float _vy, int _id);
@@ -34,12 +37,17 @@ public:
 	SuperMushroomState getState();
 	bool getIsStandOnSurface();
 	int getDefaultPoints();
+	float getBoundsWidth();
+	float getBoundsHeight();
+	bool getIsGreenMode();
+
 
 	// Setter
-	void setAnimation(Animation* _animation);
+	void setUpAnimation();
 	void setState(SuperMushroomState _state);
 	void setIsStandOnSurface(bool _isStandOnSurface);
 	void setDefaultPoints(int _defaultPoints);
+	void setIsGreenMode(int _isGreenMode);
 
 	void Update(float _dt);
 	void Draw(LPDIRECT3DTEXTURE9 _texture);

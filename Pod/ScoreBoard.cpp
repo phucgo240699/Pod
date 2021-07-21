@@ -279,3 +279,8 @@ void ScoreBoard::setMomentumLevel(int _momentumLevel)
 {
 	this->momentumLevel = _momentumLevel;
 }
+
+void ScoreBoard::plusMarioLife(int _value)
+{
+	this->marioLife += _value;
+}

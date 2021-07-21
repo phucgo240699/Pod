@@ -13,7 +13,7 @@ PointUpCD::PointUpCD(Animation _animation, int _x, int _y) : AnimationCD(_animat
 	AnimationCD::AnimationCD(_animation);
 	this->position.x = _x;
 	this->position.y = _y;
-	this->endY = _y - 48;
+	this->endY = _y - 36;
 }
 
 //PointUpCD::PointUpCD(int point, int _x, int _y, int _endY) : AnimationCD(Animation(AnimationBundle::getInstance()->getPoints(point)))

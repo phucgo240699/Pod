@@ -46,7 +46,7 @@
 > 7 0 0
 
 # Super Mushroom
-238,17,16,16
+240,21,12,12,238,17,16,16
 > 8 0 0
 
 # Koopa Moving
@@ -628,3 +628,11 @@
 # Black Pipe 2 floor Down from Underground
 170,0,32,32
 > 104 0 0
+
+# SuperMushroom Green
+206,107,12,12,204,203,16,16
+> 105 0 0
+
+# One Up
+221,203,19,10
+> 106 0 0

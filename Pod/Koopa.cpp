@@ -681,7 +681,7 @@ void Koopa::handleGiftBrickCollision(GiftBrick* _giftBrick, Mario* _mario, float
 			this->plusX(get<1>(collisionResult) * this->getVx());
 
 			if (_giftBrick->getState() == FULLGIFTBRICK) {
-				if (_giftBrick->getGiftType() == NotPoint) {
+				if (_giftBrick->getGiftType() == SuperMushroomOrSuperLeaf) {
 					if (_mario->getIsSuperMode() == false) {
 						_giftBrick->setGiftType(GiftType::SuperMushroomGift);
 					}
@@ -710,7 +710,7 @@ void Koopa::handleGiftBrickCollision(GiftBrick* _giftBrick, Mario* _mario, float
 			this->plusX(get<1>(collisionResult) * this->getVx());
 
 			if (_giftBrick->getState() == FULLGIFTBRICK) {
-				if (_giftBrick->getGiftType() == NotPoint) {
+				if (_giftBrick->getGiftType() == SuperMushroomOrSuperLeaf) {
 					if (_mario->getIsSuperMode() == false) {
 						_giftBrick->setGiftType(GiftType::SuperMushroomGift);
 					}

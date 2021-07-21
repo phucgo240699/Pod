@@ -4,6 +4,7 @@
 #include "AnimationBundle.h"
 #include "GoldenBrickState.h"
 #include "PButton.h"
+#include "SuperMushroom.h"
 
 class Grid;
 
@@ -13,6 +14,7 @@ private:
 	Animation* animation;
 	GoldenBrickState state;
 	PButton* pButton;
+	SuperMushroom* superMushroom;
 
 	bool hasPButton;
 

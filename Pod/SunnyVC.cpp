@@ -1344,12 +1344,16 @@ void SunnyVC::adaptAnimation()
 	// Gift Bricks
 	for (int i = 0; i < this->giftBricks->size(); ++i) {
 		this->giftBricks->at(i)->setState(GiftBrickState::FULLGIFTBRICK);
-		if (this->giftBricks->at(i)->getGiftType() == NotPoint) { // Super Mushroom, super leaf
-			this->giftBricks->at(i)->getSuperMushroom()->setAnimation(new Animation(AnimationBundle::getInstance()->getSuperMushroom()));
+		if (this->giftBricks->at(i)->getGiftType() == SuperMushroomOrSuperLeaf) { // Super Mushroom, super leaf
+			this->giftBricks->at(i)->getSuperMushroom()->setUpAnimation();
 			this->giftBricks->at(i)->getSuperLeaf()->setAnimation(new Animation(AnimationBundle::getInstance()->getSuperLeaf()));
 
 			this->giftBricks->at(i)->setSuperMushroomState(SuperMushroomState::SUPER_MUSHROOM_GROWING_UP);
 			this->giftBricks->at(i)->setSuperLeafState(SuperLeafState::SUPER_LEAF_POPPING_UP);
+		}
+		else if (this->giftBricks->at(i)->getGiftType() == SuperMushroomGift) {
+			this->giftBricks->at(i)->getSuperMushroom()->setUpAnimation();
+			this->giftBricks->at(i)->setSuperMushroomState(SuperMushroomState::SUPER_MUSHROOM_GROWING_UP);
 		}
 	}
 

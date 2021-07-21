@@ -153,5 +153,7 @@ public:
 
 	Animation getCoinFromUnderground();
 	Animation getBlackPipe2FloorDown();
-};
 
+	Animation getSuperMushroomGreen();
+	Animation getOneUp();
+};
