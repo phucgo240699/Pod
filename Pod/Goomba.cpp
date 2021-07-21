@@ -268,7 +268,12 @@ void Goomba::setState(GoombaState _state)
 	case THROWN_RIGHT_AWAY_GOOMBA:
 	{
 		delete animation;
-		this->animation = new Animation(AnimationBundle::getInstance()->getThrownAwayGoomba());
+		if (this->isUseRedSkin) {
+			this->animation = new Animation(AnimationBundle::getInstance()->getGoombaRedThrownAway());
+		}
+		else {
+			this->animation = new Animation(AnimationBundle::getInstance()->getThrownAwayGoomba());
+		}
 		this->setVx(originVx);
 		//this->setVy(-1.2 * originVy);
 		this->setVy(0);
