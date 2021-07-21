@@ -33,9 +33,9 @@ public:
 	string camera_third_map = "./Assets/TextFiles/camera_third_map.txt";
 
 	// Grid
-	string grid_sunny_map = "./Assets/TextFiles/grid_sunny_map.txt";
-	string grid_underground_map = "./Assets/TextFiles/grid_underground_map.txt";
-	string grid_third_map = "./Assets/TextFiles/grid_third_map.txt";
+	string original_grid_sunny_map = "./Assets/TextFiles/original_grid_sunny_map.txt";
+	string original_grid_underground_map = "./Assets/TextFiles/original_grid_underground_map.txt";
+	string original_grid_third_map = "./Assets/TextFiles/original_grid_third_map.txt";
 
 	// Animation Bundle
 	string animation_bundle = "./Assets/TextFiles/animation_bundle.txt";

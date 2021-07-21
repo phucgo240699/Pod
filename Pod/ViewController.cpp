@@ -48,8 +48,8 @@ void ViewController::navigateTo(SceneName _sceneName)
 
 			//this->appController->getSunnyVC()->getMario()->setAnimation(new Animation(AnimationBundle::getInstance()->getMarioStanding()));
 			this->appController->getSunnyVC()->getMario()->setState(MarioState::POPPING_UP_PIPE);
-			//this->appController->getSunnyVC()->getMario()->setFirstFireBallState(FireBallState::FIREBALL_STAYING);
-			//this->appController->getSunnyVC()->getMario()->setFirstFireBallAnimation(new Animation(AnimationBundle::getInstance()->getFireBall()));
+			this->appController->getSunnyVC()->getMario()->setFirstFireBallState(FireBallState::FIREBALL_STAYING);
+			this->appController->getSunnyVC()->getMario()->setFirstFireBallAnimation(new Animation(AnimationBundle::getInstance()->getFireBall()));
 
 
 		}

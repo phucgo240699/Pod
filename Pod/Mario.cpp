@@ -681,12 +681,31 @@ void Mario::setState(MarioState _state)
 	case DROPPING_DOWN_PIPE:
 	{
 		delete currentAnimation;
-		if (this->getIsFireMode()) {
-			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireDroppingDownPipe());
+		if (this->getIsFlyingMode()) {
+			if (this->getIsFireMode()) {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingFireDroppingDownPipe());
+			}
+			else {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingDroppingDownPipe());
+			}
+		}
+		else if (this->getIsSuperMode()) {
+			if (this->getIsFireMode()) {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioDroppingDownPipe());
+			}
+			else {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireDroppingDownPipe());
+			}
 		}
 		else {
-			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioDroppingDownPipe());
+			if (this->getIsFireMode()) {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioDroppingDownPipe());
+			}
+			else {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioFireDroppingDownPipe());
+			}
 		}
+		
 		this->endDroppingDownPipe = this->getY() + this->getHeight();
 		break;
 	}
@@ -694,11 +713,29 @@ void Mario::setState(MarioState _state)
 	case POPPING_UP_PIPE:
 	{
 		delete currentAnimation;
-		if (this->getIsFireMode()) {
-			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireDroppingDownPipe());
+		if (this->getIsFlyingMode()) {
+			if (this->getIsFireMode()) {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingFireDroppingDownPipe());
+			}
+			else {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingDroppingDownPipe());
+			}
+		}
+		else if (this->getIsSuperMode()) {
+			if (this->getIsFireMode()) {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioDroppingDownPipe());
+			}
+			else {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireDroppingDownPipe());
+			}
 		}
 		else {
-			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioDroppingDownPipe());
+			if (this->getIsFireMode()) {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioDroppingDownPipe());
+			}
+			else {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioFireDroppingDownPipe());
+			}
 		}
 		this->endPoppingUpPipe = this->getY() - this->getBoundsHeight();
 		break;

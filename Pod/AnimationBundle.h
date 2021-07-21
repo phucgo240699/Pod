@@ -148,8 +148,8 @@ public:
 	Animation getGoombaRedTrampled();
 	Animation getGoombaRedThrownAway();
 
-	Animation getSuperMarioDroppingDownPipe();
-	Animation getSuperMarioFireDroppingDownPipe();
+	Animation getSuperMarioFlyingDroppingDownPipe();
+	Animation getSuperMarioFlyingFireDroppingDownPipe();
 
 	Animation getCoinFromUnderground();
 	Animation getBlackPipe2FloorDown();
@@ -157,4 +157,9 @@ public:
 	Animation getSuperMushroomGreen();
 	Animation getOneUp();
 	Animation getFireBallFromUnderground();
+
+	Animation getMarioDroppingDownPipe();
+	Animation getMarioFireDroppingDownPipe();
+	Animation getSuperMarioDroppingDownPipe();
+	Animation getSuperMarioFireDroppingDownPipe();
 };

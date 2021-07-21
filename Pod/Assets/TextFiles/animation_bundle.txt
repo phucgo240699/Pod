@@ -643,3 +643,19 @@
 212,8,8,8
 212,0,8,8
 > 107 0 3
+
+# Mario Dropping Down Pipe
+117,3,10,13,113,0,16,16
+> 108 0 0
+
+# Mario Fire Dropping Down Pipe
+117,63,10,13,113,60,16,16
+> 109 0 0
+
+# Super Mario Dropping Down Pipe
+73,128,12,23,70,123,16,28
+> 110 0 0
+
+# Super Mario Fire Dropping Down Pipe
+89,128,12,23,86,123,16,28
+> 111 0 0

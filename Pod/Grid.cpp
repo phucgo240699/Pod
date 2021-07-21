@@ -43,7 +43,7 @@ int Grid::getTotalCols()
 void Grid::loadSunnyMap()
 {
 	fstream fs;
-	fs.open(FilePath::getInstance()->grid_sunny_map, ios::in);
+	fs.open(FilePath::getInstance()->original_grid_sunny_map, ios::in);
 
 	SectionFileType section = SECTION_NONE;
 	vector<string> data = vector<string>();
@@ -93,7 +93,7 @@ void Grid::loadSunnyMap()
 void Grid::loadUnderGroundMap()
 {
 	fstream fs;
-	fs.open(FilePath::getInstance()->grid_underground_map, ios::in);
+	fs.open(FilePath::getInstance()->original_grid_underground_map, ios::in);
 
 	SectionFileType section = SECTION_NONE;
 	vector<string> data = vector<string>();
@@ -143,7 +143,7 @@ void Grid::loadUnderGroundMap()
 void Grid::loadThirdMap()
 {
 	fstream fs;
-	fs.open(FilePath::getInstance()->grid_third_map, ios::in);
+	fs.open(FilePath::getInstance()->original_grid_third_map, ios::in);
 
 	SectionFileType section = SECTION_NONE;
 	vector<string> data = vector<string>();

@@ -549,12 +549,12 @@ Animation AnimationBundle::getGoombaRedThrownAway()
 	return this->animations->at(96);
 }
 
-Animation AnimationBundle::getSuperMarioDroppingDownPipe()
+Animation AnimationBundle::getSuperMarioFlyingDroppingDownPipe()
 {
 	return this->animations->at(101);
 }
 
-Animation AnimationBundle::getSuperMarioFireDroppingDownPipe()
+Animation AnimationBundle::getSuperMarioFlyingFireDroppingDownPipe()
 {
 	return this->animations->at(102);
 }
@@ -582,6 +582,21 @@ Animation AnimationBundle::getOneUp()
 Animation AnimationBundle::getFireBallFromUnderground()
 {
 	return this->animations->at(107);
+}
+
+Animation AnimationBundle::getMarioFireDroppingDownPipe()
+{
+	return this->animations->at(109);
+}
+
+Animation AnimationBundle::getSuperMarioDroppingDownPipe()
+{
+	return this->animations->at(110);
+}
+
+Animation AnimationBundle::getSuperMarioFireDroppingDownPipe()
+{
+	return this->animations->at(111);
 }
 
 Animation AnimationBundle::getSuperMarioFlyingWalking()
@@ -666,4 +681,9 @@ Animation AnimationBundle::get1000Points()
 Animation AnimationBundle::getCoin()
 {
 	return this->animations->at(88);
+}
+
+Animation AnimationBundle::getMarioDroppingDownPipe()
+{
+	return this->animations->at(108);
 }
