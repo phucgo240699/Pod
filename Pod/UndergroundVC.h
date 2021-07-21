@@ -9,7 +9,6 @@ class UndergroundVC : public ViewController
 private:
 	Mario* mario;
 	Map* map;
-	LPDIRECT3DTEXTURE9 sunnyMapTexture;
 
 	int beginGroundId, endGroundId;
 	vector<Ground*>* grounds;

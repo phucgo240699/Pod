@@ -11,7 +11,6 @@ private:
 	//int componentIdStanded = 0; // this is the component that mario is standing on
 	Mario* mario;
 	Map* map;
-	LPDIRECT3DTEXTURE9 sunnyMapTexture;
 
 	int beginGroundId, endGroundId;
 	vector<Ground*>* grounds;

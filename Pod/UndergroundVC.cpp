@@ -9,11 +9,10 @@ Mario* UndergroundVC::getMario()
 void UndergroundVC::viewDidLoad()
 {
 	mario = new Mario(0, 0, 0, 0, 0, 0, ImagePath::getInstance()->mario, D3DCOLOR_XRGB(255, 0, 255), DROPPING);
-	map = new Map(ImagePath::getInstance()->underground_map, D3DCOLOR_XRGB(255, 0, 255));
+	map = new Map();
 	grounds = new vector<Ground*>();
 	coins = new unordered_set<Coin*>();
 	greenPipes = new vector<GreenPipe*>();
-	sunnyMapTexture = LoadTextureFromImage(ImagePath::getInstance()->sunny_map, D3DCOLOR_XRGB(255, 0, 255));
 
 	this->mario->load();
 
@@ -214,7 +213,7 @@ void UndergroundVC::viewWillRender()
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 
 		if (map != NULL) {
-			map->Draw();
+			map->Draw(Drawing::getInstance()->getUndergroundMapTexture());
 		}
 
 		unordered_set<Component*> cell;
@@ -228,7 +227,7 @@ void UndergroundVC::viewWillRender()
 
 					// Coin
 					if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
-						(*itr)->Draw(map->getTexture());
+						(*itr)->Draw(Drawing::getInstance()->getUndergroundMapTexture());
 					}
 				}
 			}
@@ -244,7 +243,7 @@ void UndergroundVC::viewWillRender()
 
 					// Fire Ball
 					if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
-						(*itr)->Draw(map->getTexture());
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 				}
 			}
@@ -263,13 +262,13 @@ void UndergroundVC::viewWillRender()
 				for (itr = cell.begin(); itr != cell.end(); ++itr) {
 					// Green Pipe
 					if (beginGreenPipeId <= (*itr)->getId() && (*itr)->getId() <= endGreenPipeId) {
-						(*itr)->Draw(map->getTexture());
+						(*itr)->Draw(Drawing::getInstance()->getUndergroundMapTexture());
 					}
 				}
 			}
 		}
 
-		AnimationCDPlayer::getInstance()->Draw(sunnyMapTexture);
+		AnimationCDPlayer::getInstance()->Draw(Drawing::getInstance()->getSunnyMapTexture());
 
 		ScoreBoard::getInstance()->Draw();
 
@@ -457,7 +456,7 @@ void UndergroundVC::adaptAnimation()
 	this->mario->setAnimation(new Animation(AnimationBundle::getInstance()->getMarioStanding()));
 	this->mario->setState(MarioState::DROPPING);
 	this->mario->setFirstFireBallState(FireBallState::FIREBALL_STAYING);
-	this->mario->setFirstFireBallAnimation(new Animation(AnimationBundle::getInstance()->getFireBallFromUnderground()));
+	this->mario->setFirstFireBallAnimation(new Animation(AnimationBundle::getInstance()->getFireBall()));
 }
 
 void UndergroundVC::adaptToGrid()

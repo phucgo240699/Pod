@@ -30,7 +30,8 @@ void WorldVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 
 void WorldVC::viewDidLoad()
 {
-	map = new WorldMap(ImagePath::getInstance()->world_map, D3DCOLOR_XRGB(255, 0, 255));
+	//map = new WorldMap(ImagePath::getInstance()->world_map, D3DCOLOR_XRGB(255, 0, 255));
+	map = new Map();
 	grasses = new StaticAnim();
 	helpLabel = new StaticAnim();
 	wMario = new WMario(0, 0, 0, 0, 0, 0);
@@ -72,25 +73,25 @@ void WorldVC::viewWillRender()
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 
 		if (map != NULL) {
-			map->Draw();
+			map->Draw(Drawing::getInstance()->getWorldMapTexture());
 		}
 
 		if (grasses != NULL) {
-			grasses->Draw(map->getTexture());
+			grasses->Draw(Drawing::getInstance()->getWorldMapTexture());
 		}
 
 		if (helpLabel != NULL) {
-			helpLabel->Draw(map->getTexture());
+			helpLabel->Draw(Drawing::getInstance()->getWorldMapTexture());
 		}
 
 		ScoreBoard::getInstance()->Draw();
 
 		if (wTurtle != NULL) {
-			wTurtle->Draw(map->getTexture());
+			wTurtle->Draw(Drawing::getInstance()->getWorldMapTexture());
 		}
 
 		if (wMario != NULL) {
-			wMario->Draw(map->getTexture());
+			wMario->Draw(Drawing::getInstance()->getWorldMapTexture());
 		}
 
 		spriteHandler->End();

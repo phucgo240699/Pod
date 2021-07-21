@@ -5,7 +5,7 @@
 
 <MapInfo>
 #(tileSize, spaceBetweenTiles, tilesPerRowInTileSet, tilesPerColumnInTileSet, width, height)
-16,0,160,27,2560,470
+16,0,160,27,2560,432
 </MapInfo>
 
 

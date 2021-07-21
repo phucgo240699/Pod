@@ -13,8 +13,7 @@ void ThirdVC::setMario(Mario* _mario)
 void ThirdVC::viewDidLoad()
 {
     mario = new Mario(0, 0, 0, 0, 0, 0, ImagePath::getInstance()->mario, D3DCOLOR_XRGB(255, 0, 255), DROPPING);
-    map = new Map(ImagePath::getInstance()->third_map, D3DCOLOR_XRGB(255, 0, 255));
-    sunnyMapTexture = LoadTextureFromImage(ImagePath::getInstance()->sunny_map, D3DCOLOR_XRGB(255, 0, 255));
+    map = new Map();
     grounds = new vector<Ground*>();
 
 
@@ -165,7 +164,7 @@ void ThirdVC::viewWillRender()
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 
 		if (map != NULL) {
-			map->Draw();
+			map->Draw(Drawing::getInstance()->getThirdMapTexture());
 		}
 
 		/*unordered_set<Component*> cell;
@@ -188,7 +187,7 @@ void ThirdVC::viewWillRender()
 			mario->Draw();
 		}
 
-		AnimationCDPlayer::getInstance()->Draw(sunnyMapTexture);
+		AnimationCDPlayer::getInstance()->Draw(Drawing::getInstance()->getSunnyMapTexture());
 
 		ScoreBoard::getInstance()->Draw();
 

@@ -22,9 +22,22 @@ private:
 
 	LPDIRECT3DTEXTURE9 debugTexture = LoadTextureFromImage(ImagePath::getInstance()->debug_box, D3DCOLOR_XRGB(255, 0, 255));
 	LPDIRECT3DTEXTURE9 boardTexture = LoadTextureFromImage(ImagePath::getInstance()->board, D3DCOLOR_XRGB(255, 0, 255));
+	LPDIRECT3DTEXTURE9 worldMapTexture = LoadTextureFromImage(ImagePath::getInstance()->world_map, D3DCOLOR_XRGB(255, 0, 255));
+	LPDIRECT3DTEXTURE9 sunnyMapTexture;
+	LPDIRECT3DTEXTURE9 undergroundMapTexture;
+	LPDIRECT3DTEXTURE9 thirdMapTexture;
+
+
+
 public:
 	Drawing(const Drawing&) = delete; // 3. delete copy constructor
 	static Drawing* getInstance();	  // 4. public function for client code usage
+
+	// Getter
+	LPDIRECT3DTEXTURE9 getWorldMapTexture();
+	LPDIRECT3DTEXTURE9 getSunnyMapTexture();
+	LPDIRECT3DTEXTURE9 getUndergroundMapTexture();
+	LPDIRECT3DTEXTURE9 getThirdMapTexture();
 
 	void draw(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXVECTOR3* _center, D3DXVECTOR3 _position, D3DCOLOR _color = D3DCOLOR_XRGB(255, 255, 255));
 	void draw(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXVECTOR3 _position, D3DCOLOR _color = D3DCOLOR_XRGB(255, 255, 255));

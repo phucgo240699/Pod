@@ -8,19 +8,21 @@ using namespace std;
 class Map
 {
 protected:
-	LPDIRECT3DTEXTURE9 texture;
+	//LPDIRECT3DTEXTURE9 texture;
 	vector<vector<int>> matrixIds;
-	int tileSize, spaceBetweenTiles, tilesPerRow, tilesPerColumn;
-	int width, height;
+	int tileSize = 0, spaceBetweenTiles = 0, tilesPerRow = 0, tilesPerColumn = 0;
+	int width=0, height=0;
 
 	RECT rect; // for draw a tile in matrix indexes
 	D3DXVECTOR3 position; // know where to draw a tile in matrix indexes
 public:
 	//Map(LPCWSTR _tileSetPath, string _matrixIdsPath, string _mapInfoPath, char _seperatorOfMatrixIds, D3DCOLOR _transcolor);
-	Map(LPCWSTR _tileSetPath, D3DCOLOR _transcolor);
+	//Map(LPCWSTR _tileSetPath, D3DCOLOR _transcolor);
+	Map();
+
 
 	// Getter
-	LPDIRECT3DTEXTURE9 getTexture();
+	//LPDIRECT3DTEXTURE9 getTexture();
 	int getTileSize();
 	int getSpaceBetweenTiles();
 	int getTilesPerRow();
@@ -37,7 +39,7 @@ public:
 	void setHeight(int _height);
 
 	void Update(float _dt);
-	void Draw();
+	void Draw(LPDIRECT3DTEXTURE9 _texture);
 
 	void loadInfo(string line, char seperator);
 	void loadIndexes(vector<string> data, char seperator);

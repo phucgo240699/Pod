@@ -44,7 +44,7 @@
 
 <MapInfo>
 #(tileSize, spaceBetweenTiles, tilesPerRowInTileSet, tilesPerColumnInTileSet, width, height)
-16,1,16,8,2816,470
+16,1,16,8,2816,432
 </MapInfo>
 
 <MapIndexes>
@@ -79,7 +79,7 @@
 
 <MarioInfo>
 # (x, y, limitX, limitY)
-36,384,2816,470
+2256,84,2816,470
 </MarioInfo>
 
 <GiftBrickFrames>

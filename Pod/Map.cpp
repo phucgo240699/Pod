@@ -1,21 +1,27 @@
 #include "Map.h"
 
-Map::Map(LPCWSTR _tileSetPath, D3DCOLOR _transcolor)
+//Map::Map(LPCWSTR _tileSetPath, D3DCOLOR _transcolor)
+//{
+//	this->texture = LoadTextureFromImage(_tileSetPath, _transcolor);
+//
+//	D3DXIMAGE_INFO info;
+//	D3DXGetImageInfoFromFile(_tileSetPath, &info);
+//	this->width = info.Width;
+//	this->height = info.Height;
+//
+//	this->rect = RECT();
+//	this->position = D3DXVECTOR3(0, 0, 0);
+//}
+
+//LPDIRECT3DTEXTURE9 Map::getTexture()
+//{
+//	return this->texture;
+//}
+
+Map::Map()
 {
-	this->texture = LoadTextureFromImage(_tileSetPath, _transcolor);
-
-	D3DXIMAGE_INFO info;
-	D3DXGetImageInfoFromFile(_tileSetPath, &info);
-	this->width = info.Width;
-	this->height = info.Height;
-
 	this->rect = RECT();
 	this->position = D3DXVECTOR3(0, 0, 0);
-}
-
-LPDIRECT3DTEXTURE9 Map::getTexture()
-{
-	return this->texture;
 }
 
 int Map::getTileSize()
@@ -104,7 +110,7 @@ void Map::Update(float _dt)
 {
 }
 
-void Map::Draw()
+void Map::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
 	// begin ---> end: from left ro right
 	Camera* camera = Camera::getInstance();
@@ -152,7 +158,7 @@ void Map::Draw()
 			position.x = round(j * tileSize);
 			position.y = round(i * tileSize);
 
-			drawing->draw(texture, rect, NULL, position);
+			drawing->draw(_texture, rect, NULL, position);
 		}
 	}
 }

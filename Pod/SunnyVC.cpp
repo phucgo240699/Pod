@@ -47,7 +47,7 @@
 void SunnyVC::viewDidLoad()
 {
 	mario = new Mario(0, 0, 0, 0, 0, 0, ImagePath::getInstance()->mario, D3DCOLOR_XRGB(255, 0, 255), DROPPING);
-	map = new SunnyMap(ImagePath::getInstance()->sunny_map, D3DCOLOR_XRGB(255, 0, 255));
+	map = new Map();
 	grounds = new vector<Ground*>();
 	goldenBricks = new unordered_set<GoldenBrick*>();
 	giftBricks = new vector<GiftBrick*>();
@@ -815,7 +815,7 @@ void SunnyVC::viewWillRender()
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 
 		if (map != NULL) {
-			map->Draw();
+			map->Draw(Drawing::getInstance()->getSunnyMapTexture());
 		}
 
 		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
@@ -827,22 +827,22 @@ void SunnyVC::viewWillRender()
 				for (itr = cell.begin(); itr != cell.end(); ++itr) {
 					// Golden Brick
 					if (beginGoldenBrickId <= (*itr)->getId() && (*itr)->getId() <= endGoldenBrickId) {
-						(*itr)->Draw(map->getTexture());
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 
 					// Super Mushroom
 					else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= endSuperMushroomId) {
-						(*itr)->Draw(map->getTexture());
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 
 					// SuperLeaf
 					else if (beginSuperLeafId <= (*itr)->getId() && (*itr)->getId() <= endSuperLeafId) {
-						(*itr)->Draw(map->getTexture());
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 
 					// Gift Brick
 					else if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
-						(*itr)->Draw(map->getTexture());
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 
 					// Fire Flower
@@ -853,33 +853,33 @@ void SunnyVC::viewWillRender()
 								|| static_cast<FireFlower*>(*itr)->getTopAnchor() > this->mario->getY() + this->mario->getHeight())
 							)
 							|| static_cast<FireFlower*>(*itr)->getState() != FIRE_FLOWER_HIDING) {
-								(*itr)->Draw(map->getTexture());
+								(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 						}
 					}
 
 					// Flower
 					else if (beginFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFlowerId) {
-						(*itr)->Draw(map->getTexture());
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 
 					// Goomba
 					else if (beginGoombaId <= (*itr)->getId() && (*itr)->getId() <= endGoombaId) {
-						(*itr)->Draw(map->getTexture());
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 
 					// Koopas
 					else if (beginKoopaId <= (*itr)->getId() && (*itr)->getId() <= endKoopaId) {
-						(*itr)->Draw(map->getTexture());
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 
 					// Coin
 					else if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
-						(*itr)->Draw(map->getTexture());
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 
 					// PButton
 					else if (beginPButtonId <= (*itr)->getId() && (*itr)->getId() <= endPButtonId) {
-						(*itr)->Draw(map->getTexture());
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 				}
 			}
@@ -899,7 +899,7 @@ void SunnyVC::viewWillRender()
 				for (itr = cell.begin(); itr != cell.end(); ++itr) {
 					// Green Pipe
 					if (beginGreenPipeId <= (*itr)->getId() && (*itr)->getId() <= endGreenPipeId) {
-						(*itr)->Draw(map->getTexture());
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 				}
 			}
@@ -915,18 +915,18 @@ void SunnyVC::viewWillRender()
 					
 					// Fire Flower Ball
 					if (beginFireFlowerBallId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerBallId) {
-						(*itr)->Draw(map->getTexture());
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 
 					// Fire Ball
 					else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
-						(*itr)->Draw(map->getTexture());
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 				}
 			}
 		}
 
-		AnimationCDPlayer::getInstance()->Draw(map->getTexture());
+		AnimationCDPlayer::getInstance()->Draw(Drawing::getInstance()->getSunnyMapTexture());
 
 		ScoreBoard::getInstance()->Draw();
 

@@ -32,6 +32,11 @@ void Drawing::draw(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXVECTOR3 _posit
 	spriteHandler->Draw(texture, &_srcRect, NULL, &_position, _color);
 }
 
+LPDIRECT3DTEXTURE9 Drawing::getWorldMapTexture()
+{
+	return this->worldMapTexture;
+}
+
 void Drawing::draw(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXVECTOR3 _position, bool _isFlip, D3DCOLOR _color)
 {
 	if (_isFlip) {
@@ -67,6 +72,14 @@ void Drawing::draw(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXVECTOR3 _posit
 
 }
 
+LPDIRECT3DTEXTURE9 Drawing::getSunnyMapTexture()
+{
+	if (this->sunnyMapTexture == NULL) {
+		this->sunnyMapTexture = LoadTextureFromImage(ImagePath::getInstance()->sunny_map, D3DCOLOR_XRGB(255, 0, 255));
+	}
+	return this->sunnyMapTexture;
+}
+
 void Drawing::draw(LPDIRECT3DTEXTURE9 texture, D3DXVECTOR3 _position, D3DCOLOR _color)
 {
 	_position.x -= Camera::getInstance()->getX();
@@ -76,6 +89,22 @@ void Drawing::draw(LPDIRECT3DTEXTURE9 texture, D3DXVECTOR3 _position, D3DCOLOR _
 	_position.y = round(_position.y);
 
 	spriteHandler->Draw(texture, NULL, NULL, &_position, _color);
+}
+
+LPDIRECT3DTEXTURE9 Drawing::getUndergroundMapTexture()
+{
+	if (this->undergroundMapTexture == NULL) {
+		this->undergroundMapTexture = LoadTextureFromImage(ImagePath::getInstance()->underground_map, D3DCOLOR_XRGB(255, 0, 255));
+	}
+	return this->undergroundMapTexture;
+}
+
+LPDIRECT3DTEXTURE9 Drawing::getThirdMapTexture()
+{
+	if (this->thirdMapTexture == NULL) {
+		this->thirdMapTexture = LoadTextureFromImage(ImagePath::getInstance()->third_map, D3DCOLOR_XRGB(255, 0, 255));
+	}
+	return this->thirdMapTexture;
 }
 
 void Drawing::drawWithoutCamera(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXVECTOR3* _center, D3DXVECTOR3 _position, D3DXVECTOR2 _translation, bool _isFlip, D3DCOLOR _color)
