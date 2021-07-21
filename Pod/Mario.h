@@ -36,7 +36,7 @@ private:
 	FireBall* firstFireBall;
 
 	// Control
-	bool isStandOnSurface = false, isReduceWalking = false, isConverting = false, isTurningAround = false, isPressA = false;
+	bool isStandOnSurface = false, isReduceWalking = false, isConverting = false, isTurningAround = false, isPressA = false, isPressKeyUp = false;
 	bool isFlip; // false: Left side - true: Right side. Default is false
 
 	// Mode
@@ -67,6 +67,7 @@ private:
 	// Detect component standing on
 	int componentIdStandingOn;
 	int endDroppingDownPipe;
+	int endPoppingUpPipe;
 
 public:
 	// Init
@@ -96,6 +97,7 @@ public:
 	bool getIsStandOnSurface();
 	bool getIsTurningAround();
 	bool getIsPressA();
+	bool getIsPressKeyUp();
 	
 	// Mode
 	bool getIsSuperMode();
@@ -138,6 +140,7 @@ public:
 	// Detect component standing on
 	int getComponentIdStandingOn();
 	int getEndDroppingDownPipe();
+	int getEndPoppingUpPipe();
 
 
 
@@ -159,6 +162,8 @@ public:
 	void setupReduceWalking(bool _isReduceWalking);
 	void setIsTurningAround(bool _isTurningAround);
 	void setIsPressA(bool _isPressA);
+	void setIsPressKeyUp(bool _isPressKeyUp);
+
 	
 	// Mode
 	void setIsSuperMode(bool _isSuperMode);
@@ -243,6 +248,7 @@ public:
 	void handleFlowerCollision(Flower* _flower, float _dt);
 	void handleCoinCollision(Coin* _coin, float _dt);
 	void handlePButtonCollision(PButton* _pButton, float _dt);
+	void handleGreenPipeDownCollision(GreenPipe* _greenPipe, int _targetId, float _leftAnchor, float _rightAnchor, float _dt);
 };
 
 #endif // !MARIO_H

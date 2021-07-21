@@ -16,6 +16,9 @@ private:
 	int beginCoinId, endCoinId;
 	unordered_set<Coin*>* coins;
 
+	int beginGreenPipeId, endGreenPipeId, greenPipeIdToUnderground, leftAnchorGreenPipeToUnderground, rightAnchorGreenPipeToUnderground;
+	vector<GreenPipe*>* greenPipes;
+
 public:
 	void viewDidLoad();
 	void viewReceiveKeyUp();

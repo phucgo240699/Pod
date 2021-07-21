@@ -49,7 +49,7 @@ void Camera::plusY(float _y)
 	Component::plusY(_y);
 }
 
-void Camera::setPositionBy(Component* _target)
+void Camera::setPositionBy(Mario* _target)
 {
 	if (_target->getX() <= this->getWidth() / 2) {
 		this->setX(0);

@@ -549,6 +549,26 @@ Animation AnimationBundle::getGoombaRedThrownAway()
 	return this->animations->at(96);
 }
 
+Animation AnimationBundle::getSuperMarioDroppingDownPipe()
+{
+	return this->animations->at(101);
+}
+
+Animation AnimationBundle::getSuperMarioFireDroppingDownPipe()
+{
+	return this->animations->at(102);
+}
+
+Animation AnimationBundle::getCoinFromUnderground()
+{
+	return this->animations->at(103);
+}
+
+Animation AnimationBundle::getBlackPipe2FloorDown()
+{
+	return this->animations->at(104);
+}
+
 Animation AnimationBundle::getSuperMarioFlyingWalking()
 {
 	return this->animations->at(49);

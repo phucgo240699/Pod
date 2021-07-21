@@ -7,6 +7,7 @@ void UndergroundVC::viewDidLoad()
 	map = new Map(ImagePath::getInstance()->underground_map, D3DCOLOR_XRGB(255, 0, 255));
 	grounds = new vector<Ground*>();
 	coins = new unordered_set<Coin*>();
+	greenPipes = new vector<GreenPipe*>();
 
 	this->mario->load();
 
@@ -53,6 +54,14 @@ void UndergroundVC::viewWillUpdate(float _dt)
 					continue;
 				}
 
+				else if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
+					if (static_cast<Coin*>(*itr)->getState() == COIN_BEING_EARNED) {
+						Grid::getInstance()->remove(*itr, i, j);
+						continue;
+					}
+
+					(*itr)->Update(_dt);
+				}
 
 			}
 		}
@@ -61,20 +70,28 @@ void UndergroundVC::viewWillUpdate(float _dt)
 	if (mario != NULL) {
 		mario->Update(_dt);
 
-		// Navigate to WorldVC when Mario drop out of map to far
-		if (this->mario->getY() >= Camera::getInstance()->getLimitY() + 100) {
-			this->mario->setIsSuperMode(false);
-			this->mario->setIsFlyingMode(false);
-			this->mario->setIsPreFlyingUpMode(false);
-			this->mario->setIsFlyingUpMode(false);
-
-			ScoreBoard::getInstance()->minusMarioLife();
-
-			this->navigateTo(SceneName::WorldScene);
-			return;
+		if (this->mario->getState() == POPPING_UP_PIPE) {
+			if (this->mario->getY() <= this->mario->getEndPoppingUpPipe()) {
+				this->navigateTo(SceneName::SunnyScene);
+				return;
+			}
 		}
+		else {
 
-		Camera::getInstance()->follow(mario, _dt);
+			// Navigate to WorldVC when Mario drop out of map to far
+			if (this->mario->getY() >= Camera::getInstance()->getLimitY() + 100) {
+				this->mario->setIsSuperMode(false);
+				this->mario->setIsFlyingMode(false);
+				this->mario->setIsPreFlyingUpMode(false);
+				this->mario->setIsFlyingUpMode(false);
+
+				ScoreBoard::getInstance()->minusMarioLife();
+
+				this->navigateTo(SceneName::WorldScene);
+				return;
+			}
+			Camera::getInstance()->follow(mario, _dt);
+		}
 	}
 
 	if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN) {
@@ -120,6 +137,10 @@ void UndergroundVC::viewDidUpdate(float _dt)
 					static_cast<Coin*>(*itr)->handleMarioCollision(this->mario, _dt);
 				}
 
+				// Green Pipe
+				else if (beginGreenPipeId <= (*itr)->getId() && (*itr)->getId() <= endGreenPipeId) {
+					this->mario->handleGreenPipeDownCollision(static_cast<GreenPipe*>(*itr), this->greenPipeIdToUnderground, this->leftAnchorGreenPipeToUnderground, this->rightAnchorGreenPipeToUnderground, _dt);
+				}
 			}
 		}
 	}
@@ -161,6 +182,21 @@ void UndergroundVC::viewWillRender()
 			mario->Draw();
 		}
 
+		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
+			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
+
+				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
+				unordered_set<Component*> ::iterator itr;
+				for (itr = cell.begin(); itr != cell.end(); ++itr) {
+					// Green Pipe
+					if (beginGreenPipeId <= (*itr)->getId() && (*itr)->getId() <= endGreenPipeId) {
+						(*itr)->Draw(map->getTexture());
+					}
+				}
+			}
+		}
+
 		AnimationCDPlayer::getInstance()->Draw(map->getTexture());
 
 		ScoreBoard::getInstance()->Draw();
@@ -194,6 +230,14 @@ void UndergroundVC::adaptRangeID(vector<string> data, char seperator)
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginCoinId = v[0];
 			this->endCoinId = v[1];
+		}
+		else if (i == 2) {
+			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
+			this->beginGreenPipeId = v[0];
+			this->endGreenPipeId = v[1];
+			this->greenPipeIdToUnderground = v[2];
+			this->leftAnchorGreenPipeToUnderground = v[3];
+			this->rightAnchorGreenPipeToUnderground = v[4];
 		}
 
 	}
@@ -268,6 +312,18 @@ void UndergroundVC::adaptData()
 			}
 			section = SECTION_NONE;
 		}
+		else if (line == "<GreenPipeFrames>") {
+			section = SECTION_GREEN_PIPE_FRAMES;
+			continue;
+		}
+		else if (line == "</GreenPipeFrames>") {
+			for (int i = 0; i < data.size(); ++i) {
+				GreenPipe* greenPipe = new GreenPipe(0, 0, 0, 0, 0, 0, 0);
+				greenPipe->loadInfo(data[i], ',');
+				greenPipes->push_back(greenPipe);
+			}
+			section = SECTION_NONE;
+		}
 
 
 		switch (section)
@@ -296,6 +352,9 @@ void UndergroundVC::adaptData()
 		case SECTION_COIN_FRAMES:
 			data.push_back(line);
 			break;
+		case SECTION_GREEN_PIPE_FRAMES:
+			data.push_back(line);
+			break;
 		default:
 			break;
 
@@ -308,10 +367,15 @@ void UndergroundVC::adaptData()
 void UndergroundVC::adaptAnimation()
 {
 	// Coins
-	//unordered_set<Coin*> ::iterator coinItr;
-	//for (coinItr = this->coins->begin(); coinItr != this->coins->end(); ++coinItr) {
-	//	(*coinItr)->setAnimation(new Animation(AnimationBundle::getInstance()->getCoin()));
-	//}
+	unordered_set<Coin*> ::iterator coinItr;
+	for (coinItr = this->coins->begin(); coinItr != this->coins->end(); ++coinItr) {
+		(*coinItr)->setAnimation(new Animation(AnimationBundle::getInstance()->getCoinFromUnderground()));
+	}
+
+	// Green Pipes
+	for (int i = 0; i < this->greenPipes->size(); ++i) {
+		this->greenPipes->at(i)->setAnimation(new Animation(AnimationBundle::getInstance()->getBlackPipe2FloorDown()));
+	}
 
 	this->mario->setAnimation(new Animation(AnimationBundle::getInstance()->getMarioStanding()));
 	this->mario->setState(MarioState::DROPPING);
@@ -326,9 +390,14 @@ void UndergroundVC::adaptToGrid()
 		Grid::getInstance()->add(this->grounds->at(i));
 	}
 
-	//// Coins
-	//unordered_set<Coin*> ::iterator coinItr;
-	//for (coinItr = this->coins->begin(); coinItr != this->coins->end(); ++coinItr) {
-	//	Grid::getInstance()->add(*coinItr);
-	//}
+	// Coins
+	unordered_set<Coin*> ::iterator coinItr;
+	for (coinItr = this->coins->begin(); coinItr != this->coins->end(); ++coinItr) {
+		Grid::getInstance()->add(*coinItr);
+	}
+
+	// Green Pipes
+	for (int i = 0; i < this->greenPipes->size(); ++i) {
+		Grid::getInstance()->add(this->greenPipes->at(i));
+	}
 }

@@ -147,5 +147,11 @@ public:
 	Animation getGoombaRedMoving();
 	Animation getGoombaRedTrampled();
 	Animation getGoombaRedThrownAway();
+
+	Animation getSuperMarioDroppingDownPipe();
+	Animation getSuperMarioFireDroppingDownPipe();
+
+	Animation getCoinFromUnderground();
+	Animation getBlackPipe2FloorDown();
 };
 

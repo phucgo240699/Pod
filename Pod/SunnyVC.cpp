@@ -103,7 +103,10 @@ void SunnyVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 	//}
 	
 	for (int i = 0; i < _keyTypes.size(); ++i) {
-		if (_keyTypes[i] == KeyType::down && this->mario->getComponentIdStandingOn() == this->greenPipeIdToUnderground) {
+		if (_keyTypes[i] == KeyType::down
+			&& this->mario->getComponentIdStandingOn() == this->greenPipeIdToUnderground
+			&& this->mario->getX() >= leftAnchorGreenPipeToUnderground
+			&& this->mario->getX() + this->mario->getBoundsWidth() <= rightAnchorGreenPipeToUnderground) {
 			this->mario->setState(MarioState::DROPPING_DOWN_PIPE);
 			return;
 		}
@@ -383,6 +386,12 @@ void SunnyVC::viewWillUpdate(float _dt)
 		if (this->mario->getState() == DROPPING_DOWN_PIPE) {
 			if (this->mario->getY() >= this->mario->getEndDroppingDownPipe()) {
 				this->navigateTo(SceneName::UndergroundScene);
+				return;
+			}
+		}
+		else if (this->mario->getState() == POPPING_UP_PIPE) {
+			if (this->mario->getY() <= this->mario->getEndPoppingUpPipe()) {
+				this->mario->setState(MarioState::STANDING);
 				return;
 			}
 		}
@@ -937,6 +946,11 @@ bool SunnyVC::getIsRestoredGoldenBrick()
 	return this->isRestoredGoldenBrick;
 }
 
+Mario* SunnyVC::getMario()
+{
+	return this->mario;
+}
+
 void SunnyVC::setIsPressedPButton(bool _isPressedPButton)
 {
 	this->isPressedPButton = _isPressedPButton;
@@ -949,6 +963,21 @@ void SunnyVC::setIsRestoredGoldenBrick(bool _isRestoreGoldenBrick)
 
 void SunnyVC::viewDidRender()
 {
+}
+
+void SunnyVC::setMario(Mario* _mario)
+{
+	this->mario = _mario;
+}
+
+float SunnyVC::getLeftAnchorMarioPoppingUpFromPipe()
+{
+	return this->leftAnchorMarioPoppingUpFromPipe;
+}
+
+float SunnyVC::getBottomAnchorMarioPoppingUpFromPipe()
+{
+	return this->bottomAnchorMarioPoppingUpFromPipe;
 }
 
 void SunnyVC::viewWillRelease()
@@ -1001,6 +1030,10 @@ void SunnyVC::adaptRangeID(vector<string> data, char seperator)
 			this->beginGreenPipeId = v[0];
 			this->endGreenPipeId = v[1];
 			this->greenPipeIdToUnderground = v[2];
+			this->leftAnchorGreenPipeToUnderground = v[3];
+			this->rightAnchorGreenPipeToUnderground = v[4];
+			this->leftAnchorMarioPoppingUpFromPipe = v[5];
+			this->bottomAnchorMarioPoppingUpFromPipe = v[6];
 		}
 		else if (i == 1) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
@@ -1322,7 +1355,12 @@ void SunnyVC::adaptAnimation()
 
 	// Green Pipes
 	for (int i = 0; i < this->greenPipes->size(); ++i) {
-		this->greenPipes->at(i)->setupAnimation();
+		if (this->greenPipes->at(i)->getFloorNumber() == 2) {
+			this->greenPipes->at(i)->setAnimation(new Animation(AnimationBundle::getInstance()->getGreenPipe2Floor()));
+		}
+		else {
+			this->greenPipes->at(i)->setAnimation(new Animation(AnimationBundle::getInstance()->getGreenPipe3Floor()));
+		}
 	}
 
 	// Coins

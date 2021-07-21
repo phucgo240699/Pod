@@ -200,6 +200,11 @@ int Mario::getEndDroppingDownPipe()
 	return this->endDroppingDownPipe;
 }
 
+int Mario::getEndPoppingUpPipe()
+{
+	return this->endPoppingUpPipe;
+}
+
 bool Mario::getIsFlashMode()
 {
 	return this->isFlashMode;
@@ -238,6 +243,11 @@ bool Mario::getIsTurningAround()
 bool Mario::getIsPressA()
 {
 	return this->isPressA;
+}
+
+bool Mario::getIsPressKeyUp()
+{
+	return this->isPressKeyUp;
 }
 
 void Mario::load()
@@ -670,7 +680,27 @@ void Mario::setState(MarioState _state)
 
 	case DROPPING_DOWN_PIPE:
 	{
-		this->endDroppingDownPipe = this->getY() + 30;
+		delete currentAnimation;
+		if (this->getIsFireMode()) {
+			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireDroppingDownPipe());
+		}
+		else {
+			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioDroppingDownPipe());
+		}
+		this->endDroppingDownPipe = this->getY() + this->getHeight();
+		break;
+	}
+
+	case POPPING_UP_PIPE:
+	{
+		delete currentAnimation;
+		if (this->getIsFireMode()) {
+			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireDroppingDownPipe());
+		}
+		else {
+			this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioDroppingDownPipe());
+		}
+		this->endPoppingUpPipe = this->getY() - this->getBoundsHeight();
 		break;
 	}
 
@@ -1002,6 +1032,11 @@ void Mario::setIsPressA(bool _isPressA)
 	this->isPressA = _isPressA;
 }
 
+void Mario::setIsPressKeyUp(bool _isPressKeyUp)
+{
+	this->isPressKeyUp = _isPressKeyUp;
+}
+
 void Mario::turnOnTurningAroundSkin()
 {
 	//this->setPressureState(MarioState(this->getState()));
@@ -1063,6 +1098,9 @@ void Mario::Update(float _dt)
 	if (this->getState() == DROPPING_DOWN_PIPE) {
 		this->plusY(1);
 		return;
+	}
+	else if (this->getState() == POPPING_UP_PIPE) {
+		this->plusY(-1);
 	}
 
 	if (this->getIsTurningAround()) {
@@ -1470,6 +1508,9 @@ void Mario::onKeyUp(vector<KeyType> _keyTypes)
 			}
 			this->setIsPressA(false);
 		}
+		else if (_keyTypes[i] == KeyType::up) {
+			this->setIsPressKeyUp(false);
+		}
 	}
 	
 	if (noLeft && noRight) {
@@ -1626,6 +1667,11 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 			if (this->getIsFireMode() == true) {
 				this->turnOffFireSkin(this->getState());
 			}
+		}
+
+		// Keydown
+		else if (_keyTypes[i] == KeyType::up) {
+			this->setIsPressKeyUp(true);
 		}
 	}
 	
@@ -2418,5 +2464,58 @@ void Mario::handlePButtonCollision(PButton* _pButton, float _dt)
 
 	if (get<0>(collisionResult) == true && get<2>(collisionResult)[0] == bottomEdge) {
 		_pButton->setState(PButtonState::PBUTTON_OFF);
+	}
+}
+
+void Mario::handleGreenPipeDownCollision(GreenPipe* _greenPipe, int _targetId, float _leftAnchor, float _rightAnchor, float _dt)
+{
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_greenPipe, _dt);
+	if (get<0>(collisionResult) == true) {
+		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+			CollisionEdge edge = get<2>(collisionResult)[j];
+			if (edge == topEdge
+				&& this->getX() != _greenPipe->getX() + _greenPipe->getWidth() && this->getX() + this->getBoundsWidth() != _greenPipe->getX()) {
+				if (_targetId == _greenPipe->getId()
+					&& this->getX() >= _leftAnchor
+					&& this->getX() + this->getBoundsWidth() <= _rightAnchor
+					&& this->getIsPressKeyUp()) {
+					this->setY(_greenPipe->getY() + _greenPipe->getHeight());
+					this->setState(MarioState::POPPING_UP_PIPE);
+				}
+				else {
+					this->setState(MarioState::DROPPING);
+					this->setY(_greenPipe->getY() + _greenPipe->getHeight());
+					this->setVy(0);
+				}
+			}
+			else if (edge == bottomEdge
+				&& this->getX() != _greenPipe->getX() + _greenPipe->getWidth() && this->getX() + this->getBoundsWidth() != _greenPipe->getX()) {
+				this->setState(MarioState::STANDING);
+				this->setY(_greenPipe->getY() - this->getBoundsHeight() - Setting::getInstance()->getCollisionSafeSpace());
+				this->setIsStandOnSurface(true);
+				this->setComponentIdStandingOn(_greenPipe->getId());
+			}
+			else if (edge == leftEdge && this->getY() + this->getBoundsHeight() != _greenPipe->getY()) {
+				this->setX(_greenPipe->getX() + _greenPipe->getWidth());
+				this->setSubState(MarioSubState::PUSHING);
+			}
+			else if (edge == rightEdge && this->getY() + this->getBoundsHeight() != _greenPipe->getY()) {
+				this->setX(_greenPipe->getX() - this->getBoundsWidth());
+				this->setSubState(MarioSubState::PUSHING);
+			}
+		}
+	}
+	else {
+		// if mario walk out of ground's top surface, it will drop
+		if (this->getState() == WALKING || this->getState() == STANDING) {
+			if (this->getIsStandOnSurface() == false) {
+				if ((_greenPipe->getX() <= this->getX() + this->getBoundsWidth() && this->getX() + this->getBoundsWidth() <= _greenPipe->getX() + _greenPipe->getWidth())
+					|| (_greenPipe->getX() <= this->getX() && this->getX() <= _greenPipe->getX() + _greenPipe->getWidth())) { // this is check which ground that mario is standing on
+					if (this->getY() + this->getBoundsHeight() == _greenPipe->getY() - Setting::getInstance()->getCollisionSafeSpace()) {
+						this->setIsStandOnSurface(true);
+					}
+				}
+			}
+		}
 	}
 }

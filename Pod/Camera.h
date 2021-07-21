@@ -20,7 +20,7 @@ public:
 	void setY(float _y);
 	void plusX(float _x);
 	void plusY(float _y);
-	void setPositionBy(Component* _target);
+	void setPositionBy(Mario* _target);
 	void follow(Mario* _target, float _dt);
 
 	void load(string line, char seperator);

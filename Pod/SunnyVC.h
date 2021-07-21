@@ -42,7 +42,7 @@ private:
 	int beginFlowerId, endFlowerId;
 	unordered_set<Flower*>* flowers;
 
-	int beginGreenPipeId, endGreenPipeId, greenPipeIdToUnderground;
+	int beginGreenPipeId, endGreenPipeId, greenPipeIdToUnderground, leftAnchorGreenPipeToUnderground, rightAnchorGreenPipeToUnderground;
 	vector<GreenPipe*>* greenPipes;
 
 	int beginFireBallId, endFireBallId;
@@ -69,14 +69,24 @@ private:
 	int countDownGoldenBrickBeingCoin = 340;
 	float camShakingValue = 2;
 
+
+	// PoppingUp
+	float leftAnchorMarioPoppingUpFromPipe, bottomAnchorMarioPoppingUpFromPipe;
+
 public:
 	// Getter
 	bool getIsPressedPButton();
 	bool getIsRestoredGoldenBrick();
+	Mario* getMario();
+	float getLeftAnchorMarioPoppingUpFromPipe();
+	float getBottomAnchorMarioPoppingUpFromPipe();
+
+
 
 	// Setter
 	void setIsPressedPButton(bool _isPressedPButton);
 	void setIsRestoredGoldenBrick(bool _isRestoreGoldenBrick);
+	void setMario(Mario* _mario);
 
 	// De init
 	//~SunnyVC();
