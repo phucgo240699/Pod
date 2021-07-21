@@ -18,8 +18,8 @@ private:
 	GiftType giftType;
 
 	int beginBoxJumpUp, endBoxJumpUp;
-	int beginCoinJumpUp, endCoinJumpUp, coinY, pointY;
-	bool isBoxDropDown = false, isCoinDropDown = false, isPointsStartPopUp = false;	
+	int beginCoinJumpUp, endCoinJumpUp, coinY, pointY, countEatPoint = 0;
+	bool isBoxDropDown = false, isCoinDropDown = false, isPointsStartPopUp = false, isPlayingPointAnimation = false;	
 
 	// Mode
 	bool isFakeGoldenBrick = false;
@@ -35,6 +35,8 @@ public:
 	SuperLeaf* getSuperLeaf();
 	GiftBrickState getState();
 	GiftType getGiftType();
+	bool getIsPlayingPointAnimation();
+
 
 	// Setter
 	void setSuperMushroomState(SuperMushroomState _state);
@@ -42,6 +44,8 @@ public:
 	void setState(GiftBrickState _state);
 	void setGiftType(GiftType _giftType);
 	void setGiftType(int _giftCode);
+	void setIsPlayingPointAnimation(bool _value);
+
 
 	void Update(float _dt);
 	void Draw(LPDIRECT3DTEXTURE9 _texture);

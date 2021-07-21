@@ -1888,10 +1888,17 @@ void Mario::handleGiftBrickCollision(GiftBrick* _giftBrick, float _dt)
 							_giftBrick->setGiftType(GiftType::SuperLeafGift);
 						}
 					}
-					_giftBrick->setState(GiftBrickState::POPUPGIFTBRICK);
-					if (_giftBrick->getGiftType() == Point100Gift) {
-						ScoreBoard::getInstance()->plusCoin(1);
-						ScoreBoard::getInstance()->plusPoint(100);
+
+					if (_giftBrick->getGiftType() == GiftType::MultiCoinGift && _giftBrick->getIsPlayingPointAnimation()) {
+						// Dont pop up
+					}
+					else {
+						_giftBrick->setState(GiftBrickState::POPUPGIFTBRICK);
+
+						if (_giftBrick->getGiftType() == Point100Gift || _giftBrick->getGiftType() == GiftType::MultiCoinGift) {
+							ScoreBoard::getInstance()->plusCoin(1);
+							ScoreBoard::getInstance()->plusPoint(100);
+						}
 					}
 				}
 				this->setState(MarioState::DROPPING);
