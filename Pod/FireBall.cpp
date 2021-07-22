@@ -250,6 +250,36 @@ void FireBall::handleFlowerCollision(Flower* _flower, float _dt)
 	}
 }
 
+void FireBall::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
+{
+	if (_goldenBrick->getState() == GOLDEN_BRICK_BEING_COIN || _goldenBrick->getState() == GOLDEN_BRICK_DISAPPEARING || _goldenBrick->getState() == GOLDEN_BRICK_DEAD) return;
+
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_goldenBrick, _dt);
+
+	if (get<0>(collisionResult) == true) {
+		CollisionEdge edge = get<2>(collisionResult)[0];
+
+		if (edge == bottomEdge) {
+			this->plusX(get<1>(collisionResult) * this->getVx());
+			this->plusY(get<1>(collisionResult) * this->getVy());
+			this->setIsGoDown(false);
+			this->topAnchor = this->getY() - 16;
+		}
+		else if (edge == topEdge) {
+			this->plusX(get<1>(collisionResult) * this->getVx());
+			this->plusY(get<1>(collisionResult) * this->getVy());
+			this->setIsGoDown(true);
+			this->topAnchor = this->getY();
+		}
+		else if (edge == leftEdge || edge == rightEdge) {
+			this->plusX(get<1>(collisionResult) * this->getVx());
+			this->plusY(get<1>(collisionResult) * this->getVy());
+			this->setState(FireBallState::FIREBALL_DISAPPEARED);
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFireBallSplash()), this->getX(), this->getY())));
+		}
+	}
+}
+
 void FireBall::handleBlockCollision(Block* _block, float _dt)
 {
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_block, _dt);

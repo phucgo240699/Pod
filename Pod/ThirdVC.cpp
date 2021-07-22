@@ -616,46 +616,47 @@ void ThirdVC::viewDidUpdate(float _dt)
 
 				// Fire Ball
 				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
-				// FireBall to others
-				int beginRowFireball = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-				int endRowFireball = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-				int beginColFireball = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
-				int endColFireball = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					// FireBall to others
+					int beginRowFireball = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int endRowFireball = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int beginColFireball = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int endColFireball = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
 
-				beginRowFireball = beginRowFireball < 0 ? 0 : beginRowFireball;
-				endRowFireball = endRowFireball > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowFireball;
-				beginColFireball = beginColFireball < 0 ? 0 : beginColFireball;
-				endColFireball = endColFireball > Grid::getInstance()->getTotalCols() ? Grid::getInstance()->getTotalCols() : endColFireball;
+					beginRowFireball = beginRowFireball < 0 ? 0 : beginRowFireball;
+					endRowFireball = endRowFireball > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowFireball;
+					beginColFireball = beginColFireball < 0 ? 0 : beginColFireball;
+					endColFireball = endColFireball > Grid::getInstance()->getTotalCols() ? Grid::getInstance()->getTotalCols() : endColFireball;
 
-				for (int r = beginRowFireball; r < endRowFireball; ++r) {
-					for (int c = beginColFireball; c < endColFireball; ++c) {
-						unordered_set<Component*> fireBallCell = Grid::getInstance()->getCell(r, c);
-						unordered_set<Component*> ::iterator fireBallItr;
+					for (int r = beginRowFireball; r < endRowFireball; ++r) {
+						for (int c = beginColFireball; c < endColFireball; ++c) {
+							unordered_set<Component*> fireBallCell = Grid::getInstance()->getCell(r, c);
+							unordered_set<Component*> ::iterator fireBallItr;
 
-						for (fireBallItr = fireBallCell.begin(); fireBallItr != fireBallCell.end(); ++fireBallItr) {
-							if ((beginGroundId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endGroundId)
-								|| (beginGoldenBrickId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endGoldenBrickId)
-								/*|| (beginGreenPipeId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endGreenPipeId)*/) {
-								static_cast<FireBall*>(*itr)->handleHardComponentCollision(*fireBallItr, _dt);
+							for (fireBallItr = fireBallCell.begin(); fireBallItr != fireBallCell.end(); ++fireBallItr) {
+								if (beginGroundId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endGroundId) {
+									static_cast<FireBall*>(*itr)->handleHardComponentCollision(*fireBallItr, _dt);
+								}
+								else if (beginBlockId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endBlockId) {
+									static_cast<FireBall*>(*itr)->handleBlockCollision(static_cast<Block*>(*fireBallItr), _dt);
+								}
+								else if (beginGoombaId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endGoombaId) {
+									static_cast<FireBall*>(*itr)->handleGoombaCollision(static_cast<Goomba*>(*fireBallItr), _dt);
+								}
+								else if (beginKoopaId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endKoopaId) {
+									static_cast<FireBall*>(*itr)->handleKoopaCollision(static_cast<Koopa*>(*fireBallItr), _dt);
+								}
+								else if (beginGoldenBrickId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endGoldenBrickId) {
+									static_cast<FireBall*>(*itr)->handleGoldenBrickCollision(static_cast<GoldenBrick*>(*fireBallItr), _dt);
+								}
+								/*else if (beginFireFlowerId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endFireFlowerId) {
+									static_cast<FireBall*>(*itr)->handleFireFlowerCollision(static_cast<FireFlower*>(*fireBallItr), _dt);
+								}
+								else if (beginFlowerId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endFlowerId) {
+									static_cast<FireBall*>(*itr)->handleFlowerCollision(static_cast<Flower*>(*fireBallItr), _dt);
+								}*/
 							}
-							else if (beginBlockId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endBlockId) {
-								static_cast<FireBall*>(*itr)->handleBlockCollision(static_cast<Block*>(*fireBallItr), _dt);
-							}
-							else if (beginGoombaId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endGoombaId) {
-								static_cast<FireBall*>(*itr)->handleGoombaCollision(static_cast<Goomba*>(*fireBallItr), _dt);
-							}
-							else if (beginKoopaId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endKoopaId) {
-								static_cast<FireBall*>(*itr)->handleKoopaCollision(static_cast<Koopa*>(*fireBallItr), _dt);
-							}
-							/*else if (beginFireFlowerId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endFireFlowerId) {
-								static_cast<FireBall*>(*itr)->handleFireFlowerCollision(static_cast<FireFlower*>(*fireBallItr), _dt);
-							}
-							else if (beginFlowerId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endFlowerId) {
-								static_cast<FireBall*>(*itr)->handleFlowerCollision(static_cast<Flower*>(*fireBallItr), _dt);
-							}*/
 						}
 					}
-				}
 				}
 			}
 		}

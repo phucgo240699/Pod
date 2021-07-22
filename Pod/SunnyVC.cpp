@@ -574,7 +574,7 @@ void SunnyVC::viewUpdate(float _dt)
 		}
 		if (this->isRestoredCamera == false) {
 			if (this->countDownGoldenBrickBeingCoin >= 320) {
-				if (this->countDownGoldenBrickBeingCoin % 2 == 0) {
+				if (this->countDownGoldenBrickBeingCoin % 2 == 0 || this->countDownGoldenBrickBeingCoin % 3 == 0) {
 					Camera::getInstance()->plusX(camShakingValue);
 					camShakingValue *= -1;
 				}
@@ -896,7 +896,6 @@ void SunnyVC::viewDidUpdate(float _dt)
 
 							for (fireBallItr = fireBallCell.begin(); fireBallItr != fireBallCell.end(); ++fireBallItr) {
 								if ((beginGroundId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endGroundId)
-									|| (beginGoldenBrickId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endGoldenBrickId)
 									|| (beginGreenPipeId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endGreenPipeId)) {
 									static_cast<FireBall*>(*itr)->handleHardComponentCollision(*fireBallItr, _dt);
 								}
@@ -914,6 +913,9 @@ void SunnyVC::viewDidUpdate(float _dt)
 								}
 								else if (beginFlowerId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endFlowerId) {
 									static_cast<FireBall*>(*itr)->handleFlowerCollision(static_cast<Flower*>(*fireBallItr), _dt);
+								}
+								else if (beginGoldenBrickId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endGoldenBrickId) {
+									static_cast<FireBall*>(*itr)->handleGoldenBrickCollision(static_cast<GoldenBrick*>(*fireBallItr), _dt);
 								}
 							}
 						}

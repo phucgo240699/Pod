@@ -8,6 +8,7 @@
 #include "FireFlower.h"
 #include "Flower.h"
 #include "ScoreBoard.h"
+#include "GoldenBrick.h"
 
 //class Block;
 //class Goomba;
@@ -57,4 +58,5 @@ public:
 	void handleKoopaCollision(Koopa* _koopa, float _dt);
 	void handleFireFlowerCollision(FireFlower* _fireFlower, float _dt);
 	void handleFlowerCollision(Flower* _flower, float _dt);
+	void handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt);
 };

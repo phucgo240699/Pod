@@ -1880,7 +1880,6 @@ void Mario::handleBlockCollision(Block* _block, float _dt)
 void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 {
 	if (_goldenBrick->getState() == GOLDEN_BRICK_DISAPPEARING || _goldenBrick->getState() == GOLDEN_BRICK_DEAD) return;
-
 	
 	// When mario turning around
 	if (_goldenBrick->getState() == GOLDEN_BRICK_STAYING && this->getIsTurningAround()) {
