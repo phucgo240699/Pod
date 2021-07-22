@@ -9,7 +9,15 @@ void ViewController::navigateTo(SceneName _sceneName)
 	{
 		ScoreBoard::getInstance()->resetTimeToZero();
 		Camera::getInstance()->loadWorldMap();
-		this->appController->getSunnyVC()->getMario()->save();
+		if (this->appController->getSceneName() == SunnyScene) {
+			this->appController->getSunnyVC()->getMario()->save();
+		}
+		else if (this->appController->getSceneName() == UndergroundScene) {
+			this->appController->getUndergroundVC()->getMario()->save();
+		}
+		else if (this->appController->getSceneName() == ThirdScene) {
+			this->appController->getThirdVC()->getMario()->save();
+		}
 		break;
 	}
 
