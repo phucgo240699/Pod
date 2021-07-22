@@ -39,6 +39,7 @@ void PButton::setState(PButtonState _state)
 
 void PButton::Update(float _dt)
 {
+	Component::Update(_dt);
 }
 
 void PButton::Draw(LPDIRECT3DTEXTURE9 _texture)

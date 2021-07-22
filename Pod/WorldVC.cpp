@@ -43,6 +43,10 @@ void WorldVC::viewDidLoad()
 
 void WorldVC::viewWillUpdate(float _dt)
 {
+}
+
+void WorldVC::viewUpdate(float _dt)
+{
 	if (map != NULL) {
 		map->Update(_dt);
 	}

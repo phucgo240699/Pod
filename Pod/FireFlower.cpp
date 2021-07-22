@@ -246,6 +246,7 @@ void FireFlower::loadInfo(string line, char seperator)
 
 void FireFlower::Update(float _dt)
 {
+	Enemy::Update(_dt);
 	if (this->getState() == FIRE_FLOWER_GROWING_UP && this->getY() + this->getVy() * _dt < topAnchor) {
 		this->setY(this->topAnchor);
 		this->setState(FireFlowerState::FIRE_FLOWER_STANDING_LOOK_DOWN);

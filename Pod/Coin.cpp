@@ -51,6 +51,7 @@ void Coin::loadInfo(string line, char seperator)
 
 void Coin::Update(float _dt)
 {
+	Component::Update(_dt);
 	this->animation->Update(_dt);
 }
 

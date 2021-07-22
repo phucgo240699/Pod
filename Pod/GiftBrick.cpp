@@ -175,6 +175,7 @@ void GiftBrick::setIsPlayingPointAnimation(bool _value)
 
 void GiftBrick::Update(float _dt)
 {
+	Component::Update(_dt);
 	// Box
 	this->boxAnimation->Update(_dt);
 	if (this->getState() == POPUPGIFTBRICK) {

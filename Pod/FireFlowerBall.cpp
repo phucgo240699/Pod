@@ -90,6 +90,7 @@ void FireFlowerBall::resetToOriginalPosition()
 
 void FireFlowerBall::Update(float _dt)
 {
+	Component::Update(_dt);
 	if (this->getState() != FIRE_FLOWER_BALL_FLYING_STAYING) {
 		this->animation->Update(_dt);
 		this->plusXNoRound(this->getVx() * _dt);

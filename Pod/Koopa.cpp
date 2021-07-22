@@ -446,9 +446,8 @@ void Koopa::convertMovingState()
 
 void Koopa::Update(float _dt)
 {
-	if (this->getState() == KOOPA_DEAD || this->getState() == KOOPA_STANDING) return;
-	
 	Enemy::Update(_dt);
+	if (this->getState() == KOOPA_DEAD || this->getState() == KOOPA_STANDING) return;
 
 	if (this->getIsStandOnSurface() == true) {
 		this->setIsStandOnSurface(false);

@@ -92,6 +92,8 @@ void GoldenBrick::setAnimation(Animation* _animation)
 
 void GoldenBrick::Update(float _dt)
 {
+	Component::Update(_dt);
+
 	animation->Update(_dt);
 
 	if (this->getState() == GOLDEN_BRICK_DISAPPEARING && this->isFinishFragmentAnimation == false) {

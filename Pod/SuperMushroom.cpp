@@ -122,6 +122,8 @@ bool SuperMushroom::getIsGreenMode()
 
 void SuperMushroom::Update(float _dt)
 {
+	Component::Update(_dt);
+
 	if (this->getState() == SUPER_MUSHROOM_DISAPPEARED) return;
 	if (this->getIsStandOnSurface() == true) {
 		this->setIsStandOnSurface(false);

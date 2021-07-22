@@ -49,6 +49,91 @@ void ThirdVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 
 void ThirdVC::viewWillUpdate(float _dt)
 {
+	// Check by cell in grid
+	int beginRow = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight());
+	int endRow = ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
+	int beginCol = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth());
+	int endCol = ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth());
+	for (int i = beginRow; i < endRow; ++i) {
+		for (int j = beginCol; j < endCol; ++j) {
+
+			if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
+
+			unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
+			if (cell.size() <= 0) continue;
+
+			unordered_set<Component*> ::iterator itr;
+			for (itr = cell.begin(); itr != cell.end(); ++itr) {
+
+				// Golden Brick
+				if (beginGoldenBrickId <= (*itr)->getId() && (*itr)->getId() <= endGoldenBrickId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// GiftBrick
+				else if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// SuperMushroom
+				else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= endSuperMushroomId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// SuperLeaf
+				else if (beginSuperLeafId <= (*itr)->getId() && (*itr)->getId() <= endSuperLeafId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				//// ==========================================================================================
+				//if (this->mario->getState() == DIE
+				//	|| this->mario->getState() == DIE_JUMPING
+				//	|| this->mario->getState() == DIE_DROPPING
+				//	|| this->mario->getState() == SCALING_UP
+				//	|| this->mario->getState() == SCALING_DOWN
+				//	|| this->mario->getState() == TRANSFERING_TO_FLY
+				//	|| this->mario->getState() == DROPPING_DOWN_PIPE
+				//	|| this->mario->getState() == POPPING_UP_PIPE
+				//	|| this->mario->getState() == JUMPING_UP_TO_CLOUND
+				//	|| this->mario->getState() == DROPPING_DOWN_WIN
+				//	|| this->mario->getState() == MOVING_RIGHT_WIN) {
+				//	continue;
+				//}
+
+				// Goombas
+				else if (beginGoombaId <= (*itr)->getId() && (*itr)->getId() <= endGoombaId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// Koopas
+				else if (beginKoopaId <= (*itr)->getId() && (*itr)->getId() <= endKoopaId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// Fire Ball
+				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// Coin
+				else if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+			}
+		}
+	}
+}
+
+void ThirdVC::viewUpdate(float _dt)
+{
 	if (map != NULL) {
 		map->Update(_dt);
 	}

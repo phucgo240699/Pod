@@ -25,6 +25,7 @@ public:
 	virtual void viewReceiveKeyUp(vector<KeyType> _keyTypes);
 	virtual void viewReceiveKeyDown(vector<KeyType> _keyTypes);
 	virtual void viewWillUpdate(float _dt);
+	virtual void viewUpdate(float _dt);
 	virtual void viewDidUpdate(float _dt);
 	virtual void viewWillRender();
 	virtual void viewDidRender();

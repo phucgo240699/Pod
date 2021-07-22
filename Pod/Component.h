@@ -22,6 +22,9 @@ protected:
 
 	int id;
 
+	// Prevent update mullti time
+	bool isUpdatedInOneLoop = false;
+
 public:	
 	// Init
 	Component(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id = 0);
@@ -38,6 +41,9 @@ public:
 
 	int getId();
 
+	// Prevent update mullti time in one loop
+	bool getIsUpdatedInOneLoop();
+
 	// Settter
 	void setPosition(D3DXVECTOR3 _position);
 	void setX(float _x);
@@ -51,6 +57,9 @@ public:
 	
 
 	void setId(int _id);
+
+	// Prevent update mullti time
+	void setIsUpdatedInOneLoop(bool _isUpdatedInOneLoop);
 
 	void plusX(float _x);
 	void plusY(float _y);

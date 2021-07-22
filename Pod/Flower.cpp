@@ -144,6 +144,7 @@ void Flower::loadInfo(string line, char seperator)
 
 void Flower::Update(float _dt)
 {
+	Enemy::Update(_dt);
 	if (this->getState() == FLOWER_GROWING_UP && this->getY() + this->getVy() * _dt < topAnchor) {
 		this->setY(this->topAnchor);
 		this->setState(FlowerState::FLOWER_STANDING);

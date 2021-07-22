@@ -92,6 +92,8 @@ void FireBall::setIsGoDown(bool _isGoDown)
 
 void FireBall::Update(float _dt)
 {
+	Component::Update(_dt);
+
 	if (this->getState() == FIREBALL_STAYING && this->getState() == FIREBALL_DISAPPEARED)  return;
 	
 	this->plusXNoRound(this->getVx() * _dt);

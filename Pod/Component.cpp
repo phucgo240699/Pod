@@ -71,6 +71,11 @@ int Component::getId()
 	return this->id;
 }
 
+bool Component::getIsUpdatedInOneLoop()
+{
+	return this->isUpdatedInOneLoop;
+}
+
 //bool Component::isAlreadyJoinedCamera()
 //{
 //	return this->alreadyJoinedCamera;
@@ -121,6 +126,11 @@ void Component::setYNoRound(float _y)
 	this->position.y = _y;
 }
 
+void Component::setIsUpdatedInOneLoop(bool _isUpdatedInOneLoop)
+{
+	this->isUpdatedInOneLoop = _isUpdatedInOneLoop;
+}
+
 void Component::plusX(float _x)
 {
 	this->position.x += round(_x);
@@ -153,9 +163,7 @@ void Component::plusVy(float _vy)
 
 void Component::Update(float _dt)
 {
-	//if (this->isAlreadyJoinedCamera() == false && this->isCollidingByFrame(Camera::getInstance()->getFrame())) {
-	//	this->setAlreadyJoinedCamera(true);
-	//}
+	this->setIsUpdatedInOneLoop(true);
 }
 
 void Component::Draw()

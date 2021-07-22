@@ -116,6 +116,117 @@ void SunnyVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 
 void SunnyVC::viewWillUpdate(float _dt)
 {
+	// Check by cell in grid
+	unordered_set<Component*> cell;
+	int beginRow = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight());
+	int endRow = ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
+	int beginCol = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth());
+	int endCol = ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth());
+
+	for (int i = beginRow; i < endRow; ++i) {
+		for (int j = beginCol; j < endCol; ++j) {
+
+			if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
+
+			cell = Grid::getInstance()->getCell(i, j);
+
+			unordered_set<Component*> ::iterator itr;
+			for (itr = cell.begin(); itr != cell.end(); ++itr) {
+
+				// Golden Brick
+				if (beginGoldenBrickId <= (*itr)->getId() && (*itr)->getId() <= endGoldenBrickId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// GiftBrick
+				else if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// SuperMushroom
+				else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= endSuperMushroomId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// SuperLeaf
+				else if (beginSuperLeafId <= (*itr)->getId() && (*itr)->getId() <= endSuperLeafId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				//// ==========================================================================================
+				//if (this->mario->getState() == DIE
+				//	|| this->mario->getState() == DIE_JUMPING
+				//	|| this->mario->getState() == DIE_DROPPING
+				//	|| this->mario->getState() == SCALING_UP
+				//	|| this->mario->getState() == SCALING_DOWN
+				//	|| this->mario->getState() == TRANSFERING_TO_FLY
+				//	|| this->mario->getState() == DROPPING_DOWN_PIPE
+				//	|| this->mario->getState() == POPPING_UP_PIPE
+				//	|| this->mario->getState() == JUMPING_UP_TO_CLOUND
+				//	|| this->mario->getState() == DROPPING_DOWN_WIN
+				//	|| this->mario->getState() == MOVING_RIGHT_WIN) {
+				//	continue;
+				//}
+
+
+				// Fire Flower
+				else if (beginFireFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// Fire Flower Ball
+				else if (beginFireFlowerBallId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerBallId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// Flower
+				else if (beginFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFlowerId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// Goombas
+				else if (beginGoombaId <= (*itr)->getId() && (*itr)->getId() <= endGoombaId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// Koopas
+				else if (beginKoopaId <= (*itr)->getId() && (*itr)->getId() <= endKoopaId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// Fire Ball
+				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// Coin
+				else if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// PButton
+				else if (beginPButtonId <= (*itr)->getId() && (*itr)->getId() <= endPButtonId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+			}
+		}
+	}
+}
+
+void SunnyVC::viewUpdate(float _dt)
+{
 	if (map != NULL) {
 		map->Update(_dt);
 	}
@@ -135,16 +246,12 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 			unordered_set<Component*> ::iterator itr;
 			for (itr = cell.begin(); itr != cell.end(); ++itr) {
-				// Gift Brick
-					/*if ((*itr)->getId() < beginGiftBrickId || (*itr)->getId() > endGiftBrickId) continue;*/
-				//if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
-				//	//if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP) {
-				//		(*itr)->Update(_dt);
-				//	//}
-				//}
 
 				// Golden Brick
 				if (beginGoldenBrickId <= (*itr)->getId() && (*itr)->getId() <= endGoldenBrickId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					if (static_cast<GoldenBrick*>(*itr)->getState() == GOLDEN_BRICK_DEAD) {
 						Grid::getInstance()->remove(*itr, i, j);
 						this->goldenBricks->erase(static_cast<GoldenBrick*>(*itr));
@@ -155,11 +262,17 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 				// GiftBrick
 				else if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					(*itr)->Update(_dt);
 				}
 
 				// SuperMushroom
 				else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= endSuperMushroomId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					if (static_cast<SuperMushroom*>(*itr)->getState() == SUPER_MUSHROOM_DISAPPEARED) {
 						Grid::getInstance()->remove(*itr, i, j);
 						continue;
@@ -190,6 +303,9 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 				// SuperLeaf
 				else if (beginSuperLeafId <= (*itr)->getId() && (*itr)->getId() <= endSuperLeafId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					if (static_cast<SuperLeaf*>(*itr)->getState() == SUPER_LEAF_DISAPPEARED) {
 						Grid::getInstance()->remove(*itr, i, j);
 						continue;
@@ -232,6 +348,9 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 				// Fire Flower
 				else if (beginFireFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					if (static_cast<FireFlower*>(*itr)->getState() == FIRE_FLOWER_DEAD) {
 						Grid::getInstance()->remove(*itr, i, j);
 						this->fireFlowers->erase(static_cast<FireFlower*>(*itr));
@@ -272,6 +391,9 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 				// Fire Flower Ball
 				else if (beginFireFlowerBallId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerBallId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					(*itr)->Update(_dt);
 
 					Grid::getInstance()->updateCellOf(*itr);
@@ -284,6 +406,9 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 				// Flower
 				else if (beginFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFlowerId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					if (static_cast<Flower*>(*itr)->getState() == FLOWER_DEAD) {
 						Grid::getInstance()->remove(*itr, i, j);
 						this->flowers->erase(static_cast<Flower*>(*itr));
@@ -309,6 +434,9 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 				// Goombas
 				else if (beginGoombaId <= (*itr)->getId() && (*itr)->getId() <= endGoombaId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					if (static_cast<Goomba*>(*itr)->getState() == DEAD_GOOMBA) {
 						Grid::getInstance()->remove(*itr, i, j);
 						this->goombas->erase(static_cast<Goomba*>(*itr));
@@ -316,6 +444,10 @@ void SunnyVC::viewWillUpdate(float _dt)
 					}
 
 					static_cast<Goomba*>(*itr)->setMarioX(this->mario->getX());
+
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					(*itr)->Update(_dt);
 
 					// update which cell in grid that it's belongs to
@@ -324,10 +456,14 @@ void SunnyVC::viewWillUpdate(float _dt)
 					if ((*itr)->getY() + (*itr)->getHeight() > Camera::getInstance()->getLimitY()) {
 						Grid::getInstance()->remove(*itr, i, j);
 					}
+
 				}
 
 				// Koopas
 				else if (beginKoopaId <= (*itr)->getId() && (*itr)->getId() <= endKoopaId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					if (static_cast<Koopa*>(*itr)->getState() == KOOPA_DEAD) {
 						Grid::getInstance()->remove(*itr, i, j);
 						this->koopas->erase(static_cast<Koopa*>(*itr));
@@ -346,6 +482,9 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 				// Fire Ball
 				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					if (static_cast<FireBall*>(*itr)->getState() == FIREBALL_DISAPPEARED) {
 						Grid::getInstance()->remove(*itr, i, j);
 						static_cast<FireBall*>(*itr)->setIsOutOfGrid(true);
@@ -364,6 +503,9 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 				// Coin
 				else if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					if (static_cast<Coin*>(*itr)->getState() == COIN_BEING_EARNED) {
 						Grid::getInstance()->remove(*itr, i, j);
 						continue;
@@ -376,6 +518,9 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 				// PButton
 				else if (beginPButtonId <= (*itr)->getId() && (*itr)->getId() <= endPButtonId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					(*itr)->Update(_dt);
 				}
 			}

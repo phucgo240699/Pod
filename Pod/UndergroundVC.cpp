@@ -38,6 +38,41 @@ void UndergroundVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 
 void UndergroundVC::viewWillUpdate(float _dt)
 {
+	// Check by cell in grid
+	int beginRow = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight());
+	int endRow = ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
+	int beginCol = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth());
+	int endCol = ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth());
+	for (int i = beginRow; i < endRow; ++i) {
+		for (int j = beginCol; j < endCol; ++j) {
+
+			if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
+
+			unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
+			unordered_set<Component*> ::iterator itr;
+			for (itr = cell.begin(); itr != cell.end(); ++itr) {
+				if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getState() == TRANSFERING_TO_FLY) {
+					continue;
+				}
+
+				// Coin
+				else if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// Fire Ball
+				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+			}
+		}
+	}
+}
+
+void UndergroundVC::viewUpdate(float _dt)
+{
 	if (map != NULL) {
 		map->Update(_dt);
 	}

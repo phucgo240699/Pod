@@ -22,6 +22,7 @@ public:
 	void viewReceiveKeyDown(vector<KeyType> _keyTypes);
 	void viewDidLoad();
 	void viewWillUpdate(float _dt);
+	void viewUpdate(float _dt);
 	void viewWillRender();
 	void viewDidRender();
 

@@ -82,6 +82,8 @@ void AppController::Game_Run(HWND hwnd, float _dt)
 	if (this->getSceneName() == WorldScene) {
 		this->getWorldVC()->viewWillUpdate(_dt);
 		if (this->getSceneName() != WorldScene) return;
+		this->getWorldVC()->viewUpdate(_dt);
+		if (this->getSceneName() != WorldScene) return;
 		this->getWorldVC()->viewDidUpdate(_dt);
 		if (this->getSceneName() != WorldScene) return;
 		this->getWorldVC()->viewWillRender();
@@ -92,6 +94,8 @@ void AppController::Game_Run(HWND hwnd, float _dt)
 	// SunnyScene
 	else if (this->getSceneName() == SunnyScene) {
 		this->getSunnyVC()->viewWillUpdate(_dt);
+		if (this->getSceneName() != SunnyScene) return;
+		this->getSunnyVC()->viewUpdate(_dt);
 		if (this->getSceneName() != SunnyScene) return;
 		this->getSunnyVC()->viewDidUpdate(_dt);
 		if (this->getSceneName() != SunnyScene) return;
@@ -104,6 +108,8 @@ void AppController::Game_Run(HWND hwnd, float _dt)
 	else if (this->getSceneName() == UndergroundScene) {
 		this->getUndergroundVC()->viewWillUpdate(_dt);
 		if (this->getSceneName() != UndergroundScene) return;
+		this->getUndergroundVC()->viewUpdate(_dt);
+		if (this->getSceneName() != UndergroundScene) return;
 		this->getUndergroundVC()->viewDidUpdate(_dt);
 		if (this->getSceneName() != UndergroundScene) return;
 		this->getUndergroundVC()->viewWillRender();
@@ -114,6 +120,8 @@ void AppController::Game_Run(HWND hwnd, float _dt)
 	// ThirdScene
 	else if (this->getSceneName() == ThirdScene) {
 		this->getThirdVC()->viewWillUpdate(_dt);
+		if (this->getSceneName() != ThirdScene) return;
+		this->getThirdVC()->viewUpdate(_dt);
 		if (this->getSceneName() != ThirdScene) return;
 		this->getThirdVC()->viewDidUpdate(_dt);
 		if (this->getSceneName() != ThirdScene) return;

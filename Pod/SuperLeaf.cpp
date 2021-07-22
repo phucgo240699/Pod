@@ -76,6 +76,8 @@ void SuperLeaf::setDefaultPoints(int _defaultPoints)
 
 void SuperLeaf::Update(float _dt)
 {
+	Component::Update(_dt);
+
 	if (this->getState() == SUPER_LEAF_POPPING_UP) {
 		if (this->getY() + this->getVy() * _dt < this->limitPoppingUp) {
 			this->setY(limitPoppingUp);

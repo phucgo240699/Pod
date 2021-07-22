@@ -29,6 +29,7 @@ public:
 	void viewReceiveKeyUp(vector<KeyType> _keyTypes);
 	void viewReceiveKeyDown(vector<KeyType> _keyTypes);
 	void viewWillUpdate(float _dt);
+	void viewUpdate(float _dt);
 	void viewDidUpdate(float _dt);
 	void viewWillRender();
 	void viewDidRender();
