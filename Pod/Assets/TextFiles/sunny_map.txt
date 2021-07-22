@@ -79,7 +79,7 @@
 
 <MarioInfo>
 # (x, y, limitX, limitY)
-1356,384,2816,470
+36,384,2816,470
 </MarioInfo>
 
 <GiftBrickFrames>

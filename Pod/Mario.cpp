@@ -2124,16 +2124,16 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 		return;
 	}
 
-	if (_goomba->getState() == GOOMBA_FLYING_LEFT || _goomba->getState() == GOOMBA_FLYING_RIGHT || _goomba->getState() == GOOMBA_DROPPING_LEFT || _goomba->getState() == GOOMBA_DROPPING_RIGHT) {
+	/*if (_goomba->getState() == GOOMBA_FLYING_LEFT || _goomba->getState() == GOOMBA_FLYING_RIGHT || _goomba->getState() == GOOMBA_DROPPING_LEFT || _goomba->getState() == GOOMBA_DROPPING_RIGHT) {
 		_goomba->setStoredVy(_goomba->getVy());
 		_goomba->setVy(-abs(_goomba->getOriginVy()));
-	}
+	}*/
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_goomba, _dt);
 
-	if (_goomba->getState() == GOOMBA_FLYING_LEFT || _goomba->getState() == GOOMBA_FLYING_RIGHT || _goomba->getState() == GOOMBA_DROPPING_LEFT || _goomba->getState() == GOOMBA_DROPPING_RIGHT) {
+	/*if (_goomba->getState() == GOOMBA_FLYING_LEFT || _goomba->getState() == GOOMBA_FLYING_RIGHT || _goomba->getState() == GOOMBA_DROPPING_LEFT || _goomba->getState() == GOOMBA_DROPPING_RIGHT) {
 		_goomba->setVy(_goomba->getStoredVy());
-	}
+	}*/
 
 	if (get<0>(collisionResult) == true) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
@@ -2195,18 +2195,47 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 			this->setState(MarioState::DIE);
 		}
 	}
-	else if (this->isCollidingByBounds(_goomba->getBounds())
-		&& (this->getState() == WALKING || this->getState() == STANDING)
-		&& _goomba->getState() != GOOMBA_POPPING_LEFT
-		&& _goomba->getState() != GOOMBA_POPPING_RIGHT
-		&& _goomba->getState() != GOOMBA_FLYING_LEFT
-		&& _goomba->getState() != GOOMBA_FLYING_RIGHT) {
-		_goomba->plusX(2 * get<1>(collisionResult) * _goomba->getVx());
-		if (this->getIsSuperMode() == false) {
-			_goomba->setState(GoombaState::GOOMBA_STANDING);
+	else if (this->isCollidingByBounds(_goomba->getBounds())) {
+		if ((this->getState() == WALKING || this->getState() == STANDING)
+			&& _goomba->getState() != GOOMBA_POPPING_LEFT
+			&& _goomba->getState() != GOOMBA_POPPING_RIGHT
+			&& _goomba->getState() != GOOMBA_FLYING_LEFT
+			&& _goomba->getState() != GOOMBA_FLYING_RIGHT) {
+			_goomba->plusX(2 * get<1>(collisionResult) * _goomba->getVx());
+			if (this->getIsSuperMode() == false) {
+				_goomba->setState(GoombaState::GOOMBA_STANDING);
+			}
+			this->plusX(get<1>(collisionResult) * this->getVx());
+			this->setState(MarioState::DIE);
 		}
-		this->plusX(get<1>(collisionResult) * this->getVx());
-		this->setState(MarioState::DIE);
+		else if ((this->getState() == DROPPING)
+			&& (_goomba->getState() == GOOMBA_FLYING_LEFT
+				|| _goomba->getState() == GOOMBA_FLYING_RIGHT
+				|| _goomba->getState() == GOOMBA_POPPING_LEFT
+				|| _goomba->getState() == GOOMBA_POPPING_RIGHT)) {
+
+			if (abs(this->getBounds().left - _goomba->getBounds().left) < 14) {
+				if (_goomba->getState() == GOOMBA_FLYING_LEFT || _goomba->getState() == GOOMBA_POPPING_LEFT) {
+					_goomba->setState(GoombaState::GOOMBA_DROPPING_LEFT);
+				}
+				else if (_goomba->getState() == GOOMBA_FLYING_RIGHT || _goomba->getState() == GOOMBA_POPPING_RIGHT) {
+					_goomba->setState(GoombaState::GOOMBA_DROPPING_RIGHT);
+				}
+
+				// Must be put this here. After set goomba state
+				this->setIsFlyingMode(false);
+
+				this->setState(MarioState::JUMPING);
+			}
+			else {
+				_goomba->plusX(2 * get<1>(collisionResult) * _goomba->getVx());
+				if (this->getIsSuperMode() == false) {
+					_goomba->setState(GoombaState::GOOMBA_STANDING);
+				}
+				this->plusX(get<1>(collisionResult) * this->getVx());
+				this->setState(MarioState::DIE);
+			}
+		}
 	}
 }
 

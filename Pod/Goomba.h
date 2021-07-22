@@ -26,7 +26,7 @@ private:
 	// Flying
 	bool isFlyingMode = false, isUseRedSkin = false;
 	float countFlyingX, startFlyingY, countPoppingX, startPoppingY, countPopping, countDownFromMovingToFlying = 40;
-	float storedVy;
+	//float storedVy;
 	float marioX;
 
 public:
@@ -45,7 +45,7 @@ public:
 	float getHeight();
 	float getBoundsWidth();
 	float getBoundsHeight();
-	float getStoredVy();
+	//float getStoredVy();
 	float getOriginVx();
 	float getOriginVy();
 
@@ -53,7 +53,7 @@ public:
 	void setState(GoombaState _state);
 	void setIsFlyingMode(bool _isFlyingMode);
 	void setMarioX(float _marioX);
-	void setStoredVy(float _storedVy);
+	//void setStoredVy(float _storedVy);
 
 
 	void convertMovingState();
