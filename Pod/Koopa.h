@@ -38,7 +38,7 @@ private:
 
 	// Flying
 	float countFlyingX, startFlyingY;
-	float storedVy;
+	//float storedVy;
 
 public:
 	// Init
@@ -60,7 +60,7 @@ public:
 	bool getIsFlyingMode();
 	float getOriginVy();
 	float getOriginVx();
-	float getStoredVy();
+	//float getStoredVy();
 
 	// Setter
 	void setState(KoopaState _state);
@@ -69,7 +69,7 @@ public:
 	void setHasCollideMario(bool _hasCollideMario);
 	void setIsGreenMode(bool _isGreenMode);
 	void setIsFlyingMode(bool _isFlyingMode);
-	void setStoredVy(float _storedVy);
+	//void setStoredVy(float _storedVy);
 
 	void convertMovingState();
 	void Update(float _dt);

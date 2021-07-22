@@ -93,10 +93,10 @@ float Koopa::getOriginVx()
 	return this->originVx;
 }
 
-float Koopa::getStoredVy()
-{
-	return this->storedVy;
-}
+//float Koopa::getStoredVy()
+//{
+//	return this->storedVy;
+//}
 
 void Koopa::setState(KoopaState _state)
 {
@@ -411,10 +411,10 @@ void Koopa::setIsFlyingMode(bool _isFlyingMode)
 	this->isFlyingMode = _isFlyingMode;
 }
 
-void Koopa::setStoredVy(float _storedVy)
-{
-	this->storedVy = _storedVy;
-}
+//void Koopa::setStoredVy(float _storedVy)
+//{
+//	this->storedVy = _storedVy;
+//}
 
 void Koopa::convertMovingState()
 {
@@ -516,8 +516,8 @@ void Koopa::Update(float _dt)
 		float moreY = (-1 * (48 - (pow(countFlyingX + 24, 2) / 12)));
 		this->plusXNoRound(this->getVx() * _dt);
 		this->setYNoRound(startFlyingY + moreY);
-		
-		if (moreY <= -31 && this->getVy() < 0) {
+
+		if (countFlyingX < -24) {
 			this->setVy(abs(this->originVy));
 		}
 	}
@@ -528,7 +528,7 @@ void Koopa::Update(float _dt)
 		this->plusXNoRound(this->getVx() * _dt);
 		this->setYNoRound(startFlyingY + moreY);
 
-		if (moreY <= -31 && this->getVy() < 0) {
+		if (countFlyingX >= 24) {
 			this->setVy(abs(this->originVy));
 		}
 	}
@@ -869,16 +869,16 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 	}
 
 
-	if (this->getState() == KOOPA_FLYING_LEFT || this->getState() == KOOPA_FLYING_RIGHT || this->getState() == KOOPA_DROPPING_LEFT || this->getState() == KOOPA_DROPPING_RIGHT) {
+	/*if (this->getState() == KOOPA_FLYING_LEFT || this->getState() == KOOPA_FLYING_RIGHT || this->getState() == KOOPA_DROPPING_LEFT || this->getState() == KOOPA_DROPPING_RIGHT) {
 		this->setStoredVy(this->getVy());
 		this->setVy(-abs(this->originVy));
-	}
+	}*/
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
 
-	if (this->getState() == KOOPA_FLYING_LEFT || this->getState() == KOOPA_FLYING_RIGHT || this->getState() == KOOPA_DROPPING_LEFT || this->getState() == KOOPA_DROPPING_RIGHT) {
+	/*if (this->getState() == KOOPA_FLYING_LEFT || this->getState() == KOOPA_FLYING_RIGHT || this->getState() == KOOPA_DROPPING_LEFT || this->getState() == KOOPA_DROPPING_RIGHT) {
 		this->setVy(this->getStoredVy());
-	}
+	}*/
 
 	if (get<0>(collisionResult) == true) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
@@ -957,18 +957,42 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 			this->setupPointAnimPosition();
 		}
 	}
-	else if (this->isCollidingByBounds(_mario->getBounds())
-		&& (_mario->getState() == WALKING || _mario->getState() == STANDING)
-		&& this->getState() != KOOPA_SHRINKAGE
-		&& this->getState() != KOOPA_SHRINKAGE_SHAKING
-		&& this->getState() != KOOPA_FLYING_LEFT
-		&& this->getState() != KOOPA_FLYING_RIGHT) {
-		this->plusX(2 * get<1>(collisionResult) * this->getVx());
-		if (_mario->getIsSuperMode() == false) {
-			this->setState(KoopaState::KOOPA_STANDING);
+	else if (this->isCollidingByBounds(_mario->getBounds())) {
+		if ((_mario->getState() == WALKING || _mario->getState() == STANDING)
+			&& this->getState() != KOOPA_SHRINKAGE
+			&& this->getState() != KOOPA_SHRINKAGE_SHAKING
+			&& this->getState() != KOOPA_FLYING_LEFT
+			&& this->getState() != KOOPA_FLYING_RIGHT) {
+			this->plusX(2 * get<1>(collisionResult) * this->getVx());
+			if (_mario->getIsSuperMode() == false) {
+				this->setState(KoopaState::KOOPA_STANDING);
+			}
+			_mario->plusX(get<1>(collisionResult) * _mario->getVx());
+			_mario->setState(MarioState::DIE);
 		}
-		_mario->plusX(get<1>(collisionResult) * _mario->getVx());
-		_mario->setState(MarioState::DIE);
+		else if ((_mario->getState() == DROPPING)
+			&& (this->getState() == KOOPA_FLYING_LEFT
+				|| this->getState() == KOOPA_FLYING_RIGHT)) {
+
+			if (abs(_mario->getBounds().left - this->getBounds().left) < 14) {
+				if (this->getState() == KOOPA_FLYING_LEFT) {
+					this->setState(KoopaState::KOOPA_DROPPING_LEFT);
+				}
+				else if (this->getState() == KOOPA_FLYING_RIGHT) {
+					this->setState(KoopaState::KOOPA_DROPPING_RIGHT);
+				}
+				
+				_mario->setState(MarioState::JUMPING);
+			}
+			else {
+				this->plusX(2 * get<1>(collisionResult) * this->getVx());
+				if (_mario->getIsSuperMode() == false) {
+					this->setState(KoopaState::KOOPA_STANDING);
+				}
+				_mario->plusX(get<1>(collisionResult) * _mario->getVx());
+				_mario->setState(MarioState::DIE);
+			}
+		}
 	}
 }
 
