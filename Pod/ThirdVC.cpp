@@ -15,6 +15,7 @@ void ThirdVC::viewDidLoad()
     mario = new Mario(0, 0, 0, 0, 0, 0, ImagePath::getInstance()->mario, D3DCOLOR_XRGB(255, 0, 255), DROPPING);
     map = new Map();
     grounds = new vector<Ground*>();
+	blocks = new vector<Block*>();
 
 
 	this->mario->load();
@@ -146,6 +147,11 @@ void ThirdVC::viewDidUpdate(float _dt)
 				if (beginGroundId <= (*itr)->getId() && (*itr)->getId() <= endGroundId) {
 					this->mario->handleGroundCollision(static_cast<Ground*>(*itr), _dt);
 				}
+
+				// Block
+				if (beginBlockId <= (*itr)->getId() && (*itr)->getId() <= endBlockId) {
+					this->mario->handleBlockCollision(static_cast<Block*>(*itr), _dt);
+				}
 			}
 		}
 	}
@@ -216,6 +222,11 @@ void ThirdVC::adaptRangeID(vector<string> data, char seperator)
 			this->beginGroundId = v[0];
 			this->endGroundId = v[1];
 		}
+		else if (i == 1) {
+			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
+			this->beginBlockId = v[0];
+			this->endBlockId = v[1];
+		}
 	}
 }
 
@@ -283,6 +294,18 @@ void ThirdVC::adaptData()
 			}
 			section = SECTION_NONE;
 		}
+		else if (line == "<BlockFrames>") {
+			section = SECTION_BLOCK_FRAMES;
+			continue;
+		}
+		else if (line == "</BlockFrames>") {
+			for (int i = 0; i < data.size(); ++i) {
+				Block* block = new Block(0, 0, 0, 0, 0, 0, 0, 0);
+				block->load(data[i], ',');
+				blocks->push_back(block);
+			}
+			section = SECTION_NONE;
+		}
 
 		switch (section)
 		{
@@ -307,6 +330,9 @@ void ThirdVC::adaptData()
 		case SECTION_GROUNDS:
 			data.push_back(line);
 			break;
+		case SECTION_BLOCK_FRAMES:
+			data.push_back(line);
+			break;
 		default:
 			break;
 		}
@@ -328,5 +354,10 @@ void ThirdVC::adaptToGrid()
 	// Grounds
 	for (int i = 0; i < this->grounds->size(); ++i) {
 		Grid::getInstance()->add(this->grounds->at(i));
+	}
+
+	// Blocks
+	for (int i = 0; i < this->blocks->size(); ++i) {
+		Grid::getInstance()->add(this->blocks->at(i));
 	}
 }

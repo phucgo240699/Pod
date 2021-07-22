@@ -1,6 +1,10 @@
 <ViewController>
 # 0. beginGroundId, endGroundId
 0,100
+
+# 1. beginBlockId, endBlockId
+101,200
+
 </ViewController>
 
 <MapInfo>
@@ -46,5 +50,32 @@
 
 <Grounds>
 # every ground plus 32 into height
-0,416,1277,48,0
+# use 1271 instead of 1277
+0,416,1271,48,0
+
+# use 1299 instead of 1293
+# use 164 instead of 176
+1299,416,164,16,1
+
+# use 1491 instead of 1485
+1491,416,1075,16,2
+
+717,352,64,16,3
+829,352,16,64,4
+957,368,16,48,5
+1085,352,16,64,6
+1213,352,16,64,7
 </Grounds>
+
+<BlockFrames>
+173,384,64,32,101
+221,336,64,32,102
+1565,272,64,32,103
+1549,368,80,32,104
+1645,336,64,32,105
+1725,304,64,32,106
+1757,352,80,32,107
+1853,320,64,32,108
+1933,288,64,128,109
+
+</BlockFrames>

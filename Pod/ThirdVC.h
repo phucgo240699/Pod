@@ -15,6 +15,8 @@ private:
 	int beginGroundId, endGroundId;
 	vector<Ground*>* grounds;
 
+	int beginBlockId, endBlockId;
+	vector<Block*>* blocks;
 
 public:
 	// Getter
