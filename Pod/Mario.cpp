@@ -773,10 +773,10 @@ void Mario::setState(MarioState _state)
 		}
 		else if (this->getIsSuperMode()) {
 			if (this->getIsFireMode()) {
-				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioDroppingDownPipe());
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireDroppingDownPipe());
 			}
 			else {
-				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireDroppingDownPipe());
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioDroppingDownPipe());
 			}
 		}
 		else {
@@ -805,10 +805,10 @@ void Mario::setState(MarioState _state)
 		}
 		else if (this->getIsSuperMode()) {
 			if (this->getIsFireMode()) {
-				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioDroppingDownPipe());
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireDroppingDownPipe());
 			}
 			else {
-				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireDroppingDownPipe());
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioDroppingDownPipe());
 			}
 		}
 		else {
