@@ -137,11 +137,11 @@ void SunnyVC::viewWillUpdate(float _dt)
 			for (itr = cell.begin(); itr != cell.end(); ++itr) {
 				// Gift Brick
 					/*if ((*itr)->getId() < beginGiftBrickId || (*itr)->getId() > endGiftBrickId) continue;*/
-				if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
-					//if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP) {
-						(*itr)->Update(_dt);
-					//}
-				}
+				//if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
+				//	//if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP) {
+				//		(*itr)->Update(_dt);
+				//	//}
+				//}
 
 				// Golden Brick
 				if (beginGoldenBrickId <= (*itr)->getId() && (*itr)->getId() <= endGoldenBrickId) {

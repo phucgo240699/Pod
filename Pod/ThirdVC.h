@@ -12,12 +12,35 @@ private:
 	Mario* mario;
 	Map* map;
 
+	// Ground
 	int beginGroundId, endGroundId;
 	vector<Ground*>* grounds;
 
+	// Block
 	int beginBlockId, endBlockId;
 	vector<Block*>* blocks;
 
+	// GoldenBrick
+	int beginGoldenBrickId, endGoldenBrickId;
+	unordered_set<GoldenBrick*>* goldenBricks;
+
+	// Gift Brick, SuperMushroom, SuperLeaf
+	int beginSuperMushroomId, endSuperMushroomId;
+	int beginSuperLeafId, endSuperLeafId;
+	int beginGiftBrickId, endGiftBrickId;
+	vector<GiftBrick*>* giftBricks;
+
+	// Coin
+	int beginCoinId, endCoinId;
+	unordered_set<Coin*>* coins;
+
+	// Goombas
+	int beginGoombaId, endGoombaId;
+	unordered_set<Goomba*>* goombas;
+
+	// Koopas
+	int beginKoopaId, endKoopaId;
+	unordered_set<Koopa*>* koopas;
 
 	int beginFireBallId, endFireBallId;
 

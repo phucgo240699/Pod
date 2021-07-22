@@ -5,7 +5,22 @@
 # 1. beginBlockId, endBlockId
 101,200
 
-# 2. beginFireBallId, endFireBallId
+# 2. beginGoldenBrickId, endGoldenBrickId
+201,300
+
+# 3. beginGiftBrickId, endGiftBrickId
+301,400
+
+# 4. beginCoinId, endCoinId
+401,500
+
+# 5. beginGoombaId, endGoombaId
+501,600
+
+# 6. beginKoopaId, endKoopaId
+601,700
+
+# 7. beginFireBallId, endFireBallId
 1001,1100
 
 </ViewController>
@@ -80,5 +95,38 @@
 1757,352,80,32,107
 1853,320,64,32,108
 1933,288,64,128,109
-
 </BlockFrames>
+
+<GoldenBrickFrames>
+# (x, y, width, height, hasPButton, id)
+# 0: Not thing
+# 1: P Button : pButtonX, pButtonY, pButtonId
+509,400,16,16,0,201
+525,400,16,16,0,202
+541,400,16,16,0,203
+509,384,16,16,0,204
+509,368,16,16,0,205
+525,368,16,16,0,206
+509,352,16,16,0,207
+525,352,16,16,0,208
+541,352,16,16,0,209
+
+557,368,16,16,0,210
+573,368,16,16,0,211
+573,384,16,16,0,212
+589,384,16,16,0,213
+605,384,16,16,0,214
+621,384,16,16,0,215
+637,384,16,16,0,216
+605,400,16,16,0,217
+621,400,16,16,0,218
+637,400,16,16,0,219
+
+589,336,16,16,0,220
+605,336,16,16,0,221
+621,336,16,16,0,222
+637,336,16,16,0,223
+589,352,16,16,0,224
+605,352,16,16,0,225
+637,352,16,16,0,226
+</GoldenBrickFrames>
