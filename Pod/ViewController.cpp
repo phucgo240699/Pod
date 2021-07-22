@@ -9,6 +9,7 @@ void ViewController::navigateTo(SceneName _sceneName)
 	{
 		ScoreBoard::getInstance()->resetTimeToZero();
 		Camera::getInstance()->loadWorldMap();
+		this->appController->getSunnyVC()->getMario()->save();
 		break;
 	}
 
