@@ -18,6 +18,9 @@ private:
 	int beginBlockId, endBlockId;
 	vector<Block*>* blocks;
 
+
+	int beginFireBallId, endFireBallId;
+
 public:
 	// Getter
 	Mario* getMario();

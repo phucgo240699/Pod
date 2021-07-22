@@ -5,6 +5,9 @@
 # 1. beginBlockId, endBlockId
 101,200
 
+# 2. beginFireBallId, endFireBallId
+1001,1100
+
 </ViewController>
 
 <MapInfo>

@@ -46,27 +46,44 @@ void ThirdVC::viewWillUpdate(float _dt)
 	}
 	
 	
-	//unordered_set<Component*> cell;
-	//// Check by cell in grid
-	//int beginRow = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight());
-	//int endRow = ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
-	//int beginCol = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth());
-	//int endCol = ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth());
-	//for (int i = beginRow; i < endRow; ++i) {
-	//	for (int j = beginCol; j < endCol; ++j) {
+	
+	// Check by cell in grid
+	int beginRow = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight());
+	int endRow = ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
+	int beginCol = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth());
+	int endCol = ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth());
+	for (int i = beginRow; i < endRow; ++i) {
+		for (int j = beginCol; j < endCol; ++j) {
 
-	//	if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
+		if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
-	//		cell = Grid::getInstance()->getCell(i, j);
-	//		if (cell.size() <= 0) continue;
+		unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
+			if (cell.size() <= 0) continue;
 
-	//		unordered_set<Component*> ::iterator itr;
-	//		for (itr = cell.begin(); itr != cell.end(); ++itr) {
+			unordered_set<Component*> ::iterator itr;
+			for (itr = cell.begin(); itr != cell.end(); ++itr) {
 
 
-	//		}
-	//	}
-	//}
+				// Fire Ball
+				if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
+					if (static_cast<FireBall*>(*itr)->getState() == FIREBALL_DISAPPEARED) {
+						Grid::getInstance()->remove(*itr, i, j);
+						static_cast<FireBall*>(*itr)->setIsOutOfGrid(true);
+						continue;
+					}
+
+					(*itr)->Update(_dt);
+
+					Grid::getInstance()->updateCellOf(*itr);
+
+					if ((*itr)->isCollidingByFrame(Camera::getInstance()->getFrame()) == false) {
+						Grid::getInstance()->remove(*itr, i, j);
+						static_cast<FireBall*>(*itr)->setIsOutOfGrid(true);
+					}
+				}
+			}
+		}
+	}
 
 
 	if (mario != NULL) {
@@ -152,6 +169,36 @@ void ThirdVC::viewDidUpdate(float _dt)
 				if (beginBlockId <= (*itr)->getId() && (*itr)->getId() <= endBlockId) {
 					this->mario->handleBlockCollision(static_cast<Block*>(*itr), _dt);
 				}
+
+				// Fire Ball
+				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
+					// FireBall to others
+					int beginRowFireball = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int endRowFireball = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int beginColFireball = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int endColFireball = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+
+					beginRowFireball = beginRowFireball < 0 ? 0 : beginRowFireball;
+					endRowFireball = endRowFireball > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowFireball;
+					beginColFireball = beginColFireball < 0 ? 0 : beginColFireball;
+					endColFireball = endColFireball > Grid::getInstance()->getTotalCols() ? Grid::getInstance()->getTotalCols() : endColFireball;
+
+					for (int r = beginRowFireball; r < endRowFireball; ++r) {
+						for (int c = beginColFireball; c < endColFireball; ++c) {
+							unordered_set<Component*> fireBallCell = Grid::getInstance()->getCell(r, c);
+							unordered_set<Component*> ::iterator fireBallItr;
+
+							for (fireBallItr = fireBallCell.begin(); fireBallItr != fireBallCell.end(); ++fireBallItr) {
+								if (beginGroundId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endGroundId) {
+									static_cast<FireBall*>(*itr)->handleHardComponentCollision(*fireBallItr, _dt);
+								}
+								else if (beginBlockId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endBlockId) {
+									static_cast<FireBall*>(*itr)->handleBlockCollision(static_cast<Block*>(*fireBallItr), _dt);
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 	}
@@ -173,20 +220,38 @@ void ThirdVC::viewWillRender()
 			map->Draw(Drawing::getInstance()->getThirdMapTexture());
 		}
 
-		/*unordered_set<Component*> cell;
-		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
+		/*for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
 			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
 				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
-				cell = Grid::getInstance()->getCell(i, j);
+				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
 				if (cell.size() <= 0) continue;
 
 				unordered_set<Component*> ::iterator itr;
 				for (itr = cell.begin(); itr != cell.end(); ++itr) {
-					
+
 				}
 			}
 		}*/
+
+		
+		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
+			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
+
+				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
+				if (cell.size() <= 0) continue;
+
+				unordered_set<Component*> ::iterator itr;
+				for (itr = cell.begin(); itr != cell.end(); ++itr) {
+
+					// Fire Ball
+					if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
+					}
+				}
+			}
+		}
 
 
 		if (mario != NULL) {
@@ -226,6 +291,11 @@ void ThirdVC::adaptRangeID(vector<string> data, char seperator)
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginBlockId = v[0];
 			this->endBlockId = v[1];
+		}
+		else if (i == 2) {
+			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
+			this->beginFireBallId = v[0];
+			this->endFireBallId = v[1];
 		}
 	}
 }

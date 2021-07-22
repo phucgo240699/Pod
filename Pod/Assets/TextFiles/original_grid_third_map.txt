@@ -61,4 +61,8 @@
 > 109
 15,3_15,4
 
+# Fire Ball
+> 1001
+0,4
+
 </GridMatrixId>
