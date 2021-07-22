@@ -71,7 +71,6 @@ void ThirdVC::viewWillUpdate(float _dt)
 			unordered_set<Component*> ::iterator itr;
 			for (itr = cell.begin(); itr != cell.end(); ++itr) {
 
-
 				// Golden Brick
 				if (beginGoldenBrickId <= (*itr)->getId() && (*itr)->getId() <= endGoldenBrickId) {
 					if (static_cast<GoldenBrick*>(*itr)->getState() == GOLDEN_BRICK_DEAD) {
@@ -682,6 +681,10 @@ void ThirdVC::adaptRangeID(vector<string> data, char seperator)
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginGiftBrickId = v[0];
 			this->endGiftBrickId = v[1];
+			this->beginSuperMushroomId = v[2];
+			this->endSuperMushroomId = v[3];
+			this->beginSuperLeafId = v[4];
+			this->endSuperLeafId = v[5];
 		}
 		else if (i == 4) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
