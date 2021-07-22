@@ -337,7 +337,7 @@ void Mario::save()
 	data.push_back("\n");
 	data.push_back("# firstFireBallVx, firstFireBallVy, firstFireBallId,");
 	data.push_back("\n");
-	data.push_back("# tailMarginTop, tailMarginBottom, tailHeight, tailWidth,");
+	data.push_back("# tailMarginTop, tailMarginBottom, tailHeight,");
 	data.push_back("\n");
 	data.push_back("# isFireMode, isSuperMode, isFlyingMode)");
 	data.push_back("\n");
@@ -379,7 +379,7 @@ void Mario::save()
 	line += to_string(this->getTailHeight());
 	line += ",";
 	*/
-	line += "4,3,2,4,3,2,3,5,1,10,6,1,4,1,1001,20,6,4";
+	line += "4,3,2,4,3,2,3,5,1,10,6,1,5,1,1001,20,6,4";
 	line += ",";
 	line += to_string(this->getIsFireMode());
 	line += ",";

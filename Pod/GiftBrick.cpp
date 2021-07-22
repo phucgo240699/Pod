@@ -181,8 +181,8 @@ void GiftBrick::Update(float _dt)
 	if (this->getState() == POPUPGIFTBRICK) {
 		// Box
 		if (isBoxDropDown == false) {
-			if (this->getY() - 2 >= endBoxJumpUp) {
-				this->plusY(-2);
+			if (this->getY() - 4 >= endBoxJumpUp) {
+				this->plusY(-4);
 			}
 			else {
 				isBoxDropDown = true;
@@ -190,8 +190,8 @@ void GiftBrick::Update(float _dt)
 			}
 		}
 		else {
-			if (this->getY() + 2 <= beginBoxJumpUp) {
-				this->plusY(2);
+			if (this->getY() + 4 <= beginBoxJumpUp) {
+				this->plusY(4);
 			}
 			else {
 				if (this->getY() != beginBoxJumpUp) {
@@ -214,8 +214,8 @@ void GiftBrick::Update(float _dt)
 			this->coinAnimation->Update(_dt);
 
 			if (isCoinDropDown == false) {
-				if (this->coinY - 2 >= endCoinJumpUp) {
-					this->coinY -= 2;
+				if (this->coinY - 4 >= endCoinJumpUp) {
+					this->coinY -= 4;
 				}
 				else {
 					isCoinDropDown = true;
@@ -223,8 +223,8 @@ void GiftBrick::Update(float _dt)
 				}
 			}
 			else {
-				if (this->coinY + 2 <= beginCoinJumpUp) {
-					this->coinY += 2;
+				if (this->coinY + 4 <= beginCoinJumpUp) {
+					this->coinY += 4;
 				}
 				else {
 					if (this->coinY != beginCoinJumpUp) {
@@ -236,8 +236,8 @@ void GiftBrick::Update(float _dt)
 
 			// Point
 			if (isPointsStartPopUp) {
-				if (this->pointY - 2 >= this->endCoinJumpUp) {
-					this->pointY -= 2;
+				if (this->pointY - 4 >= this->endCoinJumpUp) {
+					this->pointY -= 4;
 				}
 				else {
 					//isPointsStartPopUp = false;
