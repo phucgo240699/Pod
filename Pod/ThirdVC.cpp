@@ -158,6 +158,9 @@ void ThirdVC::viewUpdate(float _dt)
 
 				// Golden Brick
 				if (beginGoldenBrickId <= (*itr)->getId() && (*itr)->getId() <= endGoldenBrickId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					if (static_cast<GoldenBrick*>(*itr)->getState() == GOLDEN_BRICK_DEAD) {
 						Grid::getInstance()->remove(*itr, i, j);
 						this->goldenBricks->erase(static_cast<GoldenBrick*>(*itr));
@@ -168,11 +171,17 @@ void ThirdVC::viewUpdate(float _dt)
 
 				// GiftBrick
 				else if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					(*itr)->Update(_dt);
 				}
 
 				// SuperMushroom
 				else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= endSuperMushroomId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					if (static_cast<SuperMushroom*>(*itr)->getState() == SUPER_MUSHROOM_DISAPPEARED) {
 						Grid::getInstance()->remove(*itr, i, j);
 						continue;
@@ -203,6 +212,9 @@ void ThirdVC::viewUpdate(float _dt)
 
 				// SuperLeaf
 				else if (beginSuperLeafId <= (*itr)->getId() && (*itr)->getId() <= endSuperLeafId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					if (static_cast<SuperLeaf*>(*itr)->getState() == SUPER_LEAF_DISAPPEARED) {
 						Grid::getInstance()->remove(*itr, i, j);
 						continue;
@@ -244,6 +256,9 @@ void ThirdVC::viewUpdate(float _dt)
 
 				// Goombas
 				else if (beginGoombaId <= (*itr)->getId() && (*itr)->getId() <= endGoombaId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					if (static_cast<Goomba*>(*itr)->getState() == DEAD_GOOMBA) {
 						Grid::getInstance()->remove(*itr, i, j);
 						this->goombas->erase(static_cast<Goomba*>(*itr));
@@ -263,6 +278,9 @@ void ThirdVC::viewUpdate(float _dt)
 
 				// Koopas
 				else if (beginKoopaId <= (*itr)->getId() && (*itr)->getId() <= endKoopaId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					if (static_cast<Koopa*>(*itr)->getState() == KOOPA_DEAD) {
 						Grid::getInstance()->remove(*itr, i, j);
 						this->koopas->erase(static_cast<Koopa*>(*itr));
@@ -281,6 +299,9 @@ void ThirdVC::viewUpdate(float _dt)
 
 				// Fire Ball
 				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					if (static_cast<FireBall*>(*itr)->getState() == FIREBALL_DISAPPEARED) {
 						Grid::getInstance()->remove(*itr, i, j);
 						static_cast<FireBall*>(*itr)->setIsOutOfGrid(true);
@@ -299,6 +320,9 @@ void ThirdVC::viewUpdate(float _dt)
 
 				// Coin
 				else if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					if (static_cast<Coin*>(*itr)->getState() == COIN_BEING_EARNED) {
 						Grid::getInstance()->remove(*itr, i, j);
 						continue;

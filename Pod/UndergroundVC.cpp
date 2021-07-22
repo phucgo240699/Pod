@@ -96,6 +96,9 @@ void UndergroundVC::viewUpdate(float _dt)
 
 				// Coin
 				else if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					if (static_cast<Coin*>(*itr)->getState() == COIN_BEING_EARNED) {
 						Grid::getInstance()->remove(*itr, i, j);
 						continue;
@@ -106,6 +109,9 @@ void UndergroundVC::viewUpdate(float _dt)
 
 				// Fire Ball
 				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
 					if (static_cast<FireBall*>(*itr)->getState() == FIREBALL_DISAPPEARED) {
 						Grid::getInstance()->remove(*itr, i, j);
 						static_cast<FireBall*>(*itr)->setIsOutOfGrid(true);

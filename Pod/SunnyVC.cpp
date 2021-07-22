@@ -246,7 +246,6 @@ void SunnyVC::viewUpdate(float _dt)
 
 			unordered_set<Component*> ::iterator itr;
 			for (itr = cell.begin(); itr != cell.end(); ++itr) {
-
 				// Golden Brick
 				if (beginGoldenBrickId <= (*itr)->getId() && (*itr)->getId() <= endGoldenBrickId) {
 					// Prevent update mullti time in one loop
