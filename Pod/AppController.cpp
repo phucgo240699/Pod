@@ -49,6 +49,11 @@ ThirdVC* AppController::getThirdVC()
 	return this->thirdVC;
 }
 
+CloudyVC* AppController::getCloudyVC()
+{
+	return this->cloudyVC;
+}
+
 int AppController::Game_Init(HWND hwnd)
 {
 	//this->setRootViewController(Setting::getInstance()->getSceneName());
@@ -61,6 +66,9 @@ int AppController::Game_Init(HWND hwnd)
 
 	this->setUndergroundVC(new UndergroundVC());
 	this->getUndergroundVC()->viewDidLoad();
+
+	this->setCloudyVC(new CloudyVC());
+	this->getCloudyVC()->viewDidLoad();
 
 	return 1;
 }
@@ -129,6 +137,19 @@ void AppController::Game_Run(HWND hwnd, float _dt)
 		if (this->getSceneName() != ThirdScene) return;
 		this->getThirdVC()->viewDidRender();
 	}
+
+	// CloudyScene
+	else if (this->getSceneName() == CloudyScene) {
+		this->getCloudyVC()->viewWillUpdate(_dt);
+		if (this->getSceneName() != CloudyScene) return;
+		this->getCloudyVC()->viewUpdate(_dt);
+		if (this->getSceneName() != CloudyScene) return;
+		this->getCloudyVC()->viewDidUpdate(_dt);
+		if (this->getSceneName() != CloudyScene) return;
+		this->getCloudyVC()->viewWillRender();
+		if (this->getSceneName() != CloudyScene) return;
+		this->getCloudyVC()->viewDidRender();
+	}
 }
 
 void AppController::setSceneName(SceneName _sceneName)
@@ -160,6 +181,12 @@ void AppController::setThirdVC(ThirdVC* _thirdVC)
 	this->thirdVC->setAppController(this);
 }
 
+void AppController::setCloudyVC(CloudyVC* _cloudyVC)
+{
+	this->cloudyVC = _cloudyVC;
+	this->cloudyVC->setAppController(this);
+}
+
 void AppController::Game_End(HWND hwnd)
 {
 	//this->rootViewController->viewWillRelease();
@@ -175,6 +202,9 @@ void AppController::Game_End(HWND hwnd)
 	}
 	else if (this->getSceneName() == ThirdScene) {
 		this->getThirdVC()->viewWillRelease();
+	}
+	else if (this->getSceneName() == CloudyScene) {
+		this->getCloudyVC()->viewWillRelease();
 	}
 }
 
@@ -307,6 +337,9 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		else if (this->getSceneName() == ThirdScene) {
 			this->getThirdVC()->viewReceiveKeyDown(keyDowns);
 		}
+		else if (this->getSceneName() == CloudyScene) {
+			this->getCloudyVC()->viewReceiveKeyDown(keyDowns);
+		}
 	}
 	if (keyUps.size() > 0) {
 		//this->rootViewController->viewReceiveKeyUp(keyUps);
@@ -323,6 +356,9 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		else if (this->getSceneName() == ThirdScene) {
 			this->getThirdVC()->viewReceiveKeyUp(keyUps);
 		}
+		else if (this->getSceneName() == CloudyScene) {
+			this->getCloudyVC()->viewReceiveKeyUp(keyUps);
+		}
 	}
 	if (!hasKeyDown) {
 		//this->rootViewController->viewReceiveKeyUp();
@@ -338,6 +374,9 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		}
 		else if (this->getSceneName() == ThirdScene) {
 			this->getThirdVC()->viewReceiveKeyUp();
+		}
+		else if (this->getSceneName() == CloudyScene) {
+			this->getCloudyVC()->viewReceiveKeyUp();
 		}
 	}
 }

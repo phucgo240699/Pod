@@ -105,8 +105,8 @@ void SunnyVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 	for (int i = 0; i < _keyTypes.size(); ++i) {
 		if (_keyTypes[i] == KeyType::down
 			&& this->mario->getComponentIdStandingOn() == this->greenPipeIdToUnderground
-			&& this->mario->getX() >= leftAnchorGreenPipeToUnderground
-			&& this->mario->getX() + this->mario->getBoundsWidth() <= rightAnchorGreenPipeToUnderground) {
+			&& this->mario->getX() >= leftAnchorGreenPipeToPassThrough
+			&& this->mario->getX() + this->mario->getBoundsWidth() <= rightAnchorGreenPipeToPassThrough) {
 			this->mario->setState(MarioState::DROPPING_DOWN_PIPE);
 			return;
 		}
@@ -1178,8 +1178,8 @@ void SunnyVC::adaptRangeID(vector<string> data, char seperator)
 			this->beginGreenPipeId = v[0];
 			this->endGreenPipeId = v[1];
 			this->greenPipeIdToUnderground = v[2];
-			this->leftAnchorGreenPipeToUnderground = v[3];
-			this->rightAnchorGreenPipeToUnderground = v[4];
+			this->leftAnchorGreenPipeToPassThrough = v[3];
+			this->rightAnchorGreenPipeToPassThrough = v[4];
 			this->leftAnchorMarioPoppingUpFromPipe = v[5];
 			this->bottomAnchorMarioPoppingUpFromPipe = v[6];
 		}

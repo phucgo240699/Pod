@@ -208,3 +208,22 @@ void Camera::loadThirdMap()
 
 	fs.close();
 }
+
+void Camera::loadCloudyMap()
+{
+	fstream fs;
+	fs.open(FilePath::getInstance()->camera_cloudy_map, ios::in);
+
+	vector<string> v;
+	string line;
+
+	while (!fs.eof())
+	{
+		getline(fs, line);
+		if (line[0] == '#') continue; // Comment
+		if (line == "") continue; // Empty
+		this->load(line, ',');
+	}
+
+	fs.close();
+}

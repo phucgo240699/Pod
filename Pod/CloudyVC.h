@@ -4,7 +4,7 @@
 #include "ViewController.h"
 #include "Mario.h"
 
-class UndergroundVC : public ViewController
+class CloudyVC : public ViewController
 {
 private:
 	Mario* mario;
@@ -16,7 +16,7 @@ private:
 	int beginCoinId, endCoinId;
 	unordered_set<Coin*>* coins;
 
-	int beginGreenPipeId, endGreenPipeId, greenPipeIdToUnderground, leftAnchorGreenPipeToPassThrough, rightAnchorGreenPipeToPassThrough;
+	int beginGreenPipeId, endGreenPipeId, greenPipeIdToThirdMap, leftAnchorGreenPipeToPassThrough, rightAnchorGreenPipeToPassThrough;
 	vector<GreenPipe*>* greenPipes;
 
 	int beginFireBallId, endFireBallId;

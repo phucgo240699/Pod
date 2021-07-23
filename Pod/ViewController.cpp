@@ -7,6 +7,12 @@ void ViewController::navigateTo(SceneName _sceneName)
 	{
 	case SceneName::WorldScene:
 	{
+		this->appController->setUndergroundVC(new UndergroundVC());
+		this->appController->getUndergroundVC()->viewDidLoad();
+
+		this->appController->setCloudyVC(new CloudyVC());
+		this->appController->getCloudyVC()->viewDidLoad();
+
 		ScoreBoard::getInstance()->resetTimeToZero();
 		Camera::getInstance()->loadWorldMap();
 		if (this->appController->getSceneName() == SunnyScene) {
@@ -90,6 +96,22 @@ void ViewController::navigateTo(SceneName _sceneName)
 			Camera::getInstance()->setPositionBy(this->appController->getThirdVC()->getMario());
 		}
 
+		break;
+	}
+
+	case CloudyScene:
+	{
+		// If current scene is SunnyScene => Save Current Grid Sunny Map, and save mario
+		if (this->appController->getSceneName() == ThirdScene) {
+			Grid::getInstance()->saveCurrentThirdMap();
+			this->appController->getThirdVC()->getMario()->save();
+		}
+
+		Camera::getInstance()->loadCloudyMap();
+		Grid::getInstance()->loadOriginalCloudyMap();
+		this->appController->getCloudyVC()->adaptToGrid();
+		this->appController->getCloudyVC()->getMario()->load();
+		Camera::getInstance()->setPositionBy(this->appController->getCloudyVC()->getMario());
 		break;
 	}
 	default:

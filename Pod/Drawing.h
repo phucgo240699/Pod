@@ -26,7 +26,7 @@ private:
 	LPDIRECT3DTEXTURE9 sunnyMapTexture;
 	LPDIRECT3DTEXTURE9 undergroundMapTexture;
 	LPDIRECT3DTEXTURE9 thirdMapTexture;
-
+	LPDIRECT3DTEXTURE9 cloudyMapTexture;
 
 
 public:
@@ -38,6 +38,7 @@ public:
 	LPDIRECT3DTEXTURE9 getSunnyMapTexture();
 	LPDIRECT3DTEXTURE9 getUndergroundMapTexture();
 	LPDIRECT3DTEXTURE9 getThirdMapTexture();
+	LPDIRECT3DTEXTURE9 getCloudyMapTexture();
 
 	void draw(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXVECTOR3* _center, D3DXVECTOR3 _position, D3DCOLOR _color = D3DCOLOR_XRGB(255, 255, 255));
 	void draw(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXVECTOR3 _position, D3DCOLOR _color = D3DCOLOR_XRGB(255, 255, 255));

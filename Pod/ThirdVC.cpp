@@ -145,7 +145,6 @@ void ThirdVC::viewUpdate(float _dt)
 	}
 	
 	
-	
 	// Check by cell in grid
 	int beginRow = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight());
 	int endRow = ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
@@ -353,6 +352,14 @@ void ThirdVC::viewUpdate(float _dt)
 
 	if (mario != NULL) {
 		mario->Update(_dt);
+
+		if (this->mario->getState() == MarioState::JUMPING_UP_TO_CLOUND) {
+			if (this->mario->getY() + this->mario->getHeight() < Camera::getInstance()->getY()) {
+				this->navigateTo(SceneName::CloudyScene);
+				return;
+			}
+			return;
+		}
 
 		// Navigate to WorldVC when Mario drop out of map to far
 		if (this->mario->getY() >= Camera::getInstance()->getLimitY() + 100) {

@@ -19,6 +19,7 @@ public:
 	string world_map = "./Assets/TextFiles/world_map.txt";
 	string underground_map = "./Assets/TextFiles/underground_map.txt";
 	string third_map = "./Assets/TextFiles/third_map.txt";
+	string cloudy_map = "./Assets/TextFiles/cloudy_map.txt";
 
 	// Scoreboard
 	string score_board = "./Assets/TextFiles/score_board.txt";
@@ -31,13 +32,16 @@ public:
 	string camera_sunny_map = "./Assets/TextFiles/camera_sunny_map.txt";
 	string camera_underground_map = "./Assets/TextFiles/camera_underground_map.txt";
 	string camera_third_map = "./Assets/TextFiles/camera_third_map.txt";
+	string camera_cloudy_map = "./Assets/TextFiles/camera_cloudy_map.txt";
 
 	// Grid
 	string original_grid_sunny_map = "./Assets/TextFiles/original_grid_sunny_map.txt";
 	string original_grid_underground_map = "./Assets/TextFiles/original_grid_underground_map.txt";
 	string original_grid_third_map = "./Assets/TextFiles/original_grid_third_map.txt";
+	string original_grid_cloudy_map = "./Assets/TextFiles/original_grid_cloudy_map.txt";
 
 	string current_grid_sunny_map = "./Assets/TextFiles/current_grid_sunny_map.txt";
+	string current_grid_third_map = "./Assets/TextFiles/current_grid_third_map.txt";
 
 	// Animation Bundle
 	string animation_bundle = "./Assets/TextFiles/animation_bundle.txt";

@@ -1,0 +1,19 @@
+<GridInfo>
+# (totalRow, totalCol, cellHeight, cellWidth)
+5,8,94,128
+</GridInfo>
+
+<GridMatrixId>
+# every pair
+# > id
+# cellX1,cellY1_cellX2,cellY2
+
+# Ground
+> 0
+0,4_1,4_2,4_3,4_4,4_5,4_6,4_7,4
+
+# Fire Ball
+> 1001
+1,3_1,4
+
+</GridMatrixId>

@@ -158,6 +158,7 @@
     <ClCompile Include="AppController.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CloudyVC.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="AppController.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CloudyVC.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="CoinState.h" />
     <ClInclude Include="CollisionEdge.h" />

@@ -13,6 +13,7 @@
 #include "WorldVC.h"
 #include "SunnyVC.h"
 #include "ThirdVC.h"
+#include "CloudyVC.h"
 #include "UndergroundVC.h"
 
 
@@ -30,7 +31,7 @@ private:
 	SunnyVC* sunnyVC;
 	UndergroundVC* undergroundVC;
 	ThirdVC* thirdVC;
-
+	CloudyVC* cloudyVC;
 
 public:
 
@@ -41,7 +42,7 @@ public:
 	SunnyVC* getSunnyVC();
 	UndergroundVC* getUndergroundVC();
 	ThirdVC* getThirdVC();
-
+	CloudyVC* getCloudyVC();
 
 
 
@@ -52,7 +53,7 @@ public:
 	void setSunnyVC(SunnyVC* _sunnyVC);
 	void setUndergroundVC(UndergroundVC* _undergroundVC);
 	void setThirdVC(ThirdVC* _thirdVC);
-
+	void setCloudyVC(CloudyVC* _cloudyVC);
 
 
 

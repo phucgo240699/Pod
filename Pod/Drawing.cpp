@@ -132,6 +132,14 @@ void Drawing::drawWithoutCamera(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXV
 	spriteHandler->SetTransform(&oldMatrix);
 }
 
+LPDIRECT3DTEXTURE9 Drawing::getCloudyMapTexture()
+{
+	if (this->cloudyMapTexture == NULL) {
+		this->cloudyMapTexture = LoadTextureFromImage(ImagePath::getInstance()->cloudy_map, D3DCOLOR_XRGB(255, 0, 255));
+	}
+	return this->cloudyMapTexture;
+}
+
 void Drawing::drawMarioWithoutCamera(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXVECTOR3* _center, D3DXVECTOR3 _position, D3DXVECTOR2 _translation, int _leftSpace, int _topSpace, int _rightSpace, bool _isFlip, D3DCOLOR _color)
 {
 	D3DXVECTOR2 scalePoint;

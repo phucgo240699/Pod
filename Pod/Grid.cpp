@@ -202,6 +202,60 @@ void Grid::loadOriginalThirdMap()
 	fs.close();
 }
 
+void Grid::loadOriginalCloudyMap()
+{
+	fstream fs;
+	fs.open(FilePath::getInstance()->original_grid_cloudy_map, ios::in);
+
+	SectionFileType section = SECTION_NONE;
+	vector<string> data = vector<string>();
+	string line;
+
+	if (this->cells.size() > 0) {
+		this->cells.clear();
+	}
+	if (this->matrixId.size() > 0) {
+		this->matrixId.clear();
+	}
+
+	while (!fs.eof()) { // End of line
+		getline(fs, line);
+		if (line[0] == '#') continue; // Comment
+		if (line == "") continue; // Empty
+
+		if (line == "<GridInfo>") {
+			section = SECTION_GRID_INFO;
+			continue;
+		}
+		else if (line == "</GridInfo>") {
+			section = SECTION_NONE;
+		}
+		else if (line == "<GridMatrixId>") {
+			section = SECTION_GRID_MATRIX_ID;
+			continue;
+		}
+		else if (line == "</GridMatrixId>") {
+			this->loadMatrixId(data, '>', '_', ',');
+			section = SECTION_NONE;
+		}
+
+		switch (section)
+		{
+		case SECTION_GRID_INFO:
+		{
+			this->loadInfo(line, ',');
+			break;
+		}
+		case SECTION_GRID_MATRIX_ID:
+		{
+			data.push_back(line);
+			break;
+		}
+		}
+	}
+	fs.close();
+}
+
 void Grid::loadInfo(string line, char seperator)
 {
 	vector<int> v = Tool::splitToVectorIntegerFrom(line, seperator);
@@ -359,10 +413,114 @@ void Grid::saveCurrentSunnyMap()
 	fs.close();
 }
 
+void Grid::saveCurrentThirdMap()
+{
+	vector<string> data = vector<string>();
+	string line = "";
+	data.push_back("<GridInfo>");
+	data.push_back("\n");
+	data.push_back(to_string(this->totalRow) + "," + to_string(this->totalCol) + "," + to_string(this->cellHeight) + "," + to_string(this->cellWidth));
+	data.push_back("\n");
+	data.push_back("</GridInfo>");
+	data.push_back("\n");
+	data.push_back("\n");
+
+	data.push_back("<GridMatrixId>");
+	data.push_back("\n");
+	for (auto itr = this->matrixId.begin(); itr != this->matrixId.end(); itr++) {
+		data.push_back("> " + to_string((*itr).first));
+		data.push_back("\n");
+
+		line = "";
+		for (int i = 0; i < (*itr).second.size(); ++i) {
+			line += to_string((*itr).second[i].first); // col
+			line += ",";
+			line += to_string((*itr).second[i].second); // row
+
+			if (i != (*itr).second.size() - 1) {
+				line += "_";
+			}
+		}
+		data.push_back(line);
+		data.push_back("\n");
+		data.push_back("\n");
+	}
+	data.push_back("</GridMatrixId>");
+
+
+	fstream fs;
+	fs.open(FilePath::getInstance()->current_grid_third_map, ios::out);
+
+	for (int i = 0; i < data.size(); ++i) {
+		if (data[i] == "\n") {
+			fs << endl;
+		}
+		else {
+			fs << data[i];
+		}
+	}
+
+	fs.close();
+}
+
 void Grid::loadCurrentSunnyMap()
 {
 	fstream fs;
 	fs.open(FilePath::getInstance()->current_grid_sunny_map, ios::in);
+
+	SectionFileType section = SECTION_NONE;
+	vector<string> data = vector<string>();
+	string line;
+
+	if (this->cells.size() > 0) {
+		this->cells.clear();
+	}
+	if (this->matrixId.size() > 0) {
+		this->matrixId.clear();
+	}
+
+	while (!fs.eof()) { // End of line
+		getline(fs, line);
+		if (line[0] == '#') continue; // Comment
+		if (line == "") continue; // Empty
+
+		if (line == "<GridInfo>") {
+			section = SECTION_GRID_INFO;
+			continue;
+		}
+		else if (line == "</GridInfo>") {
+			section = SECTION_NONE;
+		}
+		else if (line == "<GridMatrixId>") {
+			section = SECTION_GRID_MATRIX_ID;
+			continue;
+		}
+		else if (line == "</GridMatrixId>") {
+			this->loadMatrixId(data, '>', '_', ',');
+			section = SECTION_NONE;
+		}
+
+		switch (section)
+		{
+		case SECTION_GRID_INFO:
+		{
+			this->loadInfo(line, ',');
+			break;
+		}
+		case SECTION_GRID_MATRIX_ID:
+		{
+			data.push_back(line);
+			break;
+		}
+		}
+	}
+	fs.close();
+}
+
+void Grid::loadCurrentThirdMap()
+{
+	fstream fs;
+	fs.open(FilePath::getInstance()->current_grid_third_map, ios::in);
 
 	SectionFileType section = SECTION_NONE;
 	vector<string> data = vector<string>();

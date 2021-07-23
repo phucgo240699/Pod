@@ -42,7 +42,7 @@ private:
 	int beginFlowerId, endFlowerId;
 	unordered_set<Flower*>* flowers;
 
-	int beginGreenPipeId, endGreenPipeId, greenPipeIdToUnderground, leftAnchorGreenPipeToUnderground, rightAnchorGreenPipeToUnderground;
+	int beginGreenPipeId, endGreenPipeId, greenPipeIdToUnderground, leftAnchorGreenPipeToPassThrough, rightAnchorGreenPipeToPassThrough;
 	vector<GreenPipe*>* greenPipes;
 
 	int beginFireBallId, endFireBallId;

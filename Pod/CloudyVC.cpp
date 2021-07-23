@@ -1,12 +1,11 @@
-#include "UndergroundVC.h"
-#include "SunnyMap.h"
+#include "CloudyVC.h"
 
-Mario* UndergroundVC::getMario()
+Mario* CloudyVC::getMario()
 {
-	return this->mario;
+    return this->mario;
 }
 
-void UndergroundVC::viewDidLoad()
+void CloudyVC::viewDidLoad()
 {
 	mario = new Mario(0, 0, 0, 0, 0, 0, ImagePath::getInstance()->mario, D3DCOLOR_XRGB(255, 0, 255), DROPPING);
 	map = new Map();
@@ -18,27 +17,25 @@ void UndergroundVC::viewDidLoad()
 
 	this->adaptData();
 	this->adaptAnimation();
-	//this->adaptToGrid();
 }
 
-void UndergroundVC::viewReceiveKeyUp()
+void CloudyVC::viewReceiveKeyUp()
 {
 	mario->onKeyUp();
 }
 
-void UndergroundVC::viewReceiveKeyUp(vector<KeyType> _keyTypes)
+void CloudyVC::viewReceiveKeyUp(vector<KeyType> _keyTypes)
 {
 	mario->onKeyUp(_keyTypes);
 }
 
-void UndergroundVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
+void CloudyVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 {
 	mario->onKeyDown(_keyTypes);
 }
 
-void UndergroundVC::viewWillUpdate(float _dt)
-{
-	// Check by cell in grid
+void CloudyVC::viewWillUpdate(float _dt)
+{// Check by cell in grid
 	int beginRow = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight());
 	int endRow = ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
 	int beginCol = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth());
@@ -71,7 +68,7 @@ void UndergroundVC::viewWillUpdate(float _dt)
 	}
 }
 
-void UndergroundVC::viewUpdate(float _dt)
+void CloudyVC::viewUpdate(float _dt)
 {
 	if (map != NULL) {
 		map->Update(_dt);
@@ -167,7 +164,7 @@ void UndergroundVC::viewUpdate(float _dt)
 	ScoreBoard::getInstance()->setMomentumLevel(this->mario->getMomentumLevelToFly());
 }
 
-void UndergroundVC::viewDidUpdate(float _dt)
+void CloudyVC::viewDidUpdate(float _dt)
 {
 	if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN || this->mario->getState() == TRANSFERING_TO_FLY)
 	{
@@ -205,7 +202,7 @@ void UndergroundVC::viewDidUpdate(float _dt)
 
 				// Green Pipe
 				else if (beginGreenPipeId <= (*itr)->getId() && (*itr)->getId() <= endGreenPipeId) {
-					this->mario->handleGreenPipeDownCollision(static_cast<GreenPipe*>(*itr), this->greenPipeIdToUnderground, this->leftAnchorGreenPipeToPassThrough, this->rightAnchorGreenPipeToPassThrough, _dt);
+					this->mario->handleGreenPipeDownCollision(static_cast<GreenPipe*>(*itr), this->greenPipeIdToThirdMap, this->leftAnchorGreenPipeToPassThrough, this->rightAnchorGreenPipeToPassThrough, _dt);
 				}
 
 				// Fire Ball
@@ -245,7 +242,7 @@ void UndergroundVC::viewDidUpdate(float _dt)
 	}
 }
 
-void UndergroundVC::viewWillRender()
+void CloudyVC::viewWillRender()
 {
 	if (d3ddev->BeginScene()) {
 		// Clear backbuffer
@@ -254,7 +251,7 @@ void UndergroundVC::viewWillRender()
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 
 		if (map != NULL) {
-			map->Draw(Drawing::getInstance()->getUndergroundMapTexture());
+			map->Draw(Drawing::getInstance()->getCloudyMapTexture());
 		}
 
 		unordered_set<Component*> cell;
@@ -268,7 +265,7 @@ void UndergroundVC::viewWillRender()
 
 					// Coin
 					if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
-						(*itr)->Draw(Drawing::getInstance()->getUndergroundMapTexture());
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 				}
 			}
@@ -321,15 +318,15 @@ void UndergroundVC::viewWillRender()
 	d3ddev->Present(NULL, NULL, NULL, NULL);
 }
 
-void UndergroundVC::viewDidRender()
+void CloudyVC::viewDidRender()
 {
 }
 
-void UndergroundVC::viewWillRelease()
+void CloudyVC::viewWillRelease()
 {
 }
 
-void UndergroundVC::adaptRangeID(vector<string> data, char seperator)
+void CloudyVC::adaptRangeID(vector<string> data, char seperator)
 {
 	vector<int> v;
 	for (int i = 0; i < data.size(); ++i) {
@@ -347,7 +344,7 @@ void UndergroundVC::adaptRangeID(vector<string> data, char seperator)
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginGreenPipeId = v[0];
 			this->endGreenPipeId = v[1];
-			this->greenPipeIdToUnderground = v[2];
+			this->greenPipeIdToThirdMap = v[2];
 			this->leftAnchorGreenPipeToPassThrough = v[3];
 			this->rightAnchorGreenPipeToPassThrough = v[4];
 		}
@@ -360,10 +357,10 @@ void UndergroundVC::adaptRangeID(vector<string> data, char seperator)
 	}
 }
 
-void UndergroundVC::adaptData()
+void CloudyVC::adaptData()
 {
 	fstream fs;
-	fs.open(FilePath::getInstance()->underground_map, ios::in);
+	fs.open(FilePath::getInstance()->cloudy_map, ios::in);
 
 	SectionFileType section = SECTION_NONE;
 	vector<string> data = vector<string>();
@@ -481,12 +478,12 @@ void UndergroundVC::adaptData()
 	fs.close();
 }
 
-void UndergroundVC::adaptAnimation()
+void CloudyVC::adaptAnimation()
 {
 	// Coins
 	unordered_set<Coin*> ::iterator coinItr;
 	for (coinItr = this->coins->begin(); coinItr != this->coins->end(); ++coinItr) {
-		(*coinItr)->setAnimation(new Animation(AnimationBundle::getInstance()->getCoinFromUnderground()));
+		(*coinItr)->setAnimation(new Animation(AnimationBundle::getInstance()->getCoin()));
 	}
 
 	// Green Pipes
@@ -500,7 +497,7 @@ void UndergroundVC::adaptAnimation()
 	this->mario->setFirstFireBallAnimation(new Animation(AnimationBundle::getInstance()->getFireBall()));
 }
 
-void UndergroundVC::adaptToGrid()
+void CloudyVC::adaptToGrid()
 {
 	// Grounds
 	for (int i = 0; i < this->grounds->size(); ++i) {

@@ -256,6 +256,12 @@
     <Filter Include="Source Files\Components\Map\MusicBox">
       <UniqueIdentifier>{4777c3d4-33f3-4f16-9759-0685ec410e9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ViewController\CloudyVC">
+      <UniqueIdentifier>{5d73c105-3455-4c2a-987f-84b5637141b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ViewController\CloudyVC">
+      <UniqueIdentifier>{bda765af-d534-4fe9-9ac4-e389adc07650}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -401,6 +407,9 @@
     </ClCompile>
     <ClCompile Include="MusicBox.cpp">
       <Filter>Source Files\Components\Map\MusicBox</Filter>
+    </ClCompile>
+    <ClCompile Include="CloudyVC.cpp">
+      <Filter>Source Files\ViewController\CloudyVC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -607,6 +616,9 @@
     </ClInclude>
     <ClInclude Include="MusicBox.h">
       <Filter>Header Files\Components\Map\MusicBox</Filter>
+    </ClInclude>
+    <ClInclude Include="CloudyVC.h">
+      <Filter>Header Files\ViewController\CloudyVC</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

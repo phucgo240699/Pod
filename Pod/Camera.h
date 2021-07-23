@@ -28,4 +28,5 @@ public:
 	void loadSunnyMap();
 	void loadUndergroundMap();
 	void loadThirdMap();
+	void loadCloudyMap();
 };

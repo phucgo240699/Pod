@@ -33,6 +33,7 @@ public:
 	void loadOriginalSunnyMap();
 	void loadOriginalUnderGroundMap();
 	void loadOriginalThirdMap();
+	void loadOriginalCloudyMap();
 	void loadInfo(string line, char seperator);
 	void loadMatrixId(vector<string> data, char beginSeperator, char pairSeperator, char seperator);
 	void add(Component* _component);
@@ -43,8 +44,10 @@ public:
 
 	// Current
 	void saveCurrentSunnyMap();
+	void saveCurrentThirdMap();
 
 	void loadCurrentSunnyMap();
+	void loadCurrentThirdMap();
 
 	bool checkExist(Component* _component, int beginRow, int endRow, int beginCol, int endCol);
 };
