@@ -52,10 +52,13 @@ private:
 
 	int beginFireBallId, endFireBallId;
 
+	int leftAnchorDroppingFromCloudy, topAnchorDroppingFromCloudy;
+
 public:
 	// Getter
 	Mario* getMario();
-
+	int getLeftAnchorDroppingFromCloudy();
+	int getTopAnchorDroppingFromCloudy();
 
 
 	// Setter

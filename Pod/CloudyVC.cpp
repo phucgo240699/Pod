@@ -31,6 +31,16 @@ void CloudyVC::viewReceiveKeyUp(vector<KeyType> _keyTypes)
 
 void CloudyVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 {
+	for (int i = 0; i < _keyTypes.size(); ++i) {
+		if (_keyTypes[i] == KeyType::down
+			&& this->mario->getComponentIdStandingOn() == this->componentIdToThirdMap
+			&& this->mario->getX() >= leftAnchorGreenPipeToPassThrough
+			&& this->mario->getX() + this->mario->getBoundsWidth() <= rightAnchorGreenPipeToPassThrough) {
+			this->mario->setState(MarioState::DROPPING_DOWN_PIPE);
+			return;
+		}
+	}
+
 	mario->onKeyDown(_keyTypes);
 }
 
@@ -134,6 +144,11 @@ void CloudyVC::viewUpdate(float _dt)
 		if (this->mario->getState() == POPPING_UP_PIPE) {
 			if (this->mario->getY() <= this->mario->getEndPoppingUpPipe()) {
 				this->navigateTo(SceneName::SunnyScene);
+			}
+		}
+		else if (this->mario->getState() == DROPPING_DOWN_PIPE) {
+			if (this->mario->getY() >= this->mario->getEndDroppingDownPipe()) {
+				this->navigateTo(SceneName::ThirdScene);
 				return;
 			}
 		}
@@ -202,7 +217,7 @@ void CloudyVC::viewDidUpdate(float _dt)
 
 				// Green Pipe
 				else if (beginGreenPipeId <= (*itr)->getId() && (*itr)->getId() <= endGreenPipeId) {
-					this->mario->handleGreenPipeDownCollision(static_cast<GreenPipe*>(*itr), this->greenPipeIdToThirdMap, this->leftAnchorGreenPipeToPassThrough, this->rightAnchorGreenPipeToPassThrough, _dt);
+					this->mario->handleGreenPipeDownCollision(static_cast<GreenPipe*>(*itr), this->componentIdToThirdMap, this->leftAnchorGreenPipeToPassThrough, this->rightAnchorGreenPipeToPassThrough, _dt);
 				}
 
 				// Fire Ball
@@ -271,6 +286,25 @@ void CloudyVC::viewWillRender()
 			}
 		}
 
+		if (mario != NULL) {
+			mario->Draw();
+		}
+
+		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
+			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
+
+				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
+				unordered_set<Component*> ::iterator itr;
+				for (itr = cell.begin(); itr != cell.end(); ++itr) {
+					// Green Pipe
+					if (beginGreenPipeId <= (*itr)->getId() && (*itr)->getId() <= endGreenPipeId) {
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
+					}
+				}
+			}
+		}
+
 		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
 			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
 				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
@@ -287,24 +321,6 @@ void CloudyVC::viewWillRender()
 			}
 		}
 
-		if (mario != NULL) {
-			mario->Draw();
-		}
-
-		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
-			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
-				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
-
-				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
-				unordered_set<Component*> ::iterator itr;
-				for (itr = cell.begin(); itr != cell.end(); ++itr) {
-					// Green Pipe
-					if (beginGreenPipeId <= (*itr)->getId() && (*itr)->getId() <= endGreenPipeId) {
-						(*itr)->Draw(Drawing::getInstance()->getUndergroundMapTexture());
-					}
-				}
-			}
-		}
 
 		AnimationCDPlayer::getInstance()->Draw(Drawing::getInstance()->getSunnyMapTexture());
 
@@ -344,7 +360,7 @@ void CloudyVC::adaptRangeID(vector<string> data, char seperator)
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginGreenPipeId = v[0];
 			this->endGreenPipeId = v[1];
-			this->greenPipeIdToThirdMap = v[2];
+			this->componentIdToThirdMap = v[2];
 			this->leftAnchorGreenPipeToPassThrough = v[3];
 			this->rightAnchorGreenPipeToPassThrough = v[4];
 		}
@@ -488,7 +504,12 @@ void CloudyVC::adaptAnimation()
 
 	// Green Pipes
 	for (int i = 0; i < this->greenPipes->size(); ++i) {
-		this->greenPipes->at(i)->setAnimation(new Animation(AnimationBundle::getInstance()->getBlackPipe2FloorDown()));
+		if (this->greenPipes->at(i)->getFloorNumber() == 2) {
+			this->greenPipes->at(i)->setAnimation(new Animation(AnimationBundle::getInstance()->getGreenPipe2Floor()));
+		}
+		else {
+			this->greenPipes->at(i)->setAnimation(new Animation(AnimationBundle::getInstance()->getGreenPipe3Floor()));
+		}
 	}
 
 	this->mario->setAnimation(new Animation(AnimationBundle::getInstance()->getMarioStanding()));

@@ -24,26 +24,6 @@ int GreenPipe::getFloorNumber()
 	return this->floorNumber;
 }
 
-//void GreenPipe::setupAnimation()
-//{
-//	if (this->floorNumber == 2) {
-//		if (this->getIsBlackMode()) {
-//			if (this->getIsDownMode()) {
-//				this->animation = new Animation(AnimationBundle::getInstance()->getBlackPipe2FloorDown());
-//			}
-//			else {
-//				this->animation = new Animation(AnimationBundle::getInstance()->getGreenPipe2Floor());
-//			}
-//		}
-//		else {
-//			this->animation = new Animation(AnimationBundle::getInstance()->getGreenPipe2Floor());
-//		}
-//	}
-//	else {
-//		this->animation = new Animation(AnimationBundle::getInstance()->getGreenPipe3Floor());
-//	}
-//}
-
 void GreenPipe::setIsBlackMode(bool _isBlackMode)
 {
 	this->isBlackMode = _isBlackMode;

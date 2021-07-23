@@ -23,7 +23,7 @@
 # 7. beginFireFlowerId, endFireFlowerId, beginFlowerId, endFlowerId
 701,750,751,800
 
-# 8. beginGreenPipeId, endGreenPipeId, greenPipeIdToUnderground,
+# 8. beginGreenPipeId, endGreenPipeId, componentIdToUnderground,
 # leftAnchorGreenPipeToUnderground, rightAnchorGreenPipeToUnderground,
 # leftAnchorMarioPoppingUpFromPipe, bottomAnchorMarioPoppingUpFromPipe
 801,900,805,2263,2281,2324,384
@@ -242,6 +242,7 @@
 # This is component help mario move to underground map
 2256,112,32,48,3,805,0,0
 
+# This is component help mario popping up
 2320,384,32,32,2,804,0,0
 </GreenPipeFrames>
 

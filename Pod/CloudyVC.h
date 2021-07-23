@@ -16,7 +16,7 @@ private:
 	int beginCoinId, endCoinId;
 	unordered_set<Coin*>* coins;
 
-	int beginGreenPipeId, endGreenPipeId, greenPipeIdToThirdMap, leftAnchorGreenPipeToPassThrough, rightAnchorGreenPipeToPassThrough;
+	int beginGreenPipeId, endGreenPipeId, componentIdToThirdMap, leftAnchorGreenPipeToPassThrough, rightAnchorGreenPipeToPassThrough;
 	vector<GreenPipe*>* greenPipes;
 
 	int beginFireBallId, endFireBallId;

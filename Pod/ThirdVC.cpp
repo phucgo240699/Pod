@@ -5,6 +5,16 @@ Mario* ThirdVC::getMario()
     return this->mario;
 }
 
+int ThirdVC::getLeftAnchorDroppingFromCloudy()
+{
+	return this->leftAnchorDroppingFromCloudy;
+}
+
+int ThirdVC::getTopAnchorDroppingFromCloudy()
+{
+	return this->topAnchorDroppingFromCloudy;
+}
+
 void ThirdVC::setMario(Mario* _mario)
 {
     this->mario = _mario;
@@ -812,6 +822,8 @@ void ThirdVC::adaptRangeID(vector<string> data, char seperator)
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginGroundId = v[0];
 			this->endGroundId = v[1];
+			this->leftAnchorDroppingFromCloudy = v[2];
+			this->topAnchorDroppingFromCloudy = v[3];
 		}
 		else if (i == 1) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);

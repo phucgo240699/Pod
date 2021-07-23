@@ -1,6 +1,7 @@
 <ViewController>
 # 0. beginGroundId, endGroundId
-0,100
+# leftAnchorDroppingFromCloudy, topAnchorDroppingFromCloudy
+0,100,2101,107
 
 # 1. beginBlockId, endBlockId
 101,200

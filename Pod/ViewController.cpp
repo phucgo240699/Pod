@@ -56,9 +56,8 @@ void ViewController::navigateTo(SceneName _sceneName)
 		}
 		else if (this->appController->getSceneName() == SceneName::UndergroundScene) {
 			// If current scene is UndergroundScene => Save  mario
-			if (this->appController->getSceneName() == SunnyScene) {
-				this->appController->getSunnyVC()->getMario()->save();
-			}
+			this->appController->getUndergroundVC()->getMario()->save();
+			
 
 			Camera::getInstance()->loadSunnyMap();
 
@@ -78,8 +77,6 @@ void ViewController::navigateTo(SceneName _sceneName)
 			this->appController->getSunnyVC()->getMario()->setState(MarioState::POPPING_UP_PIPE);
 			this->appController->getSunnyVC()->getMario()->setFirstFireBallState(FireBallState::FIREBALL_STAYING);
 			this->appController->getSunnyVC()->getMario()->setFirstFireBallAnimation(new Animation(AnimationBundle::getInstance()->getFireBall()));
-
-
 		}
 		break;
 	}
@@ -94,6 +91,28 @@ void ViewController::navigateTo(SceneName _sceneName)
 			this->appController->getThirdVC()->viewDidLoad();
 			this->appController->getThirdVC()->adaptToGrid();
 			Camera::getInstance()->setPositionBy(this->appController->getThirdVC()->getMario());
+		}
+		else if (this->appController->getSceneName() == SceneName::CloudyScene) {
+			// If current scene is CloudyScene => Save  mario
+			this->appController->getCloudyVC()->getMario()->save();
+			
+			Camera::getInstance()->loadThirdMap();
+
+			this->appController->getThirdVC()->getMario()->load();
+			this->appController->getThirdVC()->getMario()->setX(this->appController->getThirdVC()->getLeftAnchorDroppingFromCloudy());
+			this->appController->getThirdVC()->getMario()->setY(this->appController->getThirdVC()->getTopAnchorDroppingFromCloudy());
+			this->appController->getThirdVC()->getMario()->setLimitX(Camera::getInstance()->getLimitX());
+			this->appController->getThirdVC()->getMario()->setLimitY(Camera::getInstance()->getLimitY());
+
+			Camera::getInstance()->setPositionBy(this->appController->getThirdVC()->getMario());
+
+			Grid::getInstance()->loadCurrentThirdMap();
+			this->appController->getThirdVC()->adaptToGrid();
+
+			//this->appController->getThirdVC()->getMario()->setAnimation(new Animation(AnimationBundle::getInstance()->getMarioStanding()));
+			this->appController->getThirdVC()->getMario()->setState(MarioState::DROPPING);
+			this->appController->getThirdVC()->getMario()->setFirstFireBallState(FireBallState::FIREBALL_STAYING);
+			this->appController->getThirdVC()->getMario()->setFirstFireBallAnimation(new Animation(AnimationBundle::getInstance()->getFireBall()));
 		}
 
 		break;
@@ -112,6 +131,7 @@ void ViewController::navigateTo(SceneName _sceneName)
 		this->appController->getCloudyVC()->adaptToGrid();
 		this->appController->getCloudyVC()->getMario()->load();
 		Camera::getInstance()->setPositionBy(this->appController->getCloudyVC()->getMario());
+		this->appController->getCloudyVC()->getMario()->setState(MarioState::JUMPING);
 		break;
 	}
 	default:

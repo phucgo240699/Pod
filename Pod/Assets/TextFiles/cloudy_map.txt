@@ -5,8 +5,9 @@
 # 1. beginCoinId, endCoinId
 101,200
 
-# 2. beginGreenPipeId, endGreenPipeId, greenPipeIdToThirdMap, leftAnchorGreenPipeThirdMap, rightAnchorGreenPipeToThirdMap
-201,300,202,359,377
+# 2. beginGreenPipeId, endGreenPipeId,
+# componentIdToThirdMap, leftAnchorGreenPipeThirdMap, rightAnchorGreenPipeToThirdMap,
+201,300,201,855,873
 
 # 3. beginFireBallId, endFireBallId
 1001,1050
@@ -49,10 +50,16 @@
 
 <MarioInfo>
 # (x, y, limitX, limitY)
-134,360,1024,470
+134,380,1024,470
 </MarioInfo>
 
 <Grounds>
 #(x, y, width, height, id)
 0,408,1024,24,0
 </Grounds>
+
+<GreenPipeFrames>
+# (x, y, width, height, floorQuantity, id, isBlackMode, isDownMode)
+# floorQuantity: 3 or 2
+848,367,32,48,3,201,0,0
+</GreenPipeFrames>
