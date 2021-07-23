@@ -2143,10 +2143,39 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 		return;
 	}
 
-	/*if (_goomba->getState() == GOOMBA_FLYING_LEFT || _goomba->getState() == GOOMBA_FLYING_RIGHT || _goomba->getState() == GOOMBA_DROPPING_LEFT || _goomba->getState() == GOOMBA_DROPPING_RIGHT) {
-		_goomba->setStoredVy(_goomba->getVy());
-		_goomba->setVy(-abs(_goomba->getOriginVy()));
-	}*/
+
+	// When mario turning around
+	if (this->getIsTurningAround()) {
+		if (get<0>(this->sweptAABBByFrame(_goomba, _dt)) || this->isCollidingByFrame(_goomba->getFrame())) {
+			if (this->getIsFlip()) { // <--
+				if (_goomba->getX() <= this->getX()
+					&& _goomba->getX() + _goomba->getWidth() >= this->getX() - this->getLeftSpace()
+					&& this->getBounds().top + this->getTailMarginTop() >= _goomba->getY()
+					&& this->getBounds().bottom - this->getTailMarginBottom() <= _goomba->getY() + _goomba->getHeight()) {
+					_goomba->setState(GoombaState::THROWN_LEFT_AWAY_GOOMBA);
+
+					ScoreBoard::getInstance()->plusPoint(_goomba->getDefaultPoint());
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_goomba->getDefaultPoint(), _goomba->getX(), _goomba->getY())));
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFlashLight()), _goomba->getX(), _goomba->getY())));
+					return;
+				}
+			}
+			else { // -->
+				if (_goomba->getX() >= this->getX()
+					&& _goomba->getX() <= this->getX() + this->getBoundsWidth() + this->getLeftSpace()
+					&& this->getBounds().top + this->getTailMarginTop() >= _goomba->getY()
+					&& this->getBounds().bottom - this->getTailMarginBottom() <= _goomba->getY() + _goomba->getHeight()) {
+					_goomba->setState(GoombaState::THROWN_RIGHT_AWAY_GOOMBA);
+
+
+					ScoreBoard::getInstance()->plusPoint(_goomba->getDefaultPoint());
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_goomba->getDefaultPoint(), _goomba->getX(), _goomba->getY())));
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFlashLight()), _goomba->getX(), _goomba->getY())));
+					return;
+				}
+			}
+		}
+	}
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_goomba, _dt);
 
@@ -2287,6 +2316,9 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 					&& this->getBounds().bottom - this->getTailMarginBottom() <= _koopa->getY() + _koopa->getHeight()) {
 					if (_koopa->getState() != KOOPA_THROWN_LEFT_TO_SHINKAGE) {
 						_koopa->setState(KoopaState::KOOPA_THROWN_LEFT_TO_SHINKAGE);
+
+						AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFlashLight()), _koopa->getX(), _koopa->getY())));
+						return;
 					}
 				}
 			}
@@ -2297,6 +2329,9 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 					&& this->getBounds().bottom - this->getTailMarginBottom() <= _koopa->getY() + _koopa->getHeight()) {
 					if (_koopa->getState() != KOOPA_THROWN_RIGHT_TO_SHINKAGE) {
 						_koopa->setState(KoopaState::KOOPA_THROWN_RIGHT_TO_SHINKAGE);
+
+						AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFlashLight()), _koopa->getX(), _koopa->getY())));
+						return;
 					}
 				}
 			}

@@ -205,7 +205,7 @@ void Koopa::setState(KoopaState _state)
 		}
 
 		this->isOutOfFirstStage = true;
-		this->setIsFlip(true);
+		this->setIsFlip(false);
 		this->setVx(abs(this->originVx));
 		this->setVy(abs(this->originVy));
 		break;
@@ -299,7 +299,7 @@ void Koopa::setState(KoopaState _state)
 		}
 
 		this->isOutOfFirstStage = true;
-		this->setIsFlip(true);
+		this->setIsFlip(false);
 		this->setVx(4 * abs(this->originVx));
 		this->setVy(2 * abs(this->originVy));
 		break;
@@ -313,6 +313,7 @@ void Koopa::setState(KoopaState _state)
 		}
 		countFlyingX = 0;
 		startFlyingY = this->getY();
+		this->setIsFlip(true);
 		this->setVx(-1.5 * abs(this->originVx));
 		this->setVy(-abs(this->originVy));
 		break;
@@ -326,7 +327,7 @@ void Koopa::setState(KoopaState _state)
 		}
 		countFlyingX = 0;
 		startFlyingY = this->getY();
-
+		this->setIsFlip(false);
 		this->setVx(1.5 * abs(this->originVx));
 		this->setVy(-abs(this->originVy));
 		break;
@@ -334,6 +335,7 @@ void Koopa::setState(KoopaState _state)
 
 	case KOOPA_DROPPING_LEFT_FROM_AIR:
 	{
+		this->setIsFlip(true);
 		this->setVx(-abs(this->originVx));
 		this->setVy(abs(this->originVy));
 		break;
@@ -341,6 +343,7 @@ void Koopa::setState(KoopaState _state)
 
 	case KOOPA_DROPPING_RIGHT_FROM_AIR:
 	{
+		this->setIsFlip(false);
 		this->setVx(abs(this->originVx));
 		this->setVy(abs(this->originVy));
 		break;
@@ -370,7 +373,9 @@ void Koopa::setState(KoopaState _state)
 			this->animation = new Animation(AnimationBundle::getInstance()->getKoopaShrinkage());
 		}
 
+		this->isOutOfFirstStage = true;
 		this->setIsShrinkageReverseMode(true);
+		this->setIsFlip(true);
 		this->countThrownToShrinkageX = 0;
 		this->startThrownToShrinkageY = this->getY();
 		this->setVx(-0.4);// .5 * abs(this->originVx));
@@ -387,7 +392,10 @@ void Koopa::setState(KoopaState _state)
 		else {
 			this->animation = new Animation(AnimationBundle::getInstance()->getKoopaShrinkage());
 		}
+
+		this->isOutOfFirstStage = true;
 		this->setIsShrinkageReverseMode(true);
+		this->setIsFlip(false);
 		this->countThrownToShrinkageX = 0;
 		this->startThrownToShrinkageY = this->getY();
 		this->setVx(0.4);// .5 * abs(this->originVx));
@@ -405,6 +413,7 @@ void Koopa::setState(KoopaState _state)
 			this->animation = new Animation(AnimationBundle::getInstance()->getKoopaRedThrownAway());
 		}
 
+		this->setIsFlip(true);
 		this->thrownX = 0;
 		this->startThrownY = this->getY();
 		break;
@@ -420,6 +429,7 @@ void Koopa::setState(KoopaState _state)
 			this->animation = new Animation(AnimationBundle::getInstance()->getKoopaRedThrownAway());
 		}
 
+		this->setIsFlip(false);
 		this->thrownX = 0;
 		this->startThrownY = this->getY();
 		break;
@@ -656,8 +666,6 @@ void Koopa::handleHardComponentCollision(Component* _component, float _dt)
 				this->rightAnchor = _component->getX() + _component->getWidth();
 			}
 
-			this->setY(_component->getY() - this->getHeight());
-
 			if (this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT) {
 				this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
 			}
@@ -695,6 +703,8 @@ void Koopa::handleHardComponentCollision(Component* _component, float _dt)
 					this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
 				}
 			}
+
+			this->setY(_component->getY() - this->getHeight());
 		}
 		else if (edge == topEdge) {
 			if (this->getState() == KOOPA_FLYING_LEFT) {
@@ -787,8 +797,6 @@ void Koopa::handleGiftBrickCollision(GiftBrick* _giftBrick, Mario* _mario, float
 				this->rightAnchor = _giftBrick->getX() + _giftBrick->getWidth();
 			}
 
-			this->setY(_giftBrick->getY() - this->getHeight());
-
 			if (this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT) {
 				this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
 			}
@@ -826,6 +834,8 @@ void Koopa::handleGiftBrickCollision(GiftBrick* _giftBrick, Mario* _mario, float
 					this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
 				}
 			}
+
+			this->setY(_giftBrick->getY() - this->getHeight());
 		}
 		else if (edge == topEdge) {
 			if (this->getState() == KOOPA_FLYING_LEFT) {
@@ -997,8 +1007,6 @@ void Koopa::handleBlockCollision(Component* _block, float _dt)
 					this->rightAnchor = _block->getX() + _block->getWidth();
 				}
 
-				this->setY(_block->getY() - this->getHeight());
-
 				if (this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT) {
 					this->plusYNoRound(this->getVy() * get<1>(collisionResult));
 					this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
@@ -1032,6 +1040,8 @@ void Koopa::handleBlockCollision(Component* _block, float _dt)
 						this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
 					}
 				}
+
+				this->setY(_block->getY() - this->getHeight());
 			}
 			//}
 		}
@@ -1132,6 +1142,9 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 					&& _mario->getBounds().bottom - _mario->getTailMarginBottom() <= this->getY() + this->getHeight()) {
 					if (this->getState() != KOOPA_THROWN_LEFT_TO_SHINKAGE) {
 						this->setState(KoopaState::KOOPA_THROWN_LEFT_TO_SHINKAGE);
+
+						AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFlashLight()), this->getX(), this->getY())));
+						return;
 					}
 				}
 			}
@@ -1142,6 +1155,9 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 					&& _mario->getBounds().bottom - _mario->getTailMarginBottom() <= this->getY() + this->getHeight()) {
 					if (this->getState() != KOOPA_THROWN_RIGHT_TO_SHINKAGE) {
 						this->setState(KoopaState::KOOPA_THROWN_RIGHT_TO_SHINKAGE);
+
+						AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFlashLight()), this->getX(), this->getY())));
+						return;
 					}
 				}
 			}

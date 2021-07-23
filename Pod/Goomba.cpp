@@ -665,10 +665,37 @@ void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 		return;
 	}
 
-	/*if (this->getState() == GOOMBA_FLYING_LEFT || this->getState() == GOOMBA_FLYING_RIGHT || this->getState() == GOOMBA_DROPPING_LEFT || this->getState() == GOOMBA_DROPPING_RIGHT) {
-		this->setStoredVy(this->getVy());
-		this->setVy(-abs(this->getOriginVy()));
-	}*/
+	// When mario turning around
+	if (_mario->getIsTurningAround()) {
+		if (get<0>(_mario->sweptAABBByFrame(this, _dt)) || _mario->isCollidingByFrame(this->getFrame())) {
+			if (_mario->getIsFlip()) { // <--
+				if (this->getX() <= _mario->getX()
+					&& this->getX() + this->getWidth() >= _mario->getX() - _mario->getLeftSpace()
+					&& _mario->getBounds().top + _mario->getTailMarginTop() >= this->getY()
+					&& _mario->getBounds().bottom - _mario->getTailMarginBottom() <= this->getY() + this->getHeight()) {
+					this->setState(GoombaState::THROWN_LEFT_AWAY_GOOMBA);
+
+					ScoreBoard::getInstance()->plusPoint(this->getDefaultPoint());
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint(), this->getX(), this->getY())));
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFlashLight()), this->getX(), this->getY())));
+					return;
+				}
+			}
+			else { // -->
+				if (this->getX() >= _mario->getX()
+					&& this->getX() <= _mario->getX() + _mario->getBoundsWidth() + _mario->getLeftSpace()
+					&& _mario->getBounds().top + _mario->getTailMarginTop() >= this->getY()
+					&& _mario->getBounds().bottom - _mario->getTailMarginBottom() <= this->getY() + this->getHeight()) {
+					this->setState(GoombaState::THROWN_RIGHT_AWAY_GOOMBA);
+
+					ScoreBoard::getInstance()->plusPoint(this->getDefaultPoint());
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint(), this->getX(), this->getY())));
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFlashLight()), this->getX(), this->getY())));
+					return;
+				}
+			}
+		}
+	}
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
 
