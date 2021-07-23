@@ -38,7 +38,11 @@ private:
 
 	// Flying
 	float countFlyingX, startFlyingY;
-	//float storedVy;
+
+	// When mario turning around
+	bool isShrinkageReverseMode = false;
+	float countThrownToShrinkageX, startThrownToShrinkageY;
+
 
 public:
 	// Init
@@ -60,7 +64,7 @@ public:
 	bool getIsFlyingMode();
 	float getOriginVy();
 	float getOriginVx();
-	//float getStoredVy();
+	bool getIsShrinkageReverseMode();
 
 	// Setter
 	void setState(KoopaState _state);
@@ -69,7 +73,7 @@ public:
 	void setHasCollideMario(bool _hasCollideMario);
 	void setIsGreenMode(bool _isGreenMode);
 	void setIsFlyingMode(bool _isFlyingMode);
-	//void setStoredVy(float _storedVy);
+	void setIsShrinkageReverseMode(bool _value);
 
 	void convertMovingState();
 	void Update(float _dt);

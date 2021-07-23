@@ -2277,10 +2277,31 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 		return;
 	}
 
-	/*if (_koopa->getState() == KOOPA_FLYING_LEFT || _koopa->getState() == KOOPA_FLYING_RIGHT || _koopa->getState() == KOOPA_DROPPING_LEFT || _koopa->getState() == KOOPA_DROPPING_RIGHT) {
-		_koopa->setStoredVy(_koopa->getVy());
-		_koopa->setVy(-abs(_koopa->getOriginVy()));
-	}*/
+	// When mario turning around
+	if (this->getIsTurningAround()) {
+		if (get<0>(this->sweptAABBByFrame(_koopa, _dt)) || this->isCollidingByFrame(_koopa->getFrame())) {
+			if (this->getIsFlip()) { // <--
+				if (_koopa->getX() <= this->getX()
+					&& _koopa->getX() + _koopa->getWidth() >= this->getX() - this->getLeftSpace()
+					&& this->getBounds().top + this->getTailMarginTop() >= _koopa->getY()
+					&& this->getBounds().bottom - this->getTailMarginBottom() <= _koopa->getY() + _koopa->getHeight()) {
+					if (_koopa->getState() != KOOPA_THROWN_LEFT_TO_SHINKAGE) {
+						_koopa->setState(KoopaState::KOOPA_THROWN_LEFT_TO_SHINKAGE);
+					}
+				}
+			}
+			else { // -->
+				if (_koopa->getX() >= this->getX()
+					&& _koopa->getX() <= this->getX() + this->getBoundsWidth() + this->getLeftSpace()
+					&& this->getBounds().top + this->getTailMarginTop() >= _koopa->getY()
+					&& this->getBounds().bottom - this->getTailMarginBottom() <= _koopa->getY() + _koopa->getHeight()) {
+					if (_koopa->getState() != KOOPA_THROWN_RIGHT_TO_SHINKAGE) {
+						_koopa->setState(KoopaState::KOOPA_THROWN_RIGHT_TO_SHINKAGE);
+					}
+				}
+			}
+		}
+	}
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_koopa, _dt);
 
