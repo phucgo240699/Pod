@@ -2793,7 +2793,7 @@ void Mario::handleMusicBoxCollision(MusicBox* _musicBox, float _dt)
 	if (_musicBox->getState() != MusicBoxState::MUSIC_BOX_STAYING) return;
 
 	if (_musicBox->getIsSpecial() && _musicBox->getIsTransparentMode()) {
-		if (this->isCollidingByBounds(_musicBox->getBounds()) && this->getState() == JUMPING && this->getY() < _musicBox->getY()) {
+		if (this->isCollidingByBounds(_musicBox->getBounds()) && this->getState() == JUMPING && this->getY() > _musicBox->getY()) {
 			this->setState(MarioState::WALKING);
 			this->setX(_musicBox->getX() + _musicBox->getBoundsWidth() + 1);
 			_musicBox->setIsTransparentMode(false);
@@ -2809,6 +2809,10 @@ void Mario::handleMusicBoxCollision(MusicBox* _musicBox, float _dt)
 			CollisionEdge edge = get<2>(collisionResult)[0];
 			if (edge == topEdge
 				&& this->getX() != _musicBox->getX() + _musicBox->getWidth() && this->getX() + this->getBoundsWidth() != _musicBox->getX()) {
+
+				if (_musicBox->getIsSpecial() && _musicBox->getIsTransparentMode()) {
+					_musicBox->setIsTransparentMode(false);
+				}
 
 				this->setState(MarioState::DROPPING);
 				this->setY(_musicBox->getY() + _musicBox->getHeight());

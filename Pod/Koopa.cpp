@@ -240,6 +240,7 @@ void Koopa::setState(KoopaState _state)
 			//this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
 		}
 
+		this->isOutOfFirstStage = true;
 		this->setIsFlip(true);
 		this->setVx(-4 * abs(this->originVx));
 		this->setVy(0);
@@ -259,6 +260,7 @@ void Koopa::setState(KoopaState _state)
 			//this->pointAnimation = Animation(AnimationBundle::getInstance()->getPoints(this->getDefaultPoint() * this->getPointCoef()));
 		}
 
+		this->isOutOfFirstStage = true;
 		this->setIsFlip(false);
 		this->setVx(4 * abs(this->originVx));
 		this->setVy(0);
@@ -314,7 +316,7 @@ void Koopa::setState(KoopaState _state)
 		countFlyingX = 0;
 		startFlyingY = this->getY();
 		this->setIsFlip(true);
-		this->setVx(-1.5 * abs(this->originVx));
+		this->setVx(-1.4 * abs(this->originVx));
 		this->setVy(-abs(this->originVy));
 		break;
 	}
@@ -328,7 +330,7 @@ void Koopa::setState(KoopaState _state)
 		countFlyingX = 0;
 		startFlyingY = this->getY();
 		this->setIsFlip(false);
-		this->setVx(1.5 * abs(this->originVx));
+		this->setVx(1.4 * abs(this->originVx));
 		this->setVy(-abs(this->originVy));
 		break;
 	}
@@ -875,7 +877,7 @@ void Koopa::handleGiftBrickCollision(GiftBrick* _giftBrick, Mario* _mario, float
 				}
 			}
 		}
-		else if (edge == leftEdge) {
+		else if (edge == leftEdge && this->getY() + this->getHeight() != _giftBrick->getY() && this->getY() != _giftBrick->getY() + _giftBrick->getHeight()) {
 			if (this->getState() == KOOPA_MOVING_LEFT) {
 				this->setState(KoopaState::KOOPA_MOVING_RIGHT);
 			}
@@ -922,7 +924,7 @@ void Koopa::handleGiftBrickCollision(GiftBrick* _giftBrick, Mario* _mario, float
 				}
 			}
 		}
-		else if (edge == rightEdge) {
+		else if (edge == rightEdge && this->getY() + this->getHeight() != _giftBrick->getY() && this->getY() != _giftBrick->getY() + _giftBrick->getHeight()) {
 			if (this->getState() == KOOPA_MOVING_RIGHT) {
 				this->setState(KoopaState::KOOPA_MOVING_LEFT);
 			}
@@ -1317,7 +1319,7 @@ void Koopa::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 	if (_goldenBrick->getState() == GOLDEN_BRICK_BEING_COIN || _goldenBrick->getState() == GOLDEN_BRICK_DISAPPEARING || _goldenBrick->getState() == GOLDEN_BRICK_DEAD) return;
 	if (this->getState() == KOOPA_THROWN_LEFT_AWAY || this->getState() == KOOPA_THROWN_RIGHT_AWAY) return;
 	
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_goldenBrick, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_goldenBrick, _dt);
 	if (get<0>(collisionResult) == true) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
 		if (edge == bottomEdge) {
@@ -1382,7 +1384,7 @@ void Koopa::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 				this->setState(KoopaState::KOOPA_DROPPING_RIGHT_FROM_AIR);
 			}
 		}
-		else if (edge == leftEdge) {
+		else if (edge == leftEdge && this->getY() + this->getHeight() != _goldenBrick->getY() && this->getY() != _goldenBrick->getY() + _goldenBrick->getHeight()) {
 			if (this->getState() == KOOPA_MOVING_LEFT) {
 				this->setState(KoopaState::KOOPA_MOVING_RIGHT);
 			}
@@ -1390,7 +1392,7 @@ void Koopa::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 				this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
 			}
 			else if (this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT) {
-				this->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_RIGHT);
+				this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
 			}
 			else if (this->getState() == KOOPA_THROWN_LEFT_TO_SHINKAGE) {
 				if (this->getVy() < 0) {
@@ -1407,7 +1409,7 @@ void Koopa::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 				_goldenBrick->setState(GoldenBrickState::GOLDEN_BRICK_DISAPPEARING);
 			}
 		}
-		else if (edge == rightEdge) {
+		else if (edge == rightEdge && this->getY() + this->getHeight() != _goldenBrick->getY() && this->getY() != _goldenBrick->getY() + _goldenBrick->getHeight()) {
 			if (this->getState() == KOOPA_MOVING_RIGHT) {
 				this->setState(KoopaState::KOOPA_MOVING_LEFT);
 			}
@@ -1415,7 +1417,7 @@ void Koopa::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 				this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
 			}
 			else if (this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
-				this->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_LEFT);
+				this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
 			}
 			else if (this->getState() == KOOPA_THROWN_RIGHT_TO_SHINKAGE) {
 				if (this->getVy() < 0) {
@@ -1486,6 +1488,143 @@ void Koopa::handleKoopaCollision(Koopa* _koopa, float _dt)
 			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFireBallSplash()), _koopa->getX(), _koopa->getY())));
 
 			_koopa->setState(KoopaState::KOOPA_THROWN_RIGHT_AWAY);
+		}
+	}
+}
+
+void Koopa::handleMusicBoxCollision(MusicBox* _musicBox, float _dt)
+{
+	if (this->getState() == KOOPA_THROWN_LEFT_AWAY || this->getState() == KOOPA_THROWN_RIGHT_AWAY) return;
+
+	if (_musicBox->getIsSpecial() && _musicBox->getIsTransparentMode()) return;
+
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_musicBox, _dt);
+	if (get<0>(collisionResult) == true) {
+		CollisionEdge edge = get<2>(collisionResult)[0];
+		if (edge == bottomEdge) {
+			this->setIsStandOnSurface(true);
+			if (this->isOutOfFirstStage == true) {
+				this->leftAnchor = _musicBox->getX();
+				this->rightAnchor = _musicBox->getX() + _musicBox->getWidth();
+			}
+
+			if (this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT) {
+				this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
+			}
+			else if (this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
+				this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
+			}
+			else if (this->getState() == KOOPA_DROPPING_LEFT) {
+				this->setState(KoopaState::KOOPA_MOVING_LEFT);
+			}
+			else if (this->getState() == KOOPA_DROPPING_RIGHT) {
+				this->setState(KoopaState::KOOPA_MOVING_RIGHT);
+			}
+			else if (this->getState() == KOOPA_FLYING_LEFT) {
+				this->setState(KoopaState::KOOPA_FLYING_LEFT);
+			}
+			else if (this->getState() == KOOPA_FLYING_RIGHT) {
+				this->setState(KoopaState::KOOPA_FLYING_RIGHT);
+			}
+			else if (this->getState() == KOOPA_THROWN_LEFT_TO_SHINKAGE || this->getState() == KOOPA_THROWN_RIGHT_TO_SHINKAGE) {
+				this->setState(KoopaState::KOOPA_SHRINKAGE);
+			}
+			else if (this->getState() == KOOPA_DROPPING_LEFT_FROM_AIR) {
+				if (this->getIsFlyingMode()) {
+					this->setState(KoopaState::KOOPA_FLYING_LEFT);
+				}
+				else { // KOOPA_THROWN_LEFT_TO_SHINKAGE
+					this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
+				}
+			}
+			else if (this->getState() == KOOPA_DROPPING_RIGHT_FROM_AIR) {
+				if (this->getIsFlyingMode()) {
+					this->setState(KoopaState::KOOPA_FLYING_RIGHT);
+				}
+				else { // KOOPA_THROWN_RIGHT_TO_SHINKAGE
+					this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
+				}
+			}
+
+			this->setY(_musicBox->getY() - this->getHeight());
+		}
+		else if (edge == topEdge) {
+			if (this->getState() == KOOPA_FLYING_LEFT) {
+				this->setState(KoopaState::KOOPA_DROPPING_LEFT_FROM_AIR);
+			}
+			else if (this->getState() == KOOPA_FLYING_RIGHT) {
+				this->setState(KoopaState::KOOPA_DROPPING_RIGHT_FROM_AIR);
+			}
+			else if (this->getState() == KOOPA_THROWN_LEFT_TO_SHINKAGE) {
+				this->setState(KoopaState::KOOPA_DROPPING_LEFT_FROM_AIR);
+			}
+			else if (this->getState() == KOOPA_THROWN_RIGHT_TO_SHINKAGE) {
+				this->setState(KoopaState::KOOPA_DROPPING_RIGHT_FROM_AIR);
+			}
+
+			_musicBox->setState(MusicBoxState::MUSIC_BOX_JUMPING_UP);
+		}
+		else if (edge == leftEdge && this->getY() != _musicBox->getY() + _musicBox->getHeight()) {
+			if (this->getState() == KOOPA_MOVING_LEFT) {
+				this->setState(KoopaState::KOOPA_MOVING_RIGHT);
+			}
+			else if (this->getState() == KOOPA_SHRINKAGE_MOVING_LEFT) {
+				this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
+			}
+			else if (this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT) {
+				this->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_RIGHT);
+			}
+			else if (this->getState() == KOOPA_THROWN_LEFT_TO_SHINKAGE) {
+				if (this->getVy() < 0) {
+					this->setState(KoopaState::KOOPA_THROWN_RIGHT_TO_SHINKAGE);
+				}
+				else {
+					this->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_RIGHT);
+				}
+			}
+			this->plusX(get<1>(collisionResult) * this->getVx());
+			_musicBox->setState(MusicBoxState::MUSIC_BOX_JUMPING_UP);
+		}
+		else if (edge == rightEdge && this->getY() != _musicBox->getY() + _musicBox->getHeight()) {
+			if (this->getState() == KOOPA_MOVING_RIGHT) {
+				this->setState(KoopaState::KOOPA_MOVING_LEFT);
+			}
+			else if (this->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT) {
+				this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
+			}
+			else if (this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
+				this->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_LEFT);
+			}
+			else if (this->getState() == KOOPA_THROWN_RIGHT_TO_SHINKAGE) {
+				if (this->getVy() < 0) {
+					this->setState(KoopaState::KOOPA_THROWN_LEFT_TO_SHINKAGE);
+				}
+				else {
+					this->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_LEFT);
+				}
+			}
+			this->plusX(get<1>(collisionResult) * this->getVx());
+			_musicBox->setState(MusicBoxState::MUSIC_BOX_JUMPING_UP);
+		}
+	}
+	else {
+		// if supermushroom walk out of ground's top surface, it will drop
+		if (this->getState() == KOOPA_SHRINKAGE_MOVING_LEFT
+			|| this->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT
+			|| this->getState() == KOOPA_MOVING_LEFT
+			|| this->getState() == KOOPA_MOVING_RIGHT) {
+			if (this->getIsStandOnSurface() == false) {
+				if ((_musicBox->getX() <= this->getX() + this->getBoundsWidth() && this->getX() + this->getBoundsWidth() <= _musicBox->getX() + _musicBox->getWidth())
+					|| (_musicBox->getX() <= this->getX() && this->getX() <= _musicBox->getX() + _musicBox->getWidth())) { // this is check which ground that mario is standing on
+					if (this->getY() + this->getHeight() == _musicBox->getY()) {
+						this->setIsStandOnSurface(true);
+						if (this->isOutOfFirstStage == true) {
+							this->leftAnchor = _musicBox->getX();
+							this->rightAnchor = _musicBox->getX() + _musicBox->getWidth();
+						}
+					}
+				}
+			}
 		}
 	}
 }

@@ -640,6 +640,9 @@ void ThirdVC::viewDidUpdate(float _dt)
 										static_cast<Koopa*>(*itr)->handleKoopaCollision(static_cast<Koopa*>(*koopaItr), _dt);
 									}
 								}
+								else if (beginMusicBoxId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endMusicBoxId) {
+									static_cast<Koopa*>(*itr)->handleMusicBoxCollision(static_cast<MusicBox*>(*koopaItr), _dt);
+								}
 							}
 						}
 					}

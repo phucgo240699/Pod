@@ -14,6 +14,7 @@ class Mario; // Say Goomba exists without defining it.
 class Goomba;
 class FireBall;
 class GoldenBrick;
+class MusicBox;
 
 class Koopa : public Enemy
 {
@@ -88,6 +89,7 @@ public:
 	void handleFireBallCollision(FireBall* _fireBall, float _dt);
 	void handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt);
 	void handleKoopaCollision(Koopa* _koopa, float _dt);
+	void handleMusicBoxCollision(MusicBox* _musicBox, float _dt);
 };
 
 #endif // !KOOPA
