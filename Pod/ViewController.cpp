@@ -7,12 +7,6 @@ void ViewController::navigateTo(SceneName _sceneName)
 	{
 	case SceneName::WorldScene:
 	{
-		this->appController->setUndergroundVC(new UndergroundVC());
-		this->appController->getUndergroundVC()->viewDidLoad();
-
-		this->appController->setCloudyVC(new CloudyVC());
-		this->appController->getCloudyVC()->viewDidLoad();
-
 		ScoreBoard::getInstance()->resetTimeToZero();
 		Camera::getInstance()->loadWorldMap();
 		if (this->appController->getSceneName() == SunnyScene) {
@@ -24,6 +18,16 @@ void ViewController::navigateTo(SceneName _sceneName)
 		else if (this->appController->getSceneName() == ThirdScene) {
 			this->appController->getThirdVC()->getMario()->save();
 		}
+		else if (this->appController->getSceneName() == CloudyScene) {
+			this->appController->getCloudyVC()->getMario()->save();
+		}
+
+		this->appController->setUndergroundVC(new UndergroundVC());
+		this->appController->getUndergroundVC()->viewDidLoad();
+
+		this->appController->setCloudyVC(new CloudyVC());
+		this->appController->getCloudyVC()->viewDidLoad();
+
 		break;
 	}
 
@@ -40,6 +44,10 @@ void ViewController::navigateTo(SceneName _sceneName)
 		this->appController->getUndergroundVC()->adaptToGrid();
 		this->appController->getUndergroundVC()->getMario()->load();
 		Camera::getInstance()->setPositionBy(this->appController->getUndergroundVC()->getMario());
+
+		this->appController->getUndergroundVC()->getMario()->setState(MarioState::DROPPING);
+		this->appController->getUndergroundVC()->getMario()->setFirstFireBallState(FireBallState::FIREBALL_STAYING);
+		this->appController->getUndergroundVC()->getMario()->setFirstFireBallAnimation(new Animation(AnimationBundle::getInstance()->getFireBall()));
 		break;
 	}
 
@@ -58,7 +66,6 @@ void ViewController::navigateTo(SceneName _sceneName)
 			// If current scene is UndergroundScene => Save  mario
 			this->appController->getUndergroundVC()->getMario()->save();
 			
-
 			Camera::getInstance()->loadSunnyMap();
 
 			//this->appController->getSunnyVC()->setMario(new Mario(0, 0, 0, 0, 0, 0, ImagePath::getInstance()->mario, D3DCOLOR_XRGB(255, 0, 255), DROPPING));

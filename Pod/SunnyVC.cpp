@@ -545,6 +545,7 @@ void SunnyVC::viewUpdate(float _dt)
 
 			// Navigate to WorldVC when Mario drop out of map to far
 			if (this->mario->getY() >= Camera::getInstance()->getLimitY() + 100) {
+				this->mario->setIsFireMode(false);
 				this->mario->setIsSuperMode(false);
 				this->mario->setIsFlyingMode(false);
 				this->mario->setIsPreFlyingUpMode(false);
@@ -600,6 +601,16 @@ void SunnyVC::viewUpdate(float _dt)
 	}
 	ScoreBoard::getInstance()->Update(_dt);
 	ScoreBoard::getInstance()->setMomentumLevel(this->mario->getMomentumLevelToFly());
+
+	if (ScoreBoard::getInstance()->getTime() <= 0) {
+		this->mario->setIsFireMode(false);
+		this->mario->setIsSuperMode(false);
+		this->mario->setIsFlyingMode(false);
+		this->mario->setIsPreFlyingUpMode(false);
+		this->mario->setIsFlyingUpMode(false);
+
+		this->mario->setState(MarioState::DIE);
+	}
 }
 
 void SunnyVC::viewDidUpdate(float _dt)

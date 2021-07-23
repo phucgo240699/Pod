@@ -156,6 +156,7 @@ void CloudyVC::viewUpdate(float _dt)
 
 			// Navigate to WorldVC when Mario drop out of map to far
 			if (this->mario->getY() >= Camera::getInstance()->getLimitY() + 100) {
+				this->mario->setIsFireMode(false);
 				this->mario->setIsSuperMode(false);
 				this->mario->setIsFlyingMode(false);
 				this->mario->setIsPreFlyingUpMode(false);
@@ -172,11 +173,32 @@ void CloudyVC::viewUpdate(float _dt)
 
 	AnimationCDPlayer::getInstance()->Update(_dt);
 
-	if (this->mario->getState() == DIE || this->mario->getState() == DIE_JUMPING || this->mario->getState() == DIE_DROPPING || this->mario->getState() == SCALING_UP || this->mario->getState() == SCALING_DOWN) {
+	
+	if (this->mario->getState() == DIE
+		|| this->mario->getState() == DIE_JUMPING
+		|| this->mario->getState() == DIE_DROPPING
+		|| this->mario->getState() == SCALING_UP
+		|| this->mario->getState() == SCALING_DOWN
+		|| this->mario->getState() == DROPPING_DOWN_PIPE
+		|| this->mario->getState() == POPPING_UP_PIPE
+		|| this->mario->getState() == JUMPING_UP_TO_CLOUND
+		|| this->mario->getState() == DROPPING_DOWN_WIN
+		|| this->mario->getState() == MOVING_RIGHT_WIN) {
 		return;
 	}
+
 	ScoreBoard::getInstance()->Update(_dt);
 	ScoreBoard::getInstance()->setMomentumLevel(this->mario->getMomentumLevelToFly());
+
+	if (ScoreBoard::getInstance()->getTime() <= 0) {
+		this->mario->setIsFireMode(false);
+		this->mario->setIsSuperMode(false);
+		this->mario->setIsFlyingMode(false);
+		this->mario->setIsPreFlyingUpMode(false);
+		this->mario->setIsFlyingUpMode(false);
+
+		this->mario->setState(MarioState::DIE);
+	}
 }
 
 void CloudyVC::viewDidUpdate(float _dt)
