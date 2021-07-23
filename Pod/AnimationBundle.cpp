@@ -599,6 +599,16 @@ Animation AnimationBundle::getSuperMarioFireDroppingDownPipe()
 	return this->animations->at(111);
 }
 
+Animation AnimationBundle::getMusicBox()
+{
+	return this->animations->at(112);
+}
+
+Animation AnimationBundle::getMusicBoxRed()
+{
+	return this->animations->at(113);
+}
+
 Animation AnimationBundle::getSuperMarioFlyingWalking()
 {
 	return this->animations->at(49);

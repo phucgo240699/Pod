@@ -31,6 +31,7 @@ public:
 	int getHeight();
 	int getMomentumLevel(int _momentum, int _space);
 	string getMomentumKey(int _momentumLevel);
+	int getMarioLife();
 
 	// Setter
 	void setTime(int _time);

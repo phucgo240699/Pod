@@ -4,6 +4,7 @@
 #include "SectionFile.h"
 #include "AnimationBundle.h"
 #include "AnimationCDPlayer.h"
+#include "MusicBox.h"
 
 class ThirdVC : public ViewController
 {
@@ -41,6 +42,13 @@ private:
 	// Koopas
 	int beginKoopaId, endKoopaId;
 	unordered_set<Koopa*>* koopas;
+
+	int beginMusicBoxId, endMusicBoxId;
+	vector<MusicBox*>* musicBoxes;
+
+	int beginBoomerangBroId, endBoomerangBroId;
+
+	int beginBossId, endBossId;
 
 	int beginFireBallId, endFireBallId;
 

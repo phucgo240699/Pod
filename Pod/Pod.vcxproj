@@ -176,6 +176,7 @@
     <ClCompile Include="GreenPipe.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Koopa.cpp" />
+    <ClCompile Include="MusicBox.cpp" />
     <ClCompile Include="PButton.cpp" />
     <ClCompile Include="PointUpCD.cpp" />
     <ClCompile Include="StaticAnim.cpp" />
@@ -236,6 +237,8 @@
     <ClInclude Include="CDType.h" />
     <ClInclude Include="Koopa.h" />
     <ClInclude Include="KoopaState.h" />
+    <ClInclude Include="MusicBox.h" />
+    <ClInclude Include="MusicBoxState.h" />
     <ClInclude Include="PButton.h" />
     <ClInclude Include="PButtonState.h" />
     <ClInclude Include="PointUpCD.h" />

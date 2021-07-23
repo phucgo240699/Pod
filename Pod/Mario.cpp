@@ -250,6 +250,11 @@ bool Mario::getIsPressKeyUp()
 	return this->isPressKeyUp;
 }
 
+bool Mario::getIsPressKeyS()
+{
+	return this->isPressKeyS;
+}
+
 void Mario::load()
 {
 	fstream fs;
@@ -1156,6 +1161,11 @@ void Mario::setIsPressKeyUp(bool _isPressKeyUp)
 	this->isPressKeyUp = _isPressKeyUp;
 }
 
+void Mario::setIsPressKeyS(bool _isPressKeyS)
+{
+	this->isPressKeyS = _isPressKeyS;
+}
+
 void Mario::turnOnTurningAroundSkin()
 {
 	//this->setPressureState(MarioState(this->getState()));
@@ -1220,6 +1230,11 @@ void Mario::Update(float _dt)
 	}
 	else if (this->getState() == POPPING_UP_PIPE) {
 		this->plusY(-1);
+		return;
+	}
+	else if (this->getState() == JUMPING_UP_TO_CLOUND) {
+		this->plusY(-6);
+		return;
 	}
 
 	if (this->getIsTurningAround()) {
@@ -1589,6 +1604,7 @@ void Mario::onKeyUp()
 	if (this->getIsFlyingUpMode() == false) {
 		this->setMomentum(0);
 	}
+	this->setIsPressKeyS(false);
 }
 
 void Mario::onKeyUp(vector<KeyType> _keyTypes)
@@ -1629,6 +1645,9 @@ void Mario::onKeyUp(vector<KeyType> _keyTypes)
 		}
 		else if (_keyTypes[i] == KeyType::up) {
 			this->setIsPressKeyUp(false);
+		}
+		else if (_keyTypes[i] == KeyType::key_S) {
+			this->setIsPressKeyS(false);
 		}
 	}
 	
@@ -1737,6 +1756,7 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 
 		// Jump
 		else if (_keyTypes[i] == KeyType::key_S) {
+			this->setIsPressKeyS(true);
 			if (this->getIsPreFlyingUpMode()) {
 				if (this->getIsFlyingUpMode() == false) {
 					this->setIsFlyingUpMode(true);
@@ -2709,5 +2729,65 @@ void Mario::handleGreenPipeDownCollision(GreenPipe* _greenPipe, int _targetId, f
 				}
 			}
 		}
+	}
+}
+
+void Mario::handleMusicBoxCollision(MusicBox* _musicBox, float _dt)
+{
+	if (_musicBox->getState() != MusicBoxState::MUSIC_BOX_STAYING) return;
+
+	if (_musicBox->getIsSpecial() && _musicBox->getIsTransparentMode()) {
+		if (this->isCollidingByBounds(_musicBox->getBounds()) && this->getState() == JUMPING && this->getY() < _musicBox->getY()) {
+			this->setState(MarioState::WALKING);
+			this->setX(_musicBox->getX() + _musicBox->getBoundsWidth() + 1);
+			_musicBox->setIsTransparentMode(false);
+			_musicBox->setState(MusicBoxState::MUSIC_BOX_JUMPING_UP);
+			return;
+		}
+	}
+
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_musicBox, _dt);
+
+	if (get<0>(collisionResult) == true) {
+		//for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+			CollisionEdge edge = get<2>(collisionResult)[0];
+			if (edge == topEdge
+				&& this->getX() != _musicBox->getX() + _musicBox->getWidth() && this->getX() + this->getBoundsWidth() != _musicBox->getX()) {
+
+				this->setState(MarioState::DROPPING);
+				this->setY(_musicBox->getY() + _musicBox->getHeight());
+				this->setVy(0);
+
+				_musicBox->setState(MusicBoxState::MUSIC_BOX_JUMPING_UP);
+			}
+			else if (edge == bottomEdge
+				&& this->getX() != _musicBox->getX() + _musicBox->getWidth() && this->getX() + this->getBoundsWidth() != _musicBox->getX()) {
+
+				if (_musicBox->getIsTransparentMode()) return;
+
+				if (_musicBox->getIsSpecial() && this->getIsPressKeyS()) {
+					this->setState(MarioState::JUMPING_UP_TO_CLOUND);
+				}
+				else {
+					this->setState(MarioState::JUMPING);
+				}
+				this->setY(_musicBox->getY() - this->getBoundsHeight() - Setting::getInstance()->getCollisionSafeSpace());
+				_musicBox->setState(MusicBoxState::MUSIC_BOX_JUMPING_DOWN);
+			}
+			else if (edge == leftEdge && this->getY() + this->getBoundsHeight() != _musicBox->getY()) {
+
+				if (_musicBox->getIsTransparentMode()) return;
+
+				this->setX(_musicBox->getX() + _musicBox->getWidth());
+				this->setSubState(MarioSubState::PUSHING);
+			}
+			else if (edge == rightEdge && this->getY() + this->getBoundsHeight() != _musicBox->getY()) {
+
+				if (_musicBox->getIsTransparentMode()) return;
+
+				this->setX(_musicBox->getX() - this->getBoundsWidth());
+				this->setSubState(MarioSubState::PUSHING);
+			}
+		//}
 	}
 }

@@ -162,4 +162,7 @@ public:
 	Animation getMarioFireDroppingDownPipe();
 	Animation getSuperMarioDroppingDownPipe();
 	Animation getSuperMarioFireDroppingDownPipe();
+
+	Animation getMusicBox();
+	Animation getMusicBoxRed();
 };

@@ -250,6 +250,12 @@
     <Filter Include="Source Files\ViewController\ThirdVC">
       <UniqueIdentifier>{dda34fdd-2951-4dd9-bcb5-0d75300cdfda}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\Map\MusicBox">
+      <UniqueIdentifier>{9578bf9d-2e06-4856-8760-8aaccd4adfe4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Map\MusicBox">
+      <UniqueIdentifier>{4777c3d4-33f3-4f16-9759-0685ec410e9e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -392,6 +398,9 @@
     </ClCompile>
     <ClCompile Include="ThirdVC.cpp">
       <Filter>Source Files\ViewController\ThirdVC</Filter>
+    </ClCompile>
+    <ClCompile Include="MusicBox.cpp">
+      <Filter>Source Files\Components\Map\MusicBox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -592,6 +601,12 @@
     </ClInclude>
     <ClInclude Include="ThirdVC.h">
       <Filter>Header Files\ViewController\ThirdVC</Filter>
+    </ClInclude>
+    <ClInclude Include="MusicBoxState.h">
+      <Filter>Header Files\System\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="MusicBox.h">
+      <Filter>Header Files\Components\Map\MusicBox</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

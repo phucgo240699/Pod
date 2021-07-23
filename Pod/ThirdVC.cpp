@@ -15,15 +15,14 @@ void ThirdVC::viewDidLoad()
     mario = new Mario(0, 0, 0, 0, 0, 0, ImagePath::getInstance()->mario, D3DCOLOR_XRGB(255, 0, 255), DROPPING);
     map = new Map();
 	grounds = new vector<Ground*>();
+	blocks = new vector<Block*>();
 	goldenBricks = new unordered_set<GoldenBrick*>();
 	giftBricks = new vector<GiftBrick*>();
-	//greenPipes = new vector<GreenPipe*>();
+	coins = new unordered_set<Coin*>();
 	goombas = new unordered_set<Goomba*>();
 	koopas = new unordered_set<Koopa*>();
-	blocks = new vector<Block*>();
-	//fireFlowers = new unordered_set<FireFlower*>();
-	//flowers = new unordered_set<Flower*>();
-	coins = new unordered_set<Coin*>();
+	musicBoxes = new vector<MusicBox*>();
+
 
 
 	this->mario->load();
@@ -104,6 +103,13 @@ void ThirdVC::viewWillUpdate(float _dt)
 				//	continue;
 				//}
 
+
+				// Coin
+				else if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
 				// Goombas
 				else if (beginGoombaId <= (*itr)->getId() && (*itr)->getId() <= endGoombaId) {
 					// Prevent update mullti time in one loop
@@ -116,14 +122,14 @@ void ThirdVC::viewWillUpdate(float _dt)
 					(*itr)->setIsUpdatedInOneLoop(false);
 				}
 
-				// Fire Ball
-				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
+				// Music Box
+				else if (beginMusicBoxId <= (*itr)->getId() && (*itr)->getId() <= endMusicBoxId) {
 					// Prevent update mullti time in one loop
 					(*itr)->setIsUpdatedInOneLoop(false);
 				}
 
-				// Coin
-				else if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
+				// Fire Ball
+				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
 					// Prevent update mullti time in one loop
 					(*itr)->setIsUpdatedInOneLoop(false);
 				}
@@ -254,6 +260,21 @@ void ThirdVC::viewUpdate(float _dt)
 					continue;
 				}
 
+				// Coin
+				else if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
+					if (static_cast<Coin*>(*itr)->getState() == COIN_BEING_EARNED) {
+						Grid::getInstance()->remove(*itr, i, j);
+						continue;
+					}
+
+					(*itr)->Update(_dt);
+
+					//Grid::getInstance()->updateCellOf(*itr);
+				}
+
 				// Goombas
 				else if (beginGoombaId <= (*itr)->getId() && (*itr)->getId() <= endGoombaId) {
 					// Prevent update mullti time in one loop
@@ -297,6 +318,14 @@ void ThirdVC::viewUpdate(float _dt)
 					}
 				}
 
+				// Music Box
+				else if (beginMusicBoxId <= (*itr)->getId() && (*itr)->getId() <= endMusicBoxId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
+					(*itr)->Update(_dt);
+				}
+
 				// Fire Ball
 				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
 					// Prevent update mullti time in one loop
@@ -316,21 +345,6 @@ void ThirdVC::viewUpdate(float _dt)
 						Grid::getInstance()->remove(*itr, i, j);
 						static_cast<FireBall*>(*itr)->setIsOutOfGrid(true);
 					}
-				}
-
-				// Coin
-				else if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
-					// Prevent update mullti time in one loop
-					if ((*itr)->getIsUpdatedInOneLoop()) continue;
-
-					if (static_cast<Coin*>(*itr)->getState() == COIN_BEING_EARNED) {
-						Grid::getInstance()->remove(*itr, i, j);
-						continue;
-					}
-
-					(*itr)->Update(_dt);
-
-					//Grid::getInstance()->updateCellOf(*itr);
 				}
 			}
 		}
@@ -489,6 +503,12 @@ void ThirdVC::viewDidUpdate(float _dt)
 					}
 				}
 
+				// Coin
+				else if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
+					this->mario->handleCoinCollision(static_cast<Coin*>(*itr), _dt);
+					static_cast<Coin*>(*itr)->handleMarioCollision(this->mario, _dt);
+				}
+
 				// Goombas
 				else if (beginGoombaId <= (*itr)->getId() && (*itr)->getId() <= endGoombaId) {
 
@@ -613,6 +633,10 @@ void ThirdVC::viewDidUpdate(float _dt)
 
 				}
 
+				// Music Box
+				else if (beginMusicBoxId <= (*itr)->getId() && (*itr)->getId() <= endMusicBoxId) {
+					this->mario->handleMusicBoxCollision(static_cast<MusicBox*>(*itr), _dt);
+				}
 
 				// Fire Ball
 				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
@@ -691,6 +715,11 @@ void ThirdVC::viewWillRender()
 						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 
+					// Gift Brick
+					else if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
+					}
+
 					// Super Mushroom
 					else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= endSuperMushroomId) {
 						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
@@ -701,8 +730,8 @@ void ThirdVC::viewWillRender()
 						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 
-					// Gift Brick
-					else if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
+					// Coin
+					else if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
 						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 
@@ -716,8 +745,8 @@ void ThirdVC::viewWillRender()
 						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 
-					// Coin
-					else if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
+					// Music Box
+					else if (beginMusicBoxId <= (*itr)->getId() && (*itr)->getId() <= endMusicBoxId) {
 						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 				}
@@ -812,6 +841,21 @@ void ThirdVC::adaptRangeID(vector<string> data, char seperator)
 			this->endKoopaId = v[1];
 		}
 		else if (i == 7) {
+			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
+			this->beginMusicBoxId = v[0];
+			this->endMusicBoxId = v[1];
+		}
+		else if (i == 8) {
+			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
+			this->beginBoomerangBroId = v[0];
+			this->endBoomerangBroId = v[1];
+		}
+		else if (i == 9) {
+			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
+			this->beginBossId = v[0];
+			this->endBossId = v[1];
+		}
+		else if (i == 10) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginFireBallId = v[0];
 			this->endFireBallId = v[1];
@@ -919,6 +963,18 @@ void ThirdVC::adaptData()
 			}
 			section = SECTION_NONE;
 		}
+		else if (line == "<CoinFrames>") {
+			section = SECTION_COIN_FRAMES;
+			continue;
+		}
+		else if (line == "</CoinFrames>") {
+			for (int i = 0; i < data.size(); ++i) {
+				Coin* coin = new Coin(0, 0, 0, 0, 0, 0, 0, 0);
+				coin->loadInfo(data[i], ',');
+				this->coins->insert(coin);
+			}
+			section = SECTION_NONE;
+		}
 		else if (line == "<GoombaFrames>") {
 			section = SECTION_GOOMBA_FRAMES;
 			continue;
@@ -943,15 +999,15 @@ void ThirdVC::adaptData()
 			}
 			section = SECTION_NONE;
 		}
-		else if (line == "<CoinFrames>") {
-			section = SECTION_COIN_FRAMES;
+		else if (line == "<MusicBoxFrames>") {
+			section = SECTION_MUSIC_BOX_FRAMES;
 			continue;
 		}
-		else if (line == "</CoinFrames>") {
+		else if (line == "</MusicBoxFrames>") {
 			for (int i = 0; i < data.size(); ++i) {
-				Coin* coin = new Coin(0, 0, 0, 0, 0, 0, 0, 0);
-				coin->loadInfo(data[i], ',');
-				this->coins->insert(coin);
+				MusicBox* musicBox = new MusicBox(0, 0, 0, 0, 0, 0);
+				musicBox->loadInfo(data[i], ',');
+				this->musicBoxes->push_back(musicBox);
 			}
 			section = SECTION_NONE;
 		}
@@ -982,10 +1038,13 @@ void ThirdVC::adaptData()
 		case SECTION_BLOCK_FRAMES:
 			data.push_back(line);
 			break;
+		case SECTION_GOLDEN_BRICK_FRAMES:
+			data.push_back(line);
+			break;
 		case SECTION_GIFT_BRICK_FRAMES:
 			data.push_back(line);
 			break;
-		case SECTION_GOLDEN_BRICK_FRAMES:
+		case SECTION_COIN_FRAMES:
 			data.push_back(line);
 			break;
 		case SECTION_GOOMBA_FRAMES:
@@ -994,7 +1053,7 @@ void ThirdVC::adaptData()
 		case SECTION_KOOPA_FRAMES:
 			data.push_back(line);
 			break;
-		case SECTION_COIN_FRAMES:
+		case SECTION_MUSIC_BOX_FRAMES:
 			data.push_back(line);
 			break;
 		default:
@@ -1075,6 +1134,15 @@ void ThirdVC::adaptAnimation()
 		}
 	}
 
+	for (int i = 0; i < this->musicBoxes->size(); ++i) {
+		if (this->musicBoxes->at(i)->getIsSpecial()) {
+			this->musicBoxes->at(i)->setAnimation(new Animation(AnimationBundle::getInstance()->getMusicBoxRed()));
+		}
+		else {
+			this->musicBoxes->at(i)->setAnimation(new Animation(AnimationBundle::getInstance()->getMusicBox()));
+		}
+	}
+
 	this->mario->setAnimation(new Animation(AnimationBundle::getInstance()->getMarioStanding()));
 	this->mario->setState(MarioState::DROPPING);
 	this->mario->setFirstFireBallState(FireBallState::FIREBALL_STAYING);
@@ -1125,5 +1193,9 @@ void ThirdVC::adaptToGrid()
 	unordered_set<Koopa*> ::iterator koopaItr;
 	for (koopaItr = this->koopas->begin(); koopaItr != this->koopas->end(); ++koopaItr) {
 		Grid::getInstance()->add(*koopaItr);
+	}
+
+	for (int i = 0; i < this->musicBoxes->size(); ++i) {
+		Grid::getInstance()->add(this->musicBoxes->at(i));
 	}
 }

@@ -63,6 +63,11 @@ string ScoreBoard::getMomentumKey(int _momentumLevel)
 	}
 }
 
+int ScoreBoard::getMarioLife()
+{
+	return marioLife;
+}
+
 ScoreBoard* ScoreBoard::instance;
 
 ScoreBoard* ScoreBoard::getInstance()

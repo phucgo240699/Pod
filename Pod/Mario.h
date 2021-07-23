@@ -20,6 +20,7 @@
 #include "FireBall.h"
 #include "Coin.h"
 #include "PButton.h"
+#include "MusicBox.h"
 #include <unordered_map>
 
 using namespace std;
@@ -36,7 +37,7 @@ private:
 	FireBall* firstFireBall;
 
 	// Control
-	bool isStandOnSurface = false, isReduceWalking = false, isConverting = false, isTurningAround = false, isPressA = false, isPressKeyUp = false;
+	bool isStandOnSurface = false, isReduceWalking = false, isConverting = false, isTurningAround = false, isPressA = false, isPressKeyUp = false, isPressKeyS = false;
 	bool isFlip; // false: Left side - true: Right side. Default is false
 
 	// Mode
@@ -98,6 +99,7 @@ public:
 	bool getIsTurningAround();
 	bool getIsPressA();
 	bool getIsPressKeyUp();
+	bool getIsPressKeyS();
 	
 	// Mode
 	bool getIsSuperMode();
@@ -163,6 +165,7 @@ public:
 	void setIsTurningAround(bool _isTurningAround);
 	void setIsPressA(bool _isPressA);
 	void setIsPressKeyUp(bool _isPressKeyUp);
+	void setIsPressKeyS(bool _isPressKeyS);
 
 	
 	// Mode
@@ -250,6 +253,7 @@ public:
 	void handleCoinCollision(Coin* _coin, float _dt);
 	void handlePButtonCollision(PButton* _pButton, float _dt);
 	void handleGreenPipeDownCollision(GreenPipe* _greenPipe, int _targetId, float _leftAnchor, float _rightAnchor, float _dt);
+	void handleMusicBoxCollision(MusicBox* _musicBox, float _dt);
 };
 
 #endif // !MARIO_H

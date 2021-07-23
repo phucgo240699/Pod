@@ -13,15 +13,17 @@ void WorldVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 {
 	for (int i = 0; i < _keyTypes.size(); ++i) {
 		if (_keyTypes[i] == KeyType::key_S) {
-			if (wMario->getCurrentSceneId() == '1') {
-				/*Setting::getInstance()->setIsTransfering(true);
-				Setting::getInstance()->setSceneName(SceneName::SunnyScene);*/
-				this->navigateTo(SceneName::SunnyScene);
-				return;
-			}
-			else if (wMario->getCurrentSceneId() == '3') {
-				this->navigateTo(SceneName::ThirdScene);
-				return;
+			if (ScoreBoard::getInstance()->getMarioLife() > 0) {
+				if (wMario->getCurrentSceneId() == '1') {
+					/*Setting::getInstance()->setIsTransfering(true);
+					Setting::getInstance()->setSceneName(SceneName::SunnyScene);*/
+					this->navigateTo(SceneName::SunnyScene);
+					return;
+				}
+				else if (wMario->getCurrentSceneId() == '3') {
+					this->navigateTo(SceneName::ThirdScene);
+					return;
+				}
 			}
 		}
 	}
