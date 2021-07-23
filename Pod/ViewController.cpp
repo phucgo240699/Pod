@@ -139,6 +139,9 @@ void ViewController::navigateTo(SceneName _sceneName)
 		this->appController->getCloudyVC()->getMario()->load();
 		Camera::getInstance()->setPositionBy(this->appController->getCloudyVC()->getMario());
 		this->appController->getCloudyVC()->getMario()->setState(MarioState::JUMPING);
+
+		this->appController->getCloudyVC()->getMario()->setFirstFireBallState(FireBallState::FIREBALL_STAYING);
+		this->appController->getCloudyVC()->getMario()->setFirstFireBallAnimation(new Animation(AnimationBundle::getInstance()->getFireBall()));
 		break;
 	}
 	default:
