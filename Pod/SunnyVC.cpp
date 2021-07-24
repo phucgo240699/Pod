@@ -997,11 +997,6 @@ void SunnyVC::viewWillRender()
 						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 
-					// Gift Brick
-					else if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
-						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
-					}
-
 					// Fire Flower
 					else if (beginFireFlowerId <= (*itr)->getId() && (*itr)->getId() <= endFireFlowerId) {
 						if ((static_cast<FireFlower*>(*itr)->getState() == FIRE_FLOWER_HIDING
@@ -1038,6 +1033,23 @@ void SunnyVC::viewWillRender()
 					else if (beginPButtonId <= (*itr)->getId() && (*itr)->getId() <= endPButtonId) {
 						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
+				}
+			}
+		}
+
+		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
+			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
+
+				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
+				unordered_set<Component*> ::iterator itr;
+				for (itr = cell.begin(); itr != cell.end(); ++itr) {
+
+					// Gift Brick
+					if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
+					}
+
 				}
 			}
 		}

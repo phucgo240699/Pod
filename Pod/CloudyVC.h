@@ -19,6 +19,10 @@ private:
 	int beginGreenPipeId, endGreenPipeId, componentIdToThirdMap, leftAnchorGreenPipeToPassThrough, rightAnchorGreenPipeToPassThrough;
 	vector<GreenPipe*>* greenPipes;
 
+	int beginSuperMushroomId, endSuperMushroomId;
+	int beginGiftBrickId, endGiftBrickId;
+	vector<GiftBrick*>* giftBricks;
+
 	int beginFireBallId, endFireBallId;
 
 public:

@@ -12,6 +12,7 @@ void CloudyVC::viewDidLoad()
 	grounds = new vector<Ground*>();
 	coins = new unordered_set<Coin*>();
 	greenPipes = new vector<GreenPipe*>();
+	giftBricks = new vector<GiftBrick*>();
 
 	this->mario->load();
 
@@ -70,6 +71,18 @@ void CloudyVC::viewWillUpdate(float _dt)
 
 				// Fire Ball
 				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// GiftBrick
+				else if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// SuperMushroom
+				else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= endSuperMushroomId) {
 					// Prevent update mullti time in one loop
 					(*itr)->setIsUpdatedInOneLoop(false);
 				}
@@ -132,6 +145,47 @@ void CloudyVC::viewUpdate(float _dt)
 					if ((*itr)->isCollidingByFrame(Camera::getInstance()->getFrame()) == false) {
 						Grid::getInstance()->remove(*itr, i, j);
 						static_cast<FireBall*>(*itr)->setIsOutOfGrid(true);
+					}
+				}
+
+				// GiftBrick
+				else if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
+					(*itr)->Update(_dt);
+				}
+
+				// SuperMushroom
+				else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= endSuperMushroomId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
+					if (static_cast<SuperMushroom*>(*itr)->getState() == SUPER_MUSHROOM_DISAPPEARED) {
+						Grid::getInstance()->remove(*itr, i, j);
+						continue;
+					}
+
+					if (this->mario->getState() == DIE
+						|| this->mario->getState() == DIE_JUMPING
+						|| this->mario->getState() == DIE_DROPPING
+						|| this->mario->getState() == SCALING_DOWN
+						|| this->mario->getState() == TRANSFERING_TO_FLY
+						|| this->mario->getState() == DROPPING_DOWN_PIPE
+						|| this->mario->getState() == POPPING_UP_PIPE
+						|| this->mario->getState() == JUMPING_UP_TO_CLOUND
+						|| this->mario->getState() == DROPPING_DOWN_WIN
+						|| this->mario->getState() == MOVING_RIGHT_WIN) {
+						continue;
+					}
+
+					(*itr)->Update(_dt);
+
+					// update which cell in grid that it's belongs to
+					Grid::getInstance()->updateCellOf(*itr);
+
+					if ((*itr)->getY() + (*itr)->getHeight() > Camera::getInstance()->getLimitY()) {
+						Grid::getInstance()->remove(*itr, i, j);
 					}
 				}
 			}
@@ -242,6 +296,56 @@ void CloudyVC::viewDidUpdate(float _dt)
 					this->mario->handleGreenPipeDownCollision(static_cast<GreenPipe*>(*itr), this->componentIdToThirdMap, this->leftAnchorGreenPipeToPassThrough, this->rightAnchorGreenPipeToPassThrough, _dt);
 				}
 
+				// Gift Brick
+				else if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
+					this->mario->handleGiftBrickCollision(static_cast<GiftBrick*>(*itr), _dt);
+				}
+
+				// Super Mushroom
+				else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= endSuperMushroomId) {
+					// Mario vs SuperMushroom
+					if (this->mario->getIsFlashMode() == false) {
+						this->mario->handleSuperMushroomCollision(static_cast<SuperMushroom*>(*itr), _dt);
+						static_cast<SuperMushroom*>(*itr)->handleMarioCollision(this->mario, _dt);
+					}
+
+					// Super Mushroom collide to others
+					int beginRowSuperMushroom = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int endRowSuperMushroom = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int beginColSuperMushroom = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int endColSuperMushroom = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+
+					beginRowSuperMushroom = beginRowSuperMushroom < 0 ? 0 : beginRowSuperMushroom;
+					endRowSuperMushroom = endRowSuperMushroom > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowSuperMushroom;
+					beginColSuperMushroom = beginColSuperMushroom < 0 ? 0 : beginColSuperMushroom;
+					endColSuperMushroom = endColSuperMushroom > Grid::getInstance()->getTotalCols() ? Grid::getInstance()->getTotalCols() : endColSuperMushroom;
+
+					for (int r = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); r < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++r) {
+						for (int c = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); c < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++c) {
+							unordered_set<Component*> superMushroomCell = Grid::getInstance()->getCell(r, c);
+							unordered_set<Component*> ::iterator superMushroomItr;
+							for (superMushroomItr = superMushroomCell.begin(); superMushroomItr != superMushroomCell.end(); ++superMushroomItr) {
+								// Ground, GiftBrick, GreenPipe
+								if ((beginGroundId <= (*superMushroomItr)->getId() && (*superMushroomItr)->getId() <= endGroundId)
+									|| (beginGiftBrickId <= (*superMushroomItr)->getId() && (*superMushroomItr)->getId() <= endGiftBrickId)
+									|| (beginGreenPipeId <= (*superMushroomItr)->getId() && (*superMushroomItr)->getId() <= endGreenPipeId)) {
+									static_cast<SuperMushroom*>(*itr)->handleHardComponentCollision(*superMushroomItr, _dt);
+								}
+							}
+						}
+					}
+
+					if (static_cast<SuperMushroom*>(*itr)->getIsStandOnSurface() == false && static_cast<SuperMushroom*>(*itr)->getState() == SUPER_MUSHROOM_MOVING_LEFT) {
+						static_cast<SuperMushroom*>(*itr)->setState(SuperMushroomState::SUPER_MUSHROOM_DROPPING_LEFT);
+						return;
+					}
+					else if (static_cast<SuperMushroom*>(*itr)->getIsStandOnSurface() == false && static_cast<SuperMushroom*>(*itr)->getState() == SUPER_MUSHROOM_MOVING_RIGHT) {
+						static_cast<SuperMushroom*>(*itr)->setState(SuperMushroomState::SUPER_MUSHROOM_DROPPING_RIGHT);
+						return;
+					}
+				}
+
+
 				// Fire Ball
 				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
 					// FireBall to others
@@ -291,17 +395,36 @@ void CloudyVC::viewWillRender()
 			map->Draw(Drawing::getInstance()->getCloudyMapTexture());
 		}
 
-		unordered_set<Component*> cell;
 		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
 			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
 				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
-				cell = Grid::getInstance()->getCell(i, j);
+				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
 				unordered_set<Component*> ::iterator itr;
 				for (itr = cell.begin(); itr != cell.end(); ++itr) {
 
 					// Coin
 					if (beginCoinId <= (*itr)->getId() && (*itr)->getId() <= endCoinId) {
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
+					}
+
+					// Super Mushroom
+					else if (beginSuperMushroomId <= (*itr)->getId() && (*itr)->getId() <= endSuperMushroomId) {
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
+					}
+				}
+			}
+		}
+
+		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
+			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
+
+				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
+				unordered_set<Component*> ::iterator itr;
+				for (itr = cell.begin(); itr != cell.end(); ++itr) {
+					// Gift Brick
+					if (beginGiftBrickId <= (*itr)->getId() && (*itr)->getId() <= endGiftBrickId) {
 						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 				}
@@ -331,7 +454,7 @@ void CloudyVC::viewWillRender()
 			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
 				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
-				cell = Grid::getInstance()->getCell(i, j);
+				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
 				unordered_set<Component*> ::iterator itr;
 				for (itr = cell.begin(); itr != cell.end(); ++itr) {
 
@@ -387,6 +510,13 @@ void CloudyVC::adaptRangeID(vector<string> data, char seperator)
 			this->rightAnchorGreenPipeToPassThrough = v[4];
 		}
 		else if (i == 3) {
+			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
+			this->beginGiftBrickId = v[0];
+			this->endGiftBrickId = v[1];
+			this->beginSuperMushroomId = v[2];
+			this->endSuperMushroomId = v[3];
+		}
+		else if (i == 4) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginFireBallId = v[0];
 			this->endFireBallId = v[1];
@@ -476,6 +606,18 @@ void CloudyVC::adaptData()
 			}
 			section = SECTION_NONE;
 		}
+		else if (line == "<GiftBrickFrames>") {
+			section = SECTION_GIFT_BRICK_FRAMES;
+			continue;
+		}
+		else if (line == "</GiftBrickFrames>") {
+			for (int i = 0; i < data.size(); ++i) {
+				GiftBrick* giftBrick = new GiftBrick(0, 0, 0, 0, 0, 0);
+				giftBrick->loadInfo(data[i], ',');
+				giftBricks->push_back(giftBrick);
+			}
+			section = SECTION_NONE;
+		}
 
 
 		switch (section)
@@ -507,6 +649,9 @@ void CloudyVC::adaptData()
 		case SECTION_GREEN_PIPE_FRAMES:
 			data.push_back(line);
 			break;
+		case SECTION_GIFT_BRICK_FRAMES:
+			data.push_back(line);
+			break;
 		default:
 			break;
 
@@ -534,6 +679,22 @@ void CloudyVC::adaptAnimation()
 		}
 	}
 
+	// Gift Bricks
+	for (int i = 0; i < this->giftBricks->size(); ++i) {
+		this->giftBricks->at(i)->setState(GiftBrickState::FULLGIFTBRICK);
+		if (this->giftBricks->at(i)->getGiftType() == SuperMushroomOrSuperLeaf) { // Super Mushroom, super leaf
+			this->giftBricks->at(i)->getSuperMushroom()->setUpAnimation();
+			this->giftBricks->at(i)->getSuperLeaf()->setAnimation(new Animation(AnimationBundle::getInstance()->getSuperLeaf()));
+
+			this->giftBricks->at(i)->setSuperMushroomState(SuperMushroomState::SUPER_MUSHROOM_GROWING_UP);
+			this->giftBricks->at(i)->setSuperLeafState(SuperLeafState::SUPER_LEAF_POPPING_UP);
+		}
+		else if (this->giftBricks->at(i)->getGiftType() == SuperMushroomGift) {
+			this->giftBricks->at(i)->getSuperMushroom()->setUpAnimation();
+			this->giftBricks->at(i)->setSuperMushroomState(SuperMushroomState::SUPER_MUSHROOM_GROWING_UP);
+		}
+	}
+
 	this->mario->setAnimation(new Animation(AnimationBundle::getInstance()->getMarioStanding()));
 	this->mario->setState(MarioState::DROPPING);
 	this->mario->setFirstFireBallState(FireBallState::FIREBALL_STAYING);
@@ -556,5 +717,10 @@ void CloudyVC::adaptToGrid()
 	// Green Pipes
 	for (int i = 0; i < this->greenPipes->size(); ++i) {
 		Grid::getInstance()->add(this->greenPipes->at(i));
+	}
+
+	// Gift Bricks
+	for (int i = 0; i < this->giftBricks->size(); ++i) {
+		Grid::getInstance()->add(this->giftBricks->at(i));
 	}
 }

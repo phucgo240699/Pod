@@ -1347,7 +1347,7 @@ void Mario::Draw()
 
 	// Draw debug box
 	if (debugMode == Setting::getInstance()->getDebugMode()) {
-		Drawing::getInstance()->drawDebugBox(this->getBounds(), NULL, this->getPosition(), D3DXVECTOR2(translateX, translateY), false, D3DCOLOR_ARGB(128, 255, 255, 255));
+		Drawing::getInstance()->drawDebugBoxWithoutCamera(this->getBounds(), NULL, this->getPosition(), D3DXVECTOR2(translateX, translateY), false, D3DCOLOR_ARGB(128, 255, 255, 255));
 	}
 }
 
@@ -2486,12 +2486,9 @@ void Mario::handleSuperMushroomCollision(SuperMushroom* _superMushroom, float _d
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_superMushroom, _dt);
 
 	if (get<0>(collisionResult) == true) {
-		int xPoint = _superMushroom->getX();
-		int yPoint = _superMushroom->getY();
-
-		//AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_superMushroom->getDefaultPoints(), xPoint, yPoint)));
 		if (_superMushroom->getIsGreenMode()) {
 			ScoreBoard::getInstance()->plusMarioLife(1);
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(Animation(AnimationBundle::getInstance()->getOneUp()), _superMushroom->getX(), _superMushroom->getY())));
 		}
 		else {
 			ScoreBoard::getInstance()->plusPoint(1000);
@@ -2507,12 +2504,9 @@ void Mario::handleSuperMushroomCollision(SuperMushroom* _superMushroom, float _d
 		_superMushroom->setState(SuperMushroomState::SUPER_MUSHROOM_BEING_EARNED);
 	}
 	else if (this->isCollidingByBounds(_superMushroom->getBounds())) {
-		int xPoint = _superMushroom->getX();
-		int yPoint = _superMushroom->getY();
-
-		//AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_superMushroom->getDefaultPoints(), xPoint, yPoint)));
 		if (_superMushroom->getIsGreenMode()) {
 			ScoreBoard::getInstance()->plusMarioLife(1);
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(Animation(AnimationBundle::getInstance()->getOneUp()), _superMushroom->getX(), _superMushroom->getY())));
 		}
 		else {
 			ScoreBoard::getInstance()->plusPoint(1000);

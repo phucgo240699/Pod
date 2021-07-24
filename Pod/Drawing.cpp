@@ -190,7 +190,29 @@ void Drawing::drawWithoutCamera(LPDIRECT3DTEXTURE9 texture, D3DXVECTOR3 _positio
 	spriteHandler->Draw(texture, NULL, NULL, &_position, _color);
 }
 
-void Drawing::drawDebugBox(RECT _srcRect, D3DXVECTOR3* _center, D3DXVECTOR3 _position, D3DCOLOR _color)
+void Drawing::draw(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXVECTOR3 _position, D3DXVECTOR2 _translate, D3DCOLOR _color)
+{
+	D3DXMATRIX matrix;
+	D3DXMATRIX oldMatrix;
+
+	_position.x -= Camera::getInstance()->getX();
+	_position.y -= Camera::getInstance()->getY();
+
+	float width = _srcRect.right - _srcRect.left;
+	float height = _srcRect.bottom - _srcRect.top;
+	D3DXVECTOR2 scalePoint = D3DXVECTOR2(round(_position.x + width / 2), round(_position.y + height / 2));
+	D3DXMatrixTransformation2D(&matrix, &scalePoint, 0, &scaleReverse, NULL, 0, &_translate);
+
+	_position.x = round(_position.x);
+	_position.y = round(_position.y);
+
+	spriteHandler->GetTransform(&oldMatrix);
+	spriteHandler->SetTransform(&matrix);
+	spriteHandler->Draw(texture, &_srcRect, NULL, &_position, _color);
+	spriteHandler->SetTransform(&oldMatrix);
+}
+
+void Drawing::drawDebugBoxWithoutCamera(RECT _srcRect, D3DXVECTOR3* _center, D3DXVECTOR3 _position, D3DCOLOR _color)
 {
 	_position.x = round(_position.x);
 	_position.y = round(_position.y);
@@ -233,7 +255,7 @@ void Drawing::draw(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXVECTOR3 _posit
 	}
 }
 
-void Drawing::drawDebugBox(RECT _srcRect, D3DXVECTOR3* _center, D3DXVECTOR3 _position, D3DXVECTOR2 _translation, bool _isFlip, D3DCOLOR _color)
+void Drawing::drawDebugBoxWithoutCamera(RECT _srcRect, D3DXVECTOR3* _center, D3DXVECTOR3 _position, D3DXVECTOR2 _translation, bool _isFlip, D3DCOLOR _color)
 {
 	D3DXVECTOR2 scalePoint;
 	D3DXMATRIX matrix;
@@ -257,3 +279,11 @@ void Drawing::drawDebugBox(RECT _srcRect, D3DXVECTOR3* _center, D3DXVECTOR3 _pos
 	spriteHandler->Draw(this->debugTexture, &_srcRect, _center, &_position, _color);
 	spriteHandler->SetTransform(&oldMatrix);
 }
+
+void Drawing::drawDebugBox(RECT _srcRect, D3DXVECTOR3* _center, D3DXVECTOR3 _position, D3DCOLOR _color)
+{
+	_position.x = round(_position.x - Camera::getInstance()->getX());
+	_position.y = round(_position.y - Camera::getInstance()->getY());
+	spriteHandler->Draw(this->debugTexture, &_srcRect, _center, &_position, _color);
+}
+

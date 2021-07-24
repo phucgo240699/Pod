@@ -9,6 +9,9 @@
 # componentIdToThirdMap, leftAnchorGreenPipeThirdMap, rightAnchorGreenPipeToThirdMap,
 201,300,201,855,873
 
+# 3. beginGiftBrickId, endGiftBrickId, beginSuperMushroomId, endSuperMushroomId
+301,350,351,400
+
 # 3. beginFireBallId, endFireBallId
 1001,1050
 </ViewController>
@@ -58,8 +61,92 @@
 0,408,1024,24,0
 </Grounds>
 
+<CoinFrames>
+176,352,101
+192,336,102
+208,352,103
+224,336,104
+240,352,105
+256,336,106
+272,352,107
+
+320,336,108
+336,352,109
+352,336,110
+368,352,111
+384,336,112
+400,352,113
+416,336,114
+
+448,352,115
+464,336,116
+480,352,117
+496,336,118
+512,352,119
+528,336,120
+544,352,121
+
+576,336,122
+592,352,123
+608,336,124
+624,352,125
+640,336,126
+656,352,127
+672,336,128
+
+704,352,129
+720,336,130
+736,352,131
+752,336,132
+768,352,133
+784,336,134
+800,352,135
+
+576,160,136
+592,160,137
+592,144,138
+608,144,139
+608,128,140
+624,128,141
+640,128,142
+640,144,143
+656,144,144
+656,160,145
+672,160,146
+672,176,147
+656,192,148
+672,192,149
+640,208,150
+656,208,151
+640,224,152
+624,224,153
+608,224,154
+608,208,155
+592,208,156
+592,192,157
+576,192,158
+576,176,159
+</CoinFrames>
+
 <GreenPipeFrames>
 # (x, y, width, height, floorQuantity, id, isBlackMode, isDownMode)
 # floorQuantity: 3 or 2
 848,367,32,48,3,201,0,0
 </GreenPipeFrames>
+
+<GiftBrickFrames>
+# (x, y, width, height, id, isFakeGoldenBrick, giftCode,
+# giftCode:
+# 0: SuperMushroom and SuperLeaf
+# superMushroomWidth, superMushroomHeight, superMushroomVx, superMushroomVy, superMushroomId,
+# superLeafWidth, superLeafHeight, superLeafVx, superLeafVy, superLeafId,
+# superMushroomDefaultPoints, superLeafDefaultPoints)
+
+# 1: 100 points
+
+# 2: SuperMushroom Green
+# width, height, vx, vy, id, isGreenMode
+
+# 3: Multi Coin
+624,176,16,16,301,1,2,16,16,1,1,351,1
+</GiftBrickFrames>
