@@ -2845,3 +2845,65 @@ void Mario::handleMusicBoxCollision(MusicBox* _musicBox, float _dt)
 		//}
 	}
 }
+
+void Mario::handleBoomerangBroCollision(BoomerangBro* _boomerangBro, float _dt)
+{
+	if (this->getState() == DIE
+		|| this->getState() == DIE_JUMPING
+		|| this->getState() == DIE_DROPPING
+		|| this->getState() == SCALING_UP
+		|| this->getState() == SCALING_DOWN
+		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getState() == DROPPING_DOWN_PIPE
+		|| this->getState() == POPPING_UP_PIPE
+		|| this->getState() == JUMPING_UP_TO_CLOUND
+		|| this->getState() == DROPPING_DOWN_WIN
+		|| this->getState() == MOVING_RIGHT_WIN
+		|| this->getIsFlashMode()) {
+		return;
+	}
+
+	if (this->getState() == BOOMERANG_BRO_BEING_DEAD) return;
+
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_boomerangBro, _dt);
+
+	if (get<0>(collisionResult) == true) {
+		CollisionEdge edge = get<2>(collisionResult)[0];
+
+		if (edge == bottomEdge) {
+			this->setState(MarioState::JUMPING);
+			_boomerangBro->setState(BoomerangBroState::BOOMERANG_BRO_BEING_DEAD);
+			ScoreBoard::getInstance()->plusPoint(1000);
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(Animation(AnimationBundle::getInstance()->get1000Points()), _boomerangBro->getX(), _boomerangBro->getY())));
+		}
+		else {
+			this->setState(MarioState::DIE);
+		}
+	}
+}
+
+void Mario::handleBoomerangCollision(Boomerang* _boomerang, float _dt)
+{
+	if (this->getState() == DIE
+		|| this->getState() == DIE_JUMPING
+		|| this->getState() == DIE_DROPPING
+		|| this->getState() == SCALING_UP
+		|| this->getState() == SCALING_DOWN
+		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getState() == DROPPING_DOWN_PIPE
+		|| this->getState() == POPPING_UP_PIPE
+		|| this->getState() == JUMPING_UP_TO_CLOUND
+		|| this->getState() == DROPPING_DOWN_WIN
+		|| this->getState() == MOVING_RIGHT_WIN
+		|| this->getIsFlashMode()) {
+		return;
+	}
+
+	if (_boomerang->getState() == BOOMERANG_STAYING) return;
+
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_boomerang, _dt);
+
+	if (get<0>(collisionResult) == true) {
+		this->setState(MarioState::DIE);
+	}
+}

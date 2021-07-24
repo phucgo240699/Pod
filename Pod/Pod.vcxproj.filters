@@ -262,6 +262,18 @@
     <Filter Include="Source Files\ViewController\CloudyVC">
       <UniqueIdentifier>{bda765af-d534-4fe9-9ac4-e389adc07650}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Components\Enemies\BoomerangBro">
+      <UniqueIdentifier>{1b8f6589-9e70-4d82-be0e-5a320ee022e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Enemies\BoomerangBro">
+      <UniqueIdentifier>{1f016ee4-d090-4484-9a98-030d4882953d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Map\Boomerang">
+      <UniqueIdentifier>{62a725d0-8835-4597-9942-4422f31ed03f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Map\Boomerang">
+      <UniqueIdentifier>{f35ef06c-fdb3-4c10-acff-62ab71242417}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -410,6 +422,12 @@
     </ClCompile>
     <ClCompile Include="CloudyVC.cpp">
       <Filter>Source Files\ViewController\CloudyVC</Filter>
+    </ClCompile>
+    <ClCompile Include="BoomerangBro.cpp">
+      <Filter>Source Files\Components\Enemies\BoomerangBro</Filter>
+    </ClCompile>
+    <ClCompile Include="Boomerang.cpp">
+      <Filter>Source Files\Components\Map\Boomerang</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -619,6 +637,18 @@
     </ClInclude>
     <ClInclude Include="CloudyVC.h">
       <Filter>Header Files\ViewController\CloudyVC</Filter>
+    </ClInclude>
+    <ClInclude Include="BoomerangBroState.h">
+      <Filter>Header Files\System\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="BoomerangState.h">
+      <Filter>Header Files\System\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="BoomerangBro.h">
+      <Filter>Header Files\Components\Enemies\BoomerangBro</Filter>
+    </ClInclude>
+    <ClInclude Include="Boomerang.h">
+      <Filter>Header Files\Components\Map\Boomerang</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

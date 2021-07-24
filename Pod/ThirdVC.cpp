@@ -32,7 +32,7 @@ void ThirdVC::viewDidLoad()
 	goombas = new unordered_set<Goomba*>();
 	koopas = new unordered_set<Koopa*>();
 	musicBoxes = new vector<MusicBox*>();
-
+	boomerangBros = new unordered_set<BoomerangBro*>();
 
 
 	this->mario->load();
@@ -134,6 +134,18 @@ void ThirdVC::viewWillUpdate(float _dt)
 
 				// Music Box
 				else if (beginMusicBoxId <= (*itr)->getId() && (*itr)->getId() <= endMusicBoxId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// Boomerang Bro
+				else if (beginBoomerangBroId <= (*itr)->getId() && (*itr)->getId() <= endBoomerangBroId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// Boomerang
+				else if (beginBoomerangId <= (*itr)->getId() && (*itr)->getId() <= endBoomerangId) {
 					// Prevent update mullti time in one loop
 					(*itr)->setIsUpdatedInOneLoop(false);
 				}
@@ -333,6 +345,46 @@ void ThirdVC::viewUpdate(float _dt)
 					if ((*itr)->getIsUpdatedInOneLoop()) continue;
 
 					(*itr)->Update(_dt);
+				}
+
+				// Boomerang Bro
+				else if (beginBoomerangBroId <= (*itr)->getId() && (*itr)->getId() <= endBoomerangBroId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
+					if (static_cast<BoomerangBro*>(*itr)->getState() != BOOMERANG_BRO_BEING_DEAD) {
+						static_cast<BoomerangBro*>(*itr)->setIsFlip(this->mario->getX() + this->mario->getBoundsWidth() < (*itr)->getX());
+						static_cast<BoomerangBro*>(*itr)->setMarioX(this->mario->getX());
+					}
+
+					(*itr)->Update(_dt);
+
+					// update which cell in grid that it's belongs to
+					Grid::getInstance()->updateCellOf(*itr);
+
+					if ((*itr)->getY() + (*itr)->getHeight() > Camera::getInstance()->getLimitY()) {
+						Grid::getInstance()->remove(*itr, i, j);
+					}
+				}
+
+				// Boomerang
+				else if (beginBoomerangId <= (*itr)->getId() && (*itr)->getId() <= endBoomerangId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
+					if (static_cast<Boomerang*>(*itr)->getState() == BOOMERANG_STAYING) {
+						Grid::getInstance()->remove(*itr, i, j);
+					}
+
+					(*itr)->Update(_dt);
+
+					// update which cell in grid that it's belongs to
+					Grid::getInstance()->updateCellOf(*itr);
+
+					if ((*itr)->isCollidingByFrame(Camera::getInstance()->getFrame()) == false) {
+						static_cast<Boomerang*>(*itr)->setState(BoomerangState::BOOMERANG_STAYING);
+						Grid::getInstance()->remove(*itr, i, j);
+					}
 				}
 
 				// Fire Ball
@@ -669,6 +721,67 @@ void ThirdVC::viewDidUpdate(float _dt)
 					this->mario->handleMusicBoxCollision(static_cast<MusicBox*>(*itr), _dt);
 				}
 
+
+				// Boomerang Bro
+				else if (beginBoomerangBroId <= (*itr)->getId() && (*itr)->getId() <= endBoomerangBroId) {
+					this->mario->handleBoomerangBroCollision(static_cast<BoomerangBro*>(*itr), _dt);
+					static_cast<BoomerangBro*>(*itr)->handleMarioCollision(this->mario, _dt);
+
+					// Boomerang Bro to others
+					int beginRowBoomerangBro = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int endRowBoomerangBro = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int beginColBoomerangBro = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int endColBoomerangBro = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+
+					beginRowBoomerangBro = beginRowBoomerangBro < 0 ? 0 : beginRowBoomerangBro;
+					endRowBoomerangBro = endRowBoomerangBro > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowBoomerangBro;
+					beginColBoomerangBro = beginColBoomerangBro < 0 ? 0 : beginColBoomerangBro;
+					endColBoomerangBro = endColBoomerangBro > Grid::getInstance()->getTotalCols() ? Grid::getInstance()->getTotalCols() : endColBoomerangBro;
+
+					for (int r = beginRowBoomerangBro; r < endRowBoomerangBro; ++r) {
+						for (int c = beginColBoomerangBro; c < endColBoomerangBro; ++c) {
+							unordered_set<Component*> boomerangBroCell = Grid::getInstance()->getCell(r, c);
+							unordered_set<Component*> ::iterator boomerangBroItr;
+
+							for (boomerangBroItr = boomerangBroCell.begin(); boomerangBroItr != boomerangBroCell.end(); ++boomerangBroItr) {
+								if (beginGroundId <= (*boomerangBroItr)->getId() && (*boomerangBroItr)->getId() <= endGroundId) {
+									static_cast<BoomerangBro*>(*itr)->hanldeHardComponentCollision(*boomerangBroItr, _dt);
+								}
+							}
+						}
+					}					
+				}
+
+				// Boomerang
+				else if (beginBoomerangId <= (*itr)->getId() && (*itr)->getId() <= endBoomerangId) {
+					this->mario->handleBoomerangCollision(static_cast<Boomerang*>(*itr), _dt);
+					static_cast<Boomerang*>(*itr)->handleMarioCollision(this->mario, _dt);
+
+					// Boomerang to others
+					int beginRowBoomerang = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int endRowBoomerang = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int beginColBoomerang = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int endColBoomerang = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+
+					beginRowBoomerang = beginRowBoomerang < 0 ? 0 : beginRowBoomerang;
+					endRowBoomerang = endRowBoomerang > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowBoomerang;
+					beginColBoomerang = beginColBoomerang < 0 ? 0 : beginColBoomerang;
+					endColBoomerang = endColBoomerang > Grid::getInstance()->getTotalCols() ? Grid::getInstance()->getTotalCols() : endColBoomerang;
+
+					for (int r = beginRowBoomerang; r < endRowBoomerang; ++r) {
+						for (int c = beginColBoomerang; c < endColBoomerang; ++c) {
+							unordered_set<Component*> boomerangCell = Grid::getInstance()->getCell(r, c);
+							unordered_set<Component*> ::iterator boomerangItr;
+
+							for (boomerangItr = boomerangCell.begin(); boomerangItr != boomerangCell.end(); ++boomerangItr) {
+								if (beginBoomerangBroId <= (*boomerangItr)->getId() && (*boomerangItr)->getId() <= endBoomerangBroId) {
+									static_cast<Boomerang*>(*itr)->hanldeBoomerangBroCollision(static_cast<BoomerangBro*>(*boomerangItr), _dt);
+								}
+							}
+						}
+					}
+				}
+
 				// Fire Ball
 				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
 					// FireBall to others
@@ -780,32 +893,38 @@ void ThirdVC::viewWillRender()
 					else if (beginMusicBoxId <= (*itr)->getId() && (*itr)->getId() <= endMusicBoxId) {
 						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
-				}
-			}
-		}
 
-		
-		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
-			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
-				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
-
-				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
-				if (cell.size() <= 0) continue;
-
-				unordered_set<Component*> ::iterator itr;
-				for (itr = cell.begin(); itr != cell.end(); ++itr) {
-
-					// Fire Ball
-					if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
+					// Boomerang Bro
+					else if (beginBoomerangBroId <= (*itr)->getId() && (*itr)->getId() <= endBoomerangBroId) {
 						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 				}
 			}
 		}
 
-
 		if (mario != NULL) {
 			mario->Draw();
+		}
+		
+		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
+			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
+
+				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
+				unordered_set<Component*> ::iterator itr;
+				for (itr = cell.begin(); itr != cell.end(); ++itr) {
+
+
+					// Boomerang
+					if (beginBoomerangId <= (*itr)->getId() && (*itr)->getId() <= endBoomerangId) {
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
+					}
+					// Fire Ball
+					else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
+					}
+				}
+			}
 		}
 
 		AnimationCDPlayer::getInstance()->Draw(Drawing::getInstance()->getSunnyMapTexture());
@@ -882,6 +1001,8 @@ void ThirdVC::adaptRangeID(vector<string> data, char seperator)
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginBoomerangBroId = v[0];
 			this->endBoomerangBroId = v[1];
+			this->beginBoomerangId = v[2];
+			this->endBoomerangId = v[3];
 		}
 		else if (i == 9) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
@@ -1044,6 +1165,18 @@ void ThirdVC::adaptData()
 			}
 			section = SECTION_NONE;
 		}
+		else if (line == "<BoomerangBroFrames>") {
+			section = SECTION_BOOMERANG_BRO_FRAMES;
+			continue;
+		}
+		else if (line == "</BoomerangBroFrames>") {
+			for (int i = 0; i < data.size(); ++i) {
+				BoomerangBro* boomerangBro = new BoomerangBro(0, 0, 0, 0, 0, 0, 0);
+				boomerangBro->loadInfo(data[i], ',');
+				boomerangBros->insert(boomerangBro);
+			}
+			section = SECTION_NONE;
+		}
 
 		switch (section)
 		{
@@ -1087,6 +1220,9 @@ void ThirdVC::adaptData()
 			data.push_back(line);
 			break;
 		case SECTION_MUSIC_BOX_FRAMES:
+			data.push_back(line);
+			break;
+		case SECTION_BOOMERANG_BRO_FRAMES:
 			data.push_back(line);
 			break;
 		default:
@@ -1167,6 +1303,7 @@ void ThirdVC::adaptAnimation()
 		}
 	}
 
+	// Music Box
 	for (int i = 0; i < this->musicBoxes->size(); ++i) {
 		if (this->musicBoxes->at(i)->getIsSpecial()) {
 			this->musicBoxes->at(i)->setAnimation(new Animation(AnimationBundle::getInstance()->getMusicBoxRed()));
@@ -1174,6 +1311,19 @@ void ThirdVC::adaptAnimation()
 		else {
 			this->musicBoxes->at(i)->setAnimation(new Animation(AnimationBundle::getInstance()->getMusicBox()));
 		}
+	}
+
+	// Boomerang Bro
+	unordered_set<BoomerangBro*> ::iterator boomerangBroItr;
+	for (boomerangBroItr = this->boomerangBros->begin(); boomerangBroItr != this->boomerangBros->end(); ++boomerangBroItr) {
+		if ((*boomerangBroItr)->getVx() < 0) {
+			(*boomerangBroItr)->setState(BoomerangBroState::BOOMERANG_BRO_MOVING_LEFT);
+		}
+		else {
+			(*boomerangBroItr)->setState(BoomerangBroState::BOOMERANG_BRO_MOVING_RIGHT);
+		}
+		(*boomerangBroItr)->getFirstBoomerang()->setAnimation(new Animation(AnimationBundle::getInstance()->getBoomerang()));
+		(*boomerangBroItr)->getSecondBoomerang()->setAnimation(new Animation(AnimationBundle::getInstance()->getBoomerang()));
 	}
 
 	this->mario->setAnimation(new Animation(AnimationBundle::getInstance()->getMarioStanding()));
@@ -1228,7 +1378,14 @@ void ThirdVC::adaptToGrid()
 		Grid::getInstance()->add(*koopaItr);
 	}
 
+	// Music Box
 	for (int i = 0; i < this->musicBoxes->size(); ++i) {
 		Grid::getInstance()->add(this->musicBoxes->at(i));
+	}
+
+	// Boomerang Bro
+	unordered_set<BoomerangBro*> ::iterator boomerangBroItr;
+	for (boomerangBroItr = this->boomerangBros->begin(); boomerangBroItr != this->boomerangBros->end(); ++boomerangBroItr) {
+		Grid::getInstance()->add(*boomerangBroItr);
 	}
 }

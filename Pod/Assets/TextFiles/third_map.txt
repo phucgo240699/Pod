@@ -26,8 +26,8 @@
 # 7. beginMusicBoxId, endMusicBoxId
 701,800
 
-# 8. beginBoomerangBroId, endBoomerangBroId
-801,900 
+# 8. beginBoomerangBroId, endBoomerangBroId, beginBoomerangId, endBoomerangId
+801,850,851,900
 
 # 9. beginBossId, endBossId
 901,1000
@@ -216,4 +216,11 @@
 509,336,0,702
 541,368,1,703
 </MusicBoxFrames>
+
+<BoomerangBroFrames>
+# (x, y, vx, vy, id, leftAnchor, rightAnchor,
+# firstBoomerangVx, firstBoomerangVy, firstBoomerangId
+# secondBoomerangVx, secondBoomerangVy, secondBoomerangId
+336,400,0.5,1,801,320,368,2,1,851,2,1,852
+</BoomerangBroFrames>
 

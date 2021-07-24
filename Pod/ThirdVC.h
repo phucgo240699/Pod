@@ -5,6 +5,7 @@
 #include "AnimationBundle.h"
 #include "AnimationCDPlayer.h"
 #include "MusicBox.h"
+#include "BoomerangBro.h"
 
 class ThirdVC : public ViewController
 {
@@ -43,10 +44,14 @@ private:
 	int beginKoopaId, endKoopaId;
 	unordered_set<Koopa*>* koopas;
 
+	// Music box
 	int beginMusicBoxId, endMusicBoxId;
 	vector<MusicBox*>* musicBoxes;
 
+	// Bomerang Bro
 	int beginBoomerangBroId, endBoomerangBroId;
+	int beginBoomerangId, endBoomerangId;
+	unordered_set<BoomerangBro*>* boomerangBros;
 
 	int beginBossId, endBossId;
 

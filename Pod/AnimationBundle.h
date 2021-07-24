@@ -165,4 +165,9 @@ public:
 
 	Animation getMusicBox();
 	Animation getMusicBoxRed();
+
+	Animation getBoomerangMoving();
+	Animation getBoomerangMovingHolding();
+	Animation getBoomerangDead();
+	Animation getBoomerang();
 };

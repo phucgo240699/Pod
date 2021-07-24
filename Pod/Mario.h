@@ -21,6 +21,7 @@
 #include "Coin.h"
 #include "PButton.h"
 #include "MusicBox.h"
+#include "BoomerangBro.h"
 #include <unordered_map>
 
 using namespace std;
@@ -254,6 +255,8 @@ public:
 	void handlePButtonCollision(PButton* _pButton, float _dt);
 	void handleGreenPipeDownCollision(GreenPipe* _greenPipe, int _targetId, float _leftAnchor, float _rightAnchor, float _dt);
 	void handleMusicBoxCollision(MusicBox* _musicBox, float _dt);
+	void handleBoomerangBroCollision(BoomerangBro* _boomerangBro, float _dt);
+	void handleBoomerangCollision(Boomerang* _boomerang, float _dt);
 };
 
 #endif // !MARIO_H

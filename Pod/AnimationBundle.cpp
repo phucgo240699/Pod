@@ -609,6 +609,26 @@ Animation AnimationBundle::getMusicBoxRed()
 	return this->animations->at(113);
 }
 
+Animation AnimationBundle::getBoomerangMoving()
+{
+	return this->animations->at(114);
+}
+
+Animation AnimationBundle::getBoomerangMovingHolding()
+{
+	return this->animations->at(115);
+}
+
+Animation AnimationBundle::getBoomerangDead()
+{
+	return this->animations->at(116);
+}
+
+Animation AnimationBundle::getBoomerang()
+{
+	return this->animations->at(117);
+}
+
 Animation AnimationBundle::getSuperMarioFlyingWalking()
 {
 	return this->animations->at(49);
