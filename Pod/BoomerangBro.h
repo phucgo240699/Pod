@@ -42,6 +42,7 @@ public:
 	float getBoundsWidth();
 	Boomerang* getFirstBoomerang();
 	Boomerang* getSecondBoomerang();
+	RECT getFrame();
 
 
 	// Setter

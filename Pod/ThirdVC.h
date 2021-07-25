@@ -6,6 +6,7 @@
 #include "AnimationCDPlayer.h"
 #include "MusicBox.h"
 #include "BoomerangBro.h"
+#include "Boss.h"
 
 class ThirdVC : public ViewController
 {
@@ -54,6 +55,7 @@ private:
 	unordered_set<BoomerangBro*>* boomerangBros;
 
 	int beginBossId, endBossId;
+	unordered_set<Boss*>* bosses;
 
 	int beginFireBallId, endFireBallId;
 

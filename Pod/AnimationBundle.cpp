@@ -629,6 +629,16 @@ Animation AnimationBundle::getBoomerang()
 	return this->animations->at(117);
 }
 
+Animation AnimationBundle::getBossFlying()
+{
+	return this->animations->at(118);
+}
+
+Animation AnimationBundle::getBomb()
+{
+	return this->animations->at(119);
+}
+
 Animation AnimationBundle::getSuperMarioFlyingWalking()
 {
 	return this->animations->at(49);

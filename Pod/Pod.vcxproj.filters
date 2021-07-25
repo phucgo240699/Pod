@@ -196,9 +196,6 @@
     <Filter Include="Source Files\Components\Map\SuperLeaf">
       <UniqueIdentifier>{e422f749-c16e-4580-8d9d-6e13a8401bdc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Components\Map\FireFlowerBall">
-      <UniqueIdentifier>{e2616ce0-16d3-41be-93db-df9467cc0a60}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Components\Map\FireFlowerBall">
       <UniqueIdentifier>{7d876df3-9ea3-4756-9c4b-83def9ab6ce7}</UniqueIdentifier>
     </Filter>
@@ -273,6 +270,15 @@
     </Filter>
     <Filter Include="Source Files\Components\Map\Boomerang">
       <UniqueIdentifier>{f35ef06c-fdb3-4c10-acff-62ab71242417}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Enemies\Boss">
+      <UniqueIdentifier>{7e759287-e344-49ba-9a28-3cca31f2a477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Map\FireFlowerBall">
+      <UniqueIdentifier>{e2616ce0-16d3-41be-93db-df9467cc0a60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Enemies\Boss">
+      <UniqueIdentifier>{4c8c7b3c-c4a6-42e0-8929-fc2a26dcc9f4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -428,6 +434,9 @@
     </ClCompile>
     <ClCompile Include="Boomerang.cpp">
       <Filter>Source Files\Components\Map\Boomerang</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>Source Files\Components\Enemies\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -649,6 +658,12 @@
     </ClInclude>
     <ClInclude Include="Boomerang.h">
       <Filter>Header Files\Components\Map\Boomerang</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>Header Files\Components\Enemies\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="BossState.h">
+      <Filter>Header Files\System\Enums</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

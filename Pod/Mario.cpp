@@ -2710,7 +2710,7 @@ void Mario::handlePButtonCollision(PButton* _pButton, float _dt)
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_pButton, _dt);
 
-	if (get<0>(collisionResult) == true && get<2>(collisionResult)[0] == bottomEdge) {
+	if (get<0>(collisionResult) == true && this->isCollidingByBounds(_pButton->getBounds())) {
 		_pButton->setState(PButtonState::PBUTTON_OFF);
 	}
 }
@@ -2811,7 +2811,7 @@ void Mario::handleMusicBoxCollision(MusicBox* _musicBox, float _dt)
 				else {
 					this->setState(MarioState::JUMPING);
 				}
-				this->setY(_musicBox->getY() - this->getBoundsHeight() - Setting::getInstance()->getCollisionSafeSpace());
+				//this->setY(_musicBox->getY() - this->getBoundsHeight() - Setting::getInstance()->getCollisionSafeSpace());
 				_musicBox->setState(MusicBoxState::MUSIC_BOX_JUMPING_DOWN);
 			}
 			else if (edge == leftEdge && this->getY() + this->getBoundsHeight() != _musicBox->getY()) {
@@ -2849,7 +2849,40 @@ void Mario::handleBoomerangBroCollision(BoomerangBro* _boomerangBro, float _dt)
 		return;
 	}
 
-	if (this->getState() == BOOMERANG_BRO_BEING_DEAD) return;
+	if (_boomerangBro->getState() == BOOMERANG_BRO_BEING_DEAD) return;
+
+
+	// When mario turning around
+	if (this->getIsTurningAround()) {
+		if (get<0>(this->sweptAABBByFrame(_boomerangBro, _dt)) || this->isCollidingByFrame(_boomerangBro->getFrame())) {
+			if (this->getIsFlip()) { // <--
+				if (_boomerangBro->getX() <= this->getX()
+					&& _boomerangBro->getX() + _boomerangBro->getWidth() >= this->getX() - this->getLeftSpace()
+					&& this->getBounds().top + this->getTailMarginTop() >= _boomerangBro->getY()
+					&& this->getBounds().bottom - this->getTailMarginBottom() <= _boomerangBro->getY() + _boomerangBro->getHeight()) {
+					_boomerangBro->setState(BoomerangBroState::BOOMERANG_BRO_BEING_DEAD);
+
+					ScoreBoard::getInstance()->plusPoint(100);
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(100, _boomerangBro->getX(), _boomerangBro->getY())));
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFlashLight()), _boomerangBro->getX(), _boomerangBro->getY())));
+					return;
+				}
+			}
+			else { // -->
+				if (_boomerangBro->getX() >= this->getX()
+					&& _boomerangBro->getX() <= this->getX() + this->getBoundsWidth() + this->getLeftSpace()
+					&& this->getBounds().top + this->getTailMarginTop() >= _boomerangBro->getY()
+					&& this->getBounds().bottom - this->getTailMarginBottom() <= _boomerangBro->getY() + _boomerangBro->getHeight()) {
+					_boomerangBro->setState(BoomerangBroState::BOOMERANG_BRO_BEING_DEAD);
+
+					ScoreBoard::getInstance()->plusPoint(100);
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(100, _boomerangBro->getX(), _boomerangBro->getY())));
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFlashLight()), _boomerangBro->getX(), _boomerangBro->getY())));
+					return;
+				}
+			}
+		}
+	}
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_boomerangBro, _dt);
 

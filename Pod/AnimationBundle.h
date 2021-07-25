@@ -170,4 +170,7 @@ public:
 	Animation getBoomerangMovingHolding();
 	Animation getBoomerangDead();
 	Animation getBoomerang();
+
+	Animation getBossFlying();
+	Animation getBomb();
 };

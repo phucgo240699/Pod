@@ -33,6 +33,7 @@ void ThirdVC::viewDidLoad()
 	koopas = new unordered_set<Koopa*>();
 	musicBoxes = new vector<MusicBox*>();
 	boomerangBros = new unordered_set<BoomerangBro*>();
+	bosses = new unordered_set<Boss*>();
 
 
 	this->mario->load();
@@ -146,6 +147,12 @@ void ThirdVC::viewWillUpdate(float _dt)
 
 				// Boomerang
 				else if (beginBoomerangId <= (*itr)->getId() && (*itr)->getId() <= endBoomerangId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// Boss
+				else if (beginBossId <= (*itr)->getId() && (*itr)->getId() <= endBossId) {
 					// Prevent update mullti time in one loop
 					(*itr)->setIsUpdatedInOneLoop(false);
 				}
@@ -383,6 +390,28 @@ void ThirdVC::viewUpdate(float _dt)
 
 					if ((*itr)->isCollidingByFrame(Camera::getInstance()->getFrame()) == false) {
 						static_cast<Boomerang*>(*itr)->setState(BoomerangState::BOOMERANG_STAYING);
+						Grid::getInstance()->remove(*itr, i, j);
+					}
+				}
+
+				// Boss
+				else if (beginBossId <= (*itr)->getId() && (*itr)->getId() <= endBossId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
+					if (static_cast<Boss*>(*itr)->getState() == BOSS_DEAD) {
+						Grid::getInstance()->remove(*itr, i, j);
+						this->bosses->erase(static_cast<Boss*>(*itr));
+						continue;
+					}
+
+					static_cast<Boss*>(*itr)->setMarioX(this->mario->getX());
+					(*itr)->Update(_dt);
+
+					// update which cell in grid that it's belongs to
+					Grid::getInstance()->updateCellOf(*itr);
+
+					if ((*itr)->getY() + (*itr)->getHeight() > Camera::getInstance()->getLimitY()) {
 						Grid::getInstance()->remove(*itr, i, j);
 					}
 				}
@@ -785,6 +814,41 @@ void ThirdVC::viewDidUpdate(float _dt)
 					}
 				}
 
+				// Boss
+				else if (beginBossId <= (*itr)->getId() && (*itr)->getId() <= endBossId) {
+					// Boss to others
+					int beginRowBoss = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int endRowBoss = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
+					int beginColBoss = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int endColBoss = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+
+					beginRowBoss = beginRowBoss < 0 ? 0 : beginRowBoss;
+					endRowBoss = endRowBoss > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowBoss;
+					beginColBoss = beginColBoss < 0 ? 0 : beginColBoss;
+					endColBoss = endColBoss > Grid::getInstance()->getTotalCols() ? Grid::getInstance()->getTotalCols() : endColBoss;
+
+					for (int r = beginRowBoss; r < endRowBoss; ++r) {
+						for (int c = beginColBoss; c < endColBoss; ++c) {
+							unordered_set<Component*> bossCell = Grid::getInstance()->getCell(r, c);
+							unordered_set<Component*> ::iterator bossItr;
+
+							for (bossItr = bossCell.begin(); bossItr != bossCell.end(); ++bossItr) {
+								if (beginGroundId <= (*bossItr)->getId() && (*bossItr)->getId() <= endGroundId
+									|| beginBlockId <= (*bossItr)->getId() && (*bossItr)->getId() <= endBlockId) {
+									static_cast<Boss*>(*itr)->handleHardComponentCollision(*bossItr, _dt);
+								}
+							}
+						}
+					}
+
+					if (static_cast<Boss*>(*itr)->getIsStandOnSurface() == false && static_cast<Boss*>(*itr)->getState() == BOSS_MOVING_LEFT) {
+						static_cast<Boss*>(*itr)->setState(BOSS_DROPPING_LEFT);
+					}
+					else if (static_cast<Boss*>(*itr)->getIsStandOnSurface() == false && static_cast<Boss*>(*itr)->getState() == BOSS_MOVING_RIGHT) {
+						static_cast<Boss*>(*itr)->setState(BOSS_DROPPING_RIGHT);
+					}
+				}
+
 				// Fire Ball
 				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
 					// FireBall to others
@@ -902,6 +966,11 @@ void ThirdVC::viewWillRender()
 
 					// Boomerang Bro
 					else if (beginBoomerangBroId <= (*itr)->getId() && (*itr)->getId() <= endBoomerangBroId) {
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
+					}
+
+					// Boss
+					else if (beginBossId <= (*itr)->getId() && (*itr)->getId() <= endBossId) {
 						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 				}
@@ -1182,6 +1251,18 @@ void ThirdVC::adaptData()
 			}
 			section = SECTION_NONE;
 		}
+		else if (line == "<BossFrames>") {
+			section = SECTION_BOSS_FRAMES;
+			continue;
+		}
+		else if (line == "</BossFrames>") {
+			for (int i = 0; i < data.size(); ++i) {
+				Boss* boss = new Boss(0, 0, 0, 0, Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), 0);
+				boss->loadInfo(data[i], ',');
+				this->bosses->insert(boss);
+			}
+			section = SECTION_NONE;
+		}
 
 		switch (section)
 		{
@@ -1228,6 +1309,9 @@ void ThirdVC::adaptData()
 			data.push_back(line);
 			break;
 		case SECTION_BOOMERANG_BRO_FRAMES:
+			data.push_back(line);
+			break;
+		case SECTION_BOSS_FRAMES:
 			data.push_back(line);
 			break;
 		default:
@@ -1331,6 +1415,17 @@ void ThirdVC::adaptAnimation()
 		(*boomerangBroItr)->getSecondBoomerang()->setAnimation(new Animation(AnimationBundle::getInstance()->getBoomerang()));
 	}
 
+	// Boss
+	unordered_set<Boss*> ::iterator bossItr;
+	for (bossItr = this->bosses->begin(); bossItr != this->bosses->end(); ++bossItr) {
+		if ((*bossItr)->getVx() < 0) {
+			(*bossItr)->setState(BossState::BOSS_FLYING_TOP_LEFT);
+		}
+		else {
+			(*bossItr)->setState(BossState::BOSS_FLYING_TOP_RIGHT);
+		}
+	}
+
 	this->mario->setAnimation(new Animation(AnimationBundle::getInstance()->getMarioStanding()));
 	this->mario->setState(MarioState::DROPPING);
 	this->mario->setFirstFireBallState(FireBallState::FIREBALL_STAYING);
@@ -1392,5 +1487,11 @@ void ThirdVC::adaptToGrid()
 	unordered_set<BoomerangBro*> ::iterator boomerangBroItr;
 	for (boomerangBroItr = this->boomerangBros->begin(); boomerangBroItr != this->boomerangBros->end(); ++boomerangBroItr) {
 		Grid::getInstance()->add(*boomerangBroItr);
+	}
+
+	// Boss
+	unordered_set<Boss*> ::iterator bossItr;
+	for (bossItr = this->bosses->begin(); bossItr != this->bosses->end(); ++bossItr) {
+		Grid::getInstance()->add(*bossItr);
 	}
 }

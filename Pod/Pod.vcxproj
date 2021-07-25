@@ -159,6 +159,7 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Boomerang.cpp" />
     <ClCompile Include="BoomerangBro.cpp" />
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CloudyVC.cpp" />
     <ClCompile Include="Coin.cpp" />
@@ -214,6 +215,8 @@
     <ClInclude Include="BoomerangBro.h" />
     <ClInclude Include="BoomerangBroState.h" />
     <ClInclude Include="BoomerangState.h" />
+    <ClInclude Include="Boss.h" />
+    <ClInclude Include="BossState.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CloudyVC.h" />
     <ClInclude Include="Coin.h" />

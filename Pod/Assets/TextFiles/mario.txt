@@ -5,4 +5,4 @@
 # firstFireBallVx, firstFireBallVy, firstFireBallId,
 # tailMarginTop, tailMarginBottom, tailHeight,
 # isFireMode, isSuperMode, isFlyingMode)
-4,3,2,4,3,2,3,5,1,10,6,1,5,1,1001,20,6,4,1,1,0
+4,3,2,4,3,2,3,5,1,10,6,1,5,1,1001,20,6,4,1,1,1

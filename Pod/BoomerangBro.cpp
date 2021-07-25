@@ -73,6 +73,17 @@ Boomerang* BoomerangBro::getSecondBoomerang()
 	return this->secondBoomerang;
 }
 
+RECT BoomerangBro::getFrame()
+{
+	RECT r = RECT();
+	r.top = this->getY() - 8;
+	r.bottom = r.top + this->getHeight();
+	r.left = this->getX() - 4;
+	r.right = r.left + this->getWidth();
+
+	return r;
+}
+
 void BoomerangBro::setState(BoomerangBroState _state)
 {
 	switch (_state)
@@ -338,6 +349,39 @@ void BoomerangBro::handleMarioCollision(Mario* _mario, float _dt)
 	}
 
 	if (this->getState() == BOOMERANG_BRO_BEING_DEAD) return;
+
+
+	// When mario turning around
+	if (_mario->getIsTurningAround()) {
+		if (get<0>(_mario->sweptAABBByFrame(this, _dt)) || _mario->isCollidingByFrame(this->getFrame())) {
+			if (_mario->getIsFlip()) { // <--
+				if (this->getX() <= _mario->getX()
+					&& this->getX() + this->getWidth() >= _mario->getX() - _mario->getLeftSpace()
+					&& _mario->getBounds().top + _mario->getTailMarginTop() >= this->getY()
+					&& _mario->getBounds().bottom - _mario->getTailMarginBottom() <= this->getY() + this->getHeight()) {
+					this->setState(BoomerangBroState::BOOMERANG_BRO_BEING_DEAD);
+
+					ScoreBoard::getInstance()->plusPoint(100);
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(100, this->getX(), this->getY())));
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFlashLight()), this->getX(), this->getY())));
+					return;
+				}
+			}
+			else { // -->
+				if (this->getX() >= _mario->getX()
+					&& this->getX() <= _mario->getX() + _mario->getBoundsWidth() + _mario->getLeftSpace()
+					&& _mario->getBounds().top + _mario->getTailMarginTop() >= this->getY()
+					&& _mario->getBounds().bottom - _mario->getTailMarginBottom() <= this->getY() + this->getHeight()) {
+					this->setState(BoomerangBroState::BOOMERANG_BRO_BEING_DEAD);
+
+					ScoreBoard::getInstance()->plusPoint(100);
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(100, this->getX(), this->getY())));
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFlashLight()), this->getX(), this->getY())));
+					return;
+				}
+			}
+		}
+	}
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
 
