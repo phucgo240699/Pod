@@ -781,26 +781,27 @@ void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 				
 				if (this->getIsFlyingMode()) {
 					if (this->getState() == GOOMBA_FLYING_LEFT || this->getState() == GOOMBA_POPPING_LEFT) {
-						this->plusY(2 * get<1>(collisionResult) * abs(_mario->getVy()));
+						//this->plusY(2 * get<1>(collisionResult) * abs(_mario->getVy()));
 						this->setState(GoombaState::GOOMBA_DROPPING_LEFT);
+						this->setIsFlyingMode(false);
 					}
 					else if (this->getState() == GOOMBA_FLYING_RIGHT || this->getState() == GOOMBA_POPPING_RIGHT) {
-						this->plusY(2 * get<1>(collisionResult) * abs(_mario->getVy()));
+						//this->plusY(2 * get<1>(collisionResult) * abs(_mario->getVy()));
 						this->setState(GoombaState::GOOMBA_DROPPING_RIGHT);
+						this->setIsFlyingMode(false);
 					}
 					else if (this->getState() == GOOMBA_MOVING_LEFT) {
+						this->setIsFlyingMode(false);
 						this->setState(GoombaState::GOOMBA_MOVING_LEFT);
 					}
 					else if (this->getState() == GOOMBA_MOVING_RIGHT) {
+						this->setIsFlyingMode(false);
 						this->setState(GoombaState::GOOMBA_MOVING_RIGHT);
 					}
 				}
 				else {
 					this->setState(GoombaState::TRAMPLED_GOOMBA);
 				}
-
-				// Must be put this here. After set goomba state
-				this->setIsFlyingMode(false);
 
 				// Calculate points
 				_mario->increasePointCoef();
@@ -816,7 +817,7 @@ void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 			&& this->getState() != GOOMBA_POPPING_RIGHT
 			&& this->getState() != GOOMBA_FLYING_LEFT
 			&& this->getState() != GOOMBA_FLYING_RIGHT) {*/
-			_mario->plusX(get<1>(collisionResult) * _mario->getVx());
+			//_mario->plusX(get<1>(collisionResult) * _mario->getVx());
 			_mario->setState(MarioState::DIE);
 		//}
 		//else if ((_mario->getState() == DROPPING)

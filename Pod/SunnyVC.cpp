@@ -870,7 +870,7 @@ void SunnyVC::viewDidUpdate(float _dt)
 						}
 					}
 
-					if (static_cast<Koopa*>(*itr)->getIsStandOnSurface() == false && static_cast<Koopa*>(*itr)->getState() != KOOPA_FLYING_LEFT && static_cast<Koopa*>(*itr)->getState() != KOOPA_FLYING_RIGHT) {
+					if (static_cast<Koopa*>(*itr)->getIsStandOnSurface() == false && static_cast<Koopa*>(*itr)->getIsOutOfFirstStage() && static_cast<Koopa*>(*itr)->getState() != KOOPA_FLYING_LEFT && static_cast<Koopa*>(*itr)->getState() != KOOPA_FLYING_RIGHT) {
 						if (static_cast<Koopa*>(*itr)->getState() == KOOPA_SHRINKAGE_MOVING_LEFT) {
 							static_cast<Koopa*>(*itr)->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_LEFT);
 						}

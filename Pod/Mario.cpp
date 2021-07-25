@@ -2188,20 +2188,24 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 		if (edge == bottomEdge && this->getState() == DROPPING) {
 			//this->plusY(get<1>(collisionResult) * this->getVy() + _goomba->getHeight() / 4);
 			this->setState(MarioState::JUMPING);
-			
+
 			if (_goomba->getIsFlyingMode()) {
 				if (_goomba->getState() == GOOMBA_FLYING_LEFT || _goomba->getState() == GOOMBA_POPPING_LEFT) {
-					_goomba->plusY(2 * get<1>(collisionResult) * abs(this->getVy()));
+					//_goomba->plusY(2 * get<1>(collisionResult) * abs(this->getVy()));
 					_goomba->setState(GoombaState::GOOMBA_DROPPING_LEFT);
+					_goomba->setIsFlyingMode(false);
 				}
 				else if (_goomba->getState() == GOOMBA_FLYING_RIGHT || _goomba->getState() == GOOMBA_POPPING_RIGHT) {
-					_goomba->plusY(2 * get<1>(collisionResult) * abs(this->getVy()));
+					//_goomba->plusY(2 * get<1>(collisionResult) * abs(this->getVy()));
 					_goomba->setState(GoombaState::GOOMBA_DROPPING_RIGHT);
+					_goomba->setIsFlyingMode(false);
 				}
 				else if (_goomba->getState() == GOOMBA_MOVING_LEFT) {
+					_goomba->setIsFlyingMode(false);
 					_goomba->setState(GoombaState::GOOMBA_MOVING_LEFT);
 				}
 				else if (_goomba->getState() == GOOMBA_MOVING_RIGHT) {
+					_goomba->setIsFlyingMode(false);
 					_goomba->setState(GoombaState::GOOMBA_MOVING_RIGHT);
 				}
 			}
@@ -2209,8 +2213,6 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 				_goomba->setState(GoombaState::TRAMPLED_GOOMBA);
 			}
 
-			// Must be put this here. After set goomba state
-			_goomba->setIsFlyingMode(false);
 
 			// Calculate points
 			this->increasePointCoef();
@@ -2240,8 +2242,8 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 			&& _goomba->getState() != GOOMBA_POPPING_RIGHT
 			&& _goomba->getState() != GOOMBA_FLYING_LEFT
 			&& _goomba->getState() != GOOMBA_FLYING_RIGHT) {*/
-			_goomba->plusX(2 * get<1>(collisionResult) * _goomba->getVx());
-			this->plusX(get<1>(collisionResult) * this->getVx());
+			//_goomba->plusX(2 * get<1>(collisionResult) * _goomba->getVx());
+			//this->plusX(get<1>(collisionResult) * this->getVx());
 			this->setState(MarioState::DIE);
 		//}
 		//else if ((this->getState() == DROPPING)
@@ -2366,18 +2368,15 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 			}
 		}
 		else if (edge == topEdge) {
-			if (this->getIsSuperMode() == false) {
-				_koopa->plusX(get<1>(collisionResult) * _koopa->getVx());
-				_koopa->plusY(get<1>(collisionResult) * _koopa->getVy());
-				_koopa->setState(KoopaState::KOOPA_STANDING);
-			}
+			_koopa->plusX(get<1>(collisionResult) * _koopa->getVx());
+			_koopa->plusY(get<1>(collisionResult) * _koopa->getVy());
 
 			this->plusX(get<1>(collisionResult)* this->getVx());
 			this->plusY(get<1>(collisionResult) * this->getVy());
 			this->setState(MarioState::DIE);
 		}
 		else if (edge == bottomEdge && this->getState() == DROPPING) {
-			this->plusY(get<1>(collisionResult) * this->getVy() + _koopa->getHeight() / 4);
+			//this->plusY(get<1>(collisionResult) * this->getVy() + _koopa->getHeight() / 4);
 			this->setState(MarioState::JUMPING);
 
 			// Calculate points
@@ -2397,11 +2396,11 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 				}
 			}
 			else if (_koopa->getState() == KOOPA_FLYING_LEFT) {
-				_koopa->plusY(2 * get<1>(collisionResult) * abs(this->getVy()));
+				//_koopa->plusY(2 * get<1>(collisionResult) * abs(this->getVy()));
 				_koopa->setState(KoopaState::KOOPA_DROPPING_LEFT);
 			}
 			else if (_koopa->getState() == KOOPA_FLYING_RIGHT) {
-				_koopa->plusY(2 * get<1>(collisionResult) * abs(this->getVy()));
+				//_koopa->plusY(2 * get<1>(collisionResult) * abs(this->getVy()));
 				_koopa->setState(KoopaState::KOOPA_DROPPING_RIGHT);
 			}
 			else {
@@ -2412,7 +2411,8 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 		}
 	}
 	else if (this->isCollidingByBounds(_koopa->getBounds())) {
-		if ((this->getState() == WALKING || this->getState() == STANDING)
+		this->setState(MarioState::DIE);
+		/*if ((this->getState() == WALKING || this->getState() == STANDING)
 			&& _koopa->getState() != KOOPA_SHRINKAGE
 			&& _koopa->getState() != KOOPA_SHRINKAGE_SHAKING
 			&& _koopa->getState() != KOOPA_FLYING_LEFT
@@ -2447,7 +2447,7 @@ void Mario::handleKoopaCollision(Koopa* _koopa, float _dt)
 				this->plusX(get<1>(collisionResult) * this->getVx());
 				this->setState(MarioState::DIE);
 			}
-		}
+		}*/
 	}
 }
 
@@ -2679,8 +2679,6 @@ void Mario::handleCoinCollision(Coin* _coin, float _dt)
 
 	if (get<0>(collisionResult) == true) {
 		_coin->setState(CoinState::COIN_BEING_EARNED);
-		this->plusX(get<1>(collisionResult) * this->getVx());
-		this->plusY(get<1>(collisionResult) * this->getVy());
 
 		ScoreBoard::getInstance()->plusPoint(50);
 	}

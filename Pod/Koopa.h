@@ -35,7 +35,7 @@ private:
 
 	// Thrown away
 	float thrownX, startThrownY;
-	bool isOutOfFirstStage = false; // Just for red mode
+	bool isOutOfFirstStage = true; // Just for red mode
 
 	// Flying
 	float countFlyingX, startFlyingY;
@@ -53,6 +53,7 @@ public:
 	void loadInfo(string line, char seperator);
 
 	// Getter
+	RECT getFrame();
 	KoopaState getState();
 	float getWidth();
 	float getHeight();
@@ -66,6 +67,7 @@ public:
 	float getOriginVy();
 	float getOriginVx();
 	bool getIsShrinkageReverseMode();
+	bool getIsOutOfFirstStage();
 
 	// Setter
 	void setState(KoopaState _state);

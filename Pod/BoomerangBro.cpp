@@ -222,7 +222,7 @@ void BoomerangBro::Update(float _dt)
 
 
 	if (this->leftAnchor - 80 <= this->marioX && this->marioX <= this->rightAnchor + 64) {
-		if (countDownToThrowBoomerang <= 1540) {
+		if (countDownToThrowBoomerang <= 1595) {
 			if (this->firstBoomerang->getState() == BOOMERANG_STAYING && this->secondBoomerang->getState() == BOOMERANG_STAYING) {
 				if (this->getIsFlip()) {
 					this->firstBoomerang->getAnimation()->setCurrentIndexFrame(2);
@@ -237,13 +237,13 @@ void BoomerangBro::Update(float _dt)
 					this->firstBoomerang->setState(BoomerangState::BOOMERANG_FLYING_RIGHT);
 				}
 				this->setIsHolding(true);
-				this->countDownToThrowBoomerang = 1540;
+				this->countDownToThrowBoomerang = 1595;
 				Grid::getInstance()->add(this->firstBoomerang);
 				Grid::getInstance()->updateCellOf(this->firstBoomerang);
 			}
 
 		}
-		if (countDownToThrowBoomerang <= 1500) {
+		if (countDownToThrowBoomerang <= 1535) {
 			if (this->firstBoomerang->getState() != BOOMERANG_STAYING && this->secondBoomerang->getState() == BOOMERANG_STAYING) {
 				if (this->getIsFlip()) {
 					this->secondBoomerang->getAnimation()->setCurrentIndexFrame(2);
@@ -261,7 +261,7 @@ void BoomerangBro::Update(float _dt)
 				Grid::getInstance()->add(this->secondBoomerang);
 				Grid::getInstance()->updateCellOf(this->secondBoomerang);
 
-				countDownToThrowBoomerang = 1600;
+				countDownToThrowBoomerang = 1625;
 			}
 		}
 
