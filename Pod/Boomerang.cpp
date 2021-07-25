@@ -91,7 +91,9 @@ void Boomerang::Update(float _dt)
 		float moreY = (-1 * (32 - (pow(countFlyingX + 72, 2) / 162)));
 		this->plusXNoRound(this->getVx() * _dt);
 		this->setYNoRound(startFlyingY + moreY);
-
+		if (countFlyingX < -72) {
+			this->setVy(abs(this->originVy));
+		}
 		if (countFlyingX < -150) {
 			this->setState(BoomerangState::BOOMERANG_FLYING_RIGHT_BACK);
 		}
@@ -102,6 +104,9 @@ void Boomerang::Update(float _dt)
 		float moreY = (-1 * (32 - (pow(countFlyingX - 72, 2) / 162)));
 		this->plusXNoRound(this->getVx() * _dt);
 		this->setYNoRound(startFlyingY + moreY);
+		if (countFlyingX > 72) {
+			this->setVy(abs(this->originVy));
+		}
 
 		if (countFlyingX > 150) {
 			this->setState(BoomerangState::BOOMERANG_FLYING_LEFT_BACK);
@@ -129,7 +134,7 @@ void Boomerang::hanldeBoomerangBroCollision(BoomerangBro* _boomerangBro, float _
 	if (this->getState() == BoomerangState::BOOMERANG_FLYING_LEFT_BACK || this->getState() == BoomerangState::BOOMERANG_FLYING_RIGHT_BACK) {
 		tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_boomerangBro, _dt);
 
-		if (get<0>(collisionResult) == true) {
+		if (get<0>(collisionResult) == true || this->isCollidingByBounds(_boomerangBro->getBounds())) {
 			this->setState(BoomerangState::BOOMERANG_STAYING);
 		}
 	}
@@ -156,7 +161,7 @@ void Boomerang::handleMarioCollision(Mario* _mario, float _dt)
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_mario, _dt);
 
-	if (get<0>(collisionResult) == true) {
+	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_mario->getBounds())) {
 		_mario->setState(MarioState::DIE);
 	}
 }

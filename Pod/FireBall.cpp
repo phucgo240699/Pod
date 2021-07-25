@@ -302,7 +302,7 @@ void FireBall::handleBoomerangBroCollision(BoomerangBro* _boomerangBro, float _d
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_boomerangBro, _dt);
 
-	if (get<0>(collisionResult) == true) {
+	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_boomerangBro->getBounds())) {
 		_boomerangBro->setState(BoomerangBroState::BOOMERANG_BRO_BEING_DEAD);
 		ScoreBoard::getInstance()->plusPoint(1000);
 		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(Animation(AnimationBundle::getInstance()->get1000Points()), _boomerangBro->getX(), _boomerangBro->getY())));

@@ -2880,6 +2880,11 @@ void Mario::handleBoomerangBroCollision(BoomerangBro* _boomerangBro, float _dt)
 			this->setState(MarioState::DIE);
 		}
 	}
+	else {
+		if (this->isCollidingByBounds(_boomerangBro->getBounds())) {
+			this->setState(MarioState::DIE);
+		}
+	}
 }
 
 void Mario::handleBoomerangCollision(Boomerang* _boomerang, float _dt)
@@ -2903,7 +2908,7 @@ void Mario::handleBoomerangCollision(Boomerang* _boomerang, float _dt)
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_boomerang, _dt);
 
-	if (get<0>(collisionResult) == true) {
+	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_boomerang->getBounds())) {
 		this->setState(MarioState::DIE);
 	}
 }

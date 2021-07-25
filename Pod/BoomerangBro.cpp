@@ -20,6 +20,7 @@ void BoomerangBro::loadInfo(string line, char seperator)
 
 	this->firstBoomerang = new Boomerang(this->getX(), this->getY(), v[7], v[8], Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), v[9]);
 	this->secondBoomerang = new Boomerang(this->getX(), this->getY(), v[10], v[11], Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), v[12]);
+	this->throwingAnim = new Animation(AnimationBundle::getInstance()->getBoomerangMovingHolding());
 }
 
 bool BoomerangBro::getIsStandOnSurface()
@@ -139,6 +140,9 @@ void BoomerangBro::setState(BoomerangBroState _state)
 void BoomerangBro::setIsHolding(bool _isHoldinng)
 {
 	this->isHolding = _isHoldinng;
+	if (_isHoldinng == true) {
+		countDownFinishStartThrow = 4;
+	}
 }
 
 void BoomerangBro::setIsFlip(bool _isFlip)
@@ -156,6 +160,10 @@ void BoomerangBro::Update(float _dt)
 	Enemy::Update(_dt);
 	
 	this->animation->Update(_dt);
+	--countDownFinishStartThrow;
+	if (this->countDownFinishStartThrow <= 0) {
+		this->setIsHolding(false);
+	}
 
 	if (this->getState() == BOOMERANG_BRO_MOVING_LEFT) {
 		if (this->getX() + this->getVx() * _dt < this->leftAnchor) {
@@ -212,54 +220,62 @@ void BoomerangBro::Update(float _dt)
 		return;
 	}
 
-	if (countDownToThrowBoomerang <= 1540) {
-		if (this->firstBoomerang->getState() == BOOMERANG_STAYING && this->secondBoomerang->getState() == BOOMERANG_STAYING) {
-			if (this->getIsFlip()) {
-				this->firstBoomerang->getAnimation()->setCurrentIndexFrame(2);
-				this->firstBoomerang->setX(this->getX() + this->getBoundsWidth());
-				this->firstBoomerang->setY(this->getY() - this->firstBoomerang->getHeight());
-				this->firstBoomerang->setState(BoomerangState::BOOMERANG_FLYING_LEFT);
+
+	if (this->leftAnchor - 80 <= this->marioX && this->marioX <= this->rightAnchor + 64) {
+		if (countDownToThrowBoomerang <= 1540) {
+			if (this->firstBoomerang->getState() == BOOMERANG_STAYING && this->secondBoomerang->getState() == BOOMERANG_STAYING) {
+				if (this->getIsFlip()) {
+					this->firstBoomerang->getAnimation()->setCurrentIndexFrame(2);
+					this->firstBoomerang->setX(this->getX() + this->getBoundsWidth());
+					this->firstBoomerang->setY(this->getY() - this->firstBoomerang->getHeight());
+					this->firstBoomerang->setState(BoomerangState::BOOMERANG_FLYING_LEFT);
+				}
+				else {
+					this->firstBoomerang->getAnimation()->setCurrentIndexFrame(1);
+					this->firstBoomerang->setX(this->getX() + this->firstBoomerang->getHeight());
+					this->firstBoomerang->setY(this->getY() - this->firstBoomerang->getHeight());
+					this->firstBoomerang->setState(BoomerangState::BOOMERANG_FLYING_RIGHT);
+				}
+				this->setIsHolding(true);
+				Grid::getInstance()->add(this->firstBoomerang);
+				Grid::getInstance()->updateCellOf(this->firstBoomerang);
 			}
-			else {
-				this->firstBoomerang->getAnimation()->setCurrentIndexFrame(1);
-				this->firstBoomerang->setX(this->getX() + this->firstBoomerang->getHeight());
-				this->firstBoomerang->setY(this->getY() - this->firstBoomerang->getHeight());
-				this->firstBoomerang->setState(BoomerangState::BOOMERANG_FLYING_RIGHT);
+
+		}
+		if (countDownToThrowBoomerang <= 1400) {
+			if (this->firstBoomerang->getState() != BOOMERANG_STAYING && this->secondBoomerang->getState() == BOOMERANG_STAYING) {
+				if (this->getIsFlip()) {
+					this->secondBoomerang->getAnimation()->setCurrentIndexFrame(2);
+					this->secondBoomerang->setX(this->getX() + this->getBoundsWidth());
+					this->secondBoomerang->setY(this->getY() - this->secondBoomerang->getHeight());
+					this->secondBoomerang->setState(BoomerangState::BOOMERANG_FLYING_LEFT);
+				}
+				else {
+					this->secondBoomerang->getAnimation()->setCurrentIndexFrame(1);
+					this->secondBoomerang->setX(this->getX() + this->secondBoomerang->getHeight());
+					this->secondBoomerang->setY(this->getY() - this->secondBoomerang->getHeight());
+					this->secondBoomerang->setState(BoomerangState::BOOMERANG_FLYING_RIGHT);
+				}
+				this->setIsHolding(true);
+				Grid::getInstance()->add(this->secondBoomerang);
+				Grid::getInstance()->updateCellOf(this->secondBoomerang);
+
+				countDownToThrowBoomerang = 1700;
 			}
-			Grid::getInstance()->add(this->firstBoomerang);
-			Grid::getInstance()->updateCellOf(this->firstBoomerang);
 		}
 
-	}
-	if (countDownToThrowBoomerang <= 1400) {
-		if (this->firstBoomerang->getState() != BOOMERANG_STAYING && this->secondBoomerang->getState() == BOOMERANG_STAYING) {
-			if (this->getIsFlip()) {
-				this->secondBoomerang->getAnimation()->setCurrentIndexFrame(2);
-				this->secondBoomerang->setX(this->getX() + this->getBoundsWidth());
-				this->secondBoomerang->setY(this->getY() - this->secondBoomerang->getHeight());
-				this->secondBoomerang->setState(BoomerangState::BOOMERANG_FLYING_LEFT);
-			}
-			else {
-				this->secondBoomerang->getAnimation()->setCurrentIndexFrame(1);
-				this->secondBoomerang->setX(this->getX() + this->secondBoomerang->getHeight());
-				this->secondBoomerang->setY(this->getY() - this->secondBoomerang->getHeight());
-				this->secondBoomerang->setState(BoomerangState::BOOMERANG_FLYING_RIGHT);
-			}
-			Grid::getInstance()->add(this->secondBoomerang);
-			Grid::getInstance()->updateCellOf(this->secondBoomerang);
-
-			countDownToThrowBoomerang = 1600;
-		}
-	}
-
-	if (this->leftAnchor - 64 <= this->marioX && this->marioX <= this->rightAnchor + 64) {
 		--countDownToThrowBoomerang;
 	}
 }
 
 void BoomerangBro::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
-	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), this->getPosition(), D3DXVECTOR2(-4, -8), this->getIsFlip());
+	if (this->getIsHolding()) {
+		Drawing::getInstance()->draw(_texture, this->throwingAnim->getCurrentFrame(), this->getPosition(), D3DXVECTOR2(-4, -8), this->getIsFlip());
+	}
+	else {
+		Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), this->getPosition(), D3DXVECTOR2(-4, -8), this->getIsFlip());
+	}
 
 
 	if (Setting::getInstance()->getDebugMode()) {
@@ -297,7 +313,7 @@ void BoomerangBro::handleBoomerangCollision(Boomerang* _boomerang, float _dt)
 	if (_boomerang->getState() == BoomerangState::BOOMERANG_FLYING_LEFT_BACK || _boomerang->getState() == BoomerangState::BOOMERANG_FLYING_RIGHT_BACK) {
 		tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_boomerang, _dt);
 
-		if (get<0>(collisionResult) == true) {
+		if (get<0>(collisionResult) == true || this->isCollidingByBounds(_boomerang->getBounds())) {
 			_boomerang->setState(BoomerangState::BOOMERANG_STAYING);
 		}
 	}
@@ -336,5 +352,18 @@ void BoomerangBro::handleMarioCollision(Mario* _mario, float _dt)
 		else {
 			_mario->setState(MarioState::DIE);
 		}
+	}
+}
+
+void BoomerangBro::handleFireBallCollision(FireBall* _fireBall, float _dt)
+{
+	if (_fireBall->getState() == BOOMERANG_BRO_BEING_DEAD) return;
+
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_fireBall, _dt);
+
+	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_fireBall->getBounds())) {
+		this->setState(BoomerangBroState::BOOMERANG_BRO_BEING_DEAD);
+		ScoreBoard::getInstance()->plusPoint(1000);
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(Animation(AnimationBundle::getInstance()->get1000Points()), this->getX(), this->getY())));
 	}
 }

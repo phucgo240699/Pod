@@ -222,5 +222,6 @@
 # firstBoomerangVx, firstBoomerangVy, firstBoomerangId
 # secondBoomerangVx, secondBoomerangVy, secondBoomerangId
 336,400,0.5,1,801,320,368,2,1,851,2,1,852
+1392,400,0.5,1,802,1376,1424,2,1,853,2,1,854
 </BoomerangBroFrames>
 

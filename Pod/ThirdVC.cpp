@@ -747,6 +747,9 @@ void ThirdVC::viewDidUpdate(float _dt)
 								if (beginGroundId <= (*boomerangBroItr)->getId() && (*boomerangBroItr)->getId() <= endGroundId) {
 									static_cast<BoomerangBro*>(*itr)->hanldeHardComponentCollision(*boomerangBroItr, _dt);
 								}
+								else if (beginFireBallId <= (*boomerangBroItr)->getId() && (*boomerangBroItr)->getId() <= endFireBallId) {
+									static_cast<BoomerangBro*>(*itr)->handleFireBallCollision(static_cast<FireBall*>(*boomerangBroItr), _dt);
+								}
 							}
 						}
 					}					
@@ -815,6 +818,9 @@ void ThirdVC::viewDidUpdate(float _dt)
 								}
 								else if (beginGoldenBrickId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endGoldenBrickId) {
 									static_cast<FireBall*>(*itr)->handleGoldenBrickCollision(static_cast<GoldenBrick*>(*fireBallItr), _dt);
+								}
+								else if (beginBoomerangBroId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endBoomerangBroId) {
+									static_cast<FireBall*>(*itr)->handleBoomerangBroCollision(static_cast<BoomerangBro*>(*fireBallItr), _dt);
 								}
 								/*else if (beginFireFlowerId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endFireFlowerId) {
 									static_cast<FireBall*>(*itr)->handleFireFlowerCollision(static_cast<FireFlower*>(*fireBallItr), _dt);
@@ -913,7 +919,6 @@ void ThirdVC::viewWillRender()
 				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
 				unordered_set<Component*> ::iterator itr;
 				for (itr = cell.begin(); itr != cell.end(); ++itr) {
-
 
 					// Boomerang
 					if (beginBoomerangId <= (*itr)->getId() && (*itr)->getId() <= endBoomerangId) {

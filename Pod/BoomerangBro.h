@@ -5,6 +5,7 @@
 #include "Boomerang.h"
 
 class Mario;
+class FireBall;
 
 class BoomerangBro : public Enemy
 {
@@ -12,6 +13,7 @@ private:
 	Animation* animation;
 	BoomerangBroState state;
 	Boomerang* firstBoomerang, * secondBoomerang;
+	Animation* throwingAnim;
 
 	float originVx, originVy;
 	float countFlyingX, startFlyingY;
@@ -21,6 +23,7 @@ private:
 	bool isFlip = false;
 	int countDownToThrowBoomerang = 1600;
 	float marioX;
+	int countDownFinishStartThrow = 4;
 
 public:
 	// Init
@@ -54,5 +57,6 @@ public:
 	void hanldeHardComponentCollision(Component* _component, float _dt);
 	void handleBoomerangCollision(Boomerang* _boomerang, float _dt);
 	void handleMarioCollision(Mario* _mario, float _dt);
+	void handleFireBallCollision(FireBall* _fireBall, float _dt);
 };
 
