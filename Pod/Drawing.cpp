@@ -80,6 +80,14 @@ LPDIRECT3DTEXTURE9 Drawing::getSunnyMapTexture()
 	return this->sunnyMapTexture;
 }
 
+LPDIRECT3DTEXTURE9 Drawing::getMarioTexture()
+{
+	if (this->marioTexture == NULL) {
+		this->marioTexture = LoadTextureFromImage(ImagePath::getInstance()->mario, D3DCOLOR_XRGB(255, 0, 255));
+	}
+	return this->marioTexture;
+}
+
 void Drawing::draw(LPDIRECT3DTEXTURE9 texture, D3DXVECTOR3 _position, D3DCOLOR _color)
 {
 	_position.x -= Camera::getInstance()->getX();

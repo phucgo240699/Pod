@@ -155,9 +155,9 @@ void FireBall::handleGoombaCollision(Goomba* _goomba, float _dt)
 		return;
 	}
 
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_goomba, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_goomba, _dt);
 
-	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_goomba->getBounds())) {
+	if (get<0>(collisionResult) == true || this->isCollidingByFrame(_goomba->getFrame())) {
 		this->plusX(get<1>(collisionResult) * this->getVx());
 		this->plusY(get<1>(collisionResult) * this->getVy());
 
@@ -181,9 +181,9 @@ void FireBall::handleKoopaCollision(Koopa* _koopa, float _dt)
 {
 	if (_koopa->getState() == KOOPA_THROWN_LEFT_AWAY || _koopa->getState() == KOOPA_THROWN_RIGHT_AWAY) return;
 
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_koopa, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_koopa, _dt);
 
-	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_koopa->getBounds())) {
+	if (get<0>(collisionResult) == true || this->isCollidingByFrame(_koopa->getFrame())) {
 		this->plusX(get<1>(collisionResult) * this->getVx());
 		this->plusY(get<1>(collisionResult) * this->getVy());
 
@@ -209,9 +209,9 @@ void FireBall::handleFireFlowerCollision(FireFlower* _fireFlower, float _dt)
 	if (_fireFlower->getState() == FIRE_FLOWER_GROWING_UP || _fireFlower->getState() == FIRE_FLOWER_DROPPING) {
 		if (this->getY() + this->getVy() * _dt >= _fireFlower->getBottomAnchor()) return;
 	}
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_fireFlower, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_fireFlower, _dt);
 
-	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_fireFlower->getBounds())) {
+	if (get<0>(collisionResult) == true || this->isCollidingByFrame(_fireFlower->getFrame())) {
 		this->plusX(get<1>(collisionResult) * this->getVx());
 		this->plusY(get<1>(collisionResult) * this->getVy());
 		this->setState(FireBallState::FIREBALL_DISAPPEARED);
@@ -233,9 +233,9 @@ void FireBall::handleFlowerCollision(Flower* _flower, float _dt)
 		if (this->getY() + this->getVy() * _dt >= _flower->getBottomAnchor()) return;
 	}
 
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_flower, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_flower, _dt);
 
-	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_flower->getBounds())) {
+	if (get<0>(collisionResult) == true || this->isCollidingByFrame(_flower->getFrame())) {
 		this->plusX(get<1>(collisionResult) * this->getVx());
 		this->plusY(get<1>(collisionResult) * this->getVy());
 		this->setState(FireBallState::FIREBALL_DISAPPEARED);
@@ -254,7 +254,7 @@ void FireBall::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 {
 	if (_goldenBrick->getState() == GOLDEN_BRICK_BEING_COIN || _goldenBrick->getState() == GOLDEN_BRICK_DISAPPEARING || _goldenBrick->getState() == GOLDEN_BRICK_DEAD) return;
 
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_goldenBrick, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_goldenBrick, _dt);
 
 	if (get<0>(collisionResult) == true) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
@@ -282,7 +282,7 @@ void FireBall::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 
 void FireBall::handleBlockCollision(Block* _block, float _dt)
 {
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_block, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_block, _dt);
 
 	if (get<0>(collisionResult) == true) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
@@ -300,9 +300,9 @@ void FireBall::handleBoomerangBroCollision(BoomerangBro* _boomerangBro, float _d
 {
 	if (this->getState() == BOOMERANG_BRO_BEING_DEAD) return;
 
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_boomerangBro, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_boomerangBro, _dt);
 
-	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_boomerangBro->getBounds())) {
+	if (get<0>(collisionResult) == true || this->isCollidingByFrame(_boomerangBro->getFrame())) {
 		_boomerangBro->setState(BoomerangBroState::BOOMERANG_BRO_BEING_DEAD);
 		ScoreBoard::getInstance()->plusPoint(1000);
 		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(Animation(AnimationBundle::getInstance()->get1000Points()), _boomerangBro->getX(), _boomerangBro->getY())));

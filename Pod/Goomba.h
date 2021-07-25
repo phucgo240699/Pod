@@ -48,6 +48,7 @@ public:
 	//float getStoredVy();
 	float getOriginVx();
 	float getOriginVy();
+	RECT getFrame();
 
 	// Setter
 	void setState(GoombaState _state);

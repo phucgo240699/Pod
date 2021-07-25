@@ -88,27 +88,27 @@ void Boomerang::Update(float _dt)
 	if (this->getState() == BoomerangState::BOOMERANG_FLYING_LEFT) {
 		// vx now is < 0
 		countFlyingX += (this->getVx() * _dt);
-		float moreY = (-1 * (32 - (pow(countFlyingX + 72, 2) / 162)));
+		float moreY = (-1 * (32 - (pow(countFlyingX + 56, 2) / 98)));
 		this->plusXNoRound(this->getVx() * _dt);
 		this->setYNoRound(startFlyingY + moreY);
-		if (countFlyingX < -72) {
+		if (countFlyingX < -56) {
 			this->setVy(abs(this->originVy));
 		}
-		if (countFlyingX < -150) {
+		if (countFlyingX < -125) {
 			this->setState(BoomerangState::BOOMERANG_FLYING_RIGHT_BACK);
 		}
 	}
 	else if (this->getState() == BoomerangState::BOOMERANG_FLYING_RIGHT){
 		// vx now is < 0
 		countFlyingX += (this->getVx() * _dt);
-		float moreY = (-1 * (32 - (pow(countFlyingX - 72, 2) / 162)));
+		float moreY = (-1 * (32 - (pow(countFlyingX - 56, 2) / 98)));
 		this->plusXNoRound(this->getVx() * _dt);
 		this->setYNoRound(startFlyingY + moreY);
-		if (countFlyingX > 72) {
+		if (countFlyingX > 56) {
 			this->setVy(abs(this->originVy));
 		}
 
-		if (countFlyingX > 150) {
+		if (countFlyingX > 125) {
 			this->setState(BoomerangState::BOOMERANG_FLYING_LEFT_BACK);
 		}
 	}

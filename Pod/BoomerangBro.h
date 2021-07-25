@@ -23,7 +23,7 @@ private:
 	bool isFlip = false;
 	int countDownToThrowBoomerang = 1600;
 	float marioX;
-	int countDownFinishStartThrow = 4;
+	int countDownFinishStartThrow = 8;
 
 public:
 	// Init

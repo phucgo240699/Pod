@@ -1086,8 +1086,8 @@ void Koopa::handleGoombaCollision(Goomba* _goomba, float _dt)
 		if (edge == leftEdge || edge == rightEdge) {
 			if (this->getState() == KOOPA_MOVING_LEFT
 				|| this->getState() == KOOPA_MOVING_RIGHT
-				|| this->getState() == KOOPA_DROPPING_LEFT
-				|| this->getState() == KOOPA_DROPPING_RIGHT) {
+				/*|| this->getState() == KOOPA_DROPPING_LEFT
+				|| this->getState() == KOOPA_DROPPING_RIGHT*/) {
 				this->plusX(this->getVx() * get<1>(collisionResult));
 				this->plusY(this->getVy() * get<1>(collisionResult));
 				this->convertMovingState();
@@ -1096,7 +1096,10 @@ void Koopa::handleGoombaCollision(Goomba* _goomba, float _dt)
 				_goomba->plusY(_goomba->getVy() * get<1>(collisionResult));
 				_goomba->convertMovingState();
 			}
-			else {
+			else if (this->getState() == KOOPA_SHRINKAGE_MOVING_LEFT
+				|| this->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT
+				|| this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT
+				|| this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
 				AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_goomba->getDefaultPoint() * _goomba->getPointCoef(), _goomba->getX(), _goomba->getY())));
 				AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(_goomba->getX(), _goomba->getY())));
 
@@ -1291,9 +1294,9 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 void Koopa::handleFireBallCollision(FireBall* _fireBall, float _dt)
 {
 	if (this->getState() == KOOPA_THROWN_LEFT_AWAY || this->getState() == KOOPA_THROWN_RIGHT_AWAY) return;
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_fireBall, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_fireBall, _dt);
 
-	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_fireBall->getBounds())) {
+	if (get<0>(collisionResult) == true || this->isCollidingByFrame(_fireBall->getFrame())) {
 		_fireBall->plusX(get<1>(collisionResult) * _fireBall->getVx());
 		_fireBall->plusY(get<1>(collisionResult) * _fireBall->getVy());
 

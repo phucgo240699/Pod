@@ -29,7 +29,7 @@ using namespace std;
 class Mario : public MainCharacter
 {
 private:
-	LPDIRECT3DTEXTURE9 texture;
+	//LPDIRECT3DTEXTURE9 texture;
 	MarioState state;
 	MarioSubState subState;
 	MarioState pressureState; // Hold state of mario before scaling up or scaling down

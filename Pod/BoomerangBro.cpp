@@ -141,7 +141,7 @@ void BoomerangBro::setIsHolding(bool _isHoldinng)
 {
 	this->isHolding = _isHoldinng;
 	if (_isHoldinng == true) {
-		countDownFinishStartThrow = 4;
+		countDownFinishStartThrow = 8;
 	}
 }
 
@@ -237,12 +237,13 @@ void BoomerangBro::Update(float _dt)
 					this->firstBoomerang->setState(BoomerangState::BOOMERANG_FLYING_RIGHT);
 				}
 				this->setIsHolding(true);
+				this->countDownToThrowBoomerang = 1540;
 				Grid::getInstance()->add(this->firstBoomerang);
 				Grid::getInstance()->updateCellOf(this->firstBoomerang);
 			}
 
 		}
-		if (countDownToThrowBoomerang <= 1400) {
+		if (countDownToThrowBoomerang <= 1500) {
 			if (this->firstBoomerang->getState() != BOOMERANG_STAYING && this->secondBoomerang->getState() == BOOMERANG_STAYING) {
 				if (this->getIsFlip()) {
 					this->secondBoomerang->getAnimation()->setCurrentIndexFrame(2);
@@ -260,7 +261,7 @@ void BoomerangBro::Update(float _dt)
 				Grid::getInstance()->add(this->secondBoomerang);
 				Grid::getInstance()->updateCellOf(this->secondBoomerang);
 
-				countDownToThrowBoomerang = 1700;
+				countDownToThrowBoomerang = 1600;
 			}
 		}
 
@@ -359,9 +360,9 @@ void BoomerangBro::handleFireBallCollision(FireBall* _fireBall, float _dt)
 {
 	if (_fireBall->getState() == BOOMERANG_BRO_BEING_DEAD) return;
 
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_fireBall, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_fireBall, _dt);
 
-	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_fireBall->getBounds())) {
+	if (get<0>(collisionResult) == true || this->isCollidingByFrame(_fireBall->getFrame())) {
 		this->setState(BoomerangBroState::BOOMERANG_BRO_BEING_DEAD);
 		ScoreBoard::getInstance()->plusPoint(1000);
 		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(Animation(AnimationBundle::getInstance()->get1000Points()), this->getX(), this->getY())));

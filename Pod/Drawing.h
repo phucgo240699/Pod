@@ -20,6 +20,7 @@ private:
 	D3DXVECTOR2 rotationCenter = D3DXVECTOR2(0, 0);
 
 
+	LPDIRECT3DTEXTURE9 marioTexture = LoadTextureFromImage(ImagePath::getInstance()->mario, D3DCOLOR_XRGB(255, 0, 255));
 	LPDIRECT3DTEXTURE9 debugTexture = LoadTextureFromImage(ImagePath::getInstance()->debug_box, D3DCOLOR_XRGB(255, 0, 255));
 	LPDIRECT3DTEXTURE9 boardTexture = LoadTextureFromImage(ImagePath::getInstance()->board, D3DCOLOR_XRGB(255, 0, 255));
 	LPDIRECT3DTEXTURE9 worldMapTexture = LoadTextureFromImage(ImagePath::getInstance()->world_map, D3DCOLOR_XRGB(255, 0, 255));
@@ -34,6 +35,7 @@ public:
 	static Drawing* getInstance();	  // 4. public function for client code usage
 
 	// Getter
+	LPDIRECT3DTEXTURE9 getMarioTexture();
 	LPDIRECT3DTEXTURE9 getWorldMapTexture();
 	LPDIRECT3DTEXTURE9 getSunnyMapTexture();
 	LPDIRECT3DTEXTURE9 getUndergroundMapTexture();

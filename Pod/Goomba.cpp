@@ -84,6 +84,17 @@ float Goomba::getOriginVy()
 	return this->originVy;
 }
 
+RECT Goomba::getFrame()
+{
+	RECT r = RECT();
+	r.top = this->getY() - 8;
+	r.bottom = r.top + this->getHeight();
+	r.left = this->getX() - 4;
+	r.right = r.left + this->getWidth();
+
+	return r;
+}
+
 void Goomba::setState(GoombaState _state)
 {
 	switch (_state)
@@ -456,7 +467,11 @@ void Goomba::Update(float _dt)
 void Goomba::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
 	if (this->getState() == DEAD_GOOMBA) return;
-	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), this->getPosition());
+	Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), this->getPosition(), D3DXVECTOR2(-4, -8));
+
+	if (Setting::getInstance()->getDebugMode()) {
+		Drawing::getInstance()->drawDebugBox(this->getBounds(), NULL, this->getPosition());
+	}
 }
 
 void Goomba::handleHardComponentCollision(Component* _component, float _dt)
@@ -468,11 +483,11 @@ void Goomba::handleHardComponentCollision(Component* _component, float _dt)
 		return;
 	}
 
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_component, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_component, _dt);
 	if (get<0>(collisionResult) == true) {
 		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
-			if (edge == leftEdge) {
+			if (edge == leftEdge && this->getY() + this->getBoundsHeight() != _component->getY()) {
 				if (this->getState() == GOOMBA_MOVING_LEFT) {
 					this->setState(GoombaState::GOOMBA_MOVING_RIGHT);
 				}
@@ -483,7 +498,7 @@ void Goomba::handleHardComponentCollision(Component* _component, float _dt)
 					this->setState(GoombaState::GOOMBA_DROPPING_RIGHT_FROM_AIR);
 				}
 			}
-			else if (edge == rightEdge) {
+			else if (edge == rightEdge && this->getY() + this->getBoundsHeight() != _component->getY()) {
 				if (this->getState() == GOOMBA_MOVING_RIGHT) {
 					this->setState(GoombaState::GOOMBA_MOVING_LEFT);
 				}
@@ -498,11 +513,11 @@ void Goomba::handleHardComponentCollision(Component* _component, float _dt)
 				this->setIsStandOnSurface(true);
 				if (this->getState() == GOOMBA_DROPPING_LEFT) {
 					this->setState(GoombaState::GOOMBA_MOVING_LEFT);
-					this->setY(_component->getY() - this->getHeight());
+					this->setY(_component->getY() - this->getBoundsHeight());
 				}
 				else if (this->getState() == GOOMBA_DROPPING_RIGHT) {
 					this->setState(GoombaState::GOOMBA_MOVING_RIGHT);
-					this->setY(_component->getY() - this->getHeight());
+					this->setY(_component->getY() - this->getBoundsHeight());
 				}
 				else if (this->getState() == GOOMBA_POPPING_LEFT) {
 					++countPopping;
@@ -514,7 +529,7 @@ void Goomba::handleHardComponentCollision(Component* _component, float _dt)
 						this->setState(GoombaState::GOOMBA_POPPING_LEFT);
 					}
 
-					this->setY(_component->getY() - this->getHeight());
+					this->setY(_component->getY() - this->getBoundsHeight());
 				}
 				else if (this->getState() == GOOMBA_POPPING_RIGHT) {
 					++countPopping;
@@ -526,25 +541,25 @@ void Goomba::handleHardComponentCollision(Component* _component, float _dt)
 						this->setState(GoombaState::GOOMBA_POPPING_RIGHT);
 					}
 
-					this->setY(_component->getY() - this->getHeight());
+					this->setY(_component->getY() - this->getBoundsHeight());
 				}
 				else if (this->getState() == GOOMBA_FLYING_LEFT) {
 					this->setState(GoombaState::GOOMBA_MOVING_LEFT);
-					this->setY(_component->getY() - this->getHeight());
+					this->setY(_component->getY() - this->getBoundsHeight());
 				}
 				else if (this->getState() == GOOMBA_FLYING_RIGHT) {
 					this->setState(GoombaState::GOOMBA_MOVING_RIGHT);
-					this->setY(_component->getY() - this->getHeight());
+					this->setY(_component->getY() - this->getBoundsHeight());
 				}
 				else if (this->getState() == GOOMBA_DROPPING_LEFT_FROM_AIR) {
 					this->setState(GoombaState::GOOMBA_MOVING_LEFT);
 					countDownFromMovingToFlying = 40;
-					this->setY(_component->getY() - this->getHeight());
+					this->setY(_component->getY() - this->getBoundsHeight());
 				}
 				else if (this->getState() == GOOMBA_DROPPING_RIGHT_FROM_AIR) {
 					this->setState(GoombaState::GOOMBA_MOVING_RIGHT);
 					countDownFromMovingToFlying = 40;
-					this->setY(_component->getY() - this->getHeight());
+					this->setY(_component->getY() - this->getBoundsHeight());
 				}
 			}
 		}
@@ -555,7 +570,7 @@ void Goomba::handleHardComponentCollision(Component* _component, float _dt)
 			if (this->getIsStandOnSurface() == false) {
 				if ((_component->getX() <= this->getX() + this->getWidth() && this->getX() + this->getWidth() <= _component->getX() + _component->getWidth())
 					|| (_component->getX() <= this->getX() && this->getX() <= _component->getX() + _component->getWidth())) { // this is check which ground that mario is standing on
-					if (this->getY() + this->getHeight() == _component->getY()) {
+					if (this->getY() + this->getBoundsHeight() == _component->getY()) {
 						this->setIsStandOnSurface(true);
 					}
 				}
@@ -573,7 +588,7 @@ void Goomba::handleBlockCollision(Component* _block, float _dt)
 		return;
 	}
 
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_block, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_block, _dt);
 	if (get<0>(collisionResult) == true) {
 		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
@@ -581,11 +596,11 @@ void Goomba::handleBlockCollision(Component* _block, float _dt)
 				this->setIsStandOnSurface(true);
 				if (this->getState() == GOOMBA_DROPPING_LEFT) {
 					this->setState(GoombaState::GOOMBA_MOVING_LEFT);
-					this->setY(_block->getY() - this->getHeight());
+					this->setY(_block->getY() - this->getBoundsHeight());
 				}
 				else if (this->getState() == GOOMBA_DROPPING_RIGHT) {
 					this->setState(GoombaState::GOOMBA_MOVING_RIGHT);
-					this->setY(_block->getY() - this->getHeight());
+					this->setY(_block->getY() - this->getBoundsHeight());
 				}
 				else if (this->getState() == GOOMBA_POPPING_LEFT) {
 					++countPopping;
@@ -597,7 +612,7 @@ void Goomba::handleBlockCollision(Component* _block, float _dt)
 						this->setState(GoombaState::GOOMBA_POPPING_LEFT);
 					}
 
-					this->setY(_block->getY() - this->getHeight());
+					this->setY(_block->getY() - this->getBoundsHeight());
 				}
 				else if (this->getState() == GOOMBA_POPPING_RIGHT) {
 					if (countPopping >= 3) {
@@ -607,15 +622,15 @@ void Goomba::handleBlockCollision(Component* _block, float _dt)
 						this->setState(GoombaState::GOOMBA_POPPING_RIGHT);
 					}
 
-					this->setY(_block->getY() - this->getHeight());
+					this->setY(_block->getY() - this->getBoundsHeight());
 				}
 				else if (this->getState() == GOOMBA_FLYING_LEFT) {
 					this->setState(GoombaState::GOOMBA_MOVING_LEFT);
-					this->setY(_block->getY() - this->getHeight());
+					this->setY(_block->getY() - this->getBoundsHeight());
 				}
 				else if (this->getState() == GOOMBA_FLYING_RIGHT) {
 					this->setState(GoombaState::GOOMBA_MOVING_RIGHT);
-					this->setY(_block->getY() - this->getHeight());
+					this->setY(_block->getY() - this->getBoundsHeight());
 				}
 			}
 		}
@@ -626,7 +641,7 @@ void Goomba::handleBlockCollision(Component* _block, float _dt)
 			if (this->getIsStandOnSurface() == false) {
 				if ((_block->getX() <= this->getX() + this->getWidth() && this->getX() + this->getWidth() <= _block->getX() + _block->getWidth())
 					|| (_block->getX() <= this->getX() && this->getX() <= _block->getX() + _block->getWidth())) { // this is check which ground that mario is standing on
-					if (this->getY() + this->getHeight() == _block->getY()) {
+					if (this->getY() + this->getBoundsHeight() == _block->getY()) {
 						this->setIsStandOnSurface(true);
 					}
 				}
@@ -651,8 +666,8 @@ void Goomba::handleKoopaCollision(Koopa* _koopa, float _dt)
 		if (edge == leftEdge || edge == rightEdge) {
 			if (_koopa->getState() == KOOPA_MOVING_LEFT
 				|| _koopa->getState() == KOOPA_MOVING_RIGHT
-				|| _koopa->getState() == KOOPA_DROPPING_LEFT
-				|| _koopa->getState() == KOOPA_DROPPING_RIGHT) {
+				/*|| _koopa->getState() == KOOPA_DROPPING_LEFT
+				|| _koopa->getState() == KOOPA_DROPPING_RIGHT*/) {
 				_koopa->plusX(_koopa->getVx() * get<1>(collisionResult));
 				_koopa->plusY(_koopa->getVy() * get<1>(collisionResult));
 				_koopa->convertMovingState();
@@ -661,17 +676,20 @@ void Goomba::handleKoopaCollision(Koopa* _koopa, float _dt)
 				this->plusY(this->getVy() * get<1>(collisionResult));
 				this->convertMovingState();
 			}
-		}
-		else {
-			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint() * this->getPointCoef(), this->getX(), this->getY())));
-			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(this->getX(), this->getY())));
-			if (_koopa->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT
-				|| _koopa->getState() == KOOPA_SHRINKAGE_MOVING_LEFT) {
-				this->setState(GoombaState::THROWN_LEFT_AWAY_GOOMBA);
-			}
-			else if (_koopa->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT
+			else if (_koopa->getState() == KOOPA_SHRINKAGE_MOVING_LEFT
+				|| _koopa->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT
+				|| _koopa->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT
 				|| _koopa->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
-				this->setState(GoombaState::THROWN_RIGHT_AWAY_GOOMBA);
+				AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint() * this->getPointCoef(), this->getX(), this->getY())));
+				AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(this->getX(), this->getY())));
+				if (_koopa->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT
+					|| _koopa->getState() == KOOPA_SHRINKAGE_MOVING_LEFT) {
+					this->setState(GoombaState::THROWN_LEFT_AWAY_GOOMBA);
+				}
+				else if (_koopa->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT
+					|| _koopa->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
+					this->setState(GoombaState::THROWN_RIGHT_AWAY_GOOMBA);
+				}
 			}
 		}
 	}
@@ -744,31 +762,22 @@ void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == bottomEdge) {
 				this->plusY(2 * get<1>(collisionResult) * this->getVy());
-				if (_mario->getIsSuperMode() == false) {
-					this->setState(GoombaState::GOOMBA_STANDING);
-				}
 				_mario->setState(MarioState::DIE);
 				this->plusY(get<1>(collisionResult) * this->getVy());
 			}
 			else if (edge == leftEdge) {
 				this->plusX(2 * get<1>(collisionResult) * this->getVx());
-				if (_mario->getIsSuperMode() == false) {
-					this->setState(GoombaState::GOOMBA_STANDING);
-				}
 				_mario->setState(MarioState::DIE);
 				this->plusX(get<1>(collisionResult) * this->getVx());
 			}
 			else if (edge == rightEdge) {
 				this->plusX(2 * get<1>(collisionResult) * this->getVx());
-				if (_mario->getIsSuperMode() == false) {
-					this->setState(GoombaState::GOOMBA_STANDING);
-				}
 				_mario->setState(MarioState::DIE);
 				this->plusX(get<1>(collisionResult) * this->getVx());
 			}
 			else if (edge == topEdge && _mario->getState() == DROPPING) {
 				_mario->setState(MarioState::JUMPING);
-				_mario->plusY(get<1>(collisionResult) * _mario->getVy() + this->getHeight() / 4);
+				//_mario->plusY(get<1>(collisionResult) * _mario->getVy() + this->getHeight() / 4);
 				
 				if (this->getIsFlyingMode()) {
 					if (this->getState() == GOOMBA_FLYING_LEFT || this->getState() == GOOMBA_POPPING_LEFT) {
@@ -802,43 +811,40 @@ void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 	}
 	else if (this->isCollidingByBounds(_mario->getBounds())) {
 		this->plusX(2 * get<1>(collisionResult) * this->getVx());
-		if ((_mario->getState() == WALKING || _mario->getState() == STANDING)
-			&& this->getState() != GOOMBA_POPPING_LEFT
+		//if ((_mario->getState() == WALKING || _mario->getState() == STANDING)
+			/*&& this->getState() != GOOMBA_POPPING_LEFT
 			&& this->getState() != GOOMBA_POPPING_RIGHT
 			&& this->getState() != GOOMBA_FLYING_LEFT
-			&& this->getState() != GOOMBA_FLYING_RIGHT) {
-			if (_mario->getIsSuperMode() == false) {
-				this->setState(GoombaState::GOOMBA_STANDING);
-			}
+			&& this->getState() != GOOMBA_FLYING_RIGHT) {*/
 			_mario->plusX(get<1>(collisionResult) * _mario->getVx());
 			_mario->setState(MarioState::DIE);
-		}
-		else if ((_mario->getState() == DROPPING)
-			&& (this->getState() == GOOMBA_FLYING_LEFT
-				|| this->getState() == GOOMBA_FLYING_RIGHT)) {
+		//}
+		//else if ((_mario->getState() == DROPPING)
+		//	&& (this->getState() == GOOMBA_FLYING_LEFT
+		//		|| this->getState() == GOOMBA_FLYING_RIGHT)) {
 
-			if (abs(_mario->getBounds().left - this->getBounds().left) < 14) {
-				if (this->getState() == GOOMBA_FLYING_LEFT) {
-					this->setState(GoombaState::GOOMBA_DROPPING_LEFT);
-				}
-				else if (this->getState() == GOOMBA_FLYING_RIGHT) {
-					this->setState(GoombaState::GOOMBA_DROPPING_RIGHT);
-				}
+		//	if (abs(_mario->getBounds().left - this->getBounds().left) < 14) {
+		//		if (this->getState() == GOOMBA_FLYING_LEFT) {
+		//			this->setState(GoombaState::GOOMBA_DROPPING_LEFT);
+		//		}
+		//		else if (this->getState() == GOOMBA_FLYING_RIGHT) {
+		//			this->setState(GoombaState::GOOMBA_DROPPING_RIGHT);
+		//		}
 
-				// Must be put this here. After set goomba state
-				this->setIsFlyingMode(false);
+		//		// Must be put this here. After set goomba state
+		//		this->setIsFlyingMode(false);
 
-				_mario->setState(MarioState::JUMPING);
-			}
-			else {
-				this->plusX(2 * get<1>(collisionResult) * this->getVx());
-				if (_mario->getIsSuperMode() == false) {
-					this->setState(GoombaState::GOOMBA_STANDING);
-				}
-				_mario->plusX(get<1>(collisionResult) * _mario->getVx());
-				_mario->setState(MarioState::DIE);
-			}
-		}
+		//		_mario->setState(MarioState::JUMPING);
+		//	}
+		//	else {
+		//		this->plusX(2 * get<1>(collisionResult) * this->getVx());
+		//		if (_mario->getIsSuperMode() == false) {
+		//			this->setState(GoombaState::GOOMBA_STANDING);
+		//		}
+		//		_mario->plusX(get<1>(collisionResult) * _mario->getVx());
+		//		_mario->setState(MarioState::DIE);
+		//	}
+		//}
 	}
 }
 
@@ -851,9 +857,9 @@ void Goomba::handleFireBallCollision(FireBall* _fireBall, float _dt)
 		return;
 	}
 
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_fireBall, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_fireBall, _dt);
 
-	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_fireBall->getBounds())) {
+	if (get<0>(collisionResult) == true || this->isCollidingByFrame(_fireBall->getFrame())) {
 		_fireBall->plusX(get<1>(collisionResult) * _fireBall->getVx());
 		_fireBall->plusY(get<1>(collisionResult) * _fireBall->getVy());
 

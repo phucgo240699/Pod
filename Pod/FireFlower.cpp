@@ -349,9 +349,9 @@ void FireFlower::handleFireBallCollision(FireBall* _fireBall, float _dt)
 		if (_fireBall->getY() + _fireBall->getVy() * _dt >= this->getBottomAnchor()) return;
 	}
 
-	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_fireBall, _dt);
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_fireBall, _dt);
 
-	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_fireBall->getBounds())) {
+	if (get<0>(collisionResult) == true || this->isCollidingByFrame(_fireBall->getFrame())) {
 		_fireBall->plusX(get<1>(collisionResult) * _fireBall->getVx());
 		_fireBall->plusY(get<1>(collisionResult) * _fireBall->getVy());
 		_fireBall->setState(FireBallState::FIREBALL_DISAPPEARED);
