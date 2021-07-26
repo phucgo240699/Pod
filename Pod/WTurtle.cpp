@@ -40,7 +40,7 @@ void WTurtle::setAnimation(Animation* _animation)
 
 void WTurtle::Update(float _dt)
 {
-	if (GetTickCount() - startTime < (2000 / Setting::getInstance()->getFPS())) {
+	if ((GetTickCount() - (DWORD)startTime) < (DWORD)(2000 / Setting::getInstance()->getFPS())) {
 		return;
 	}
 	else {

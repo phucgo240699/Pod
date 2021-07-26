@@ -597,7 +597,7 @@ void Koopa::Update(float _dt)
 			
 			this->setIsShrinkageReverseMode(false);
 
-			srand(time(NULL));
+			srand((unsigned int)time(NULL));
 
 			time_t random = rand() % 2 + 1;
 			if (random == time_t(1)) {

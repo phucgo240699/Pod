@@ -76,7 +76,7 @@ void WMario::Update(float _dt)
 		}
 		break;
 	case MOVING_DOWN:
-		if (this->row >= this->movingMatrix.size() - 1
+		if (time_t(this->row) >= this->movingMatrix.size() - 1
 		|| this->movingMatrix[this->row + 1][this->col] == 'X'
 		|| (this->startRowMove != this->row && this->movingMatrix[this->row][this->col] != '-')) {
 			this->setY(float(this->row * tileSize));
@@ -100,7 +100,7 @@ void WMario::Update(float _dt)
 		}
 		break;
 	case MOVING_RIGHT:
-		if (this->col >= this->movingMatrix[this->row].size() - 1
+		if (time_t(this->col) >= this->movingMatrix[this->row].size() - 1
 		|| this->movingMatrix[this->row][this->col + 1] == 'X'
 		|| (this->startColMove != this->col && this->movingMatrix[this->row][this->col] != '-')) {
 			this->setX(float(this->col * tileSize));
@@ -187,7 +187,7 @@ void WMario::loadMovingMatrix(vector<string> data, char seperator)
 
 bool WMario::canMoveRight()
 {
-	if (this->col >= this->movingMatrix[this->row].size() - 1
+	if (time_t(this->col) >= this->movingMatrix[this->row].size() - 1
 	|| this->movingMatrix[this->row][this->col + 1] == 'X') {
 		return false;
 	}
@@ -216,7 +216,7 @@ bool WMario::canMoveTop()
 
 bool WMario::canMoveBottom()
 {
-	if (this->row >= this->movingMatrix.size() - 1
+	if (time_t(this->row) >= this->movingMatrix.size() - 1
 	|| this->movingMatrix[this->row + 1][this->col] == 'X') {
 		return false;
 	}
