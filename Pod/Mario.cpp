@@ -1327,7 +1327,9 @@ void Mario::Update(float _dt)
 		&& this->getSubState() != PUSHING) {
 		this->plusX(this->getVx() * _dt);
 	}
-	this->plusY(this->getVy() * _dt);
+	if (this->getY() + round(this->getVy() * _dt) > 0) {
+		this->plusY(this->getVy() * _dt);
+	}
 }
 
 void Mario::Draw()
@@ -1633,7 +1635,12 @@ void Mario::onKeyUp()
 		|| this->getState() == DIE_DROPPING
 		|| this->getState() == SCALING_UP
 		|| this->getState() == SCALING_DOWN
-		|| this->getState() == TRANSFERING_TO_FLY) {
+		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getState() == DROPPING_DOWN_PIPE
+		|| this->getState() == POPPING_UP_PIPE
+		|| this->getState() == JUMPING_UP_TO_CLOUND
+		|| this->getState() == DROPPING_DOWN_WIN
+		|| this->getState() == MOVING_RIGHT_WIN) {
 		return;
 	}
 
@@ -1667,7 +1674,12 @@ void Mario::onKeyUp(vector<KeyType> _keyTypes)
 		|| this->getState() == DIE_DROPPING
 		|| this->getState() == SCALING_UP
 		|| this->getState() == SCALING_DOWN
-		|| this->getState() == TRANSFERING_TO_FLY) {
+		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getState() == DROPPING_DOWN_PIPE
+		|| this->getState() == POPPING_UP_PIPE
+		|| this->getState() == JUMPING_UP_TO_CLOUND
+		|| this->getState() == DROPPING_DOWN_WIN
+		|| this->getState() == MOVING_RIGHT_WIN) {
 		return;
 	}
 
@@ -1718,7 +1730,12 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 		|| this->getState() == DIE_DROPPING
 		|| this->getState() == SCALING_UP
 		|| this->getState() == SCALING_DOWN
-		|| this->getState() == TRANSFERING_TO_FLY) {
+		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getState() == DROPPING_DOWN_PIPE
+		|| this->getState() == POPPING_UP_PIPE
+		|| this->getState() == JUMPING_UP_TO_CLOUND
+		|| this->getState() == DROPPING_DOWN_WIN
+		|| this->getState() == MOVING_RIGHT_WIN) {
 		return;
 	}
 
