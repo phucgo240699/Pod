@@ -61,10 +61,10 @@ void ThirdVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 void ThirdVC::viewWillUpdate(float _dt)
 {
 	// Check by cell in grid
-	int beginRow = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight());
-	int endRow = ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
-	int beginCol = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth());
-	int endCol = ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth());
+	int beginRow = int(floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()));
+	int endRow = int(ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()));
+	int beginCol = int(floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()));
+	int endCol = int(ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()));
 	for (int i = beginRow; i < endRow; ++i) {
 		for (int j = beginCol; j < endCol; ++j) {
 
@@ -182,10 +182,10 @@ void ThirdVC::viewUpdate(float _dt)
 	
 	
 	// Check by cell in grid
-	int beginRow = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight());
-	int endRow = ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
-	int beginCol = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth());
-	int endCol = ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth());
+	int beginRow = int(floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()));
+	int endRow = int(ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()));
+	int beginCol = int(floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()));
+	int endCol = int(ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()));
 	for (int i = beginRow; i < endRow; ++i) {
 		for (int j = beginCol; j < endCol; ++j) {
 
@@ -547,10 +547,10 @@ void ThirdVC::viewDidUpdate(float _dt)
 
 	// Check by cell in grid
 	unordered_set<Component*> marioCell;
-	int beginRowMario = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight());
-	int endRowMario = ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
-	int beginColMario = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth());
-	int endColMario = ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth());
+	int beginRowMario = int(floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()));
+	int endRowMario = int(ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()));
+	int beginColMario = int(floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()));
+	int endColMario = int(ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()));
 	for (int i = beginRowMario; i < endRowMario; ++i) {
 		for (int j = beginColMario; j < endColMario; ++j) {
 
@@ -591,18 +591,18 @@ void ThirdVC::viewDidUpdate(float _dt)
 					}
 
 					// Super Mushroom collide to others
-					int beginRowSuperMushroom = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int endRowSuperMushroom = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int beginColSuperMushroom = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
-					int endColSuperMushroom = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int beginRowSuperMushroom = int(floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int endRowSuperMushroom = int(ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int beginColSuperMushroom = int(floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
+					int endColSuperMushroom = int(ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
 
 					beginRowSuperMushroom = beginRowSuperMushroom < 0 ? 0 : beginRowSuperMushroom;
 					endRowSuperMushroom = endRowSuperMushroom > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowSuperMushroom;
 					beginColSuperMushroom = beginColSuperMushroom < 0 ? 0 : beginColSuperMushroom;
 					endColSuperMushroom = endColSuperMushroom > Grid::getInstance()->getTotalCols() ? Grid::getInstance()->getTotalCols() : endColSuperMushroom;
 
-					for (int r = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); r < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++r) {
-						for (int c = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); c < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++c) {
+					for (int r = int(floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight())); r < int(ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight())); ++r) {
+						for (int c = int(floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth())); c < int(ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth())); ++c) {
 							unordered_set<Component*> superMushroomCell = Grid::getInstance()->getCell(r, c);
 							unordered_set<Component*> ::iterator superMushroomItr;
 							for (superMushroomItr = superMushroomCell.begin(); superMushroomItr != superMushroomCell.end(); ++superMushroomItr) {
@@ -655,10 +655,10 @@ void ThirdVC::viewDidUpdate(float _dt)
 					}
 
 					// Goomba to others
-					int beginRowGoomba = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int endRowGoomba = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int beginColGoomba = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
-					int endColGoomba = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int beginRowGoomba = int(floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int endRowGoomba = int(ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int beginColGoomba = int(floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
+					int endColGoomba = int(ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
 
 					beginRowGoomba = beginRowGoomba < 0 ? 0 : beginRowGoomba;
 					endRowGoomba = endRowGoomba > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowGoomba;
@@ -709,10 +709,10 @@ void ThirdVC::viewDidUpdate(float _dt)
 					//}
 
 					// Koopa to others
-					int beginRowKoopa = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int endRowKoopa = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int beginColKoopa = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
-					int endColKoopa = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int beginRowKoopa = int(floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int endRowKoopa = int(ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int beginColKoopa = int(floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
+					int endColKoopa = int(ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
 
 					beginRowKoopa = beginRowKoopa < 0 ? 0 : beginRowKoopa;
 					endRowKoopa = endRowKoopa > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowKoopa;
@@ -790,10 +790,10 @@ void ThirdVC::viewDidUpdate(float _dt)
 					static_cast<BoomerangBro*>(*itr)->handleMarioCollision(this->mario, _dt);
 
 					// Boomerang Bro to others
-					int beginRowBoomerangBro = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int endRowBoomerangBro = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int beginColBoomerangBro = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
-					int endColBoomerangBro = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int beginRowBoomerangBro = int(floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int endRowBoomerangBro = int(ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int beginColBoomerangBro = int(floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
+					int endColBoomerangBro = int(ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
 
 					beginRowBoomerangBro = beginRowBoomerangBro < 0 ? 0 : beginRowBoomerangBro;
 					endRowBoomerangBro = endRowBoomerangBro > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowBoomerangBro;
@@ -826,10 +826,10 @@ void ThirdVC::viewDidUpdate(float _dt)
 					static_cast<Boomerang*>(*itr)->handleMarioCollision(this->mario, _dt);
 
 					// Boomerang to others
-					int beginRowBoomerang = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int endRowBoomerang = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int beginColBoomerang = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
-					int endColBoomerang = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int beginRowBoomerang = int(floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int endRowBoomerang = int(ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int beginColBoomerang = int(floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
+					int endColBoomerang = int(ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
 
 					beginRowBoomerang = beginRowBoomerang < 0 ? 0 : beginRowBoomerang;
 					endRowBoomerang = endRowBoomerang > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowBoomerang;
@@ -856,10 +856,10 @@ void ThirdVC::viewDidUpdate(float _dt)
 					static_cast<Boss*>(*itr)->handleMarioCollision(this->mario, _dt);
 
 					// Boss to others
-					int beginRowBoss = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int endRowBoss = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int beginColBoss = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
-					int endColBoss = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int beginRowBoss = int(floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int endRowBoss = int(ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int beginColBoss = int(floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
+					int endColBoss = int(ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
 
 					beginRowBoss = beginRowBoss < 0 ? 0 : beginRowBoss;
 					endRowBoss = endRowBoss > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowBoss;
@@ -909,10 +909,10 @@ void ThirdVC::viewDidUpdate(float _dt)
 				// Fire Ball
 				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
 					// FireBall to others
-					int beginRowFireball = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int endRowFireball = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int beginColFireball = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
-					int endColFireball = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int beginRowFireball = int(floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int endRowFireball = int(ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int beginColFireball = int(floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
+					int endColFireball = int(ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
 
 					beginRowFireball = beginRowFireball < 0 ? 0 : beginRowFireball;
 					endRowFireball = endRowFireball > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowFireball;
@@ -971,8 +971,8 @@ void ThirdVC::viewWillRender()
 			map->Draw(Drawing::getInstance()->getThirdMapTexture());
 		}
 
-		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
-			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+		for (int i = int(floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight())); i < int(ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight())); ++i) {
+			for (int j = int(floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth())); j < int(ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth())); ++j) {
 				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
 				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
@@ -1030,8 +1030,8 @@ void ThirdVC::viewWillRender()
 			mario->Draw();
 		}
 		
-		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
-			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+		for (int i = int(floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight())); i < int(ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight())); ++i) {
+			for (int j = int(floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth())); j < int(ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth())); ++j) {
 				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
 				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
@@ -1056,8 +1056,8 @@ void ThirdVC::viewWillRender()
 			}
 		}
 
-		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
-			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+		for (int i = int(floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight())); i < int(ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight())); ++i) {
+			for (int j = int(floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth())); j < int(ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth())); ++j) {
 				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
 				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
@@ -1095,7 +1095,7 @@ void ThirdVC::viewWillRelease()
 void ThirdVC::adaptRangeID(vector<string> data, char seperator)
 {
 	vector<int> v;
-	for (int i = 0; i < data.size(); ++i) {
+	for (size_t i = 0; i < data.size(); ++i) {
 		if (i == 0) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginGroundId = v[0];
@@ -1221,7 +1221,7 @@ void ThirdVC::adaptData()
 			continue;
 		}
 		else if (line == "</Grounds>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				Ground* ground = new Ground(0, 0, 0, 0, 0, 0, 0, 0);
 				ground->load(data[i], ',');
 				this->grounds->push_back(ground);
@@ -1233,7 +1233,7 @@ void ThirdVC::adaptData()
 			continue;
 		}
 		else if (line == "</BlockFrames>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				Block* block = new Block(0, 0, 0, 0, 0, 0, 0, 0);
 				block->load(data[i], ',');
 				blocks->push_back(block);
@@ -1245,7 +1245,7 @@ void ThirdVC::adaptData()
 			continue;
 		}
 		else if (line == "</GoldenBrickFrames>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				GoldenBrick* goldenBrick = new GoldenBrick(0, 0, 0, 0, 0, 0, 0);
 				goldenBrick->loadInfo(data[i], ',');
 				this->goldenBricks->insert(goldenBrick);
@@ -1257,7 +1257,7 @@ void ThirdVC::adaptData()
 			continue;
 		}
 		else if (line == "</GiftBrickFrames>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				GiftBrick* giftBrick = new GiftBrick(0, 0, 0, 0, 0, 0);
 				giftBrick->loadInfo(data[i], ',');
 				giftBricks->push_back(giftBrick);
@@ -1269,7 +1269,7 @@ void ThirdVC::adaptData()
 			continue;
 		}
 		else if (line == "</CoinFrames>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				Coin* coin = new Coin(0, 0, 0, 0, 0, 0, 0, 0);
 				coin->loadInfo(data[i], ',');
 				this->coins->insert(coin);
@@ -1281,7 +1281,7 @@ void ThirdVC::adaptData()
 			continue;
 		}
 		else if (line == "</GoombaFrames>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				Goomba* goomba = new Goomba(0, 0, 0, 0, 0, 0, 0);
 				goomba->loadInfo(data[i], ',');
 				goombas->insert(goomba);
@@ -1293,7 +1293,7 @@ void ThirdVC::adaptData()
 			continue;
 		}
 		else if (line == "</KoopaFrames>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				Koopa* koopa = new Koopa(0, 0, 0, 0, 0, 0, 0);
 				koopa->loadInfo(data[i], ',');
 				koopas->insert(koopa);
@@ -1305,7 +1305,7 @@ void ThirdVC::adaptData()
 			continue;
 		}
 		else if (line == "</MusicBoxFrames>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				MusicBox* musicBox = new MusicBox(0, 0, 0, 0, 0, 0);
 				musicBox->loadInfo(data[i], ',');
 				this->musicBoxes->push_back(musicBox);
@@ -1317,7 +1317,7 @@ void ThirdVC::adaptData()
 			continue;
 		}
 		else if (line == "</BoomerangBroFrames>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				BoomerangBro* boomerangBro = new BoomerangBro(0, 0, 0, 0, 0, 0, 0);
 				boomerangBro->loadInfo(data[i], ',');
 				boomerangBros->insert(boomerangBro);
@@ -1329,7 +1329,7 @@ void ThirdVC::adaptData()
 			continue;
 		}
 		else if (line == "</BossFrames>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				Boss* boss = new Boss(0, 0, 0, 0, Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), 0);
 				boss->loadInfo(data[i], ',');
 				this->bosses->insert(boss);
@@ -1407,7 +1407,7 @@ void ThirdVC::adaptAnimation()
 	}
 
 	// Gift Bricks
-	for (int i = 0; i < this->giftBricks->size(); ++i) {
+	for (size_t i = 0; i < this->giftBricks->size(); ++i) {
 		this->giftBricks->at(i)->setState(GiftBrickState::FULLGIFTBRICK);
 		if (this->giftBricks->at(i)->getGiftType() == SuperMushroomOrSuperLeaf) { // Super Mushroom, super leaf
 			this->giftBricks->at(i)->getSuperMushroom()->setUpAnimation();
@@ -1466,7 +1466,7 @@ void ThirdVC::adaptAnimation()
 	}
 
 	// Music Box
-	for (int i = 0; i < this->musicBoxes->size(); ++i) {
+	for (size_t i = 0; i < this->musicBoxes->size(); ++i) {
 		if (this->musicBoxes->at(i)->getIsSpecial()) {
 			this->musicBoxes->at(i)->setAnimation(new Animation(AnimationBundle::getInstance()->getMusicBoxRed()));
 		}
@@ -1512,12 +1512,12 @@ void ThirdVC::adaptAnimation()
 void ThirdVC::adaptToGrid()
 {
 	// Grounds
-	for (int i = 0; i < this->grounds->size(); ++i) {
+	for (size_t i = 0; i < this->grounds->size(); ++i) {
 		Grid::getInstance()->add(this->grounds->at(i));
 	}
 
 	// Blocks
-	for (int i = 0; i < this->blocks->size(); ++i) {
+	for (size_t i = 0; i < this->blocks->size(); ++i) {
 		Grid::getInstance()->add(this->blocks->at(i));
 	}
 
@@ -1528,7 +1528,7 @@ void ThirdVC::adaptToGrid()
 	}
 
 	// Gift Bricks
-	for (int i = 0; i < this->giftBricks->size(); ++i) {
+	for (size_t i = 0; i < this->giftBricks->size(); ++i) {
 		Grid::getInstance()->add(this->giftBricks->at(i));
 	}
 
@@ -1556,7 +1556,7 @@ void ThirdVC::adaptToGrid()
 	}
 
 	// Music Box
-	for (int i = 0; i < this->musicBoxes->size(); ++i) {
+	for (size_t i = 0; i < this->musicBoxes->size(); ++i) {
 		Grid::getInstance()->add(this->musicBoxes->at(i));
 	}
 

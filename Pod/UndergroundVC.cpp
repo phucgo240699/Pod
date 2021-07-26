@@ -39,10 +39,10 @@ void UndergroundVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 void UndergroundVC::viewWillUpdate(float _dt)
 {
 	// Check by cell in grid
-	int beginRow = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight());
-	int endRow = ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
-	int beginCol = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth());
-	int endCol = ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth());
+	int beginRow = int(floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()));
+	int endRow = int(ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()));
+	int beginCol = int(floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()));
+	int endCol = int(ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()));
 	for (int i = beginRow; i < endRow; ++i) {
 		for (int j = beginCol; j < endCol; ++j) {
 
@@ -78,10 +78,10 @@ void UndergroundVC::viewUpdate(float _dt)
 	}
 
 	// Check by cell in grid
-	int beginRow = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight());
-	int endRow = ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
-	int beginCol = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth());
-	int endCol = ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth());
+	int beginRow = int(floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()));
+	int endRow = int(ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()));
+	int beginCol = int(floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()));
+	int endCol = int(ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()));
 	for (int i = beginRow; i < endRow; ++i) {
 		for (int j = beginCol; j < endCol; ++j) {
 
@@ -200,10 +200,10 @@ void UndergroundVC::viewDidUpdate(float _dt)
 	}
 
 	// Check by cell in grid
-	int beginRowMario = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight());
-	int endRowMario = ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
-	int beginColMario = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth());
-	int endColMario = ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth());
+	int beginRowMario = int(floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()));
+	int endRowMario = int(ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()));
+	int beginColMario = int(floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()));
+	int endColMario = int(ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()));
 	for (int i = beginRowMario; i < endRowMario; ++i) {
 		for (int j = beginColMario; j < endColMario; ++j) {
 
@@ -226,16 +226,16 @@ void UndergroundVC::viewDidUpdate(float _dt)
 
 				// Green Pipe
 				else if (beginGreenPipeId <= (*itr)->getId() && (*itr)->getId() <= endGreenPipeId) {
-					this->mario->handleGreenPipeDownCollision(static_cast<GreenPipe*>(*itr), this->greenPipeIdToUnderground, this->leftAnchorGreenPipeToPassThrough, this->rightAnchorGreenPipeToPassThrough, _dt);
+					this->mario->handleGreenPipeDownCollision(static_cast<GreenPipe*>(*itr), this->greenPipeIdToUnderground, float(this->leftAnchorGreenPipeToPassThrough), float(this->rightAnchorGreenPipeToPassThrough), _dt);
 				}
 
 				// Fire Ball
 				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
 					// FireBall to others
-					int beginRowFireball = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int endRowFireball = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int beginColFireball = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
-					int endColFireball = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int beginRowFireball = int(floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int endRowFireball = int(ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int beginColFireball = int(floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
+					int endColFireball = int(ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
 
 					beginRowFireball = beginRowFireball < 0 ? 0 : beginRowFireball;
 					endRowFireball = endRowFireball > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowFireball;
@@ -279,8 +279,8 @@ void UndergroundVC::viewWillRender()
 		}
 
 		unordered_set<Component*> cell;
-		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
-			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+		for (int i = int(floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight())); i < int(ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight())); ++i) {
+			for (int j = int(floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth())); j < int(ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth())); ++j) {
 				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
 				cell = Grid::getInstance()->getCell(i, j);
@@ -295,8 +295,8 @@ void UndergroundVC::viewWillRender()
 			}
 		}
 
-		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
-			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+		for (int i = int(floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight())); i < int(ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight())); ++i) {
+			for (int j = int(floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth())); j < int(ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth())); ++j) {
 				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
 				cell = Grid::getInstance()->getCell(i, j);
@@ -315,8 +315,8 @@ void UndergroundVC::viewWillRender()
 			mario->Draw();
 		}
 
-		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
-			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+		for (int i = int(floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight())); i < int(ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight())); ++i) {
+			for (int j = int(floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth())); j < int(ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth())); ++j) {
 				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
 				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
@@ -353,7 +353,7 @@ void UndergroundVC::viewWillRelease()
 void UndergroundVC::adaptRangeID(vector<string> data, char seperator)
 {
 	vector<int> v;
-	for (int i = 0; i < data.size(); ++i) {
+	for (size_t i = 0; i < data.size(); ++i) {
 		if (i == 0) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginGroundId = v[0];
@@ -431,7 +431,7 @@ void UndergroundVC::adaptData()
 			continue;
 		}
 		else if (line == "</Grounds>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				Ground* ground = new Ground(0, 0, 0, 0, 0, 0, 0, 0);
 				ground->load(data[i], ',');
 				this->grounds->push_back(ground);
@@ -443,7 +443,7 @@ void UndergroundVC::adaptData()
 			continue;
 		}
 		else if (line == "</CoinFrames>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				Coin* coin = new Coin(0, 0, 0, 0, 0, 0, 0, 0);
 				coin->loadInfo(data[i], ',');
 				this->coins->insert(coin);
@@ -455,7 +455,7 @@ void UndergroundVC::adaptData()
 			continue;
 		}
 		else if (line == "</GreenPipeFrames>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				GreenPipe* greenPipe = new GreenPipe(0, 0, 0, 0, 0, 0, 0);
 				greenPipe->loadInfo(data[i], ',');
 				greenPipes->push_back(greenPipe);
@@ -511,7 +511,7 @@ void UndergroundVC::adaptAnimation()
 	}
 
 	// Green Pipes
-	for (int i = 0; i < this->greenPipes->size(); ++i) {
+	for (size_t i = 0; i < this->greenPipes->size(); ++i) {
 		this->greenPipes->at(i)->setAnimation(new Animation(AnimationBundle::getInstance()->getBlackPipe2FloorDown()));
 	}
 
@@ -524,7 +524,7 @@ void UndergroundVC::adaptAnimation()
 void UndergroundVC::adaptToGrid()
 {
 	// Grounds
-	for (int i = 0; i < this->grounds->size(); ++i) {
+	for (size_t i = 0; i < this->grounds->size(); ++i) {
 		Grid::getInstance()->add(this->grounds->at(i));
 	}
 
@@ -535,7 +535,7 @@ void UndergroundVC::adaptToGrid()
 	}
 
 	// Green Pipes
-	for (int i = 0; i < this->greenPipes->size(); ++i) {
+	for (size_t i = 0; i < this->greenPipes->size(); ++i) {
 		Grid::getInstance()->add(this->greenPipes->at(i));
 	}
 }

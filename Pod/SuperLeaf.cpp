@@ -94,7 +94,7 @@ void SuperLeaf::Update(float _dt)
 		if (this->getIsFlip() == false) {
 			//++valX;
 			//this->setX(valX);
-			valY = (pow(this->getX() - leftX - 24, 2) / 36) - 16;
+			valY = (float(pow(this->getX() - leftX - 24, 2)) / 36) - 16;
 			if (this->getX() != leftX) { // Only convert when not leftX
 				valY *= -1; // Must be multiply to -1. Because Oxy in programming and math is different
 			}
@@ -103,7 +103,7 @@ void SuperLeaf::Update(float _dt)
 
 		// <---
 		else {
-			valY = (pow(this->getX() - leftX - 10, 2) / 36) - 16;
+			valY = (float(pow(this->getX() - leftX - 10, 2)) / 36) - 16;
 			if (this->getX() != rightX) { // Only convert when not rightX
 				valY *= -1; // Must be multiply to -1. Because Oxy in programming and math is different
 			}

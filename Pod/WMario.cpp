@@ -67,48 +67,48 @@ void WMario::Update(float _dt)
 		if (this->row <= 0
 		|| this->movingMatrix[this->row - 1][this->col] == 'X'
 		|| (this->startRowMove != this->row && this->movingMatrix[this->row][this->col] != '-')) {
-			this->setY(this->row * tileSize);
+			this->setY(float(this->row * tileSize));
 			this->setState(WMarioState::WMARIO_STANDING);
 		}
 		else {
 			this->plusY(this->getVy() * _dt);
-			this->row = (this->getY() + this->getHeight()) / this->tileSize;
+			this->row = int((this->getY() + this->getHeight()) / this->tileSize);
 		}
 		break;
 	case MOVING_DOWN:
 		if (this->row >= this->movingMatrix.size() - 1
 		|| this->movingMatrix[this->row + 1][this->col] == 'X'
 		|| (this->startRowMove != this->row && this->movingMatrix[this->row][this->col] != '-')) {
-			this->setY(this->row * tileSize);
+			this->setY(float(this->row * tileSize));
 			this->setState(WMarioState::WMARIO_STANDING);
 		}
 		else {
 			this->plusY(this->getVy() * _dt);
-			this->row = this->getY() / this->tileSize;
+			this->row = int(this->getY() / this->tileSize);
 		}
 		break;
 	case MOVING_LEFT:
 		if (this->col <= 0
 		|| this->movingMatrix[this->row][this->col - 1] == 'X'
 		|| (this->startColMove != this->col && this->movingMatrix[this->row][this->col] != '-')) {
-			this->setX(this->col * tileSize);
+			this->setX(float(this->col * tileSize));
 			this->setState(WMarioState::WMARIO_STANDING);
 		}
 		else {
 			this->plusX(this->getVx() * _dt);
-			this->col = (this->getX() + this->getWidth()) / this->tileSize;
+			this->col = int((this->getX() + this->getWidth()) / this->tileSize);
 		}
 		break;
 	case MOVING_RIGHT:
 		if (this->col >= this->movingMatrix[this->row].size() - 1
 		|| this->movingMatrix[this->row][this->col + 1] == 'X'
 		|| (this->startColMove != this->col && this->movingMatrix[this->row][this->col] != '-')) {
-			this->setX(this->col * tileSize);
+			this->setX(float(this->col * tileSize));
 			this->setState(WMarioState::WMARIO_STANDING);
 		}
 		else {
 			this->plusX(this->getVx() * _dt);
-			this->col = this->getX() / this->tileSize;
+			this->col = int(this->getX() / this->tileSize);
 		}
 		break;
 	default:
@@ -127,7 +127,7 @@ void WMario::Draw(LPDIRECT3DTEXTURE9 _texture)
 
 void WMario::onKeyDown(vector<KeyType> _keyTypes)
 {
-	for (int i = 0; i < _keyTypes.size(); ++i) {
+	for (size_t i = 0; i < _keyTypes.size(); ++i) {
 		if (this->getState() == WMARIO_STANDING) {
 			if (_keyTypes[i] == KeyType::up) {
 				if (canMoveTop()) {
@@ -171,8 +171,8 @@ void WMario::loadInfo(string line, char seperator)
 	this->startRowMove = stoi(v[5]);
 	this->startColMove = stoi(v[6]);
 
-	this->setX(this->col * this->tileSize);
-	this->setY(this->row * this->tileSize);
+	this->setX(float(this->col * this->tileSize));
+	this->setY(float(this->row * this->tileSize));
 }
 
 void WMario::setAnimation(Animation* _animation)

@@ -8,10 +8,10 @@ SuperMushroom::SuperMushroom(float _x, float _y, int _width, int _height, float 
 	this->setId(_id);
 	this->setWidth(_width);
 	this->setHeight(_height);
-	this->endGrowUpY = this->getY() - 8 - 1;
+	this->endGrowUpY = int(this->getY()) - 8 - 1;
 
 	// Random number
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 
 	int randomNumber = rand() % 2 + 1;
 	this->moveLeftFirst = randomNumber == 1 ? true : false;
@@ -97,7 +97,7 @@ void SuperMushroom::setState(SuperMushroomState _state)
 		if (this->getIsGreenMode() == false) {
 			this->pointAnimation = new Animation(AnimationBundle::getInstance()->get1000Points());
 		}
-		this->endPointJumpUp = this->getY() - 36;
+		this->endPointJumpUp = int(this->getY()) - 36;
 		this->pointPosition = D3DXVECTOR3(this->getX(), this->getY(), 0);
 		break;
 	}
@@ -153,8 +153,8 @@ void SuperMushroom::Update(float _dt)
 		this->animation->Update(_dt);
 	}
 	else if (this->getState() == SUPER_MUSHROOM_DROPPING_LEFT || this->getState() == SUPER_MUSHROOM_DROPPING_RIGHT) {
-		this->plusXNoRound(0.5 * this->getVx() * _dt);
-		this->plusYNoRound(1.5 * this->getVy() * _dt);
+		this->plusXNoRound(float(0.5) * this->getVx() * _dt);
+		this->plusYNoRound(float(1.5) * this->getVy() * _dt);
 		this->animation->Update(_dt);
 	}
 
@@ -190,7 +190,7 @@ void SuperMushroom::handleHardComponentCollision(Component* _component, float _d
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_component, _dt);
 	if (get<0>(collisionResult) == true) {
-		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+		for (size_t j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == leftEdge && this->getY() + this->getBoundsHeight() != _component->getY()) {
 				if (this->getState() == SUPER_MUSHROOM_MOVING_LEFT) {
@@ -242,7 +242,7 @@ void SuperMushroom::handleBlockCollision(Block* _block, float _dt)
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_block, _dt);
 	if (get<0>(collisionResult) == true) {
-		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+		for (size_t j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == bottomEdge) {
 				this->setIsStandOnSurface(true);

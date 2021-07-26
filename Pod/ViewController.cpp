@@ -106,8 +106,8 @@ void ViewController::navigateTo(SceneName _sceneName)
 			Camera::getInstance()->loadThirdMap();
 
 			this->appController->getThirdVC()->getMario()->load();
-			this->appController->getThirdVC()->getMario()->setX(this->appController->getThirdVC()->getLeftAnchorDroppingFromCloudy());
-			this->appController->getThirdVC()->getMario()->setY(this->appController->getThirdVC()->getTopAnchorDroppingFromCloudy());
+			this->appController->getThirdVC()->getMario()->setX(float(this->appController->getThirdVC()->getLeftAnchorDroppingFromCloudy()));
+			this->appController->getThirdVC()->getMario()->setY(float(this->appController->getThirdVC()->getTopAnchorDroppingFromCloudy()));
 			this->appController->getThirdVC()->getMario()->setLimitX(Camera::getInstance()->getLimitX());
 			this->appController->getThirdVC()->getMario()->setLimitY(Camera::getInstance()->getLimitY());
 

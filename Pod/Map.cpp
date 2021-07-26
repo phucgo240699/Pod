@@ -129,13 +129,13 @@ void Map::Draw(LPDIRECT3DTEXTURE9 _texture)
 
 	int tileId; // from index 0
 	int r, c; // from index 0. These are row, column in tileset
-	for (size_t i = cellIndexBeginY; i <= cellIndexEndY; ++i) {
+	for (int i = cellIndexBeginY; i <= cellIndexEndY; ++i) {
 
 		if (i < 0 || i >= this->matrixIds.size()) {
 			continue;
 		}
 
-		for (size_t j = cellIndexBeginX; j <= cellIndexEndX; ++j) {
+		for (int j = cellIndexBeginX; j <= cellIndexEndX; ++j) {
 
 			if (j < 0 || j >= this->matrixIds[0].size()) {
 				continue;

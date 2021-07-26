@@ -102,7 +102,7 @@ void SunnyVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 	//	return;
 	//}
 	
-	for (int i = 0; i < _keyTypes.size(); ++i) {
+	for (size_t i = 0; i < _keyTypes.size(); ++i) {
 		if (_keyTypes[i] == KeyType::down
 			&& this->mario->getComponentIdStandingOn() == this->componentIdToUnderground
 			&& this->mario->getX() >= leftAnchorGreenPipeToPassThrough

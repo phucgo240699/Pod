@@ -50,7 +50,7 @@ void StaticAnim::Draw(LPDIRECT3DTEXTURE9 _texture)
 
 	if (this->animation == NULL) return;
 
-	for (int i = 0; i < this->frames->size(); ++i) {
+	for (size_t i = 0; i < this->frames->size(); ++i) {
 		if (Camera::getInstance()->isCollidingByFrame(this->frames->at(i))) {
 			drawingPosition.x = float(this->frames->at(i).left);
 			drawingPosition.y = float(this->frames->at(i).top);
