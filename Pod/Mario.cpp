@@ -1849,17 +1849,41 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 			}
 		}
 
+		// Small
+		else if (_keyTypes[i] == KeyType::number_1) {
+			if (this->getIsSuperMode() || this->getIsFlyingMode()) {
+				if (this->getState() != MarioState::TRANSFERING_TO_FLY && this->getState() != MarioState::SCALING_UP && this->getState() != MarioState::SCALING_DOWN) {
+					this->setState(MarioState::DIE);
+				}
+			}
+		}
+
+		// Big
+		else if (_keyTypes[i] == KeyType::number_2) {
+			if (this->getIsSuperMode() == false && this->getIsFlyingMode() == false) {
+				this->setState(MarioState::SCALING_UP);
+			}
+		}
+
+		// Tail
+		else if (_keyTypes[i] == KeyType::number_3) {
+			if (this->getIsSuperMode() == true && this->getIsFlyingMode() == false) {
+				this->setState(MarioState::TRANSFERING_TO_FLY);
+			}
+		}
+
 		// Fire Mode
-		else if (_keyTypes[i] == KeyType::F3) {
+		else if (_keyTypes[i] == KeyType::number_4) {
 			if (this->getIsFireMode() == false) {
 				this->turnOnFireSkin(this->getState());
 			}
 		}
-		else if (_keyTypes[i] == KeyType::F4) {
+		else if (_keyTypes[i] == KeyType::number_5) {
 			if (this->getIsFireMode() == true) {
 				this->turnOffFireSkin(this->getState());
 			}
 		}
+
 
 		// Keydown
 		else if (_keyTypes[i] == KeyType::up) {

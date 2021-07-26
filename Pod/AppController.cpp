@@ -230,22 +230,49 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		hasKeyDown = true;
 	}
 
-	// F3
-	if (KEY_DOWN(VK_F3) == 1) {
+	// Number 1
+	if (KEY_DOWN(0x31) == 1) {
 		hasKeyDown = true;
-		keyDowns.push_back(KeyType::F3);
+		keyDowns.push_back(KeyType::number_1);
 	}
 	else {
-		keyUps.push_back(KeyType::F3);
+		keyUps.push_back(KeyType::number_1);
 	}
 
-	// F4
-	if (KEY_DOWN(VK_F4) == 1) {
+	// Number 2
+	if (KEY_DOWN(0x32) == 1) {
 		hasKeyDown = true;
-		keyDowns.push_back(KeyType::F4);
+		keyDowns.push_back(KeyType::number_2);
 	}
 	else {
-		keyUps.push_back(KeyType::F4);
+		keyUps.push_back(KeyType::number_2);
+	}
+
+	// Number 3
+	if (KEY_DOWN(0x33) == 1) {
+		hasKeyDown = true;
+		keyDowns.push_back(KeyType::number_3);
+	}
+	else {
+		keyUps.push_back(KeyType::number_3);
+	}
+
+	// Number 4
+	if (KEY_DOWN(0x34) == 1) {
+		hasKeyDown = true;
+		keyDowns.push_back(KeyType::number_4);
+	}
+	else {
+		keyUps.push_back(KeyType::number_4);
+	}
+
+	// Number 5
+	if (KEY_DOWN(0x35) == 1) {
+		hasKeyDown = true;
+		keyDowns.push_back(KeyType::number_5);
+	}
+	else {
+		keyUps.push_back(KeyType::number_5);
 	}
 
 	// Enter
