@@ -11,21 +11,21 @@ Goomba::Goomba(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float
 
 void Goomba::loadInfo(string line, char seperator)
 {
-	vector<float> v = Tool::splitToVectorFloatFrom(line, seperator);
+	vector<string> v = Tool::splitToVectorStringFrom(line, seperator);
 
-	this->setX(v[0]);
-	this->setY(v[1]);
-	this->setWidth(v[2]);
-	this->setHeight(v[3]);
-	this->setVx(v[4]);
-	this->setVy(v[5]);
-	this->setId(v[7]);
+	this->setX(stof(v[0]));
+	this->setY(stof(v[1]));
+	this->setWidth(stoi(v[2]));
+	this->setHeight(stoi(v[3]));
+	this->setVx(stof(v[4]));
+	this->setVy(stof(v[5]));
+	this->setId(stoi(v[7]));
 
-	this->defaultPoint = v[6];
+	this->defaultPoint = stoi(v[6]);
 	this->originVx = abs(this->getVx());
 	this->originVy = abs(this->getVy());
 
-	this->setIsFlyingMode(v[8] == 1);
+	this->setIsFlyingMode(stoi(v[8]) == 1);
 	isUseRedSkin = this->getIsFlyingMode();
 }
 
@@ -87,9 +87,9 @@ float Goomba::getOriginVy()
 RECT Goomba::getFrame()
 {
 	RECT r = RECT();
-	r.top = this->getY() - 8;
+	r.top = int(this->getY()) - 8;
 	r.bottom = r.top + this->getHeight();
-	r.left = this->getX() - 4;
+	r.left = int(this->getX()) - 4;
 	r.right = r.left + this->getWidth();
 
 	return r;
@@ -208,7 +208,7 @@ void Goomba::setState(GoombaState _state)
 		this->countPoppingX = 0;
 		this->startPoppingY = this->getY();
 
-		this->setVx(-0.5 * this->getOriginVx());
+		this->setVx(-float(0.5) * this->getOriginVx());
 		this->setVy(-this->getOriginVy());
 		break;
 	}
@@ -223,7 +223,7 @@ void Goomba::setState(GoombaState _state)
 		this->countPoppingX = 0;
 		this->startPoppingY = this->getY();
 
-		this->setVx(0.5 * this->getOriginVx());
+		this->setVx(float(0.5) * this->getOriginVx());
 		this->setVy(-this->getOriginVy());
 		break;
 	}
@@ -407,7 +407,7 @@ void Goomba::Update(float _dt)
 	else if (this->getState() == GOOMBA_POPPING_LEFT) {
 		// vx now is < 0
 		this->countPoppingX += (this->getVx() * _dt);
-		float moreY = (-1 * (16 - (pow(countPoppingX + 8, 2) / 4)));
+		float moreY = (-1 * (16 - (float(pow(countPoppingX + 8, 2)) / 4)));
 		this->plusXNoRound(this->getVx() * _dt);
 		this->setYNoRound(startPoppingY + moreY);
 
@@ -418,7 +418,7 @@ void Goomba::Update(float _dt)
 	else if (this->getState() == GOOMBA_POPPING_RIGHT) {
 		// vx now is > 0
 		this->countPoppingX += (this->getVx() * _dt);
-		float moreY = (-1 * (16 - (pow(countPoppingX - 8, 2) / 4)));
+		float moreY = (-1 * (16 - (float(pow(countPoppingX - 8, 2)) / 4)));
 		this->plusXNoRound(this->getVx() * _dt);
 		this->setYNoRound(startPoppingY + moreY);
 
@@ -429,7 +429,7 @@ void Goomba::Update(float _dt)
 	else if (this->getState() == GOOMBA_FLYING_LEFT) {
 		// vx now is < 0
 		countFlyingX += (this->getVx() * _dt);
-		float moreY = (-1 * (32 - (pow(countFlyingX + 24, 2) / 18)));
+		float moreY = (-1 * (32 - (float(pow(countFlyingX + 24, 2)) / 18)));
 		this->plusXNoRound(this->getVx() * _dt);
 		this->setYNoRound(startFlyingY + moreY);
 
@@ -440,7 +440,7 @@ void Goomba::Update(float _dt)
 	else if (this->getState() == GOOMBA_FLYING_RIGHT) {
 		// vx now is > 0
 		countFlyingX += (this->getVx() * _dt);
-		float moreY = (-1 * (32 - (pow(countFlyingX - 24, 2) / 18)));
+		float moreY = (-1 * (32 - (float(pow(countFlyingX - 24, 2)) / 18)));
 		this->plusXNoRound(this->getVx() * _dt);
 		this->setYNoRound(startFlyingY + moreY);
 
@@ -463,12 +463,12 @@ void Goomba::Update(float _dt)
 	}
 	else if (this->getState() == THROWN_LEFT_AWAY_GOOMBA) {
 		this->plusXNoRound(-2);
-		this->setY(this->startThrownY + (-1 * (16 - (pow(thrownX + 24, 2) / 36)))); // -1: Oxy in game vs math
+		this->setY(this->startThrownY + (-1 * (16 - (float(pow(thrownX + 24, 2)) / 36)))); // -1: Oxy in game vs math
 		thrownX -= (2);
 	}
 	else if (this->getState() == THROWN_RIGHT_AWAY_GOOMBA) {
 		this->plusXNoRound(2);
-		this->setY(this->startThrownY + (-1 * (16 - (pow(thrownX - 24, 2) / 36)))); // -1: Oxy in game vs math
+		this->setY(this->startThrownY + (-1 * (16 - (float(pow(thrownX - 24, 2) / 36))))); // -1: Oxy in game vs math
 		thrownX += (2);
 	}
 	this->animation->Update(_dt);
@@ -495,7 +495,7 @@ void Goomba::handleHardComponentCollision(Component* _component, float _dt)
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_component, _dt);
 	if (get<0>(collisionResult) == true) {
-		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+		for (size_t j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == leftEdge && this->getY() + this->getBoundsHeight() != _component->getY()) {
 				if (this->getState() == GOOMBA_MOVING_LEFT) {
@@ -600,7 +600,7 @@ void Goomba::handleBlockCollision(Component* _block, float _dt)
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_block, _dt);
 	if (get<0>(collisionResult) == true) {
-		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+		for (size_t j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == bottomEdge) {
 				this->setIsStandOnSurface(true);
@@ -786,7 +786,7 @@ void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 	}*/
 
 	if (get<0>(collisionResult) == true) {
-		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+		for (size_t j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == bottomEdge) {
 				//this->plusY(2 * get<1>(collisionResult) * this->getVy());

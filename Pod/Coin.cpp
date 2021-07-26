@@ -42,11 +42,11 @@ void Coin::setAnimation(Animation* _animation)
 
 void Coin::loadInfo(string line, char seperator)
 {
-	vector<float> v = Tool::splitToVectorFloatFrom(line, seperator);
+	vector<string> v = Tool::splitToVectorStringFrom(line, seperator);
 
-	this->setX(v[0]);
-	this->setY(v[1]);
-	this->setId(v[2]);
+	this->setX(stof(v[0]));
+	this->setY(stof(v[1]));
+	this->setId(stoi(v[2]));
 }
 
 void Coin::Update(float _dt)

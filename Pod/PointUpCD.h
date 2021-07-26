@@ -9,9 +9,9 @@ private:
 public:
 	// Init
 	//PointUpCD(Animation _animation, int _x, int _y, int _endY);
-	PointUpCD(Animation _animation, int _x, int _y);
+	PointUpCD(Animation _animation, float _x, float _y);
 	//PointUpCD(int point, int _x, int _y, int _endY);
-	PointUpCD(int point, int _x, int _y);
+	PointUpCD(int point, float _x, float _y);
 
 	void Update(float _dt);
 	void Draw(LPDIRECT3DTEXTURE9 _texture);

@@ -100,13 +100,13 @@ void MusicBox::setState(MusicBoxState _state)
 
 void MusicBox::loadInfo(string line, char seperator)
 {
-	vector<int> v = Tool::splitToVectorIntegerFrom(line, seperator);
+	vector<string> v = Tool::splitToVectorStringFrom(line, seperator);
 
-	this->setX(v[0]);
-	this->setY(v[1]);
-	this->setIsSpecial(v[2] == 1);
+	this->setX(stof(v[0]));
+	this->setY(stof(v[1]));
+	this->setIsSpecial(stoi(v[2]) == 1);
 	this->setIsTransparentMode(this->getIsSpecial());
-	this->setId(v[3]);
+	this->setId(stoi(v[3]));
 	this->setOriginX(this->getX());
 	this->setOriginY(this->getY());
 }

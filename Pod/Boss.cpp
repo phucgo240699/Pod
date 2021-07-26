@@ -678,7 +678,7 @@ void Boss::handleMarioCollision(Mario* _mario, float _dt)
 			}
 			else {
 				this->setState(BossState::BOSS_TRAMPLED);
-				AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint() * this->getPointCoef(), int(this->getX()), int(this->getY()))));
+				AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint() * this->getPointCoef(), this->getX(), this->getY())));
 			}
 
 			// Calculate points
@@ -716,8 +716,8 @@ void Boss::handleFireBallCollision(FireBall* _fireBall, float _dt)
 		_fireBall->setState(FireBallState::FIREBALL_DISAPPEARED);
 
 		ScoreBoard::getInstance()->plusPoint(this->getDefaultPoint());
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint(), int(this->getX()), int(this->getY()))));
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFireBallSplash()), int(_fireBall->getX()), int(_fireBall->getY()))));
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint(), this->getX(), this->getY())));
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFireBallSplash()), _fireBall->getX(), _fireBall->getY())));
 	}
 }
 
@@ -734,16 +734,16 @@ void Boss::handleKoopaCollision(Koopa* _koopa, float _dt)
 			|| _koopa->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT) {
 			this->setState(BossState::BOSS_THROWING_LEFT_AWAT);
 
-			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(100, int(this->getX()), int(this->getY()))));
-			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(int(this->getX()), int(this->getY()))));
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(100, this->getX(), this->getY())));
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(this->getX(), this->getY())));
 			
 		}
 		else if (_koopa->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT
 			|| _koopa->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
 			this->setState(BossState::BOSS_THROWING_RIGHT_AWAY);
 
-			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(100, int(this->getX()), int(this->getY()))));
-			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(int(this->getX()), int(this->getY()))));
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(100, this->getX(), this->getY())));
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(this->getX(), this->getY())));
 		}
 	}
 }

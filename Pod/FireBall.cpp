@@ -141,7 +141,7 @@ void FireBall::handleHardComponentCollision(Component* _component, float _dt)
 			this->plusX(get<1>(collisionResult) * this->getVx());
 			this->plusY(get<1>(collisionResult) * this->getVy());
 			this->setState(FireBallState::FIREBALL_DISAPPEARED);
-			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFireBallSplash()), int(this->getX()), int(this->getY()))));
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFireBallSplash()), this->getX(), this->getY())));
 		}
 	}
 }

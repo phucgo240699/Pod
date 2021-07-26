@@ -28,7 +28,7 @@ private:
 	int oldFrameHeight, oldFrameWidth;
 	int newFrameHeight, newFrameWidth;
 
-	int leftAnchor, rightAnchor;
+	float leftAnchor, rightAnchor;
 	//float endPointJumpUp, pointX, pointY = -std::numeric_limits<float>::infinity();
 
 	int countDown = 30, originCountDown = 30; // countDown to switch from standing to shaking, and from shaking to moving

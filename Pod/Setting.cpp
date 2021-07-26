@@ -134,13 +134,13 @@ void Setting::load()
 		v = Tool::splitToVectorStringFrom(line, ',');
 
 		this->setDt(stof(v[0]));
-		this->setFPS(stof(v[1]));
+		this->setFPS(stoi(v[1]));
 		this->setScreenWidth(stoi(v[2]));
 		this->setScreenHeight(stoi(v[3]));
 		this->setScreenMode(v[4] == "0" ? window : fullScreen);
 		this->setDefaultBackgroundColorViewController(new Color(Tool::getColorFromString(v[5])));
 		this->setDebugMode(v[6] == "1" ? true : false);
-		this->setCollisionSafeSpace(stoi(v[7]));
+		this->setCollisionSafeSpace(stof(v[7]));
 
 		/*if (v[8] == "SunnyScene") {
 			setSceneName(SceneName::SunnyScene);

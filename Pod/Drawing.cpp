@@ -48,8 +48,8 @@ void Drawing::draw(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXVECTOR3 _posit
 		_position.x -= Camera::getInstance()->getX();
 		_position.y -= Camera::getInstance()->getY();
 
-		float width = _srcRect.right - _srcRect.left;
-		float height = _srcRect.bottom - _srcRect.top;
+		int width = _srcRect.right - _srcRect.left;
+		int height = _srcRect.bottom - _srcRect.top;
 		scalePoint = D3DXVECTOR2(round(_position.x + width / 2), round(_position.y + height / 2));
 		D3DXMatrixTransformation2D(&matrix, &scalePoint, 0, &scaleReverse, NULL, 0, &translation);
 
@@ -121,8 +121,8 @@ void Drawing::drawWithoutCamera(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXV
 	D3DXMATRIX matrix;
 	D3DXMATRIX oldMatrix;
 	if (_isFlip) {
-		float width = _srcRect.right - _srcRect.left;
-		float height = _srcRect.bottom - _srcRect.top;
+		int width = _srcRect.right - _srcRect.left;
+		int height = _srcRect.bottom - _srcRect.top;
 		scalePoint = D3DXVECTOR2(round(_position.x + width / 2), round(_position.y + height / 2));
 		D3DXMatrixTransformation2D(&matrix, &scalePoint, 0, &scaleReverse, &rotationCenter, 0, &_translation);
 	}
@@ -154,8 +154,8 @@ void Drawing::drawMarioWithoutCamera(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, 
 	D3DXMATRIX matrix;
 	D3DXMATRIX oldMatrix;
 	if (_isFlip) {
-		float width = _srcRect.right - _srcRect.left;
-		float height = _srcRect.bottom - _srcRect.top;
+		int width = _srcRect.right - _srcRect.left;
+		int height = _srcRect.bottom - _srcRect.top;
 		scalePoint = D3DXVECTOR2(round(_position.x + width / 2), round(_position.y + height / 2));
 		_translation.x -= _rightSpace;
 		_translation.y -= _topSpace;
@@ -206,8 +206,8 @@ void Drawing::draw(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXVECTOR3 _posit
 	_position.x -= Camera::getInstance()->getX();
 	_position.y -= Camera::getInstance()->getY();
 
-	float width = _srcRect.right - _srcRect.left;
-	float height = _srcRect.bottom - _srcRect.top;
+	int width = _srcRect.right - _srcRect.left;
+	int height = _srcRect.bottom - _srcRect.top;
 	D3DXVECTOR2 scalePoint = D3DXVECTOR2(round(_position.x + width / 2), round(_position.y + height / 2));
 	D3DXMatrixTransformation2D(&matrix, &scalePoint, 0, &scale, NULL, 0, &_translate);
 
@@ -234,13 +234,13 @@ void Drawing::draw(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXVECTOR3 _posit
 	if (_isFlip || _isVerticalFlip) {
 		D3DXVECTOR2 scalePoint;
 		D3DXVECTOR2 translation = D3DXVECTOR2(0, 0);
-		D3DXVECTOR2 tempScale = D3DXVECTOR2(_isFlip == true ? -1 : 1, _isVerticalFlip == true ? -1 : 1);
+		D3DXVECTOR2 tempScale = D3DXVECTOR2(_isFlip == true ? -1.0f : 1.0f, _isVerticalFlip == true ? -1.0f : 1.0f);
 
 		_position.x -= Camera::getInstance()->getX();
 		_position.y -= Camera::getInstance()->getY();
 
-		float width = _srcRect.right - _srcRect.left;
-		float height = _srcRect.bottom - _srcRect.top;
+		int width = _srcRect.right - _srcRect.left;
+		int height = _srcRect.bottom - _srcRect.top;
 		scalePoint = D3DXVECTOR2(round(_position.x + width / 2), round(_position.y + height / 2));
 		D3DXMatrixTransformation2D(&matrix, &scalePoint, 0, &tempScale, NULL, 0, &_translate);
 
@@ -256,8 +256,8 @@ void Drawing::draw(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXVECTOR3 _posit
 		_position.x -= Camera::getInstance()->getX();
 		_position.y -= Camera::getInstance()->getY();
 
-		float width = _srcRect.right - _srcRect.left;
-		float height = _srcRect.bottom - _srcRect.top;
+		int width = _srcRect.right - _srcRect.left;
+		int height = _srcRect.bottom - _srcRect.top;
 		D3DXVECTOR2 scalePoint = D3DXVECTOR2(round(_position.x + width / 2), round(_position.y + height / 2));
 		D3DXMatrixTransformation2D(&matrix, &scalePoint, 0, &scale, NULL, 0, &_translate);
 
@@ -281,8 +281,8 @@ void Drawing::draw(LPDIRECT3DTEXTURE9 texture, RECT _srcRect, D3DXVECTOR3 _posit
 	_position.x -= Camera::getInstance()->getX();
 	_position.y -= Camera::getInstance()->getY();
 
-	float width = _srcRect.right - _srcRect.left;
-	float height = _srcRect.bottom - _srcRect.top;
+	int width = _srcRect.right - _srcRect.left;
+	int height = _srcRect.bottom - _srcRect.top;
 	D3DXVECTOR2 scalePoint = D3DXVECTOR2(round(_position.x + width / 2), round(_position.y + height / 2));
 	D3DXMatrixTransformation2D(&matrix, &scalePoint, 0, &(_isFlip == true ? scaleReverse : scale), NULL, 0, &_translate);
 
@@ -302,8 +302,8 @@ void Drawing::drawDebugBoxWithoutCamera(RECT _srcRect, D3DXVECTOR3* _center, D3D
 	D3DXMATRIX matrix;
 	D3DXMATRIX oldMatrix;
 	if (_isFlip) {
-		float width = _srcRect.right - _srcRect.left;
-		float height = _srcRect.bottom - _srcRect.top;
+		int width = _srcRect.right - _srcRect.left;
+		int height = _srcRect.bottom - _srcRect.top;
 		scalePoint = D3DXVECTOR2(round(_position.x + width / 2), round(_position.y + height / 2));
 		D3DXMatrixTransformation2D(&matrix, &scalePoint, 0, &scaleReverse, &rotationCenter, 0, &_translation);
 	}

@@ -118,10 +118,10 @@ void SunnyVC::viewWillUpdate(float _dt)
 {
 	// Check by cell in grid
 	unordered_set<Component*> cell;
-	int beginRow = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight());
-	int endRow = ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
-	int beginCol = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth());
-	int endCol = ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth());
+	int beginRow = int(floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()));
+	int endRow = int(ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()));
+	int beginCol = int(floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()));
+	int endCol = int(ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()));
 
 	for (int i = beginRow; i < endRow; ++i) {
 		for (int j = beginCol; j < endCol; ++j) {
@@ -233,10 +233,10 @@ void SunnyVC::viewUpdate(float _dt)
 
 	// Check by cell in grid
 	unordered_set<Component*> cell;
-	int beginRow = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight());
-	int endRow = ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
-	int beginCol = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth());
-	int endCol = ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth());
+	int beginRow = int(floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()));
+	int endRow = int(ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()));
+	int beginCol = int(floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()));
+	int endCol = int(ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()));
 	for (int i = beginRow; i < endRow; ++i) {
 		for (int j = beginCol; j < endCol; ++j) {
 
@@ -635,10 +635,10 @@ void SunnyVC::viewDidUpdate(float _dt)
 	}
 
 	// Check by cell in grid
-	int beginRowMario = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight());
-	int endRowMario = ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight());
-	int beginColMario = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth());
-	int endColMario = ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth());
+	int beginRowMario = int(floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()));
+	int endRowMario = int(ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()));
+	int beginColMario = int(floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()));
+	int endColMario = int(ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()));
 	for (int i = beginRowMario; i < endRowMario; ++i) {
 		for (int j = beginColMario; j < endColMario; ++j) {
 
@@ -715,18 +715,18 @@ void SunnyVC::viewDidUpdate(float _dt)
 					}
 
 					// Super Mushroom collide to others
-					int beginRowSuperMushroom = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int endRowSuperMushroom = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int beginColSuperMushroom = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
-					int endColSuperMushroom = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int beginRowSuperMushroom = int(floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int endRowSuperMushroom = int(ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int beginColSuperMushroom = int(floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
+					int endColSuperMushroom = int(ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
 
 					beginRowSuperMushroom = beginRowSuperMushroom < 0 ? 0 : beginRowSuperMushroom;
 					endRowSuperMushroom = endRowSuperMushroom > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowSuperMushroom;
 					beginColSuperMushroom = beginColSuperMushroom < 0 ? 0 : beginColSuperMushroom;
 					endColSuperMushroom = endColSuperMushroom > Grid::getInstance()->getTotalCols() ? Grid::getInstance()->getTotalCols() : endColSuperMushroom;
 
-					for (int r = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); r < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++r) {
-						for (int c = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); c < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++c) {
+					for (int r = int(floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight())); r < int(ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight())); ++r) {
+						for (int c = int(floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth())); c < int(ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth())); ++c) {
 							unordered_set<Component*> superMushroomCell = Grid::getInstance()->getCell(r, c);
 							unordered_set<Component*> ::iterator superMushroomItr;
 							for (superMushroomItr = superMushroomCell.begin(); superMushroomItr != superMushroomCell.end(); ++superMushroomItr) {
@@ -773,10 +773,10 @@ void SunnyVC::viewDidUpdate(float _dt)
 					}
 
 					// Goomba to others
-					int beginRowGoomba = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int endRowGoomba = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int beginColGoomba = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
-					int endColGoomba = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int beginRowGoomba = int(floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int endRowGoomba = int(ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int beginColGoomba = int(floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
+					int endColGoomba = int(ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
 
 					beginRowGoomba = beginRowGoomba < 0 ? 0 : beginRowGoomba;
 					endRowGoomba = endRowGoomba > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowGoomba;
@@ -827,10 +827,10 @@ void SunnyVC::viewDidUpdate(float _dt)
 					//}
 
 					// Koopa to others
-					int beginRowKoopa = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int endRowKoopa = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int beginColKoopa = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
-					int endColKoopa = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int beginRowKoopa = int(floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int endRowKoopa = int(ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int beginColKoopa = int(floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
+					int endColKoopa = int(ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
 
 					beginRowKoopa = beginRowKoopa < 0 ? 0 : beginRowKoopa;
 					endRowKoopa = endRowKoopa > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowKoopa;
@@ -890,10 +890,10 @@ void SunnyVC::viewDidUpdate(float _dt)
 				// Fire Ball
 				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
 					// FireBall to others
-					int beginRowFireball = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int endRowFireball = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
-					int beginColFireball = floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
-					int endColFireball = ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth());
+					int beginRowFireball = int(floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int endRowFireball = int(ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight()));
+					int beginColFireball = int(floor(((*itr)->getX() - (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
+					int endColFireball = int(ceil(((*itr)->getX() + (*itr)->getWidth() + (Camera::getInstance()->getWidth() / 2)) / Grid::getInstance()->getCellWidth()));
 
 					beginRowFireball = beginRowFireball < 0 ? 0 : beginRowFireball;
 					endRowFireball = endRowFireball > Grid::getInstance()->getTotalRows() ? Grid::getInstance()->getTotalRows() : endRowFireball;
@@ -975,8 +975,8 @@ void SunnyVC::viewWillRender()
 			map->Draw(Drawing::getInstance()->getSunnyMapTexture());
 		}
 
-		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
-			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+		for (int i = int(floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight())); i < int(ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight())); ++i) {
+			for (int j = int(floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth())); j < int(ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth())); ++j) {
 				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
 				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
@@ -1037,8 +1037,8 @@ void SunnyVC::viewWillRender()
 			}
 		}
 
-		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
-			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+		for (int i = int(floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight())); i < int(ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight())); ++i) {
+			for (int j = int(floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth())); j < int(ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth())); ++j) {
 				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
 				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
@@ -1059,8 +1059,8 @@ void SunnyVC::viewWillRender()
 			mario->Draw();
 		}
 
-		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
-			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+		for (int i = int(floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight())); i < int(ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight())); ++i) {
+			for (int j = int(floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth())); j < int(ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth())); ++j) {
 				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
 				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
@@ -1074,8 +1074,8 @@ void SunnyVC::viewWillRender()
 			}
 		}
 
-		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
-			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+		for (int i = int(floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight())); i < int(ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight())); ++i) {
+			for (int j = int(floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth())); j < int(ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth())); ++j) {
 				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
 
 				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
@@ -1158,7 +1158,7 @@ void SunnyVC::viewWillRelease()
 void SunnyVC::adaptRangeID(vector<string> data, char seperator)
 {
 	vector<int> v;
-	for (int i = 0; i < data.size(); ++i) {
+	for (size_t i = 0; i < data.size(); ++i) {
 		if (i == 4) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginGroundId = v[0];
@@ -1203,8 +1203,8 @@ void SunnyVC::adaptRangeID(vector<string> data, char seperator)
 			this->componentIdToUnderground = v[2];
 			this->leftAnchorGreenPipeToPassThrough = v[3];
 			this->rightAnchorGreenPipeToPassThrough = v[4];
-			this->leftAnchorMarioPoppingUpFromPipe = v[5];
-			this->bottomAnchorMarioPoppingUpFromPipe = v[6];
+			this->leftAnchorMarioPoppingUpFromPipe = float(v[5]);
+			this->bottomAnchorMarioPoppingUpFromPipe = float(v[6]);
 		}
 		else if (i == 1) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
@@ -1295,7 +1295,7 @@ void SunnyVC::adaptData()
 			continue;
 		}
 		else if (line == "</Grounds>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				Ground* ground = new Ground(0, 0, 0, 0, 0, 0, 0, 0);
 				ground->load(data[i], ',');
 				this->grounds->push_back(ground);
@@ -1307,7 +1307,7 @@ void SunnyVC::adaptData()
 			continue;
 		}
 		else if (line == "</BlockFrames>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				Block* block = new Block(0, 0, 0, 0, 0, 0, 0, 0);
 				block->load(data[i], ',');
 				blocks->push_back(block);
@@ -1319,7 +1319,7 @@ void SunnyVC::adaptData()
 			continue;
 		}
 		else if (line == "</GoldenBrickFrames>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				GoldenBrick* goldenBrick = new GoldenBrick(0, 0, 0, 0, 0, 0, 0);
 				goldenBrick->loadInfo(data[i], ',');
 				this->goldenBricks->insert(goldenBrick);
@@ -1331,7 +1331,7 @@ void SunnyVC::adaptData()
 			continue;
 		}
 		else if (line == "</GiftBrickFrames>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				GiftBrick* giftBrick = new GiftBrick(0, 0, 0, 0, 0, 0);
 				giftBrick->loadInfo(data[i], ',');
 				giftBricks->push_back(giftBrick);
@@ -1343,7 +1343,7 @@ void SunnyVC::adaptData()
 			continue;
 		}
 		else if (line == "</GreenPipeFrames>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				GreenPipe* greenPipe = new GreenPipe(0, 0, 0, 0, 0, 0, 0);
 				greenPipe->loadInfo(data[i], ',');
 				greenPipes->push_back(greenPipe);
@@ -1355,7 +1355,7 @@ void SunnyVC::adaptData()
 			continue;
 		}
 		else if (line == "</GoombaFrames>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				Goomba* goomba = new Goomba(0, 0, 0, 0, 0, 0, 0);
 				goomba->loadInfo(data[i], ',');
 				goombas->insert(goomba);
@@ -1367,7 +1367,7 @@ void SunnyVC::adaptData()
 			continue;
 		}
 		else if (line == "</KoopaFrames>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				Koopa* koopa = new Koopa(0, 0, 0, 0, 0, 0, 0);
 				koopa->loadInfo(data[i], ',');
 				koopas->insert(koopa);
@@ -1379,7 +1379,7 @@ void SunnyVC::adaptData()
 			continue;
 		}
 		else if (line == "</FireFlowerFrames>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				FireFlower* fireFlower = new FireFlower(0, 0, 0, 0, 0, 0, 0);
 				fireFlower->loadInfo(data[i], ',');
 				fireFlowers->insert(fireFlower);
@@ -1391,7 +1391,7 @@ void SunnyVC::adaptData()
 			continue;
 		}
 		else if (line == "</FlowerFrames>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				Flower* flower = new Flower(0, 0, 0, 0, 0, 0, 0);
 				flower->loadInfo(data[i], ',');
 				flowers->insert(flower);
@@ -1403,7 +1403,7 @@ void SunnyVC::adaptData()
 			continue;
 		}
 		else if (line == "</CoinFrames>") {
-			for (int i = 0; i < data.size(); ++i) {
+			for (size_t i = 0; i < data.size(); ++i) {
 				Coin* coin = new Coin(0, 0, 0, 0, 0, 0, 0, 0);
 				coin->loadInfo(data[i], ',');
 				this->coins->insert(coin);
@@ -1513,7 +1513,7 @@ void SunnyVC::adaptAnimation()
 	}
 
 	// Gift Bricks
-	for (int i = 0; i < this->giftBricks->size(); ++i) {
+	for (size_t i = 0; i < this->giftBricks->size(); ++i) {
 		this->giftBricks->at(i)->setState(GiftBrickState::FULLGIFTBRICK);
 		if (this->giftBricks->at(i)->getGiftType() == SuperMushroomOrSuperLeaf) { // Super Mushroom, super leaf
 			this->giftBricks->at(i)->getSuperMushroom()->setUpAnimation();
@@ -1529,7 +1529,7 @@ void SunnyVC::adaptAnimation()
 	}
 
 	// Green Pipes
-	for (int i = 0; i < this->greenPipes->size(); ++i) {
+	for (size_t i = 0; i < this->greenPipes->size(); ++i) {
 		if (this->greenPipes->at(i)->getFloorNumber() == 2) {
 			this->greenPipes->at(i)->setAnimation(new Animation(AnimationBundle::getInstance()->getGreenPipe2Floor()));
 		}
@@ -1621,12 +1621,12 @@ void SunnyVC::adaptAnimation()
 void SunnyVC::adaptToGrid()
 {
 	// Grounds
-	for (int i = 0; i < this->grounds->size(); ++i) {
+	for (size_t i = 0; i < this->grounds->size(); ++i) {
 		Grid::getInstance()->add(this->grounds->at(i));
 	}
 
 	// Blocks
-	for (int i = 0; i < this->blocks->size(); ++i) {
+	for (size_t i = 0; i < this->blocks->size(); ++i) {
 		Grid::getInstance()->add(this->blocks->at(i));
 	}
 
@@ -1637,12 +1637,12 @@ void SunnyVC::adaptToGrid()
 	}
 
 	// Gift Bricks
-	for (int i = 0; i < this->giftBricks->size(); ++i) {
+	for (size_t i = 0; i < this->giftBricks->size(); ++i) {
 		Grid::getInstance()->add(this->giftBricks->at(i));
 	}
 
 	// Green Pipes
-	for (int i = 0; i < this->greenPipes->size(); ++i) {
+	for (size_t i = 0; i < this->greenPipes->size(); ++i) {
 		Grid::getInstance()->add(this->greenPipes->at(i));
 	}
 

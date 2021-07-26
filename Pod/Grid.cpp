@@ -282,7 +282,7 @@ void Grid::loadMatrixId(vector<string> data, char beginSeperator, char pairSeper
 	vector<string> pairsStr;
 	vector<pair<int, int>> pairs;
 
-	for (int i = 0; i < data.size(); ++i) {
+	for (size_t i = 0; i < data.size(); ++i) {
 		if (data[i][0] == beginSeperator) {
 			isReadingCell = true;
 			currentID = stoi(data[i].substr(2, data[i].length() - 2));
@@ -293,7 +293,7 @@ void Grid::loadMatrixId(vector<string> data, char beginSeperator, char pairSeper
 			// every element in pairs is a pair of cellX, cellY
 			pairsStr = Tool::splitToVectorStringFrom(data[i], pairSeperator);
 			pairs = vector<pair<int, int>>();
-			for (int k = 0; k < pairsStr.size(); ++k) {
+			for (size_t k = 0; k < pairsStr.size(); ++k) {
 				pairs.push_back(Tool::splitToPairIntIntFrom(pairsStr[k], seperator));
 			}
 
@@ -313,7 +313,7 @@ void Grid::add(Component* _component)
 	//}
 	vector<pair<int, int>> pairs = this->matrixId[_component->getId()];
 
-	for (int i = 0; i < pairs.size(); ++i) {
+	for (size_t i = 0; i < pairs.size(); ++i) {
 		int col = pairs[i].first;
 		int row = pairs[i].second;
 
@@ -336,7 +336,7 @@ void Grid::updateCellOf(Component* _component)
 	vector<pair<int, int>> pairs = this->matrixId[_component->getId()];
 	RECT r = RECT();
 
-	for (int i = 0; i < pairs.size(); ++i) {
+	for (size_t i = 0; i < pairs.size(); ++i) {
 		int col = pairs[i].first;
 		int row = pairs[i].second;
 
@@ -347,8 +347,8 @@ void Grid::updateCellOf(Component* _component)
 
 		if (_component->isCollidingByFrame(r) == false) { // if no longer in this cell, remove it from this cell, and add it to new cell
 			this->cells[row][col].erase(_component);
-			int newCol = _component->getX() / this->cellWidth;
-			int newRow = _component->getY() / this->cellHeight;
+			int newCol = int(_component->getX() / this->cellWidth);
+			int newRow = int(_component->getY() / this->cellHeight);
 			
 			if (col != newCol && newCol < this->getTotalCols()) {
 				this->matrixId[_component->getId()][i].first = newCol;
@@ -382,7 +382,7 @@ void Grid::saveCurrentSunnyMap()
 		data.push_back("\n");
 		
 		line = "";
-		for (int i = 0; i < (*itr).second.size(); ++i) {
+		for (size_t i = 0; i < (*itr).second.size(); ++i) {
 			line += to_string((*itr).second[i].first); // col
 			line += ",";
 			line += to_string((*itr).second[i].second); // row
@@ -401,7 +401,7 @@ void Grid::saveCurrentSunnyMap()
 	fstream fs;
 	fs.open(FilePath::getInstance()->current_grid_sunny_map, ios::out);
 
-	for (int i = 0; i < data.size(); ++i) {
+	for (size_t i = 0; i < data.size(); ++i) {
 		if (data[i] == "\n") {
 			fs << endl;
 		}
@@ -432,7 +432,7 @@ void Grid::saveCurrentThirdMap()
 		data.push_back("\n");
 
 		line = "";
-		for (int i = 0; i < (*itr).second.size(); ++i) {
+		for (size_t i = 0; i < (*itr).second.size(); ++i) {
 			line += to_string((*itr).second[i].first); // col
 			line += ",";
 			line += to_string((*itr).second[i].second); // row
@@ -451,7 +451,7 @@ void Grid::saveCurrentThirdMap()
 	fstream fs;
 	fs.open(FilePath::getInstance()->current_grid_third_map, ios::out);
 
-	for (int i = 0; i < data.size(); ++i) {
+	for (size_t i = 0; i < data.size(); ++i) {
 		if (data[i] == "\n") {
 			fs << endl;
 		}

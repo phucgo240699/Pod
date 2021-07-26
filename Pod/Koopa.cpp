@@ -14,36 +14,36 @@ Koopa::Koopa(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _
 
 void Koopa::loadInfo(string line, char seperator)
 {
-	vector<float> v = Tool::splitToVectorFloatFrom(line, seperator);
+	vector<string> v = Tool::splitToVectorStringFrom(line, seperator);
 
-	this->setX(v[0]);
-	this->setY(v[1]);
-	this->setVx(v[2]);
-	this->setVy(v[3]);
+	this->setX(stof(v[0]));
+	this->setY(stof(v[1]));
+	this->setVx(stof(v[2]));
+	this->setVy(stof(v[3]));
 	this->originVx = this->getVx();
 	this->originVy = this->getVy();
-	this->defaultPoint = v[4];
-	this->setId(v[5]);
+	this->defaultPoint = stoi(v[4]);
+	this->setId(stoi(v[5]));
 
-	this->setIsGreenMode(v[6] == 1);
-	this->setIsFlyingMode(v[6] == 2);
+	this->setIsGreenMode(stoi(v[6]) == 1);
+	this->setIsFlyingMode(stoi(v[6]) == 2);
 	if (this->getIsGreenMode() == false && this->getIsFlyingMode() == false) {
 		isOutOfFirstStage = false;
 	}
 	
 
 	if (this->getIsGreenMode() == false && this->getIsFlyingMode() == false) {
-		this->leftAnchor = v[7];
-		this->rightAnchor = v[8];
+		this->leftAnchor = stof(v[7]);
+		this->rightAnchor = stof(v[8]);
 	}
 }
 
 RECT Koopa::getFrame()
 {
 	RECT r = RECT();
-	r.top = this->getY() - 8;
+	r.top = int(this->getY()) - 8;
 	r.bottom = r.top + this->getHeight();
-	r.left = this->getX() - 4;
+	r.left = int(this->getX()) - 4;
 	r.right = r.left + this->getWidth();
 
 	return r;
@@ -337,7 +337,7 @@ void Koopa::setState(KoopaState _state)
 		countFlyingX = 0;
 		startFlyingY = this->getY();
 		this->setIsFlip(true);
-		this->setVx(-1.4 * abs(this->originVx));
+		this->setVx(float(-1.4) * abs(this->originVx));
 		this->setVy(-abs(this->originVy));
 		break;
 	}
@@ -351,7 +351,7 @@ void Koopa::setState(KoopaState _state)
 		countFlyingX = 0;
 		startFlyingY = this->getY();
 		this->setIsFlip(false);
-		this->setVx(1.4 * abs(this->originVx));
+		this->setVx(float(1.4) * abs(this->originVx));
 		this->setVy(-abs(this->originVy));
 		break;
 	}
@@ -401,7 +401,7 @@ void Koopa::setState(KoopaState _state)
 		this->setIsFlip(true);
 		this->countThrownToShrinkageX = 0;
 		this->startThrownToShrinkageY = this->getY();
-		this->setVx(-0.4);// .5 * abs(this->originVx));
+		this->setVx(-float(0.4));// .5 * abs(this->originVx));
 		this->setVy(-abs(this->originVy));
 		break;
 	}
@@ -421,7 +421,7 @@ void Koopa::setState(KoopaState _state)
 		this->setIsFlip(false);
 		this->countThrownToShrinkageX = 0;
 		this->startThrownToShrinkageY = this->getY();
-		this->setVx(0.4);// .5 * abs(this->originVx));
+		this->setVx(float(0.4));// .5 * abs(this->originVx));
 		this->setVy(-abs(this->originVy));
 		break;
 	}
@@ -466,10 +466,10 @@ void Koopa::setState(KoopaState _state)
 		this->newFrameHeight = this->animation->getCurrentFrameHeight();
 
 		if (oldFrameWidth != newFrameWidth) {
-			this->plusX(oldFrameWidth - newFrameWidth);
+			this->plusX(float(oldFrameWidth - newFrameWidth));
 		}
 		if (oldFrameHeight != newFrameHeight) {
-			this->plusY(oldFrameHeight - newFrameHeight);
+			this->plusY(float(oldFrameHeight - newFrameHeight));
 		}
 	}
 
@@ -599,8 +599,8 @@ void Koopa::Update(float _dt)
 
 			srand(time(NULL));
 
-			int random = rand() % 2 + 1;
-			if (random == 1) {
+			time_t random = rand() % 2 + 1;
+			if (random == time_t(1)) {
 				this->setState(KoopaState::KOOPA_MOVING_RIGHT);
 			}
 			else {
@@ -611,7 +611,7 @@ void Koopa::Update(float _dt)
 	else if (this->getState() == KOOPA_FLYING_LEFT) {
 		// vx now is < 0
 		countFlyingX += (this->getVx() * _dt);
-		float moreY = (-1 * (48 - (pow(countFlyingX + 24, 2) / 12)));
+		float moreY = (-1 * (48 - (float(pow(countFlyingX + 24, 2)) / 12)));
 		this->plusXNoRound(this->getVx() * _dt);
 		this->setYNoRound(startFlyingY + moreY);
 
@@ -622,7 +622,7 @@ void Koopa::Update(float _dt)
 	else if (this->getState() == KOOPA_FLYING_RIGHT) {
 		// vx now is > 0
 		countFlyingX += (this->getVx() * _dt);
-		float moreY = (-1 * (48 - (pow(countFlyingX - 24, 2) / 12)));
+		float moreY = (-1 * (48 - (float(pow(countFlyingX - 24, 2)) / 12)));
 		this->plusXNoRound(this->getVx() * _dt);
 		this->setYNoRound(startFlyingY + moreY);
 
@@ -633,7 +633,7 @@ void Koopa::Update(float _dt)
 	else if (this->getState() == KOOPA_THROWN_LEFT_TO_SHINKAGE) {
 		// vx now is < 0
 		countThrownToShrinkageX += (this->getVx() * _dt);
-		float moreY = (-1 * (72 - (pow(countThrownToShrinkageX + 12, 2) / 2)));
+		float moreY = (-1 * (72 - (float(pow(countThrownToShrinkageX + 12, 2)) / 2)));
 		this->plusXNoRound(this->getVx() * _dt);
 		this->setYNoRound(startThrownToShrinkageY + moreY);
 
@@ -644,7 +644,7 @@ void Koopa::Update(float _dt)
 	else if (this->getState() == KOOPA_THROWN_RIGHT_TO_SHINKAGE) {
 		// vx now is < 0
 		countThrownToShrinkageX += (this->getVx() * _dt);
-		float moreY = (-1 * (72 - (pow(countThrownToShrinkageX - 12, 2) / 2)));
+		float moreY = (-1 * (72 - (float(pow(countThrownToShrinkageX - 12, 2)) / 2)));
 		this->plusXNoRound(this->getVx() * _dt);
 		this->setYNoRound(startThrownToShrinkageY + moreY);
 
@@ -658,12 +658,12 @@ void Koopa::Update(float _dt)
 	}
 	else if (this->getState() == KOOPA_THROWN_LEFT_AWAY) {
 		this->plusXNoRound(-2);
-		this->setY(this->startThrownY + (-1 * (16 - (pow(thrownX + 24, 2) / 36)))); // -1: Oxy in game vs math
+		this->setY(this->startThrownY + (-1 * (16 - (float(pow(thrownX + 24, 2)) / 36)))); // -1: Oxy in game vs math
 		thrownX -= (2);
 	}
 	else if (this->getState() == KOOPA_THROWN_RIGHT_AWAY) {
 		this->plusXNoRound(2);
-		this->setY(this->startThrownY + (-1 * (16 - (pow(thrownX - 24, 2) / 36)))); // -1: Oxy in game vs math
+		this->setY(this->startThrownY + (-1 * (16 - (float(pow(thrownX - 24, 2)) / 36)))); // -1: Oxy in game vs math
 		thrownX += (2);
 	}
 }

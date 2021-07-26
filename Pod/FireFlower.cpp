@@ -226,22 +226,22 @@ void FireFlower::reduceCountDown()
 
 void FireFlower::loadInfo(string line, char seperator)
 {
-	vector<float> v = Tool::splitToVectorFloatFrom(line, seperator);
+	vector<string> v = Tool::splitToVectorStringFrom(line, seperator);
 
-	this->setX(v[0]);
-	this->setY(v[1]);
-	this->setVy(v[2]);
-	this->originVy = v[2];
-	this->topAnchor = v[3];
-	this->bottomAnchor = v[4];
-	this->leftAnchor = v[5];
-	this->rightAnchor = v[6];
-	this->setIsHalfSizeMode(v[7] == 1);
-	this->setIsGreenMode(v[8] == 1);
-	this->setDefaultPoint(v[9]);
-	this->setId(v[10]);
+	this->setX(stof(v[0]));
+	this->setY(stof(v[1]));
+	this->setVy(stof(v[2]));
+	this->originVy = stof(v[2]);
+	this->topAnchor = stof(v[3]);
+	this->bottomAnchor = stof(v[4]);
+	this->leftAnchor = stof(v[5]);
+	this->rightAnchor = stof(v[6]);
+	this->setIsHalfSizeMode(stoi(v[7]) == 1);
+	this->setIsGreenMode(stoi(v[8]) == 1);
+	this->setDefaultPoint(stoi(v[9]));
+	this->setId(stoi(v[10]));
 
-	this->fireFlowerBall = new FireFlowerBall(v[11], v[12], v[13], v[14], Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), v[15]);
+	this->fireFlowerBall = new FireFlowerBall(stof(v[11]), stof(v[12]), stof(v[13]), stof(v[14]), Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), stoi(v[15]));
 }
 
 void FireFlower::Update(float _dt)

@@ -177,9 +177,9 @@ void Component::Draw(LPDIRECT3DTEXTURE9 _texture)
 RECT Component::getFrame()
 {
 	RECT r = RECT();
-	r.top = this->getY();
+	r.top = int(this->getY());
 	r.bottom = r.top + this->getHeight();
-	r.left = this->getX();
+	r.left = int(this->getX());
 	r.right = r.left + this->getWidth();
 
 	return r;
@@ -188,9 +188,9 @@ RECT Component::getFrame()
 RECT Component::getBounds()
 {
 	RECT r = RECT();
-	r.top = this->getY();
+	r.top = int(this->getY());
 	r.bottom = r.top + this->getBoundsHeight();
-	r.left = this->getX();
+	r.left = int(this->getX());
 	r.right = r.left + this->getBoundsWidth();
 
 	return r;
@@ -242,10 +242,10 @@ void Component::onKeyDown(vector<KeyType> _keyTypes)
 
 bool Component::isColliding(RECT object, RECT other)
 {
-	float left = other.left - object.right;
-	float top = other.bottom - object.top;
-	float right = other.right - object.left;
-	float bottom = other.top - object.bottom;
+	int left = other.left - object.right;
+	int top = other.bottom - object.top;
+	int right = other.right - object.left;
+	int bottom = other.top - object.bottom;
 
 	return !(left > 0 || right < 0 || top < 0 || bottom > 0);
 }
@@ -254,10 +254,10 @@ bool Component::isColliding(RECT object, RECT other)
 
 bool Component::isCollidingByFrame(RECT other)
 {
-	float left = other.left - this->getFrame().right;
-	float top = other.bottom - this->getFrame().top;
-	float right = other.right - this->getFrame().left;
-	float bottom = other.top - this->getFrame().bottom;
+	int left = other.left - this->getFrame().right;
+	int top = other.bottom - this->getFrame().top;
+	int right = other.right - this->getFrame().left;
+	int bottom = other.top - this->getFrame().bottom;
 
 	return !(left > 0 || right < 0 || top < 0 || bottom > 0);
 }
@@ -266,10 +266,10 @@ RECT Component::getSweptBroadphaseRectByFrame()
 {
 	RECT r = RECT();
 
-	r.left = this->getVx() > 0 ? this->getX() : this->getX() + this->getVx();
-	r.top = this->getVy() > 0 ? this->getY() : this->getY() + this->getVy();
-	r.right = this->getVx() > 0 ? this->getFrame().right + this->getVx() : this->getFrame().right;
-	r.bottom = this->getVy() > 0 ? this->getFrame().bottom + this->getVy() : this->getFrame().bottom;
+	r.left = this->getVx() > 0 ? int(this->getX()) : int(this->getX() + this->getVx());
+	r.top = this->getVy() > 0 ? int(this->getY()) : int(this->getY() + this->getVy());
+	r.right = this->getVx() > 0 ? this->getFrame().right + int(this->getVx()) : this->getFrame().right;
+	r.bottom = this->getVy() > 0 ? this->getFrame().bottom + int(this->getVy()) : this->getFrame().bottom;
 
 	return r;
 }
@@ -390,10 +390,10 @@ tuple<bool, float, vector<CollisionEdge>> Component::sweptAABBByFrame(Component*
 
 bool Component::isCollidingByBounds(RECT other)
 {
-	float left = other.left - this->getBounds().right;
-	float top = other.bottom - this->getBounds().top;
-	float right = other.right - this->getBounds().left;
-	float bottom = other.top - this->getBounds().bottom;
+	int left = other.left - this->getBounds().right;
+	int top = other.bottom - this->getBounds().top;
+	int right = other.right - this->getBounds().left;
+	int bottom = other.top - this->getBounds().bottom;
 
 	return !(left > 0 || right < 0 || top < 0 || bottom > 0);
 }
@@ -402,10 +402,10 @@ RECT Component::getSweptBroadphaseRectByBounds()
 {
 	RECT r = RECT();
 
-	r.left = this->getVx() > 0 ? this->getX() : this->getX() + this->getVx();
-	r.top = this->getVy() > 0 ? this->getY() : this->getY() + this->getVy();
-	r.right = this->getVx() > 0 ? this->getBounds().right + this->getVx() : this->getBounds().right;
-	r.bottom = this->getVy() > 0 ? this->getBounds().bottom + this->getVy() : this->getBounds().bottom;
+	r.left = this->getVx() > 0 ? int(this->getX()) : int(this->getX() + this->getVx());
+	r.top = this->getVy() > 0 ? int(this->getY()) : int(this->getY() + this->getVy());
+	r.right = this->getVx() > 0 ? this->getBounds().right + int(this->getVx()) : this->getBounds().right;
+	r.bottom = this->getVy() > 0 ? this->getBounds().bottom + int(this->getVy()) : this->getBounds().bottom;
 
 	return r;
 }

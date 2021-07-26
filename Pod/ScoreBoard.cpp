@@ -139,25 +139,25 @@ void ScoreBoard::load()
 
 void ScoreBoard::loadInfo(string line, char seperator)
 {
-	vector<int> v = Tool::splitToVectorIntegerFrom(line, seperator);
-	this->position = D3DXVECTOR3(v[0], v[1], 0);
-	this->momentumX = v[2];
-	this->momentumY = v[3];
-	this->marioLifeX = v[4];
-	this->marioLifeY = v[5];
-	this->coinX = v[6];
-	this->coinY = v[7];
-	this->pointX = v[8];
-	this->pointY = v[9];
-	this->timeX = v[10];
-	this->timeY = v[11];
-	this->momentum = v[12];
-	this->marioLife = v[13];
-	this->coin = v[14];
-	this->point = v[15];
-	this->time = v[16];
-	this->width = v[17];
-	this->height = v[18];
+	vector<string> v = Tool::splitToVectorStringFrom(line, seperator);
+	this->position = D3DXVECTOR3(stof(v[0]), stof(v[1]), float(0));
+	this->momentumX = stoi(v[2]);
+	this->momentumY = stoi(v[3]);
+	this->marioLifeX = stoi(v[4]);
+	this->marioLifeY = stoi(v[5]);
+	this->coinX = stoi(v[6]);
+	this->coinY = stoi(v[7]);
+	this->pointX = stoi(v[8]);
+	this->pointY = stoi(v[9]);
+	this->timeX = stoi(v[10]);
+	this->timeY = stoi(v[11]);
+	this->momentum = stoi(v[12]);
+	this->marioLife = stoi(v[13]);
+	this->coin = stoi(v[14]);
+	this->point = stoi(v[15]);
+	this->time = stoi(v[16]);
+	this->width = stoi(v[17]);
+	this->height = stoi(v[18]);
 }
 
 void ScoreBoard::Update(float _dt)
@@ -185,7 +185,7 @@ void ScoreBoard::DrawMarioLife()
 	string str = Tool::getStringNumberFrom(marioLife, 1);
 	drawingPosition.y = this->position.y + marioLifeY;
 
-	for (int i = 0; i < str.size(); ++i) {
+	for (size_t i = 0; i < str.size(); ++i) {
 		drawingPosition.x = this->position.x + marioLifeX + i * 8;
 		Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame(str.substr(i, 1)), drawingPosition);
 	}
@@ -196,7 +196,7 @@ void ScoreBoard::DrawCoin()
 	string str = Tool::getStringNumberFrom(coin, 2);
 	drawingPosition.y = this->position.y + coinY;
 
-	for (int i = 0; i < str.size(); ++i) {
+	for (size_t i = 0; i < str.size(); ++i) {
 		drawingPosition.x = this->position.x + coinX + i * 8;
 		Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame(str.substr(i, 1)), drawingPosition);
 	}
@@ -207,7 +207,7 @@ void ScoreBoard::DrawPoint()
 	string str = Tool::getStringNumberFrom(point, 7);
 	drawingPosition.y = this->position.y + pointY;
 
-	for (int i = 0; i < str.size(); ++i) {
+	for (size_t i = 0; i < str.size(); ++i) {
 		drawingPosition.x = this->position.x + pointX + i * 8;
 		Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame(str.substr(i, 1)), drawingPosition);
 	}
@@ -218,7 +218,7 @@ void ScoreBoard::DrawTime()
 	string str = Tool::getStringNumberFrom(time, 3);
 	drawingPosition.y = this->position.y + timeY;
 
-	for (int i = 0; i < str.size(); ++i) {
+	for (size_t i = 0; i < str.size(); ++i) {
 		drawingPosition.x = this->position.x + timeX + i * 8;
 		Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame(str.substr(i, 1)), drawingPosition);
 	}
@@ -238,7 +238,7 @@ RECT ScoreBoard::getFrame(string keyword)
 
 void ScoreBoard::loadFrames(vector<string> data, char keywordSeperator, char seperator)
 {
-	for (int i = 0; i < data.size(); ++i) {
+	for (size_t i = 0; i < data.size(); ++i) {
 		vector<string> portion = Tool::splitToVectorStringFrom(data[i], keywordSeperator);
 		frames[portion[0]] = Tool::getRECT(portion[1], seperator);
 	}

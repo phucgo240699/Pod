@@ -116,26 +116,26 @@ void Map::Draw(LPDIRECT3DTEXTURE9 _texture)
 	Camera* camera = Camera::getInstance();
 	Drawing* drawing = Drawing::getInstance();
 
-	int cellIndexBeginX = camera->getX() / tileSize;
-	int cellIndexEndX = (camera->getX() + camera->getWidth()) / tileSize;
+	int cellIndexBeginX = int(camera->getX() / tileSize);
+	int cellIndexEndX = int((camera->getX() + camera->getWidth()) / tileSize);
 	//	begin
 	//	  |
 	//	  |
 	//	  v
 	//	 end
 	// from up to down
-	int cellIndexBeginY = camera->getY() / tileSize;
-	int cellIndexEndY = (camera->getY() + camera->getHeight()) / tileSize;
+	int cellIndexBeginY = int(camera->getY() / tileSize);
+	int cellIndexEndY = int((camera->getY() + camera->getHeight()) / tileSize);
 
 	int tileId; // from index 0
 	int r, c; // from index 0. These are row, column in tileset
-	for (int i = cellIndexBeginY; i <= cellIndexEndY; ++i) {
+	for (size_t i = cellIndexBeginY; i <= cellIndexEndY; ++i) {
 
 		if (i < 0 || i >= this->matrixIds.size()) {
 			continue;
 		}
 
-		for (int j = cellIndexBeginX; j <= cellIndexEndX; ++j) {
+		for (size_t j = cellIndexBeginX; j <= cellIndexEndX; ++j) {
 
 			if (j < 0 || j >= this->matrixIds[0].size()) {
 				continue;
@@ -155,8 +155,8 @@ void Map::Draw(LPDIRECT3DTEXTURE9 _texture)
 
 			//position = D3DXVECTOR3(j * tileSize - camera->getX(), i * tileSize - camera->getY(), 0);
 
-			position.x = round(j * tileSize);
-			position.y = round(i * tileSize);
+			position.x = float(round(j * tileSize));
+			position.y = float(round(i * tileSize));
 
 			drawing->draw(_texture, rect, NULL, position);
 		}

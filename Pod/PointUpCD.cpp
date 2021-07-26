@@ -8,12 +8,12 @@
 //	this->endY = _endY;
 //}
 
-PointUpCD::PointUpCD(Animation _animation, int _x, int _y) : AnimationCD(_animation)
+PointUpCD::PointUpCD(Animation _animation, float _x, float _y) : AnimationCD(_animation)
 {
 	AnimationCD::AnimationCD(_animation);
 	this->position.x = _x;
 	this->position.y = _y;
-	this->endY = _y - 36;
+	this->endY = int(_y) - 36;
 }
 
 //PointUpCD::PointUpCD(int point, int _x, int _y, int _endY) : AnimationCD(Animation(AnimationBundle::getInstance()->getPoints(point)))
@@ -24,12 +24,12 @@ PointUpCD::PointUpCD(Animation _animation, int _x, int _y) : AnimationCD(_animat
 //	this->endY = _endY;
 //}
 
-PointUpCD::PointUpCD(int point, int _x, int _y) : AnimationCD(Animation(AnimationBundle::getInstance()->getPoints(point)))
+PointUpCD::PointUpCD(int point, float _x, float _y) : AnimationCD(Animation(AnimationBundle::getInstance()->getPoints(point)))
 {
 	AnimationCD::AnimationCD(Animation(AnimationBundle::getInstance()->getPoints(point)));
 	this->position.x = _x;
 	this->position.y = _y;
-	this->endY = _y - 48;
+	this->endY = int(_y) - 48;
 }
 
 void PointUpCD::Update(float _dt)
@@ -38,7 +38,7 @@ void PointUpCD::Update(float _dt)
 		this->position.y -= (2 * _dt);
 	}
 	else {
-		this->position.y = this->endY;
+		this->position.y = float(this->endY);
 		this->setIsFinish(true);
 	}
 }

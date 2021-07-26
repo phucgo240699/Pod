@@ -47,9 +47,9 @@ MarioState Mario::getPressureState()
 RECT Mario::getBounds()
 {
 	RECT r = RECT();
-	r.top = this->getY();
+	r.top = int(this->getY());
 	r.bottom = r.top + this->getBoundsHeight();
-	r.left = this->getX();
+	r.left = int(this->getX());
 	r.right = r.left + this->getBoundsWidth();
 
 	return r;
@@ -87,7 +87,7 @@ int Mario::getWidth()
 
 int Mario::getHeight()
 {
-	return this->currentAnimation->getCurrentFrameHeight() - Setting::getInstance()->getCollisionSafeSpace();
+	return this->currentAnimation->getCurrentFrameHeight();
 }
 
 bool Mario::getIsStandOnSurface()
@@ -282,18 +282,18 @@ void Mario::load()
 	//this->setY(stof(v[1]));
 	//this->setLimitX(stof(v[2]));
 	//this->setLimitY(stof(v[3]));
-	this->setLeftSpace(stof(v[0]));
-	this->setTopSpace(stof(v[1]));
-	this->setRightSpace(stof(v[2]));
-	this->setMarioLeftSpace(stof(v[3]));
-	this->setMarioTopSpace(stof(v[4]));
-	this->setMarioRightSpace(stof(v[5]));
-	this->setSuperMarioLeftSpace(stof(v[6]));
-	this->setSuperMarioTopSpace(stof(v[7]));
-	this->setSuperMarioRightSpace(stof(v[8]));
-	this->setSuperMarioFlyingLeftSpace(stof(v[9]));
-	this->setSuperMarioFlyingTopSpace(stof(v[10]));
-	this->setSuperMarioFlyingRightSpace(stof(v[11]));
+	this->setLeftSpace(stoi(v[0]));
+	this->setTopSpace(stoi(v[1]));
+	this->setRightSpace(stoi(v[2]));
+	this->setMarioLeftSpace(stoi(v[3]));
+	this->setMarioTopSpace(stoi(v[4]));
+	this->setMarioRightSpace(stoi(v[5]));
+	this->setSuperMarioLeftSpace(stoi(v[6]));
+	this->setSuperMarioTopSpace(stoi(v[7]));
+	this->setSuperMarioRightSpace(stoi(v[8]));
+	this->setSuperMarioFlyingLeftSpace(stoi(v[9]));
+	this->setSuperMarioFlyingTopSpace(stoi(v[10]));
+	this->setSuperMarioFlyingRightSpace(stoi(v[11]));
 	//this->setState(Tool::getMarioStateFromString(v[4]));
 
 	this->firstFireBall = new FireBall(0, 0, stof(v[12]), stof(v[13]), 0, 0, stoi(v[14]));
@@ -402,7 +402,7 @@ void Mario::save()
 	fstream fs;
 	fs.open(FilePath::getInstance()->mario, ios::out);
 
-	for (int i = 0; i < data.size(); ++i) {
+	for (size_t i = 0; i < data.size(); ++i) {
 		if (data[i] == "\n") {
 			fs << endl;
 		}
@@ -607,8 +607,8 @@ void Mario::setState(MarioState _state)
 			}
 		}
 		this->setTargetVy(0);
-		this->setVy(this->getIsSuperMode() ? -4.4 : -4.0);
-		this->setAccelerationY(0.11);
+		this->setVy(this->getIsSuperMode() ? float(-4.4) : float(-4.0));
+		this->setAccelerationY(float(0.11));
 		break;
 	}
 
@@ -680,9 +680,9 @@ void Mario::setState(MarioState _state)
 		this->setTargetVx(0);
 		this->setTargetVy(0);
 		this->setAccelerationX(0);
-		this->setAccelerationY(0.11);
+		this->setAccelerationY(float(0.11));
 		this->setVx(0);
-		this->setVy(-4.4);
+		this->setVy(float(-4.4));
 		break;
 	}
 
@@ -691,7 +691,7 @@ void Mario::setState(MarioState _state)
 		this->setTargetVx(0);
 		this->setTargetVy(6);
 		this->setAccelerationX(0);
-		this->setAccelerationY(0.34);
+		this->setAccelerationY(float(0.34));
 		this->setVx(0);
 		this->setVy(0);
 		break;
@@ -798,7 +798,7 @@ void Mario::setState(MarioState _state)
 			}
 		}
 		
-		this->endDroppingDownPipe = this->getY() + this->getHeight();
+		this->endDroppingDownPipe = int(this->getY()) + this->getHeight();
 		break;
 	}
 
@@ -829,7 +829,7 @@ void Mario::setState(MarioState _state)
 				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioDroppingDownPipe());
 			}
 		}
-		this->endPoppingUpPipe = this->getY() - this->getBoundsHeight();
+		this->endPoppingUpPipe = int(this->getY()) - this->getBoundsHeight();
 		break;
 	}
 
@@ -843,10 +843,10 @@ void Mario::setState(MarioState _state)
 	this->newFrameHeight = this->currentAnimation->getCurrentBoundsHeight();
 
 	if (oldFrameWidth != newFrameWidth) {
-		this->plusX(oldFrameWidth - newFrameWidth);
+		this->plusX(float(oldFrameWidth - newFrameWidth));
 	}
 	if (oldFrameHeight != newFrameHeight) {
-		this->plusY(oldFrameHeight - newFrameHeight);
+		this->plusY(float(oldFrameHeight - newFrameHeight));
 	}
 
 	if (_state == SCALING_UP) {
@@ -920,10 +920,10 @@ void Mario::setupReduceWalking(bool _isReduceWalking)
 {
 	this->setIsReduceWalking(_isReduceWalking);
 	if (this->getVx() < 0) {
-		this->setAccelerationX(0.1);
+		this->setAccelerationX(float(0.1));
 	}
 	else if (this->getVx() > 0) {
-		this->setAccelerationX(-0.1);
+		this->setAccelerationX(float(-0.1));
 	}
 	if (this->getTargetVx() != 0) {
 		this->setTargetVx(0);
@@ -1644,10 +1644,10 @@ void Mario::onKeyUp()
 	}
 	else if (this->getState() == DROPPING) {
 		if (this->getVx() < 0) {
-			this->setAccelerationX(0.1);
+			this->setAccelerationX(float(0.1));
 		}
 		else if (this->getVx() > 0) {
-			this->setAccelerationX(-0.1);
+			this->setAccelerationX(float(-0.1));
 		}
 		if (this->getTargetVx() != 0) {
 			this->setTargetVx(0);
@@ -1672,7 +1672,7 @@ void Mario::onKeyUp(vector<KeyType> _keyTypes)
 	}
 
 	bool noLeft = false, noRight = false;
-	for (int i = 0; i < _keyTypes.size(); ++i) {
+	for (size_t i = 0; i < _keyTypes.size(); ++i) {
 		if (_keyTypes[i] == KeyType::key_S) {
 			if (this->getState() == JUMPING) {
 				this->setState(MarioState::DROPPING);
@@ -1725,7 +1725,7 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 	bool hasKeyRight = false;
 	bool hasKeyLeft = false;
 
-	for (int i = 0; i < _keyTypes.size(); ++i) {
+	for (size_t i = 0; i < _keyTypes.size(); ++i) {
 		// Right
 		if (_keyTypes[i] == KeyType::right) {
 			if (this->getSubState() == PUSHING) {
@@ -1736,25 +1736,25 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 			if (!hasKeyLeft) {
 				this->setIsFlip(false);
 				if (this->getState() == DROPPING || this->getState() == JUMPING) {
-					this->setTargetVx(1.2);
+					this->setTargetVx(float(1.2));
 				}
 				else {
-					this->setTargetVx(2.1);
+					this->setTargetVx(float(2.1));
 					if (this->getVx() < 0) {
 						this->setIsConverting(true);
 						this->setState(MarioState::WALKING);
 					}
 				}
-				this->setAccelerationX(0.15);
+				this->setAccelerationX(float(0.15));
 			}
 			else {
 				this->setTargetVx(0);
 				this->setIsConverting(false);
 				if (this->getVx() > this->getTargetVx()) {
-					this->setAccelerationX(-0.1);
+					this->setAccelerationX(float(-0.1));
 				}
 				else if (this->getVx() < this->getTargetVx()) {
-					this->setAccelerationX(0.1);
+					this->setAccelerationX(float(0.1));
 				}
 				else {
 					this->setAccelerationX(0);
@@ -1772,25 +1772,25 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 			if (!hasKeyRight) {
 				this->setIsFlip(true);
 				if (this->getState() == DROPPING || this->getState() == JUMPING) {
-					this->setTargetVx(-1.2);
+					this->setTargetVx(float(-1.2));
 				}
 				else {
-					this->setTargetVx(-2.1);
+					this->setTargetVx(float(-2.1));
 					if (this->getVx() > 0) {
 						this->setIsConverting(true);
 						this->setState(MarioState::WALKING);
 					}
 				}
-				this->setAccelerationX(-0.15);
+				this->setAccelerationX(float(-0.15));
 			}
 			else {
 				this->setTargetVx(0);
 				this->setIsConverting(true);
 				if (this->getVx() > this->getTargetVx()) {
-					this->setAccelerationX(-0.1);
+					this->setAccelerationX(float(-0.1));
 				}
 				else if (this->getVx() < this->getTargetVx()) {
-					this->setAccelerationX(0.1);
+					this->setAccelerationX(float(0.1));
 				}
 				else {
 					this->setAccelerationX(0);
@@ -1880,7 +1880,7 @@ void Mario::handleGroundCollision(Ground* _ground, float _dt)
 {
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_ground, _dt);
 	if (get<0>(collisionResult) == true) {
-		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+		for (size_t j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == topEdge
 				&& this->getX() != _ground->getX() + _ground->getWidth() && this->getX() + this->getBoundsWidth() != _ground->getX()) {
@@ -1924,7 +1924,7 @@ void Mario::handleBlockCollision(Block* _block, float _dt)
 {
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_block, _dt);
 	if (get<0>(collisionResult) == true) {
-		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+		for (size_t j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == bottomEdge
 				&& this->getX() != _block->getX() + _block->getWidth() && this->getX() + this->getBoundsWidth() != _block->getX()) {
@@ -2008,7 +2008,7 @@ void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 			return;
 		}
 
-		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+		for (size_t j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == topEdge
 				&& this->getX() != _goldenBrick->getX() + _goldenBrick->getWidth() && this->getX() + this->getBoundsWidth() != _goldenBrick->getX()) {
@@ -2045,8 +2045,7 @@ void Mario::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 	else {
 		// if mario walk out of ground's top surface, it will drop
 		if (_goldenBrick->getState() == GOLDEN_BRICK_BEING_COIN) {
-			if (this->isCollidingByFrame(_goldenBrick->getFrame()));
-			return;
+			if (this->isCollidingByFrame(_goldenBrick->getFrame())) return;
 		}
 		if (this->getState() == WALKING || this->getState() == STANDING) {
 			if (this->getIsStandOnSurface() == false) {
@@ -2065,7 +2064,7 @@ void Mario::handleGiftBrickCollision(GiftBrick* _giftBrick, float _dt)
 {
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_giftBrick, _dt);
 	if (get<0>(collisionResult) == true) {
-		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+		for (size_t j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == topEdge
 				&& this->getX() != _giftBrick->getX() + _giftBrick->getWidth() && this->getX() + this->getBoundsWidth() != _giftBrick->getX()) {
@@ -2132,7 +2131,7 @@ void Mario::handleGreenPipeCollision(GreenPipe* _greenPipe, float _dt)
 {
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_greenPipe, _dt);
 	if (get<0>(collisionResult) == true) {
-		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+		for (size_t j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == topEdge
 				&& this->getX() != _greenPipe->getX() + _greenPipe->getWidth() && this->getX() + this->getBoundsWidth() != _greenPipe->getX()) {
@@ -2788,7 +2787,7 @@ void Mario::handleGreenPipeDownCollision(GreenPipe* _greenPipe, int _targetId, f
 {
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_greenPipe, _dt);
 	if (get<0>(collisionResult) == true) {
-		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+		for (size_t j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == topEdge
 				&& this->getX() != _greenPipe->getX() + _greenPipe->getWidth() && this->getX() + this->getBoundsWidth() != _greenPipe->getX()) {
@@ -2879,7 +2878,7 @@ void Mario::handleMusicBoxCollision(MusicBox* _musicBox, float _dt)
 				}
 				else {
 					this->setState(MarioState::JUMPING);
-					this->setVy(this->getVy() * 1.2);
+					this->setVy(this->getVy() * float(1.2));
 				}
 				this->setY(_musicBox->getY() - this->getBoundsHeight());
 				_musicBox->setState(MusicBoxState::MUSIC_BOX_JUMPING_DOWN);

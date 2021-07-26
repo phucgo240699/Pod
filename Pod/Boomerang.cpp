@@ -88,7 +88,7 @@ void Boomerang::Update(float _dt)
 	if (this->getState() == BoomerangState::BOOMERANG_FLYING_LEFT) {
 		// vx now is < 0
 		countFlyingX += (this->getVx() * _dt);
-		float moreY = (-1 * (32 - (pow(countFlyingX + 56, 2) / 98)));
+		float moreY = (-1 * (32 - (float(pow(countFlyingX + 56, 2)) / 98)));
 		this->plusXNoRound(this->getVx() * _dt);
 		this->setYNoRound(startFlyingY + moreY);
 		if (countFlyingX < -56) {
@@ -101,7 +101,7 @@ void Boomerang::Update(float _dt)
 	else if (this->getState() == BoomerangState::BOOMERANG_FLYING_RIGHT){
 		// vx now is < 0
 		countFlyingX += (this->getVx() * _dt);
-		float moreY = (-1 * (32 - (pow(countFlyingX - 56, 2) / 98)));
+		float moreY = (-1 * (32 - (float(pow(countFlyingX - 56, 2)) / 98)));
 		this->plusXNoRound(this->getVx() * _dt);
 		this->setYNoRound(startFlyingY + moreY);
 		if (countFlyingX > 56) {

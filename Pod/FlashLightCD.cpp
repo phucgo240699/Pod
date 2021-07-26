@@ -1,13 +1,13 @@
 #include "FlashLightCD.h"
 
-FlashLightCD::FlashLightCD(Animation _animation, int _x, int _y) : AnimationCD(_animation)
+FlashLightCD::FlashLightCD(Animation _animation, float _x, float _y) : AnimationCD(_animation)
 {
 	AnimationCD::AnimationCD(_animation);
 	this->position.x = _x;
 	this->position.y = _y;
 }
 
-FlashLightCD::FlashLightCD(int _x, int _y) : AnimationCD(Animation(AnimationBundle::getInstance()->getFlashLight()))
+FlashLightCD::FlashLightCD(float _x, float _y) : AnimationCD(Animation(AnimationBundle::getInstance()->getFlashLight()))
 {
 	AnimationCD::AnimationCD(Animation(AnimationBundle::getInstance()->getFlashLight()));
 	this->position.x = _x;

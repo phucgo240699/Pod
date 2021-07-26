@@ -105,10 +105,10 @@ void GoldenBrick::Update(float _dt)
 		xLeft -= 2;
 		xRight += 2;
 
-		y1 = (-1 * (48 - (pow(xLeft + 24, 2) / 12)));
-		y2 = (-1 * (48 - (pow(xRight - 24, 2) / 12)));
-		y3 = (-1 * (32 - (pow(xLeft + 16, 2) / 8)));
-		y4 = (-1 * (32 - (pow(xRight - 16, 2) / 8)));
+		y1 = (-1 * (48 - (float(pow(xLeft + 24, 2)) / 12)));
+		y2 = (-1 * (48 - (float(pow(xRight - 24, 2)) / 12)));
+		y3 = (-1 * (32 - (float(pow(xLeft + 16, 2)) / 8)));
+		y4 = (-1 * (32 - (float(pow(xRight - 16, 2)) / 8)));
 
 		limitY = Camera::getInstance()->getLimitY() - ScoreBoard::getInstance()->getHeight();
 		if (y1 > limitY && y2 > limitY && y3 > limitY && y4 > limitY) {
