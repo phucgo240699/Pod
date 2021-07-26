@@ -22,10 +22,10 @@ Camera* Camera::getInstance()
 RECT Camera::getFrame()
 {
 	RECT r;
-	r.top = this->getY();
-	r.bottom = this->getY() + this->getHeight();
-	r.left = this->getX();
-	r.right = this->getX() + this->getWidth();
+	r.top = int(this->getY());
+	r.bottom = r.top + this->getHeight();
+	r.left = int(this->getX());
+	r.right = r.left + this->getWidth();
 	return r;
 }
 
@@ -122,15 +122,15 @@ void Camera::follow(Mario* _target, float _dt)
 
 void Camera::load(string line, char seperator)
 {
-	vector<int> v = Tool::splitToVectorIntegerFrom(line, seperator);
-	this->setX(v[0]);
-	this->setY(v[1]);
-	this->setVx(v[2]);
-	this->setVy(v[3]);
-	this->setWidth(v[4]);
-	this->setHeight(v[5]);
-	this->setLimitX(v[6]);
-	this->setLimitY(v[7]);
+	vector<string> v = Tool::splitToVectorStringFrom(line, seperator);
+	this->setX(stof(v[0]));
+	this->setY(stof(v[1]));
+	this->setVx(stof(v[2]));
+	this->setVy(stof(v[3]));
+	this->setWidth(stoi(v[4]));
+	this->setHeight(stoi(v[5]));
+	this->setLimitX(stof(v[6]));
+	this->setLimitY(stof(v[7]));
 }
 
 void Camera::loadWorldMap()

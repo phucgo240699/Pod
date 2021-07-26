@@ -2245,13 +2245,13 @@ void Mario::handleGoombaCollision(Goomba* _goomba, float _dt)
 			if (_goomba->getIsFlyingMode()) {
 				if (_goomba->getState() == GOOMBA_FLYING_LEFT || _goomba->getState() == GOOMBA_POPPING_LEFT) {
 					//_goomba->plusY(2 * get<1>(collisionResult) * abs(this->getVy()));
-					_goomba->setState(GoombaState::GOOMBA_DROPPING_LEFT);
 					_goomba->setIsFlyingMode(false);
+					_goomba->setState(GoombaState::GOOMBA_DROPPING_LEFT);
 				}
 				else if (_goomba->getState() == GOOMBA_FLYING_RIGHT || _goomba->getState() == GOOMBA_POPPING_RIGHT) {
 					//_goomba->plusY(2 * get<1>(collisionResult) * abs(this->getVy()));
-					_goomba->setState(GoombaState::GOOMBA_DROPPING_RIGHT);
 					_goomba->setIsFlyingMode(false);
+					_goomba->setState(GoombaState::GOOMBA_DROPPING_RIGHT);
 				}
 				else if (_goomba->getState() == GOOMBA_MOVING_LEFT) {
 					_goomba->setIsFlyingMode(false);

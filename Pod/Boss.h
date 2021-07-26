@@ -6,6 +6,7 @@
 
 class Mario;
 class FireBall;
+class Koopa;
 
 
 class Boss : public Enemy
@@ -61,4 +62,5 @@ public:
 	void handleBlockComponentCollision(Component* _component, float _dt);
 	void handleMarioCollision(Mario* _mario, float _dt);
 	void handleFireBallCollision(FireBall* _fireBall, float _dt);
+	void handleKoopaCollision(Koopa* _koopa, float _dt);
 };

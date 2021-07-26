@@ -1,6 +1,7 @@
 #include "Boss.h"
 #include "Mario.h"
 #include "FireBall.h"
+#include "Koopa.h"
 
 
 Boss::Boss(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id) : Enemy(_x, _y, _vx, _vy, _limitX, _limitY)
@@ -21,9 +22,9 @@ BossState Boss::getState()
 RECT Boss::getFrame()
 {
 	RECT r = RECT();
-	r.top = this->getY() - 8;
+	r.top = int(this->getY()) - 8;
 	r.bottom = r.top + this->getHeight();
-	r.left = this->getX() - 4;
+	r.left = int(this->getX()) - 4;
 	r.right = r.left + this->getWidth();
 
 	return r;
@@ -222,6 +223,7 @@ void Boss::setState(BossState _state)
 		delete animation;
 		this->animation = new Animation(AnimationBundle::getInstance()->getThrownAwayGoomba());
 
+		this->countDownToDead = 12;
 		this->countThrowingX = 0;
 		this->startThrowingY = this->getY();
 		break;
@@ -253,19 +255,19 @@ void Boss::setMarioX(float _marioX)
 
 void Boss::loadInfo(string line, char separator)
 {
-	vector<float> v = Tool::splitToVectorFloatFrom(line, separator);
+	vector<string> v = Tool::splitToVectorStringFrom(line, separator);
 
-	this->setX(v[0]);
-	this->setY(v[1]);
-	this->setVx(v[2]);
-	this->setVy(v[3]);
-	this->setId(v[4]);
+	this->setX(stof(v[0]));
+	this->setY(stof(v[1]));
+	this->setVx(stof(v[2]));
+	this->setVy(stof(v[3]));
+	this->setId(stoi(v[4]));
 	this->originVx = this->getVx();
 	this->originVy = this->getVy();
 
-	this->firstBomb = new Bomb(this->getX(), this->getY(), v[5], v[6], Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), v[7]);
-	this->secondBomb = new Bomb(this->getX(), this->getY(), v[8], v[9], Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), v[10]);
-	this->thirdBomb = new Bomb(this->getX(), this->getY(), v[11], v[12], Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), v[13]);
+	this->firstBomb = new Bomb(this->getX(), this->getY(), stof(v[5]), stof(v[6]), Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), stoi(v[7]));
+	this->secondBomb = new Bomb(this->getX(), this->getY(), stof(v[8]), stof(v[9]), Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), stoi(v[10]));
+	this->thirdBomb = new Bomb(this->getX(), this->getY(), stof(v[11]), stof(v[12]), Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), stoi(v[13]));
 
 	this->setDefaultPoint(100);
 }
@@ -291,6 +293,7 @@ void Boss::Update(float _dt)
 			this->plusX(this->getVx() * _dt);
 
 			--countDownFromMovingToFlyingUp;
+			
 			if (this->countDownFromMovingToFlyingUp <= 0) {
 				this->countDownFromMovingToFlyingUp = movingWay;
 				if (this->getX() < this->getMarioX()) {
@@ -301,8 +304,10 @@ void Boss::Update(float _dt)
 				}
 			}
 			else {
-				if (this->getMarioX() > this->getX()) {
-					this->setState(BossState::BOSS_MOVING_RIGHT);
+				if (countDownFromMovingToFlyingUp = 15) {
+					if (this->getX() < this->getMarioX()) {
+						this->setState(BossState::BOSS_MOVING_RIGHT);
+					}
 				}
 			}
 			
@@ -319,6 +324,7 @@ void Boss::Update(float _dt)
 			this->plusX(this->getVx() * _dt);
 
 			--countDownFromMovingToFlyingUp;
+
 			if (this->countDownFromMovingToFlyingUp <= 0) {
 				this->countDownFromMovingToFlyingUp = movingWay;
 				if (this->getX() < this->getMarioX()) {
@@ -329,8 +335,10 @@ void Boss::Update(float _dt)
 				}
 			}
 			else {
-				if (this->getMarioX() < this->getX()) {
-					this->setState(BossState::BOSS_MOVING_RIGHT);
+				if (countDownFromMovingToFlyingUp = 15) {
+					if (this->getX() > this->getMarioX()) {
+						this->setState(BossState::BOSS_MOVING_LEFT);
+					}
 				}
 			}
 		}
@@ -395,7 +403,7 @@ void Boss::Update(float _dt)
 	else if (this->getState() == BOSS_FLYING_LEFT) {
 		// vx now is < 0
 		this->countFlyingX += (this->getVx() * _dt);
-		float moreY = -(pow(countFlyingX + 15, 2) / 56 - 4);
+		float moreY = -(float(pow(countFlyingX + 15, 2)) / 56 - 4);
 		this->plusXNoRound(this->getVx() * _dt);
 		this->setYNoRound(startFlyingY + moreY);
 
@@ -448,7 +456,7 @@ void Boss::Update(float _dt)
 	else if (this->getState() == BOSS_FLYING_RIGHT) {
 		// vx now is > 0
 		this->countFlyingX += (this->getVx() * _dt);
-		float moreY = -(pow(countFlyingX - 15, 2) / 56 - 4);
+		float moreY = -(float(pow(countFlyingX - 15, 2)) / 56 - 4);
 		this->plusXNoRound(this->getVx() * _dt);
 		this->setYNoRound(startFlyingY + moreY);
 
@@ -505,12 +513,12 @@ void Boss::Update(float _dt)
 	}
 	else if (this->getState() == BOSS_THROWING_LEFT_AWAT) {
 		this->plusXNoRound(-2);
-		this->setY(this->startThrowingY + (-1 * (16 - (pow(countThrowingX + 24, 2) / 36)))); // -1: Oxy in game vs math
+		this->setY(this->startThrowingY + (-1 * (16 - (float(pow(countThrowingX + 24, 2)) / 36)))); // -1: Oxy in game vs math
 		countThrowingX -= (2);
 	}
 	else if (this->getState() == BOSS_THROWING_RIGHT_AWAY) {
 		this->plusXNoRound(2);
-		this->setY(this->startThrowingY + (-1 * (16 - (pow(countThrowingX - 24, 2) / 36)))); // -1: Oxy in game vs math
+		this->setY(this->startThrowingY + (-1 * (16 - (float(pow(countThrowingX - 24, 2)) / 36)))); // -1: Oxy in game vs math
 		countThrowingX += (2);
 	}
 }
@@ -532,7 +540,7 @@ void Boss::handleHardComponentCollision(Component* _component, float _dt)
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_component, _dt);
 	if (get<0>(collisionResult) == true) {
-		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+		for (size_t j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == bottomEdge) {
 				this->setIsStandOnSurface(true);
@@ -584,7 +592,7 @@ void Boss::handleBlockComponentCollision(Component* _component, float _dt)
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_component, _dt);
 	if (get<0>(collisionResult) == true) {
-		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
+		for (size_t j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == bottomEdge) {
 				this->setIsStandOnSurface(true);
@@ -670,7 +678,7 @@ void Boss::handleMarioCollision(Mario* _mario, float _dt)
 			}
 			else {
 				this->setState(BossState::BOSS_TRAMPLED);
-				AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint() * this->getPointCoef(), this->getX(), this->getY())));
+				AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint() * this->getPointCoef(), int(this->getX()), int(this->getY()))));
 			}
 
 			// Calculate points
@@ -708,7 +716,34 @@ void Boss::handleFireBallCollision(FireBall* _fireBall, float _dt)
 		_fireBall->setState(FireBallState::FIREBALL_DISAPPEARED);
 
 		ScoreBoard::getInstance()->plusPoint(this->getDefaultPoint());
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint(), this->getX(), this->getY())));
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFireBallSplash()), _fireBall->getX(), _fireBall->getY())));
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint(), int(this->getX()), int(this->getY()))));
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFireBallSplash()), int(_fireBall->getX()), int(_fireBall->getY()))));
+	}
+}
+
+void Boss::handleKoopaCollision(Koopa* _koopa, float _dt)
+{
+	if (_koopa->getState() == KOOPA_THROWN_LEFT_AWAY || _koopa->getState() == KOOPA_THROWN_RIGHT_AWAY) return;
+
+	if (this->getState() == BOSS_THROWING_LEFT_AWAT || this->getState() == BOSS_THROWING_RIGHT_AWAY || this->getState() == BOSS_TRAMPLED || this->getState() == BOSS_DEAD) return;
+
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_koopa, _dt);
+	if (get<0>(collisionResult) == true) {
+		CollisionEdge edge = get<2>(collisionResult)[0];
+		if (_koopa->getState() == KOOPA_SHRINKAGE_MOVING_LEFT
+			|| _koopa->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT) {
+			this->setState(BossState::BOSS_THROWING_LEFT_AWAT);
+
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(100, int(this->getX()), int(this->getY()))));
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(int(this->getX()), int(this->getY()))));
+			
+		}
+		else if (_koopa->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT
+			|| _koopa->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
+			this->setState(BossState::BOSS_THROWING_RIGHT_AWAY);
+
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(100, int(this->getX()), int(this->getY()))));
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(int(this->getX()), int(this->getY()))));
+		}
 	}
 }

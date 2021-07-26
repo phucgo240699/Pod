@@ -15,6 +15,8 @@ class Goomba;
 class FireBall;
 class GoldenBrick;
 class MusicBox;
+class BoomerangBro;
+class Boss;
 
 class Koopa : public Enemy
 {
@@ -92,6 +94,8 @@ public:
 	void handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt);
 	void handleKoopaCollision(Koopa* _koopa, float _dt);
 	void handleMusicBoxCollision(MusicBox* _musicBox, float _dt);
+	void handleBoomerangBroCollision(BoomerangBro* _boomerangBro, float _dt);
+	void handleBossCollision(Boss* _boss, float _dt);
 };
 
 #endif // !KOOPA

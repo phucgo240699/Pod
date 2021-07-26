@@ -1,5 +1,6 @@
 #include "BoomerangBro.h"
 #include "Mario.h"
+#include "Koopa.h"
 
 BoomerangBro::BoomerangBro(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id) : Enemy(_x, _y, _vx, _vy, _limitX, _limitY)
 {
@@ -7,19 +8,19 @@ BoomerangBro::BoomerangBro(float _x, float _y, float _vx, float _vy, float _limi
 
 void BoomerangBro::loadInfo(string line, char seperator)
 {
-	vector<float> v = Tool::splitToVectorFloatFrom(line, seperator);
-	this->setX(v[0]);
-	this->setY(v[1]);
-	this->setVx(v[2]);
-	this->setVy(v[3]);
-	this->setId(v[4]);
-	this->leftAnchor = v[5];
-	this->rightAnchor = v[6];
+	vector<string> v = Tool::splitToVectorStringFrom(line, seperator);
+	this->setX(stof(v[0]));
+	this->setY(stof(v[1]));
+	this->setVx(stof(v[2]));
+	this->setVy(stof(v[3]));
+	this->setId(stoi(v[4]));
+	this->leftAnchor = stof(v[5]);
+	this->rightAnchor = stof(v[6]);
 	this->originVx = this->getVx();
 	this->originVy = this->getVy();
 
-	this->firstBoomerang = new Boomerang(this->getX(), this->getY(), v[7], v[8], Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), v[9]);
-	this->secondBoomerang = new Boomerang(this->getX(), this->getY(), v[10], v[11], Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), v[12]);
+	this->firstBoomerang = new Boomerang(this->getX(), this->getY(), stof(v[7]), stof(v[8]), Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), stoi(v[9]));
+	this->secondBoomerang = new Boomerang(this->getX(), this->getY(), stof(v[10]), stof(v[11]), Camera::getInstance()->getLimitX(), Camera::getInstance()->getLimitY(), stoi(v[12]));
 	this->throwingAnim = new Animation(AnimationBundle::getInstance()->getBoomerangMovingHolding());
 }
 
@@ -76,9 +77,9 @@ Boomerang* BoomerangBro::getSecondBoomerang()
 RECT BoomerangBro::getFrame()
 {
 	RECT r = RECT();
-	r.top = this->getY() - 8;
+	r.top = int(this->getY()) - 8;
 	r.bottom = r.top + this->getHeight();
-	r.left = this->getX() - 4;
+	r.left = int(this->getX()) - 4;
 	r.right = r.left + this->getWidth();
 
 	return r;
@@ -207,7 +208,7 @@ void BoomerangBro::Update(float _dt)
 	else if (this->getState() == BOOMERANG_BRO_POPPING_LEFT) {
 		// vx now is < 0
 		this->countFlyingX += (this->getVx() * _dt);
-		float moreY = (-1 * (16 - (pow(countFlyingX + 8, 2) / 4)));
+		float moreY = (-1 * (16 - (float(pow(countFlyingX + 8, 2)) / 4)));
 		this->plusXNoRound(this->getVx() * _dt);
 		this->setYNoRound(startFlyingY + moreY);
 
@@ -218,7 +219,7 @@ void BoomerangBro::Update(float _dt)
 	else if (this->getState() == BOOMERANG_BRO_POPPING_RIGHT) {
 		// vx now is < 0
 		this->countFlyingX += (this->getVx() * _dt);
-		float moreY = (-1 * (16 - (pow(countFlyingX - 8, 2) / 4)));
+		float moreY = (-1 * (16 - (float(pow(countFlyingX - 8, 2)) / 4)));
 		this->plusXNoRound(this->getVx() * _dt);
 		this->setYNoRound(startFlyingY + moreY);
 
@@ -305,12 +306,12 @@ void BoomerangBro::hanldeHardComponentCollision(Component* _component, float _dt
 		if (edge == bottomEdge) {
 			if (this->getState() == BoomerangBroState::BOOMERANG_BRO_POPPING_LEFT || this->getState() == BOOMERANG_BRO_DROPPING_LEFT) {
 				this->setState(BoomerangBroState::BOOMERANG_BRO_MOVING_LEFT);
-				float a = this->getBoundsHeight();
+
 				this->setY(_component->getY() - this->getBoundsHeight());
 			}
 			else if (this->getState() == BoomerangBroState::BOOMERANG_BRO_POPPING_RIGHT || this->getState() == BOOMERANG_BRO_DROPPING_RIGHT) {
 				this->setState(BoomerangBroState::BOOMERANG_BRO_MOVING_RIGHT);
-				float a = this->getBoundsHeight();
+
 				this->setY(_component->getY() - this->getBoundsHeight());
 			}
 		}
@@ -362,8 +363,8 @@ void BoomerangBro::handleMarioCollision(Mario* _mario, float _dt)
 					this->setState(BoomerangBroState::BOOMERANG_BRO_BEING_DEAD);
 
 					ScoreBoard::getInstance()->plusPoint(100);
-					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(100, this->getX(), this->getY())));
-					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFlashLight()), this->getX(), this->getY())));
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(100, int(this->getX()), int(this->getY()))));
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFlashLight()), int(this->getX()), int(this->getY()))));
 					return;
 				}
 			}
@@ -375,8 +376,8 @@ void BoomerangBro::handleMarioCollision(Mario* _mario, float _dt)
 					this->setState(BoomerangBroState::BOOMERANG_BRO_BEING_DEAD);
 
 					ScoreBoard::getInstance()->plusPoint(100);
-					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(100, this->getX(), this->getY())));
-					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFlashLight()), this->getX(), this->getY())));
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(100, int(this->getX()), int(this->getY()))));
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFlashLight()), int(this->getX()), int(this->getY()))));
 					return;
 				}
 			}
@@ -392,7 +393,7 @@ void BoomerangBro::handleMarioCollision(Mario* _mario, float _dt)
 			_mario->setState(MarioState::JUMPING);
 			this->setState(BoomerangBroState::BOOMERANG_BRO_BEING_DEAD);
 			ScoreBoard::getInstance()->plusPoint(1000);
-			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(Animation(AnimationBundle::getInstance()->get1000Points()), this->getX(), this->getY())));
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(Animation(AnimationBundle::getInstance()->get1000Points()), int(this->getX()), int(this->getY()))));
 		}
 		else {
 			_mario->setState(MarioState::DIE);
@@ -409,6 +410,27 @@ void BoomerangBro::handleFireBallCollision(FireBall* _fireBall, float _dt)
 	if (get<0>(collisionResult) == true || this->isCollidingByFrame(_fireBall->getFrame())) {
 		this->setState(BoomerangBroState::BOOMERANG_BRO_BEING_DEAD);
 		ScoreBoard::getInstance()->plusPoint(1000);
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(Animation(AnimationBundle::getInstance()->get1000Points()), this->getX(), this->getY())));
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(Animation(AnimationBundle::getInstance()->get1000Points()), int(this->getX()), int(this->getY()))));
+	}
+}
+
+void BoomerangBro::handleKoopaCollision(Koopa* _koopa, float _dt)
+{
+	if (_koopa->getState() == KOOPA_THROWN_LEFT_AWAY || _koopa->getState() == KOOPA_THROWN_RIGHT_AWAY) return;
+	if (this->getState() == BOOMERANG_BRO_BEING_DEAD) return;
+
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_koopa, _dt);
+	if (get<0>(collisionResult) == true) {
+		CollisionEdge edge = get<2>(collisionResult)[0];
+		if (_koopa->getState() == KOOPA_SHRINKAGE_MOVING_LEFT
+			|| _koopa->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT
+			|| _koopa->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT
+			|| _koopa->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
+
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(100, int(this->getX()), int(this->getY()))));
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(int(this->getX()), int(this->getY()))));
+			
+			this->setState(BoomerangBroState::BOOMERANG_BRO_BEING_DEAD);
+		}
 	}
 }

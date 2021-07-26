@@ -751,6 +751,12 @@ void ThirdVC::viewDidUpdate(float _dt)
 								else if (beginMusicBoxId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endMusicBoxId) {
 									static_cast<Koopa*>(*itr)->handleMusicBoxCollision(static_cast<MusicBox*>(*koopaItr), _dt);
 								}
+								else if (beginBoomerangBroId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endBoomerangBroId) {
+									static_cast<Koopa*>(*itr)->handleBoomerangBroCollision(static_cast<BoomerangBro*>(*koopaItr), _dt);
+								}
+								else if (beginBossId <= (*koopaItr)->getId() && (*koopaItr)->getId() <= endBossId) {
+									static_cast<Koopa*>(*itr)->handleBossCollision(static_cast<Boss*>(*koopaItr), _dt);
+								}
 							}
 						}
 					}
@@ -805,6 +811,9 @@ void ThirdVC::viewDidUpdate(float _dt)
 								}
 								else if (beginFireBallId <= (*boomerangBroItr)->getId() && (*boomerangBroItr)->getId() <= endFireBallId) {
 									static_cast<BoomerangBro*>(*itr)->handleFireBallCollision(static_cast<FireBall*>(*boomerangBroItr), _dt);
+								}
+								else if (beginKoopaId <= (*boomerangBroItr)->getId() && (*boomerangBroItr)->getId() <= endKoopaId) {
+									static_cast<BoomerangBro*>(*itr)->handleKoopaCollision(static_cast<Koopa*>(*boomerangBroItr), _dt);
 								}
 							}
 						}
@@ -873,6 +882,9 @@ void ThirdVC::viewDidUpdate(float _dt)
 								}
 								else if (beginFireBallId <= (*bossItr)->getId() && (*bossItr)->getId() <= endFireBallId) {
 									static_cast<Boss*>(*itr)->handleFireBallCollision(static_cast<FireBall*>(*bossItr), _dt);
+								}
+								else if (beginKoopaId <= (*bossItr)->getId() && (*bossItr)->getId() <= endKoopaId) {
+									static_cast<Boss*>(*itr)->handleKoopaCollision(static_cast<Koopa*>(*bossItr), _dt);
 								}
 
 							}

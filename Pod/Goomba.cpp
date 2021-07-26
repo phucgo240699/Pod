@@ -101,10 +101,17 @@ void Goomba::setState(GoombaState _state)
 	{
 	case GOOMBA_STANDING:
 	{
-		if (this->animation == NULL) {
-			delete animation;
+		delete animation;
+		if (this->getIsFlyingMode()) {
+			this->animation = new Animation(AnimationBundle::getInstance()->getGoombaRedFlying());
+		}
+		else if (this->isUseRedSkin) {
+			this->animation = new Animation(AnimationBundle::getInstance()->getGoombaRedMoving());
+		}
+		else {
 			this->animation = new Animation(AnimationBundle::getInstance()->getGoombaMoving());
 		}
+		
 		this->setVx(0);
 		this->setVy(0);
 		countPopping = 0;
@@ -113,7 +120,7 @@ void Goomba::setState(GoombaState _state)
 
 	case GOOMBA_MOVING_LEFT:
 	{
-		if (this->getIsFlyingMode() || this->animation == NULL) {
+		//if (this->getIsFlyingMode() || this->animation == NULL) {
 			delete animation;
 			if (this->getIsFlyingMode()) {
 				this->animation = new Animation(AnimationBundle::getInstance()->getGoombaRedFlying());
@@ -124,7 +131,7 @@ void Goomba::setState(GoombaState _state)
 			else {
 				this->animation = new Animation(AnimationBundle::getInstance()->getGoombaMoving());
 			}
-		}
+		//}
 
 		//countPopping = 0;
 		this->setVx(-getOriginVx());
@@ -134,7 +141,7 @@ void Goomba::setState(GoombaState _state)
 
 	case GOOMBA_MOVING_RIGHT:
 	{
-		if (this->getIsFlyingMode() || this->animation == NULL) {
+		//if (this->getIsFlyingMode() || this->animation == NULL) {
 			delete animation;
 			if (this->getIsFlyingMode()) {
 				this->animation = new Animation(AnimationBundle::getInstance()->getGoombaRedFlying());
@@ -145,7 +152,7 @@ void Goomba::setState(GoombaState _state)
 			else {
 				this->animation = new Animation(AnimationBundle::getInstance()->getGoombaMoving());
 			}
-		}
+		//}
 
 		//countPopping = 0;
 		this->setVx(getOriginVx());
@@ -155,15 +162,18 @@ void Goomba::setState(GoombaState _state)
 
 	case GOOMBA_DROPPING_LEFT:
 	{
-		if (this->getIsFlyingMode() || this->animation == NULL) {
+		//if (this->getIsFlyingMode() || this->animation == NULL) {
 			delete animation;
-			if (this->isUseRedSkin) {
+			if (this->getIsFlyingMode()) {
+				this->animation = new Animation(AnimationBundle::getInstance()->getGoombaRedFlying());
+			}
+			else if (this->isUseRedSkin) {
 				this->animation = new Animation(AnimationBundle::getInstance()->getGoombaRedMoving());
 			}
 			else {
 				this->animation = new Animation(AnimationBundle::getInstance()->getGoombaMoving());
 			}
-		}
+		//}
 		this->setVx(-getOriginVx());
 		this->setVy(getOriginVy());
 		break;
@@ -171,15 +181,18 @@ void Goomba::setState(GoombaState _state)
 
 	case GOOMBA_DROPPING_RIGHT:
 	{
-		if (this->getIsFlyingMode() || this->animation == NULL) {
+		//if (this->getIsFlyingMode() || this->animation == NULL) {
 			delete animation;
-			if (this->isUseRedSkin) {
+			if (this->getIsFlyingMode()) {
+				this->animation = new Animation(AnimationBundle::getInstance()->getGoombaRedFlying());
+			}
+			else if (this->isUseRedSkin) {
 				this->animation = new Animation(AnimationBundle::getInstance()->getGoombaRedMoving());
 			}
 			else {
 				this->animation = new Animation(AnimationBundle::getInstance()->getGoombaMoving());
 			}
-		}
+		//}
 		this->setVx(getOriginVx());
 		this->setVy(getOriginVy());
 		break;
@@ -187,9 +200,10 @@ void Goomba::setState(GoombaState _state)
 
 	case GOOMBA_POPPING_LEFT:
 	{
-		if (animation == NULL) {
-			this->animation = new Animation(AnimationBundle::getInstance()->getGoombaRedFlying());
-		}
+		//if (animation == NULL) {
+		delete animation;
+		this->animation = new Animation(AnimationBundle::getInstance()->getGoombaRedFlying());
+		//}
 
 		this->countPoppingX = 0;
 		this->startPoppingY = this->getY();
@@ -201,9 +215,10 @@ void Goomba::setState(GoombaState _state)
 
 	case GOOMBA_POPPING_RIGHT:
 	{
-		if (animation == NULL) {
-			this->animation = new Animation(AnimationBundle::getInstance()->getGoombaRedFlying());
-		}
+		//if (animation == NULL) {
+		delete animation;
+		this->animation = new Animation(AnimationBundle::getInstance()->getGoombaRedFlying());
+		//}
 
 		this->countPoppingX = 0;
 		this->startPoppingY = this->getY();
@@ -215,9 +230,10 @@ void Goomba::setState(GoombaState _state)
 
 	case GOOMBA_FLYING_LEFT:
 	{
-		if (animation == NULL) {
+		//if (animation == NULL) {
+			delete animation;
 			this->animation = new Animation(AnimationBundle::getInstance()->getGoombaRedFlying());
-		}
+		//}
 		
 		countPopping = 0;
 		countFlyingX = 0;
@@ -231,9 +247,10 @@ void Goomba::setState(GoombaState _state)
 
 	case GOOMBA_FLYING_RIGHT:
 	{
-		if (animation == NULL) {
+		//if (animation == NULL) {
+		delete animation;
 			this->animation = new Animation(AnimationBundle::getInstance()->getGoombaRedFlying());
-		}
+		//}
 
 		countPopping = 0;
 		countFlyingX = 0;
@@ -653,6 +670,7 @@ void Goomba::handleKoopaCollision(Koopa* _koopa, float _dt)
 		|| this->getState() == DEAD_GOOMBA) {
 		return;
 	}
+
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_koopa, _dt);
 	if (get<0>(collisionResult) == true) {
 		CollisionEdge edge = get<2>(collisionResult)[0];
@@ -673,7 +691,24 @@ void Goomba::handleKoopaCollision(Koopa* _koopa, float _dt)
 				|| _koopa->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT
 				|| _koopa->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT
 				|| _koopa->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
-				AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint() * this->getPointCoef(), this->getX(), this->getY())));
+				AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint(), this->getX(), this->getY())));
+				AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(this->getX(), this->getY())));
+				if (_koopa->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT
+					|| _koopa->getState() == KOOPA_SHRINKAGE_MOVING_LEFT) {
+					this->setState(GoombaState::THROWN_LEFT_AWAY_GOOMBA);
+				}
+				else if (_koopa->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT
+					|| _koopa->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
+					this->setState(GoombaState::THROWN_RIGHT_AWAY_GOOMBA);
+				}
+			}
+		}
+		else {
+			if (_koopa->getState() == KOOPA_SHRINKAGE_MOVING_LEFT
+				|| _koopa->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT
+				|| _koopa->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT
+				|| _koopa->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
+				AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint(), this->getX(), this->getY())));
 				AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(this->getX(), this->getY())));
 				if (_koopa->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT
 					|| _koopa->getState() == KOOPA_SHRINKAGE_MOVING_LEFT) {
@@ -778,13 +813,13 @@ void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 				if (this->getIsFlyingMode()) {
 					if (this->getState() == GOOMBA_FLYING_LEFT || this->getState() == GOOMBA_POPPING_LEFT) {
 						//this->plusY(2 * get<1>(collisionResult) * abs(_mario->getVy()));
-						this->setState(GoombaState::GOOMBA_DROPPING_LEFT);
 						this->setIsFlyingMode(false);
+						this->setState(GoombaState::GOOMBA_DROPPING_LEFT);
 					}
 					else if (this->getState() == GOOMBA_FLYING_RIGHT || this->getState() == GOOMBA_POPPING_RIGHT) {
 						//this->plusY(2 * get<1>(collisionResult) * abs(_mario->getVy()));
-						this->setState(GoombaState::GOOMBA_DROPPING_RIGHT);
 						this->setIsFlyingMode(false);
+						this->setState(GoombaState::GOOMBA_DROPPING_RIGHT);
 					}
 					else if (this->getState() == GOOMBA_MOVING_LEFT) {
 						this->setIsFlyingMode(false);

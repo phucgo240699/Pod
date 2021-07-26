@@ -1,6 +1,8 @@
 #include "Koopa.h"
 #include "Mario.h"
 #include "Goomba.h"
+#include "BoomerangBro.h"
+#include "Koopa.h"
 
 Koopa::Koopa(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY, int _id) : Enemy(_x, _y, _vx, _vy, _limitX, _limitY)
 {
@@ -1123,7 +1125,25 @@ void Koopa::handleGoombaCollision(Goomba* _goomba, float _dt)
 				|| this->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT
 				|| this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT
 				|| this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
-				AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_goomba->getDefaultPoint() * _goomba->getPointCoef(), _goomba->getX(), _goomba->getY())));
+				AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_goomba->getDefaultPoint(), _goomba->getX(), _goomba->getY())));
+				AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(_goomba->getX(), _goomba->getY())));
+
+				if (this->getState() == KOOPA_SHRINKAGE_MOVING_LEFT
+					|| this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT) {
+					_goomba->setState(GoombaState::THROWN_LEFT_AWAY_GOOMBA);
+				}
+				else if (this->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT
+					|| this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
+					_goomba->setState(GoombaState::THROWN_RIGHT_AWAY_GOOMBA);
+				}
+			}
+		}
+		else {
+			if (this->getState() == KOOPA_SHRINKAGE_MOVING_LEFT
+				|| this->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT
+				|| this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT
+				|| this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
+				AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_goomba->getDefaultPoint(), _goomba->getX(), _goomba->getY())));
 				AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(_goomba->getX(), _goomba->getY())));
 
 				if (this->getState() == KOOPA_SHRINKAGE_MOVING_LEFT
@@ -1698,6 +1718,53 @@ void Koopa::handleMusicBoxCollision(MusicBox* _musicBox, float _dt)
 					}
 				}
 			}
+		}
+	}
+}
+
+void Koopa::handleBoomerangBroCollision(BoomerangBro* _boomerangBro, float _dt)
+{
+	if (this->getState() == KOOPA_THROWN_LEFT_AWAY || this->getState() == KOOPA_THROWN_RIGHT_AWAY) return;
+	if (this->getState() == BOOMERANG_BRO_BEING_DEAD) return;
+
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_boomerangBro, _dt);
+	if (get<0>(collisionResult) == true) {
+		CollisionEdge edge = get<2>(collisionResult)[0];
+		if (this->getState() == KOOPA_SHRINKAGE_MOVING_LEFT
+			|| this->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT
+			|| this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT
+			|| this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
+
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(100, _boomerangBro->getX(), _boomerangBro->getY())));
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(_boomerangBro->getX(), _boomerangBro->getY())));
+
+			_boomerangBro->setState(BoomerangBroState::BOOMERANG_BRO_BEING_DEAD);
+		}
+	}
+}
+
+void Koopa::handleBossCollision(Boss* _boss, float _dt)
+{
+	if (this->getState() == KOOPA_THROWN_LEFT_AWAY || this->getState() == KOOPA_THROWN_RIGHT_AWAY) return;
+	if (this->getState() == BOSS_THROWING_LEFT_AWAT || this->getState() == BOSS_THROWING_RIGHT_AWAY || this->getState() == BOSS_TRAMPLED || this->getState() == BOSS_DEAD) return;
+
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_boss, _dt);
+	
+	if (get<0>(collisionResult) == true) {
+		CollisionEdge edge = get<2>(collisionResult)[0];
+		if (this->getState() == KOOPA_SHRINKAGE_MOVING_LEFT
+			|| this->getState() == KOOPA_SHRINKAGE_DROPPING_LEFT) {
+			_boss->setState(BossState::BOSS_THROWING_LEFT_AWAT);
+
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(100, _boss->getX(), _boss->getY())));
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(_boss->getX(), _boss->getY())));
+		}
+		else if (this->getState() == KOOPA_SHRINKAGE_MOVING_RIGHT
+			|| this->getState() == KOOPA_SHRINKAGE_DROPPING_RIGHT) {
+			_boss->setState(BossState::BOSS_THROWING_RIGHT_AWAY);
+
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(100, _boss->getX(), _boss->getY())));
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(_boss->getX(), _boss->getY())));
 		}
 	}
 }

@@ -73,7 +73,7 @@ void Bomb::Update(float _dt)
 
 	if (this->getState() == BOMB_DROPPING_LEFT_SIDE) {
 		countDroppingY += (this->getVy() * _dt);
-		float moreX = (pow(-countDroppingY + 6, 2) / 9) - 4;
+		float moreX = float(pow(-countDroppingY + 6, 2 / 9)) - 4;
 		this->plusYNoRound(this->getVy() * _dt);
 		this->setXNoRound(startDroppingX + moreX);
 
@@ -86,7 +86,7 @@ void Bomb::Update(float _dt)
 	}
 	else if (this->getState() == BOMB_DROPPING_RIGHT_SIDE) {
 		countDroppingY += (this->getVy() * _dt);
-		float moreX = 4 - (pow(-countDroppingY + 6, 2) / 9);
+		float moreX = 4 - (float(pow(-countDroppingY + 6, 2)) / 9);
 		this->plusYNoRound(this->getVy() * _dt);
 		this->setXNoRound(startDroppingX + moreX);
 
