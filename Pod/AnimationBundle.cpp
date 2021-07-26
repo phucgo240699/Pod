@@ -38,7 +38,7 @@ void AnimationBundle::loadAnimations(vector<string> data, char endSperator, char
 	this->animations = new vector<Animation>();
 	vector<pair<RECT, RECT>>* frames = new vector<pair<RECT, RECT>>();
 
-	for (int i = 0; i < data.size(); ++i) {
+	for (size_t i = 0; i < data.size(); ++i) {
 		if (data[i][0] == '>') {
 			vector<string> v = Tool::splitToVectorStringFrom(data[i], ' ');
 			id = stoi(v[1]);
@@ -51,7 +51,7 @@ void AnimationBundle::loadAnimations(vector<string> data, char endSperator, char
 			continue;
 		}
 		
-		vector<float> v = Tool::splitToVectorFloatFrom(data[i], seperator);
+		vector<int> v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 		if (v.size() == 8) {
 			RECT rectBounds = RECT();
 			rectBounds.left = v[0];

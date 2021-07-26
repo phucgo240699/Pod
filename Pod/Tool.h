@@ -46,7 +46,7 @@ public:
 		istringstream stm(s);
 		
 		int fromIndex = 0;
-		for (int i = 0; i < s.length(); ++i) {
+		for (size_t i = 0; i < s.length(); ++i) {
 			if (s[i] == seperator) {
 				vector.push_back(s.substr(fromIndex, i - fromIndex));
 				fromIndex = i + 1;
@@ -63,7 +63,7 @@ public:
 		istringstream stm(s);
 
 		int fromIndex = 0;
-		for (int i = 0; i < s.length(); ++i) {
+		for (size_t i = 0; i < s.length(); ++i) {
 			if (s[i] == seperator) {
 				vector.push_back(stoi(s.substr(fromIndex, i - fromIndex)));
 				fromIndex = i + 1;
@@ -82,7 +82,7 @@ public:
 		istringstream stm(s);
 
 		int fromIndex = 0;
-		for (int i = 0; i < s.length(); ++i) {
+		for (size_t i = 0; i < s.length(); ++i) {
 			if (s[i] == seperator) {
 				vector.push_back(stof(s.substr(fromIndex, i - fromIndex)));
 				fromIndex = i + 1;
@@ -100,7 +100,7 @@ public:
 		vector<char> vector;
 		istringstream stm(s);
 
-		for (int i = 0; i < s.length(); ++i) {
+		for (size_t i = 0; i < s.length(); ++i) {
 			if (s[i] == seperator) continue;
 			vector.push_back(s[i]);
 		}
@@ -112,7 +112,7 @@ public:
 		pair<int, int> p;
 
 		int fromIndex = 0;
-		for (int i = 0; i < s.length(); ++i) {
+		for (size_t i = 0; i < s.length(); ++i) {
 			if (s[i] == seperator) {
 				p.first = stoi(s.substr(0, i));
 				p.second = stoi(s.substr(i + 1, s.length() - i - 1));
@@ -124,7 +124,7 @@ public:
 	static vector<vector<int>> getMatrixFrom(vector<string> data, char seperator) {
 		vector<vector<int>> result = vector<vector<int>>();
 
-		for (int i = 0; i < data.size(); ++i) {
+		for (size_t i = 0; i < data.size(); ++i) {
 			result.push_back(splitToVectorIntegerFrom(data[i], seperator));
 		}
 
@@ -134,7 +134,7 @@ public:
 	static vector<vector<char>> getCharMatrixFrom(vector<string> data, char seperator) {
 		vector<vector<char>> result = vector<vector<char>>();
 
-		for (int i = 0; i < data.size(); ++i) {
+		for (size_t i = 0; i < data.size(); ++i) {
 			result.push_back(splitToVectorCharFrom(data[i], seperator));
 		}
 
@@ -156,7 +156,7 @@ public:
 	static vector<RECT>* getRECTs(vector<string> data, char seperator) {
 		vector<RECT>* RECTs = new vector<RECT>();
 
-		for (int i = 0; i < data.size(); ++i) {
+		for (size_t i = 0; i < data.size(); ++i) {
 			RECTs->push_back(getRECT(data[i], seperator));
 		}
 
@@ -164,7 +164,7 @@ public:
 	}
 
 	static D3DXVECTOR3 getPositionFrom(string data, char seperator) {
-		vector<int> v = splitToVectorIntegerFrom(data, seperator);
+		vector<float> v = splitToVectorFloatFrom(data, seperator);
 		D3DXVECTOR3 position = D3DXVECTOR3(v[0], v[1], 0);
 		return position;
 	}
@@ -172,7 +172,7 @@ public:
 	static vector<D3DXVECTOR3> getPositionsFrom(vector<string> data, char seperator) {
 		vector<D3DXVECTOR3> positions = vector<D3DXVECTOR3>();
 
-		for (int i = 0; i < data.size(); ++i) {
+		for (size_t i = 0; i < data.size(); ++i) {
 			positions.push_back(getPositionFrom(data[i], seperator));
 		}
 
@@ -183,7 +183,7 @@ public:
 		string result;
 		string strNumber = to_string(number);
 
-		for (int i = 0; i < length - strNumber.size(); ++i) {
+		for (size_t i = 0; i < length - strNumber.size(); ++i) {
 			result.append("0");
 		}
 

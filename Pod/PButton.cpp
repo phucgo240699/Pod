@@ -10,12 +10,12 @@ PButtonState PButton::getState()
 	return this->state;
 }
 
-float PButton::getWidth()
+int PButton::getWidth()
 {
 	return this->animation->getCurrentFrameWidth();
 }
 
-float PButton::getHeight()
+int PButton::getHeight()
 {
 	return this->animation->getCurrentFrameWidth();
 }

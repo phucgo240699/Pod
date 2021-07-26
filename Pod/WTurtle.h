@@ -15,8 +15,8 @@ public:
 	WTurtle(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _limitY);
 
 	// Getter
-	float getWidth();
-	float getHeight();
+	int getWidth();
+	int getHeight();
 
 	// Setter
 	void setAnimation(Animation* _animation);

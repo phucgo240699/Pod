@@ -14,22 +14,22 @@ BoomerangState Boomerang::getState()
 	return this->state;
 }
 
-float Boomerang::getHeight()
+int Boomerang::getHeight()
 {
 	return this->animation->getCurrentFrameHeight();
 }
 
-float Boomerang::getWidth()
+int Boomerang::getWidth()
 {
 	return this->animation->getCurrentFrameWidth();
 }
 
-float Boomerang::getBoundsHeight()
+int Boomerang::getBoundsHeight()
 {
 	return this->animation->getCurrentBoundsHeight();
 }
 
-float Boomerang::getBoundsWidth()
+int Boomerang::getBoundsWidth()
 {
 	return this->animation->getCurrentBoundsWidth();
 }

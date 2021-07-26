@@ -16,8 +16,8 @@ public:
 
 	// Getter
 	PButtonState getState();
-	float getWidth();
-	float getHeight();
+	int getWidth();
+	int getHeight();
 
 	// Setter
 	void setState(PButtonState _state);

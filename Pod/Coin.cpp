@@ -10,22 +10,22 @@ CoinState Coin::getState()
 	return this->state;
 }
 
-float Coin::getWidth()
+int Coin::getWidth()
 {
 	return this->animation->getCurrentFrameWidth();
 }
 
-float Coin::getHeight()
+int Coin::getHeight()
 {
 	return this->animation->getCurrentFrameHeight();
 }
 
-float Coin::getBoundsWidth()
+int Coin::getBoundsWidth()
 {
 	return this->animation->getCurrentBoundsWidth();
 }
 
-float Coin::getBoundsHeight()
+int Coin::getBoundsHeight()
 {
 	return this->animation->getCurrentBoundsHeight();
 }

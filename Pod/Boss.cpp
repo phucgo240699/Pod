@@ -39,22 +39,22 @@ float Boss::getMarioX()
 	return this->marioX;
 }
 
-float Boss::getWidth()
+int Boss::getWidth()
 {
 	return this->animation->getCurrentFrameWidth();
 }
 
-float Boss::getHeight()
+int Boss::getHeight()
 {
 	return this->animation->getCurrentFrameHeight();
 }
 
-float Boss::getBoundsWidth()
+int Boss::getBoundsWidth()
 {
 	return this->animation->getCurrentBoundsWidth();
 }
 
-float Boss::getBoundsHeight()
+int Boss::getBoundsHeight()
 {
 	return this->animation->getCurrentBoundsHeight();
 }

@@ -2,7 +2,7 @@
 #include "Block.h"
 #include "Mario.h"
 
-SuperMushroom::SuperMushroom(float _x, float _y, float _width, float _height, float _vx, float _vy, int _id) : Component(_x, _y, _vx, _vy, 0, 0)
+SuperMushroom::SuperMushroom(float _x, float _y, int _width, int _height, float _vx, float _vy, int _id) : Component(_x, _y, _vx, _vy, 0, 0)
 {
 	Component::Component(_x, _y, _vx, _vy, 0, 0);
 	this->setId(_id);
@@ -32,12 +32,12 @@ int SuperMushroom::getDefaultPoints()
 	return this->defaultPoints;
 }
 
-float SuperMushroom::getBoundsWidth()
+int SuperMushroom::getBoundsWidth()
 {
 	return this->animation->getCurrentBoundsWidth();
 }
 
-float SuperMushroom::getBoundsHeight()
+int SuperMushroom::getBoundsHeight()
 {
 	return this->animation->getCurrentBoundsHeight();
 }

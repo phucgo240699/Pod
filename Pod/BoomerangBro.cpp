@@ -43,22 +43,22 @@ bool BoomerangBro::getIsFlip()
 	return this->isFlip;
 }
 
-float BoomerangBro::getHeight()
+int BoomerangBro::getHeight()
 {
 	return this->animation->getCurrentFrameHeight();
 }
 
-float BoomerangBro::getWidth()
+int BoomerangBro::getWidth()
 {
 	return this->animation->getCurrentFrameWidth();
 }
 
-float BoomerangBro::getBoundsHeight()
+int BoomerangBro::getBoundsHeight()
 {
 	return this->animation->getCurrentBoundsHeight();
 }
 
-float BoomerangBro::getBoundsWidth()
+int BoomerangBro::getBoundsWidth()
 {
 	return this->animation->getCurrentBoundsWidth();
 }

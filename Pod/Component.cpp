@@ -196,32 +196,32 @@ RECT Component::getBounds()
 	return r;
 }
 
-float Component::getWidth()
+int Component::getWidth()
 {
 	return this->width;
 }
 
-float Component::getHeight()
+int Component::getHeight()
 {
 	return this->height;
 }
 
-float Component::getBoundsWidth()
+int Component::getBoundsWidth()
 {
 	return this->width;
 }
 
-float Component::getBoundsHeight()
+int Component::getBoundsHeight()
 {
 	return this->height;
 }
 
-void Component::setWidth(float _width)
+void Component::setWidth(int _width)
 {
 	this->width = _width;
 }
 
-void Component::setHeight(float _height)
+void Component::setHeight(int _height)
 {
 	this->height = _height;
 }

@@ -15,22 +15,22 @@ FireFlowerBallState FireFlowerBall::getState()
 	return this->state;
 }
 
-float FireFlowerBall::getWidth()
+int FireFlowerBall::getWidth()
 {
 	return this->animation->getCurrentFrameWidth();
 }
 
-float FireFlowerBall::getHeight()
+int FireFlowerBall::getHeight()
 {
 	return this->animation->getCurrentFrameHeight();
 }
 
-float FireFlowerBall::getBoundsWidth()
+int FireFlowerBall::getBoundsWidth()
 {
 	return this->animation->getCurrentBoundsWidth();
 }
 
-float FireFlowerBall::getBoundsHeight()
+int FireFlowerBall::getBoundsHeight()
 {
 	return this->animation->getCurrentBoundsHeight();
 }

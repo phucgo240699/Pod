@@ -41,16 +41,16 @@ void GreenPipe::setAnimation(Animation* _animation)
 
 void GreenPipe::loadInfo(string line, char seperator)
 {
-	vector<int> v = Tool::splitToVectorIntegerFrom(line, seperator);
+	vector<string> v = Tool::splitToVectorStringFrom(line, seperator);
 
-	this->setX(v[0]);
-	this->setY(v[1]);
-	this->setWidth(v[2]);
-	this->setHeight(v[3]);
-	this->floorNumber = v[4];
-	this->setId(v[5]);
-	this->setIsBlackMode(v[6] == 1);
-	this->setIsDownMode(v[7] == 1);
+	this->setX(stof(v[0]));
+	this->setY(stof(v[1]));
+	this->setWidth(stoi(v[2]));
+	this->setHeight(stoi(v[3]));
+	this->floorNumber = stoi(v[4]);
+	this->setId(stoi(v[5]));
+	this->setIsBlackMode(stoi(v[6]) == 1);
+	this->setIsDownMode(stoi(v[7]) == 1);
 }
 
 void GreenPipe::Draw(LPDIRECT3DTEXTURE9 _texture)

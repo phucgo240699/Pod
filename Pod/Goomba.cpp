@@ -49,22 +49,22 @@ float Goomba::getMarioX()
 	return this->marioX;
 }
 
-float Goomba::getWidth()
+int Goomba::getWidth()
 {
 	return this->animation->getCurrentFrameWidth();
 }
 
-float Goomba::getHeight()
+int Goomba::getHeight()
 {
 	return this->animation->getCurrentFrameHeight();
 }
 
-float Goomba::getBoundsWidth()
+int Goomba::getBoundsWidth()
 {
 	return this->animation->getCurrentBoundsWidth();
 }
 
-float Goomba::getBoundsHeight()
+int Goomba::getBoundsHeight()
 {
 	return this->animation->getCurrentBoundsHeight();
 }

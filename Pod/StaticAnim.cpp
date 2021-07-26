@@ -4,7 +4,7 @@ void StaticAnim::loadAnimation(vector<string> data, char endSeperator, char sepe
 {
 	int animDelay = 0;
 	vector<pair<RECT, RECT>>* arr = new vector<pair<RECT, RECT>>();
-	for (int i = 0; i < data.size(); ++i) {
+	for (size_t i = 0; i < data.size(); ++i) {
 		if (data[i][0] == endSeperator) {
 			animDelay = stoi(data[i].substr(2, data[i].size()));
 			continue;

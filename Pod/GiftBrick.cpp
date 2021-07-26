@@ -10,44 +10,44 @@ GiftBrick::GiftBrick(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX,
 
 void GiftBrick::loadInfo(string line, char seperator)
 {
-	vector <float> v = Tool::splitToVectorFloatFrom(line, seperator);
+	vector <string> v = Tool::splitToVectorStringFrom(line, seperator);
 
-	this->setX(v[0]);
-	this->setY(v[1]);
-	this->setWidth(v[2]);
-	this->setHeight(v[3]);
-	this->setId(v[4]);
-	this->isFakeGoldenBrick = v[5] == 1;
-	this->setGiftType(v[6]);
+	this->setX(stof(v[0]));
+	this->setY(stof(v[1]));
+	this->setWidth(stoi(v[2]));
+	this->setHeight(stoi(v[3]));
+	this->setId(stoi(v[4]));
+	this->isFakeGoldenBrick = stoi(v[5]) == 1;
+	this->setGiftType(stoi(v[6]));
 
 	// Box
-	this->endBoxJumpUp = this->getY() - 12;
-	this->beginBoxJumpUp = this->getY();
+	this->endBoxJumpUp = int(this->getY()) - 12;
+	this->beginBoxJumpUp = int(this->getY());
 
 	// Super mushroom
 	if (this->getGiftType() == GiftType::SuperMushroomOrSuperLeaf) {
-		superMushroom = new SuperMushroom(this->getX(), this->getY(), v[7], v[8], v[9], v[10], v[11]);
-		superLeaf = new SuperLeaf(this->getX(), this->getY(), v[12], v[13], v[14], v[15], v[16]);
+		superMushroom = new SuperMushroom(this->getX(), this->getY(), stoi(v[7]), stoi(v[8]), stof(v[9]), stof(v[10]), stoi(v[11]));
+		superLeaf = new SuperLeaf(this->getX(), this->getY(), stoi(v[12]), stoi(v[13]), stof(v[14]), stof(v[15]), stoi(v[16]));
 
-		superMushroom->setDefaultPoints(v[17]);
-		superLeaf->setDefaultPoints(v[18]);
+		superMushroom->setDefaultPoints(stoi(v[17]));
+		superLeaf->setDefaultPoints(stoi(v[18]));
 		return;
 	}
 	else if (this->getGiftType() == GiftType::SuperMushroomGift) {
-		superMushroom = new SuperMushroom(this->getX(), this->getY(), v[7], v[8], v[9], v[10], v[11]);
-		superMushroom->setIsGreenMode(v[12] == 1);
+		superMushroom = new SuperMushroom(this->getX(), this->getY(), stoi(v[7]), stoi(v[8]), stof(v[9]), stof(v[10]), stoi(v[11]));
+		superMushroom->setIsGreenMode(stoi(v[12]) == 1);
 	}
 	else if (this->getGiftType() == GiftType::MultiCoinGift) {
 
 	}
 
 	// Coin
-	this->coinY = this->getY() - 16;
-	this->beginCoinJumpUp = this->getY() - 16;
-	this->endCoinJumpUp = this->getY() - 40;
+	this->coinY = int(this->getY()) - 16;
+	this->beginCoinJumpUp = int(this->getY()) - 16;
+	this->endCoinJumpUp = int(this->getY()) - 40;
 
 	// Points
-	this->pointY = this->getY() - 16;
+	this->pointY = int(this->getY()) - 16;
 }
 
 SuperMushroom* GiftBrick::getSuperMushroom()
@@ -98,12 +98,12 @@ void GiftBrick::setState(GiftBrickState _state)
 				this->boxAnimation = new Animation(AnimationBundle::getInstance()->getFullGiftBrick());
 			}
 			// Coin
-			this->coinY = this->getY() - 16;
-			this->beginCoinJumpUp = this->getY() - 16;
-			this->endCoinJumpUp = this->getY() - 40;
+			this->coinY = int(this->getY()) - 16;
+			this->beginCoinJumpUp = int(this->getY()) - 16;
+			this->endCoinJumpUp = int(this->getY()) - 40;
 
 			// Points
-			this->pointY = this->getY() - 16;
+			this->pointY = int(this->getY()) - 16;
 			this->state = _state;
 		}
 		break;
@@ -186,7 +186,7 @@ void GiftBrick::Update(float _dt)
 			}
 			else {
 				isBoxDropDown = true;
-				this->setY(endBoxJumpUp);
+				this->setY(float(endBoxJumpUp));
 			}
 		}
 		else {
@@ -195,7 +195,7 @@ void GiftBrick::Update(float _dt)
 			}
 			else {
 				if (this->getY() != beginBoxJumpUp) {
-					this->setY(beginBoxJumpUp);
+					this->setY(float(beginBoxJumpUp));
 				}
 				if (this->getGiftType() == SuperMushroomGift || this->getGiftType() == SuperLeafGift) {
 					this->setState(GiftBrickState::EMPTYGIFTBRICK);
@@ -270,10 +270,10 @@ void GiftBrick::Draw(LPDIRECT3DTEXTURE9 _texture)
 	if (this->getState() == POPUPGIFTBRICK) {
 		if (this->getGiftType() == Point100Gift || this->getGiftType() == MultiCoinGift) {
 			if (isPointsStartPopUp == false) {
-				Drawing::getInstance()->draw(_texture, this->coinAnimation->getCurrentFrame(), D3DXVECTOR3(this->getX(), this->coinY, 0));
+				Drawing::getInstance()->draw(_texture, this->coinAnimation->getCurrentFrame(), D3DXVECTOR3(this->getX(), float(this->coinY), 0));
 			}
 			else {
-				Drawing::getInstance()->draw(_texture, this->pointAnimation->getCurrentFrame(), D3DXVECTOR3(this->getX(), this->pointY, 0));
+				Drawing::getInstance()->draw(_texture, this->pointAnimation->getCurrentFrame(), D3DXVECTOR3(this->getX(), float(this->pointY), 0));
 			}
 		}
 	}

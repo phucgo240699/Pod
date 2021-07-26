@@ -13,6 +13,26 @@ BombState Bomb::getState()
 	return this->state;
 }
 
+int Bomb::getWidth()
+{
+	return this->animation->getCurrentFrameWidth();
+}
+
+int Bomb::getHeight()
+{
+	return this->animation->getCurrentFrameHeight();
+}
+
+int Bomb::getBoundsWidth()
+{
+	return this->animation->getCurrentBoundsWidth();
+}
+
+int Bomb::getBoundsHeight()
+{
+	return this->animation->getCurrentBoundsHeight();
+}
+
 void Bomb::setState(BombState _state)
 {
 	switch (_state)

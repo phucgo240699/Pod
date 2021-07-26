@@ -22,10 +22,10 @@ public:
 	float getOriginY();
 	bool getIsTransparentMode();
 	MusicBoxState getState();
-	float getWidth();
-	float getHeight();
-	float getBoundsWidth();
-	float getBoundsHeight();
+	int getWidth();
+	int getHeight();
+	int getBoundsWidth();
+	int getBoundsHeight();
 
 	void setOriginX(float _originX);
 	void setOriginY(float _originY);

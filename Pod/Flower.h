@@ -26,10 +26,10 @@ public:
 	// Getter
 	FlowerState getState();
 	int getCountDown();
-	float getWidth();
-	float getHeight();
-	float getBoundsWidth();
-	float getBoundsHeight();
+	int getWidth();
+	int getHeight();
+	int getBoundsWidth();
+	int getBoundsHeight();
 	float getTopAnchor();
 	float getBottomAnchor();
 	float getLeftAnchor();

@@ -14,22 +14,22 @@ FireBallState FireBall::getState()
 	return this->state;
 }
 
-float FireBall::getWidth()
+int FireBall::getWidth()
 {
 	return this->animation->getCurrentFrameWidth();
 }
 
-float FireBall::getHeight()
+int FireBall::getHeight()
 {
 	return this->animation->getCurrentFrameHeight();
 }
 
-float FireBall::getBoundsWidth()
+int FireBall::getBoundsWidth()
 {
 	return this->animation->getCurrentBoundsWidth();
 }
 
-float FireBall::getBoundsHeight()
+int FireBall::getBoundsHeight()
 {
 	return this->animation->getCurrentBoundsHeight();
 }
@@ -141,7 +141,7 @@ void FireBall::handleHardComponentCollision(Component* _component, float _dt)
 			this->plusX(get<1>(collisionResult) * this->getVx());
 			this->plusY(get<1>(collisionResult) * this->getVy());
 			this->setState(FireBallState::FIREBALL_DISAPPEARED);
-			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFireBallSplash()), this->getX(), this->getY())));
+			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFireBallSplash()), int(this->getX()), int(this->getY()))));
 		}
 	}
 }

@@ -62,17 +62,17 @@ void GoldenBrick::setHasPButton(bool _hasPButton)
 
 void GoldenBrick::loadInfo(string line, char seperator)
 {
-	vector<int> v = Tool::splitToVectorIntegerFrom(line, seperator);
+	vector<string> v = Tool::splitToVectorStringFrom(line, seperator);
 
-	this->setX(v[0]);
-	this->setY(v[1]);
-	this->setWidth(v[2]);
-	this->setHeight(v[3]);
-	this->setHasPButton(v[4] == 1);
-	this->setId(v[5]);
+	this->setX(stof(v[0]));
+	this->setY(stof(v[1]));
+	this->setWidth(stoi(v[2]));
+	this->setHeight(stoi(v[3]));
+	this->setHasPButton(stoi(v[4]) == 1);
+	this->setId(stoi(v[5]));
 
 	if (this->getHasPButton()) {
-		this->pButton = new PButton(v[6], v[7], 0, 0, 0, 0, v[8]);
+		this->pButton = new PButton(stof(v[6]), stof(v[7]), 0.0, 0.0, 0.0, 0.0, stoi(v[8]));
 	}
 
 

@@ -70,22 +70,22 @@ bool Mario::getIsReduceWalking()
 	return this->isReduceWalking;
 }
 
-float Mario::getBoundsWidth()
+int Mario::getBoundsWidth()
 {
 	return this->currentAnimation->getCurrentBoundsWidth();
 }
 
-float Mario::getBoundsHeight()
+int Mario::getBoundsHeight()
 {
 	return this->currentAnimation->getCurrentBoundsHeight();
 }
 
-float Mario::getWidth()
+int Mario::getWidth()
 {
 	return this->currentAnimation->getCurrentFrameWidth();
 }
 
-float Mario::getHeight()
+int Mario::getHeight()
 {
 	return this->currentAnimation->getCurrentFrameHeight() - Setting::getInstance()->getCollisionSafeSpace();
 }

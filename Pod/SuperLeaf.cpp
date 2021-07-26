@@ -1,7 +1,7 @@
 #include "SuperLeaf.h"
 #include "Mario.h"
 
-SuperLeaf::SuperLeaf(float _x, float _y, float _width, float _height, float _vx, float _vy, int _id) : Component(_x, _y, _vx, _vy, 0, 0, _id)
+SuperLeaf::SuperLeaf(float _x, float _y, int _width, int _height, float _vx, float _vy, int _id) : Component(_x, _y, _vx, _vy, 0, 0, _id)
 {
 	Component::Component(_x, _y, _vx, _vy, 0, 0, _id);
 	this->setWidth(_width);

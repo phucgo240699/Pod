@@ -11,7 +11,7 @@
 
 void WorldVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 {
-	for (int i = 0; i < _keyTypes.size(); ++i) {
+	for (size_t i = 0; i < _keyTypes.size(); ++i) {
 		if (_keyTypes[i] == KeyType::key_S) {
 			if (ScoreBoard::getInstance()->getMarioLife() > 0) {
 				if (wMario->getCurrentSceneId() == '1') {

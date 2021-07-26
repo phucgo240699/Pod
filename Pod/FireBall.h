@@ -32,10 +32,10 @@ public:
 
 	// Getter
 	FireBallState getState();
-	float getWidth();
-	float getHeight();
-	float getBoundsWidth();
-	float getBoundsHeight();
+	int getWidth();
+	int getHeight();
+	int getBoundsWidth();
+	int getBoundsHeight();
 	bool getIsOutOfGrid();
 	bool getIsGoDown();
 

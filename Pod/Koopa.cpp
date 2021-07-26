@@ -52,22 +52,22 @@ KoopaState Koopa::getState()
 	return this->state;
 }
 
-float Koopa::getWidth()
+int Koopa::getWidth()
 {
 	return this->animation->getCurrentFrameWidth();
 }
 
-float Koopa::getHeight()
+int Koopa::getHeight()
 {
 	return this->animation->getCurrentFrameHeight();
 }
 
-float Koopa::getBoundsWidth()
+int Koopa::getBoundsWidth()
 {
 	return this->animation->getCurrentBoundsWidth();
 }
 
-float Koopa::getBoundsHeight()
+int Koopa::getBoundsHeight()
 {
 	return this->animation->getCurrentBoundsHeight();
 }

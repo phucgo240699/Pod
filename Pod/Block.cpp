@@ -10,11 +10,11 @@ Block::Block(D3DXVECTOR3 _position, float _width, float _height, float _vx, floa
 
 void Block::load(string line, char seperator)
 {
-	vector<int> v = Tool::splitToVectorIntegerFrom(line, seperator);
+	vector<string> v = Tool::splitToVectorStringFrom(line, seperator);
 
-	this->setX(v[0]);
-	this->setY(v[1]);
-	this->setWidth(v[2]);
-	this->setHeight(v[3]);
-	this->setId(v[4]);
+	this->setX(stof(v[0]));
+	this->setY(stof(v[1]));
+	this->setWidth(stoi(v[2]));
+	this->setHeight(stoi(v[3]));
+	this->setId(stoi(v[4]));
 }

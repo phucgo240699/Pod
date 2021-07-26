@@ -55,10 +55,10 @@ public:
 	// Getter
 	RECT getFrame();
 	KoopaState getState();
-	float getWidth();
-	float getHeight();
-	float getBoundsWidth();
-	float getBoundsHeight();
+	int getWidth();
+	int getHeight();
+	int getBoundsWidth();
+	int getBoundsHeight();
 	bool getIsFlip();
 	bool getIsStandOnSurface();
 	bool getHasCollideMario();

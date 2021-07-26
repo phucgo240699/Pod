@@ -25,10 +25,10 @@ public:
 	RECT getCurrentBounds();
 	RECT getCurrentFrame();
 
-	float getCurrentBoundsWidth();
-	float getCurrentBoundsHeight();
-	float getCurrentFrameWidth();
-	float getCurrentFrameHeight();
+	int getCurrentBoundsWidth();
+	int getCurrentBoundsHeight();
+	int getCurrentFrameWidth();
+	int getCurrentFrameHeight();
 
 
 	// Setter

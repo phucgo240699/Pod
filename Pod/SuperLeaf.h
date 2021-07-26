@@ -29,7 +29,7 @@ private:
 
 public:
 	// Init
-	SuperLeaf(float _x, float _y, float _width, float _height, float _vx, float _vy, int _id);
+	SuperLeaf(float _x, float _y, int _width, int _height, float _vx, float _vy, int _id);
 
 	// Getter
 	bool getIsFlip();

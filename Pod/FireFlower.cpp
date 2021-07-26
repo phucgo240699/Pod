@@ -33,22 +33,22 @@ bool FireFlower::getIsHalfSizeMode()
 	return this->isHalfSizeMode;
 }
 
-float FireFlower::getWidth()
+int FireFlower::getWidth()
 {
 	return this->animation->getCurrentFrameWidth();
 }
 
-float FireFlower::getHeight()
+int FireFlower::getHeight()
 {
 	return this->animation->getCurrentFrameHeight();
 }
 
-float FireFlower::getBoundsWidth()
+int FireFlower::getBoundsWidth()
 {
 	return this->animation->getCurrentBoundsWidth();
 }
 
-float FireFlower::getBoundsHeight()
+int FireFlower::getBoundsHeight()
 {
 	return this->animation->getCurrentBoundsWidth();
 }

@@ -9,12 +9,12 @@ WMario::WMario(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float
 {
 }
 
-float WMario::getWidth()
+int WMario::getWidth()
 {
 	return this->animation->getCurrentFrameWidth();
 }
 
-float WMario::getHeight()
+int WMario::getHeight()
 {
 	return this->animation->getCurrentFrameHeight();
 }
@@ -159,17 +159,17 @@ void WMario::onKeyDown(vector<KeyType> _keyTypes)
 
 void WMario::loadInfo(string line, char seperator)
 {
-	vector<int> v = Tool::splitToVectorIntegerFrom(line, seperator);
+	vector<string> v = Tool::splitToVectorStringFrom(line, seperator);
 
-	this->setVx(v[0]);
-	this->setVx(v[1]);
-	this->setLimitX(v[2]);
-	this->setLimitX(v[3]);
-	this->tileSize = v[4];
-	this->row = v[5];
-	this->col = v[6];
-	this->startRowMove = v[5];
-	this->startColMove = v[6];
+	this->setVx(stof(v[0]));
+	this->setVx(stof(v[1]));
+	this->setLimitX(stof(v[2]));
+	this->setLimitX(stof(v[3]));
+	this->tileSize = stoi(v[4]);
+	this->row = stoi(v[5]);
+	this->col = stoi(v[6]);
+	this->startRowMove = stoi(v[5]);
+	this->startColMove = stoi(v[6]);
 
 	this->setX(this->col * this->tileSize);
 	this->setY(this->row * this->tileSize);

@@ -19,10 +19,10 @@ public:
 
 	// Getter
 	BoomerangState getState();
-	float getHeight();
-	float getWidth();
-	float getBoundsHeight();
-	float getBoundsWidth();
+	int getHeight();
+	int getWidth();
+	int getBoundsHeight();
+	int getBoundsWidth();
 	Animation* getAnimation();
 
 

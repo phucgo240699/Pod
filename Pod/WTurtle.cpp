@@ -8,12 +8,12 @@ WTurtle::WTurtle(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, flo
 {
 }
 
-float WTurtle::getWidth()
+int WTurtle::getWidth()
 {
 	return this->animation->getCurrentFrameWidth();
 }
 
-float WTurtle::getHeight()
+int WTurtle::getHeight()
 {
 	return this->animation->getCurrentFrameHeight();
 }

@@ -31,14 +31,14 @@ private:
 
 public:
 	// Init
-	SuperMushroom(float _x, float _y, float _width, float _height, float _vx, float _vy, int _id);
+	SuperMushroom(float _x, float _y, int _width, int _height, float _vx, float _vy, int _id);
 
 	// Getter
 	SuperMushroomState getState();
 	bool getIsStandOnSurface();
 	int getDefaultPoints();
-	float getBoundsWidth();
-	float getBoundsHeight();
+	int getBoundsWidth();
+	int getBoundsHeight();
 	bool getIsGreenMode();
 
 

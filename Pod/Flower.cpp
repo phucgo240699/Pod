@@ -18,22 +18,22 @@ int Flower::getCountDown()
 	return this->countDown;
 }
 
-float Flower::getWidth()
+int Flower::getWidth()
 {
 	return this->animation->getCurrentFrameWidth();
 }
 
-float Flower::getHeight()
+int Flower::getHeight()
 {
 	return this->animation->getCurrentFrameHeight();
 }
 
-float Flower::getBoundsWidth()
+int Flower::getBoundsWidth()
 {
 	return this->animation->getCurrentBoundsWidth();
 }
 
-float Flower::getBoundsHeight()
+int Flower::getBoundsHeight()
 {
 	return this->animation->getCurrentBoundsWidth();
 }

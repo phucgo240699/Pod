@@ -18,7 +18,7 @@ protected:
 	float vx, vy;
 
 	float limitX, limitY;
-	float width, height;
+	int width, height;
 
 	int id;
 
@@ -73,12 +73,12 @@ public:
 	virtual void Draw(LPDIRECT3DTEXTURE9 _texture);
 	virtual RECT getFrame();
 	virtual RECT getBounds();
-	virtual float getWidth();
-	virtual float getHeight();
-	virtual float getBoundsWidth();
-	virtual float getBoundsHeight();
-	virtual void setWidth(float _width);
-	virtual void setHeight(float _height);
+	virtual int getWidth();
+	virtual int getHeight();
+	virtual int getBoundsWidth();
+	virtual int getBoundsHeight();
+	virtual void setWidth(int _width);
+	virtual void setHeight(int _height);
 
 	// Keyboard
 	virtual void onKeyUp();

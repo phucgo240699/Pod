@@ -22,8 +22,8 @@ public:
 	WMario(D3DXVECTOR3 _position, float _vx, float _vy, float _limitX, float _limitY);
 
 	// Getter
-	float getWidth();
-	float getHeight();
+	int getWidth();
+	int getHeight();
 	WMarioState getState();
 	char getCurrentSceneId();
 

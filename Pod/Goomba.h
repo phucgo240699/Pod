@@ -41,10 +41,10 @@ public:
 	bool getIsStandOnSurface();
 	bool getIsFlyingMode();
 	float getMarioX();
-	float getWidth();
-	float getHeight();
-	float getBoundsWidth();
-	float getBoundsHeight();
+	int getWidth();
+	int getHeight();
+	int getBoundsWidth();
+	int getBoundsHeight();
 	//float getStoredVy();
 	float getOriginVx();
 	float getOriginVy();

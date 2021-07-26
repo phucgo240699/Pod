@@ -94,10 +94,10 @@ public:
 	FireBall* getFirstFireBall();
 	RECT getBounds();
 
-	float getBoundsWidth();
-	float getBoundsHeight();
-	float getWidth();
-	float getHeight();
+	int getBoundsWidth();
+	int getBoundsHeight();
+	int getWidth();
+	int getHeight();
 
 	// Control
 	bool getIsFlip();

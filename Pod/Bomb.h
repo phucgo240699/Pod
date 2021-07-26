@@ -20,6 +20,11 @@ public:
 	// Getter
 	BombState getState();
 
+	int getWidth();
+	int getHeight();
+	int getBoundsWidth();
+	int getBoundsHeight();
+
 	// Setter
 	void setState(BombState _state);
 	void setAnimation(Animation* _animation);

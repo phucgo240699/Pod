@@ -29,22 +29,22 @@ MusicBoxState MusicBox::getState()
 	return this->state;
 }
 
-float MusicBox::getWidth()
+int MusicBox::getWidth()
 {
 	return this->animation->getCurrentFrameWidth();
 }
 
-float MusicBox::getHeight()
+int MusicBox::getHeight()
 {
 	return this->animation->getCurrentFrameHeight();
 }
 
-float MusicBox::getBoundsWidth()
+int MusicBox::getBoundsWidth()
 {
 	return this->animation->getCurrentBoundsWidth();
 }
 
-float MusicBox::getBoundsHeight()
+int MusicBox::getBoundsHeight()
 {
 	return this->animation->getCurrentBoundsHeight();
 }

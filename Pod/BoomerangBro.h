@@ -36,10 +36,10 @@ public:
 	BoomerangBroState getState();
 	bool getIsHolding();
 	bool getIsFlip();
-	float getHeight();
-	float getWidth();
-	float getBoundsHeight();
-	float getBoundsWidth();
+	int getHeight();
+	int getWidth();
+	int getBoundsHeight();
+	int getBoundsWidth();
 	Boomerang* getFirstBoomerang();
 	Boomerang* getSecondBoomerang();
 	RECT getFrame();
