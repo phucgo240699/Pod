@@ -280,6 +280,12 @@
     <Filter Include="Source Files\Components\Enemies\Boss">
       <UniqueIdentifier>{4c8c7b3c-c4a6-42e0-8929-fc2a26dcc9f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Components\Map\Bomb">
+      <UniqueIdentifier>{fbbef19e-ea53-40c6-b3a9-9dba3df8171f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Map\Bomb">
+      <UniqueIdentifier>{b7f0348a-e897-4d88-91a7-8d563691656b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -437,6 +443,9 @@
     </ClCompile>
     <ClCompile Include="Boss.cpp">
       <Filter>Source Files\Components\Enemies\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Bomb.cpp">
+      <Filter>Source Files\Components\Map\Bomb</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -663,6 +672,12 @@
       <Filter>Header Files\Components\Enemies\Boss</Filter>
     </ClInclude>
     <ClInclude Include="BossState.h">
+      <Filter>Header Files\System\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Bomb.h">
+      <Filter>Header Files\Components\Map\Bomb</Filter>
+    </ClInclude>
+    <ClInclude Include="BombState.h">
       <Filter>Header Files\System\Enums</Filter>
     </ClInclude>
   </ItemGroup>

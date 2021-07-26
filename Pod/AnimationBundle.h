@@ -173,4 +173,7 @@ public:
 
 	Animation getBossFlying();
 	Animation getBomb();
+	Animation getBossMoving();
+	Animation getBossDropping();
+	Animation getBombAttachedMario();
 };

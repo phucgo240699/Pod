@@ -157,6 +157,7 @@
     <ClCompile Include="AnimationCDPlayer.cpp" />
     <ClCompile Include="AppController.cpp" />
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="Boomerang.cpp" />
     <ClCompile Include="BoomerangBro.cpp" />
     <ClCompile Include="Boss.cpp" />
@@ -211,6 +212,8 @@
     <ClInclude Include="AnimationCDPlayer.h" />
     <ClInclude Include="AppController.h" />
     <ClInclude Include="Block.h" />
+    <ClInclude Include="Bomb.h" />
+    <ClInclude Include="BombState.h" />
     <ClInclude Include="Boomerang.h" />
     <ClInclude Include="BoomerangBro.h" />
     <ClInclude Include="BoomerangBroState.h" />

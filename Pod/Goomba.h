@@ -20,7 +20,7 @@ private:
 	GoombaState state;
 
 	bool alreadyPlayPointCD = false;
-	int countDownToDead = 0;
+	int countDownToDead = 12;
 	float thrownX, startThrownY;
 
 	// Flying

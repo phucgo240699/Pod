@@ -1,0 +1,5 @@
+#pragma once
+
+enum BombState {
+	BOMB_STAYING, BOMB_DROPPING_LEFT_SIDE, BOMB_DROPPING_RIGHT_SIDE
+};

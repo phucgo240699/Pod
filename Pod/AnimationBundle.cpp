@@ -639,6 +639,26 @@ Animation AnimationBundle::getBomb()
 	return this->animations->at(119);
 }
 
+Animation AnimationBundle::getBossMoving()
+{
+	return this->animations->at(120);
+}
+
+Animation AnimationBundle::getBossDropping()
+{
+	return this->animations->at(121);
+}
+
+Animation AnimationBundle::getBombAttachedMario()
+{
+	return this->animations->at(122);
+}
+
+//Animation AnimationBundle::getGoombaRedFlyingMoving()
+//{
+//	return this->animations->at(122);
+//}
+
 Animation AnimationBundle::getSuperMarioFlyingWalking()
 {
 	return this->animations->at(49);

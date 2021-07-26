@@ -29,8 +29,8 @@
 # 8. beginBoomerangBroId, endBoomerangBroId, beginBoomerangId, endBoomerangId
 801,850,851,900
 
-# 9. beginBossId, endBossId
-901,1000
+# 9. beginBossId, endBossId, beginBombId, endBombId
+901,950,951,1000
 
 # 7. beginFireBallId, endFireBallId
 1001,1100
@@ -226,5 +226,9 @@
 </BoomerangBroFrames>
 
 <BossFrames>
-104,400,-0.5,1,901
+# (x, y, vx, vy, id)
+# firstBomb: vx, vy, id
+# secondBomb: vx, vy, id
+# thirdBomb: vx, vy, id
+1936,400,-0.5,1,901,0.5,1,951,0.5,1,952,0.5,1,953
 </BossFrames>

@@ -10,6 +10,7 @@
 #include "BoomerangBro.h"
 #include "ScoreBoard.h"
 #include "GoldenBrick.h"
+#include "Boss.h"
 
 //class Block;
 //class Goomba;
@@ -61,4 +62,5 @@ public:
 	void handleFlowerCollision(Flower* _flower, float _dt);
 	void handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt);
 	void handleBoomerangBroCollision(BoomerangBro* _boomerangBro, float _dt);
+	void handleBossCillision(Boss* _boss, float _dt);
 };

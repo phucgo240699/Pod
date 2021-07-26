@@ -436,15 +436,8 @@ void Goomba::Update(float _dt)
 		this->plusYNoRound(this->getVy() * _dt);
 	}
 	else if (this->getState() == TRAMPLED_GOOMBA) {
-		if (countDownToDead == 0 && alreadyPlayPointCD == false) {
-			AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint() * this->getPointCoef(), this->getX(), this->getY())));
-			alreadyPlayPointCD = true;
-			countDownToDead = 12;
-		}
-		else if (countDownToDead <= 0 && alreadyPlayPointCD) {
+		if (countDownToDead <= 0) {
 			this->setState(GoombaState::DEAD_GOOMBA);
-			alreadyPlayPointCD = false;
-			countDownToDead = 0;
 		}
 
 		--countDownToDead;
@@ -761,19 +754,22 @@ void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 		for (int j = 0; j < get<2>(collisionResult).size(); ++j) {
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == bottomEdge) {
-				this->plusY(2 * get<1>(collisionResult) * this->getVy());
+				//this->plusY(2 * get<1>(collisionResult) * this->getVy());
 				_mario->setState(MarioState::DIE);
+				this->plusX(get<1>(collisionResult) * this->getVx());
 				this->plusY(get<1>(collisionResult) * this->getVy());
 			}
 			else if (edge == leftEdge) {
-				this->plusX(2 * get<1>(collisionResult) * this->getVx());
+				//this->plusX(2 * get<1>(collisionResult) * this->getVx());
 				_mario->setState(MarioState::DIE);
 				this->plusX(get<1>(collisionResult) * this->getVx());
+				this->plusY(get<1>(collisionResult) * this->getVy());
 			}
 			else if (edge == rightEdge) {
-				this->plusX(2 * get<1>(collisionResult) * this->getVx());
+				//this->plusX(2 * get<1>(collisionResult) * this->getVx());
 				_mario->setState(MarioState::DIE);
 				this->plusX(get<1>(collisionResult) * this->getVx());
+				this->plusY(get<1>(collisionResult) * this->getVy());
 			}
 			else if (edge == topEdge && _mario->getState() == DROPPING) {
 				_mario->setState(MarioState::JUMPING);
@@ -801,51 +797,20 @@ void Goomba::handleMarioCollision(Mario* _mario, float _dt)
 				}
 				else {
 					this->setState(GoombaState::TRAMPLED_GOOMBA);
+					AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint() * this->getPointCoef(), this->getX(), this->getY())));
 				}
 
 				// Calculate points
 				_mario->increasePointCoef();
-				this->setPointCoef(this->getPointCoef());
+				this->setPointCoef(_mario->getPointCoef());
 				ScoreBoard::getInstance()->plusPoint(this->getDefaultPoint() * this->getPointCoef());
 			}
 		}
 	}
 	else if (this->isCollidingByBounds(_mario->getBounds())) {
-		this->plusX(2 * get<1>(collisionResult) * this->getVx());
-		//if ((_mario->getState() == WALKING || _mario->getState() == STANDING)
-			/*&& this->getState() != GOOMBA_POPPING_LEFT
-			&& this->getState() != GOOMBA_POPPING_RIGHT
-			&& this->getState() != GOOMBA_FLYING_LEFT
-			&& this->getState() != GOOMBA_FLYING_RIGHT) {*/
-			//_mario->plusX(get<1>(collisionResult) * _mario->getVx());
+		if (_mario->getState() == WALKING || _mario->getState() == STANDING) {
 			_mario->setState(MarioState::DIE);
-		//}
-		//else if ((_mario->getState() == DROPPING)
-		//	&& (this->getState() == GOOMBA_FLYING_LEFT
-		//		|| this->getState() == GOOMBA_FLYING_RIGHT)) {
-
-		//	if (abs(_mario->getBounds().left - this->getBounds().left) < 14) {
-		//		if (this->getState() == GOOMBA_FLYING_LEFT) {
-		//			this->setState(GoombaState::GOOMBA_DROPPING_LEFT);
-		//		}
-		//		else if (this->getState() == GOOMBA_FLYING_RIGHT) {
-		//			this->setState(GoombaState::GOOMBA_DROPPING_RIGHT);
-		//		}
-
-		//		// Must be put this here. After set goomba state
-		//		this->setIsFlyingMode(false);
-
-		//		_mario->setState(MarioState::JUMPING);
-		//	}
-		//	else {
-		//		this->plusX(2 * get<1>(collisionResult) * this->getVx());
-		//		if (_mario->getIsSuperMode() == false) {
-		//			this->setState(GoombaState::GOOMBA_STANDING);
-		//		}
-		//		_mario->plusX(get<1>(collisionResult) * _mario->getVx());
-		//		_mario->setState(MarioState::DIE);
-		//	}
-		//}
+		}
 	}
 }
 

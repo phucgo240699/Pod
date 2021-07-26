@@ -197,8 +197,8 @@ void FireBall::handleKoopaCollision(Koopa* _koopa, float _dt)
 		}
 
 		this->setState(FireBallState::FIREBALL_DISAPPEARED);
-		ScoreBoard::getInstance()->plusPoint(2 * _koopa->getDefaultPoint());
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(2 * _koopa->getDefaultPoint(), _koopa->getX(), _koopa->getY())));
+		ScoreBoard::getInstance()->plusPoint(_koopa->getDefaultPoint());
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_koopa->getDefaultPoint(), _koopa->getX(), _koopa->getY())));
 		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFireBallSplash()), this->getX(), this->getY())));
 	}
 }
@@ -306,5 +306,31 @@ void FireBall::handleBoomerangBroCollision(BoomerangBro* _boomerangBro, float _d
 		_boomerangBro->setState(BoomerangBroState::BOOMERANG_BRO_BEING_DEAD);
 		ScoreBoard::getInstance()->plusPoint(1000);
 		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(Animation(AnimationBundle::getInstance()->get1000Points()), _boomerangBro->getX(), _boomerangBro->getY())));
+	}
+}
+
+void FireBall::handleBossCillision(Boss* _boss, float _dt)
+{
+	if (_boss->getState() == BOSS_DEAD || _boss->getState() == BOSS_TRAMPLED || _boss->getState() == BOSS_THROWING_LEFT_AWAT || _boss->getState() == BOSS_THROWING_RIGHT_AWAY) return;
+
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByFrame(_boss, _dt);
+
+	if (get<0>(collisionResult) == true || this->isCollidingByFrame(_boss->getFrame())) {
+		this->plusX(get<1>(collisionResult) * this->getVx());
+		this->plusY(get<1>(collisionResult) * this->getVy());
+
+		_boss->plusX(get<1>(collisionResult) * _boss->getVx());
+		_boss->plusX(get<1>(collisionResult) * _boss->getVx());
+		if (this->getState() == FIREBALL_FLYING_LEFT) {
+			_boss->setState(BossState::BOSS_THROWING_LEFT_AWAT);
+		}
+		else if (this->getState() == FIREBALL_FLYING_RIGHT) {
+			_boss->setState(BossState::BOSS_THROWING_RIGHT_AWAY);
+		}
+
+		this->setState(FireBallState::FIREBALL_DISAPPEARED);
+		ScoreBoard::getInstance()->plusPoint(_boss->getDefaultPoint());
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(_boss->getDefaultPoint(), _boss->getX(), _boss->getY())));
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFireBallSplash()), this->getX(), this->getY())));
 	}
 }

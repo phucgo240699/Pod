@@ -22,6 +22,8 @@
 #include "PButton.h"
 #include "MusicBox.h"
 #include "BoomerangBro.h"
+#include "Boss.h"
+#include "Bomb.h"
 #include <unordered_map>
 
 using namespace std;
@@ -36,6 +38,8 @@ private:
 	Animation* currentAnimation;
 	Animation* pressureAnimation;
 	FireBall* firstFireBall;
+	
+	Animation* firstBombAnim, * secondBombAnim, * thirdBombAnim;
 
 	// Control
 	bool isStandOnSurface = false, isReduceWalking = false, isConverting = false, isTurningAround = false, isPressA = false, isPressKeyUp = false, isPressKeyS = false;
@@ -65,6 +69,9 @@ private:
 
 	// Tail
 	int tailMarginTop, tailMarginBottom, tailWidth, tailHeight;
+
+	// Bomb Attack
+	int numberBombsAttached = 0;
 
 	// Detect component standing on
 	int componentIdStandingOn;
@@ -139,6 +146,9 @@ public:
 	int getTailMarginTop();
 	int getTailHeight();
 	int getTailMarginBottom();
+
+	// Bomb Attack
+	int getNumberBombsAttached();
 
 	// Detect component standing on
 	int getComponentIdStandingOn();
@@ -216,6 +226,9 @@ public:
 	void setTailHeight(int _tailHeight);
 	void setTailMarginBottom(int _tailMarginBottom);
 
+	// Bomb Attack
+	void increaseBombAttached();
+
 	// Detect component standing on
 	void setComponentIdStandingOn(int _componentIdStandingOn);
 
@@ -223,7 +236,7 @@ public:
 
 
 	// Update & Draw
-	void updateVelocity();
+	void updateVelocity(float _dt);
 	void Update(float _dt);
 	void Draw();
 
@@ -257,6 +270,8 @@ public:
 	void handleMusicBoxCollision(MusicBox* _musicBox, float _dt);
 	void handleBoomerangBroCollision(BoomerangBro* _boomerangBro, float _dt);
 	void handleBoomerangCollision(Boomerang* _boomerang, float _dt);
+	void handleBossCollision(Boss* _boss, float _dt);
+	void handleBombCollision(Bomb* _bomb, float _dt);
 };
 
 #endif // !MARIO_H

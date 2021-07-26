@@ -1206,6 +1206,22 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 				this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
 				//_mario->plusX(get<1>(collisionResult) * _mario->getVx());
 			}
+			else if (this->getState() == KOOPA_THROWN_LEFT_TO_SHINKAGE
+				|| this->getState() == KOOPA_THROWN_RIGHT_TO_SHINKAGE) {
+				float centerMario = _mario->getX() + _mario->getBoundsWidth() / 2;
+				float centerKoopa = this->getX() + this->getWidth() / 2;
+
+				if (centerMario >= centerKoopa) {
+					this->plusX(this->getVx() * get<1>(collisionResult));
+					this->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_LEFT);
+					this->plusX(4 * this->getVx() * _dt);
+				}
+				else {
+					this->plusX(this->getVx() * get<1>(collisionResult));
+					this->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_RIGHT);
+					this->plusX(4 * this->getVx() * _dt);
+				}
+			}
 			else {
 				if (_mario->getIsSuperMode() == false) {
 					this->plusX(get<1>(collisionResult) * this->getVx());
@@ -1221,6 +1237,22 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 				this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
 				//_mario->plusX(get<1>(collisionResult) * _mario->getVx());
 			}
+			else if (this->getState() == KOOPA_THROWN_LEFT_TO_SHINKAGE
+				|| this->getState() == KOOPA_THROWN_RIGHT_TO_SHINKAGE) {
+				float centerMario = _mario->getX() + _mario->getBoundsWidth() / 2;
+				float centerKoopa = this->getX() + this->getWidth() / 2;
+
+				if (centerMario >= centerKoopa) {
+					this->plusX(this->getVx() * get<1>(collisionResult));
+					this->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_LEFT);
+					this->plusX(4 * this->getVx() * _dt);
+				}
+				else {
+					this->plusX(this->getVx() * get<1>(collisionResult));
+					this->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_RIGHT);
+					this->plusX(4 * this->getVx() * _dt);
+				}
+			}
 			else {
 				if (_mario->getIsSuperMode() == false) {
 					this->plusX(get<1>(collisionResult) * this->getVx());
@@ -1231,12 +1263,46 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 			}
 		}
 		else if (edge == bottomEdge) {
-			this->plusX(get<1>(collisionResult) * this->getVx());
-			this->plusY(get<1>(collisionResult) * this->getVy());
+			if (this->getState() == KOOPA_SHRINKAGE
+				|| this->getState() == KOOPA_SHRINKAGE_SHAKING) {
+				float centerMario = _mario->getX() + _mario->getBoundsWidth() / 2;
+				float centerKoopa = this->getX() + this->getWidth() / 2;
 
-			_mario->plusX(get<1>(collisionResult) * _mario->getVx());
-			_mario->plusY(get<1>(collisionResult) * _mario->getVy());
-			_mario->setState(MarioState::DIE);
+				if (centerMario >= centerKoopa) {
+					this->plusX(this->getVx() * get<1>(collisionResult));
+					this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_LEFT);
+					this->plusX(4 * this->getVx() * _dt);
+				}
+				else {
+					this->plusX(this->getVx() * get<1>(collisionResult));
+					this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
+					this->plusX(4 * this->getVx() * _dt);
+				}
+			}
+			else if (this->getState() == KOOPA_THROWN_LEFT_TO_SHINKAGE
+				|| this->getState() == KOOPA_THROWN_RIGHT_TO_SHINKAGE) {
+				float centerMario = _mario->getX() + _mario->getBoundsWidth() / 2;
+				float centerKoopa = this->getX() + this->getWidth() / 2;
+
+				if (centerMario >= centerKoopa) {
+					this->plusX(this->getVx() * get<1>(collisionResult));
+					this->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_LEFT);
+					this->plusX(4 * this->getVx() * _dt);
+				}
+				else {
+					this->plusX(this->getVx() * get<1>(collisionResult));
+					this->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_RIGHT);
+					this->plusX(4 * this->getVx() * _dt);
+				}
+			}
+			else {
+				this->plusX(get<1>(collisionResult) * this->getVx());
+				this->plusY(get<1>(collisionResult) * this->getVy());
+
+				_mario->plusX(get<1>(collisionResult) * _mario->getVx());
+				_mario->plusY(get<1>(collisionResult) * _mario->getVy());
+				_mario->setState(MarioState::DIE);
+			}
 		}
 		else if (edge == topEdge && _mario->getState() == DROPPING) { // _mario->getState() == DROPPING: for prevenet conflict check collide from mario and from koopa
 			//_mario->plusY(get<1>(collisionResult) * _mario->getVy() + this->getHeight() / 4);
@@ -1257,6 +1323,18 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 					this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
 				}
 			}
+			else if (this->getState() == KOOPA_THROWN_LEFT_TO_SHINKAGE
+				|| this->getState() == KOOPA_THROWN_RIGHT_TO_SHINKAGE) {
+				float centerMario = _mario->getX() + _mario->getBoundsWidth() / 2;
+				float centerKoopa = this->getX() + this->getWidth() / 2;
+
+				if (centerMario >= centerKoopa) {
+					this->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_LEFT);
+				}
+				else {
+					this->setState(KoopaState::KOOPA_SHRINKAGE_DROPPING_RIGHT);
+				}
+			}
 			else if (this->getState() == KOOPA_FLYING_LEFT) {
 				//this->plusY(2 * get<1>(collisionResult) * abs(_mario->getVy()));
 				this->setState(KoopaState::KOOPA_DROPPING_LEFT);
@@ -1272,39 +1350,15 @@ void Koopa::handleMarioCollision(Mario* _mario, float _dt)
 			this->setupPointAnimPosition();
 		}
 	}
-	else if (this->isCollidingByBounds(_mario->getBounds())) {
-		/*if ((_mario->getState() == WALKING || _mario->getState() == STANDING)
-			&& this->getState() != KOOPA_SHRINKAGE
-			&& this->getState() != KOOPA_SHRINKAGE_SHAKING
-			&& this->getState() != KOOPA_FLYING_LEFT
-			&& this->getState() != KOOPA_FLYING_RIGHT) {*/
-			//_mario->plusX(get<1>(collisionResult) * _mario->getVx());
+	/*else if (this->isCollidingByBounds(_mario->getBounds())) {
+		if ((_mario->getState() == WALKING || _mario->getState() == STANDING)
+			&& this->getState() != KoopaState::KOOPA_THROWN_LEFT_TO_SHINKAGE
+			&& this->getState() != KoopaState::KOOPA_THROWN_RIGHT_TO_SHINKAGE
+			&& this->getState() != KoopaState::KOOPA_SHRINKAGE
+			&& this->getState() != KoopaState::KOOPA_SHRINKAGE_SHAKING) {
 			_mario->setState(MarioState::DIE);
-		/*}
-		else if ((_mario->getState() == DROPPING)
-			&& (this->getState() == KOOPA_FLYING_LEFT
-				|| this->getState() == KOOPA_FLYING_RIGHT)) {
-
-			if (abs(_mario->getBounds().left - this->getBounds().left) < 14) {
-				if (this->getState() == KOOPA_FLYING_LEFT) {
-					this->setState(KoopaState::KOOPA_DROPPING_LEFT);
-				}
-				else if (this->getState() == KOOPA_FLYING_RIGHT) {
-					this->setState(KoopaState::KOOPA_DROPPING_RIGHT);
-				}
-				
-				_mario->setState(MarioState::JUMPING);
-			}
-			else {
-				this->plusX(2 * get<1>(collisionResult) * this->getVx());
-				if (_mario->getIsSuperMode() == false) {
-					this->setState(KoopaState::KOOPA_STANDING);
-				}
-				_mario->plusX(get<1>(collisionResult) * _mario->getVx());
-				_mario->setState(MarioState::DIE);
-			}
-		}*/
-	}
+		}
+	}*/
 }
 
 void Koopa::handleFireBallCollision(FireBall* _fireBall, float _dt)
@@ -1327,8 +1381,8 @@ void Koopa::handleFireBallCollision(FireBall* _fireBall, float _dt)
 		}
 
 		_fireBall->setState(FireBallState::FIREBALL_DISAPPEARED);
-		ScoreBoard::getInstance()->plusPoint(2 * this->getDefaultPoint());
-		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(2 * this->getDefaultPoint(), this->getX(), this->getY())));
+		ScoreBoard::getInstance()->plusPoint(this->getDefaultPoint());
+		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::PointUpCDType, new PointUpCD(this->getDefaultPoint(), this->getX(), this->getY())));
 		AnimationCDPlayer::getInstance()->addCD(make_pair(CDType::FlashLightCDType, new FlashLightCD(Animation(AnimationBundle::getInstance()->getFireBallSplash()), _fireBall->getX(), _fireBall->getY())));
 	}
 }

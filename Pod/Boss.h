@@ -1,22 +1,31 @@
 #pragma once
 #include "Enemy.h"
-#include "AnimationBundle.h"
+#include "AnimationCDPlayer.h"
 #include "BossState.h"
+#include "Bomb.h"
+
+class Mario;
+class FireBall;
+
 
 class Boss : public Enemy
 {
 private:
 	Animation* animation;
 	BossState state;
+	Bomb* firstBomb, * secondBomb, * thirdBomb;
 
 	bool isFlyingMode = true;
 
 	float movingWay = 50;
-	//float flyingUpWay = 40;
+
 	float countDownFromMovingToFlyingUp = movingWay;
-	//float countDownFromFlyingUpToFlying = flyingUpWay;
+
 	float countFlyingX, startFlyingY, countFlying = 0;
 	float marioX;
+	int countDownToDead = 12;
+
+	float countThrowingX, startThrowingY;
 
 public:
 	// Init
@@ -34,6 +43,10 @@ public:
 	float getBoundsWidth();
 	float getBoundsHeight();
 
+	Bomb* getFirstBomb();
+	Bomb* getSecondBomb();
+	Bomb* getThirdBomb();
+
 	// Setter
 	void setState(BossState _state);
 	void setIsFlyingMode(bool _isFlyingMode);
@@ -45,4 +58,7 @@ public:
 	void Draw(LPDIRECT3DTEXTURE9 _texture);
 	
 	void handleHardComponentCollision(Component* _component, float _dt);
+	void handleBlockComponentCollision(Component* _component, float _dt);
+	void handleMarioCollision(Mario* _mario, float _dt);
+	void handleFireBallCollision(FireBall* _fireBall, float _dt);
 };

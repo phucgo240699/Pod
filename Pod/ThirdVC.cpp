@@ -34,6 +34,7 @@ void ThirdVC::viewDidLoad()
 	musicBoxes = new vector<MusicBox*>();
 	boomerangBros = new unordered_set<BoomerangBro*>();
 	bosses = new unordered_set<Boss*>();
+	bombs = new vector<Bomb*>();
 
 
 	this->mario->load();
@@ -153,6 +154,12 @@ void ThirdVC::viewWillUpdate(float _dt)
 
 				// Boss
 				else if (beginBossId <= (*itr)->getId() && (*itr)->getId() <= endBossId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// Bomb
+				else if (beginBombId <= (*itr)->getId() && (*itr)->getId() <= endBombId) {
 					// Prevent update mullti time in one loop
 					(*itr)->setIsUpdatedInOneLoop(false);
 				}
@@ -416,6 +423,26 @@ void ThirdVC::viewUpdate(float _dt)
 					}
 				}
 
+				// Bomb
+				else if (beginBombId <= (*itr)->getId() && (*itr)->getId() <= endBombId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
+					if (static_cast<Bomb*>(*itr)->getState() == BOMB_STAYING) {
+						Grid::getInstance()->remove(*itr, i, j);
+						continue;
+					}
+
+					(*itr)->Update(_dt);
+
+					// update which cell in grid that it's belongs to
+					Grid::getInstance()->updateCellOf(*itr);
+
+					if ((*itr)->getY() + (*itr)->getHeight() > Camera::getInstance()->getLimitY()) {
+						static_cast<Bomb*>(*itr)->setState(BombState::BOMB_STAYING);
+						Grid::getInstance()->remove(*itr, i, j);
+					}
+				}
 				// Fire Ball
 				else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
 					// Prevent update mullti time in one loop
@@ -816,6 +843,9 @@ void ThirdVC::viewDidUpdate(float _dt)
 
 				// Boss
 				else if (beginBossId <= (*itr)->getId() && (*itr)->getId() <= endBossId) {
+					this->mario->handleBossCollision(static_cast<Boss*>(*itr), _dt);
+					static_cast<Boss*>(*itr)->handleMarioCollision(this->mario, _dt);
+
 					// Boss to others
 					int beginRowBoss = floor(((*itr)->getY() - (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
 					int endRowBoss = ceil(((*itr)->getY() + (*itr)->getHeight() + (Camera::getInstance()->getHeight() / 2)) / Grid::getInstance()->getCellHeight());
@@ -834,9 +864,17 @@ void ThirdVC::viewDidUpdate(float _dt)
 
 							for (bossItr = bossCell.begin(); bossItr != bossCell.end(); ++bossItr) {
 								if (beginGroundId <= (*bossItr)->getId() && (*bossItr)->getId() <= endGroundId
-									|| beginBlockId <= (*bossItr)->getId() && (*bossItr)->getId() <= endBlockId) {
+									|| beginGoldenBrickId <= (*bossItr)->getId() && (*bossItr)->getId() <= endGoldenBrickId
+									|| beginGiftBrickId <= (*bossItr)->getId() && (*bossItr)->getId() <= endGiftBrickId) {
 									static_cast<Boss*>(*itr)->handleHardComponentCollision(*bossItr, _dt);
 								}
+								else if (beginBlockId <= (*bossItr)->getId() && (*bossItr)->getId() <= endBlockId) {
+									static_cast<Boss*>(*itr)->handleBlockComponentCollision(*bossItr, _dt);
+								}
+								else if (beginFireBallId <= (*bossItr)->getId() && (*bossItr)->getId() <= endFireBallId) {
+									static_cast<Boss*>(*itr)->handleFireBallCollision(static_cast<FireBall*>(*bossItr), _dt);
+								}
+
 							}
 						}
 					}
@@ -847,6 +885,13 @@ void ThirdVC::viewDidUpdate(float _dt)
 					else if (static_cast<Boss*>(*itr)->getIsStandOnSurface() == false && static_cast<Boss*>(*itr)->getState() == BOSS_MOVING_RIGHT) {
 						static_cast<Boss*>(*itr)->setState(BOSS_DROPPING_RIGHT);
 					}
+				}
+
+
+				// Bomb
+				else if (beginBombId <= (*itr)->getId() && (*itr)->getId() <= endBombId) {
+					this->mario->handleBombCollision(static_cast<Bomb*>(*itr), _dt);
+					static_cast<Bomb*>(*itr)->handleMarioCollision(this->mario, _dt);
 				}
 
 				// Fire Ball
@@ -886,12 +931,9 @@ void ThirdVC::viewDidUpdate(float _dt)
 								else if (beginBoomerangBroId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endBoomerangBroId) {
 									static_cast<FireBall*>(*itr)->handleBoomerangBroCollision(static_cast<BoomerangBro*>(*fireBallItr), _dt);
 								}
-								/*else if (beginFireFlowerId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endFireFlowerId) {
-									static_cast<FireBall*>(*itr)->handleFireFlowerCollision(static_cast<FireFlower*>(*fireBallItr), _dt);
+								else if (beginBossId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endBossId) {
+									static_cast<FireBall*>(*itr)->handleBossCillision(static_cast<Boss*>(*fireBallItr), _dt);
 								}
-								else if (beginFlowerId <= (*fireBallItr)->getId() && (*fireBallItr)->getId() <= endFlowerId) {
-									static_cast<FireBall*>(*itr)->handleFlowerCollision(static_cast<Flower*>(*fireBallItr), _dt);
-								}*/
 							}
 						}
 					}
@@ -968,11 +1010,6 @@ void ThirdVC::viewWillRender()
 					else if (beginBoomerangBroId <= (*itr)->getId() && (*itr)->getId() <= endBoomerangBroId) {
 						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
-
-					// Boss
-					else if (beginBossId <= (*itr)->getId() && (*itr)->getId() <= endBossId) {
-						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
-					}
 				}
 			}
 		}
@@ -993,8 +1030,30 @@ void ThirdVC::viewWillRender()
 					if (beginBoomerangId <= (*itr)->getId() && (*itr)->getId() <= endBoomerangId) {
 						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
+
 					// Fire Ball
 					else if (beginFireBallId <= (*itr)->getId() && (*itr)->getId() <= endFireBallId) {
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
+					}
+
+					// Bomb
+					else if (beginBombId <= (*itr)->getId() && (*itr)->getId() <= endBombId) {
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
+					}
+				}
+			}
+		}
+
+		for (int i = floor(Camera::getInstance()->getY() / Grid::getInstance()->getCellHeight()); i < ceil((Camera::getInstance()->getY() + Camera::getInstance()->getHeight()) / Grid::getInstance()->getCellHeight()); ++i) {
+			for (int j = floor(Camera::getInstance()->getX() / Grid::getInstance()->getCellWidth()); j < ceil((Camera::getInstance()->getX() + Camera::getInstance()->getWidth()) / Grid::getInstance()->getCellWidth()); ++j) {
+				if (Grid::getInstance()->getCell(i, j).size() == 0) continue;
+
+				unordered_set<Component*> cell = Grid::getInstance()->getCell(i, j);
+				unordered_set<Component*> ::iterator itr;
+				for (itr = cell.begin(); itr != cell.end(); ++itr) {
+
+					// Boss
+					if (beginBossId <= (*itr)->getId() && (*itr)->getId() <= endBossId) {
 						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 				}
@@ -1082,6 +1141,8 @@ void ThirdVC::adaptRangeID(vector<string> data, char seperator)
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginBossId = v[0];
 			this->endBossId = v[1];
+			this->beginBombId = v[2];
+			this->endBombId = v[3];
 		}
 		else if (i == 10) {
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
@@ -1424,6 +1485,10 @@ void ThirdVC::adaptAnimation()
 		else {
 			(*bossItr)->setState(BossState::BOSS_FLYING_TOP_RIGHT);
 		}
+
+		(*bossItr)->getFirstBomb()->setAnimation(new Animation(AnimationBundle::getInstance()->getBomb()));
+		(*bossItr)->getSecondBomb()->setAnimation(new Animation(AnimationBundle::getInstance()->getBomb()));
+		(*bossItr)->getThirdBomb()->setAnimation(new Animation(AnimationBundle::getInstance()->getBomb()));
 	}
 
 	this->mario->setAnimation(new Animation(AnimationBundle::getInstance()->getMarioStanding()));
