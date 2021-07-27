@@ -7,7 +7,7 @@
 class WMario : public MainCharacter
 {
 private:
-	Animation* animation;
+	Animation* animation, * fireAnimation, * superAnimation, * superFireAniamtion, * flyingAnimation, * flyingFireAnimation;
 	vector<vector<char>> movingMatrix;
 	WMarioState state = WMARIO_STANDING;
 
@@ -16,6 +16,8 @@ private:
 	bool isMoving = false;
 	char limitScenceId = 'A';
 	char limitSceneMoving = '1';
+
+	bool isFireMode = false, isSuperMode = false, isFlyingMode = false;
 
 public:
 	WMario(float _x, float _y, float _vx, float _vy, float _limitX, float _limitY);
@@ -30,6 +32,17 @@ public:
 	// Setter
 	void setState(WMarioState _state);
 	void setAnimation(Animation* _animation);
+	void setFireAnimation(Animation* _animation);
+
+	void setSuperAnimation(Animation* _animation);
+	void setSuperFireAnimation(Animation* _animation);
+
+	void setFlyingAnimation(Animation* _animation);
+	void setFlyingFireAnimation(Animation* _animation);
+
+	void setIsFireMode(bool _value);
+	void setIsSuperMode(bool _value);
+	void setIsFlyingMode(bool _value);
 
 
 	// Inherit
@@ -38,6 +51,7 @@ public:
 
 	void onKeyDown(vector<KeyType> _keyTypes);
 
+	void loadModeFromGlobalMarioFile();
 	void loadInfo(string line, char seperator);
 	void loadMovingMatrix(vector<string> data, char seperator);
 

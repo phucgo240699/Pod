@@ -116,13 +116,63 @@ void WMario::Update(float _dt)
 	}
 	
 
-	animation->Update(_dt);
+	//animation->Update(_dt);
+
+	if (this->isFlyingMode) {
+		if (this->isFireMode) {
+			this->flyingFireAnimation->Update(_dt);
+		}
+		else {
+			this->flyingAnimation->Update(_dt);
+		}
+	}
+	else if (this->isSuperMode) {
+		if (this->isFireMode) {
+			this->superFireAniamtion->Update(_dt);
+		}
+		else {
+			this->superAnimation->Update(_dt);
+		}
+	}
+	else {
+		if (this->isFireMode) {
+			this->fireAnimation->Update(_dt);
+		}
+		else {
+			this->animation->Update(_dt);
+		}
+	}
 }
 
 void WMario::Draw(LPDIRECT3DTEXTURE9 _texture)
 {
-	D3DXVECTOR3 pos = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->getY() - Camera::getInstance()->getY(), 0);
-	this->animation->DrawWithoutCamera(_texture, this->animation->getCurrentFrame(), pos);
+	/*D3DXVECTOR3 pos = D3DXVECTOR3(this->getX() - Camera::getInstance()->getX(), this->getY() - Camera::getInstance()->getY(), 0);
+	this->animation->DrawWithoutCamera(_texture, this->animation->getCurrentFrame(), pos);*/
+
+	if (this->isFlyingMode) {
+		if (this->isFireMode) {
+			Drawing::getInstance()->draw(_texture, this->flyingFireAnimation->getCurrentFrame(), this->getPosition(), D3DXVECTOR2(float(0), float(-4)));
+		}
+		else {
+			Drawing::getInstance()->draw(_texture, this->flyingAnimation->getCurrentFrame(), this->getPosition(), D3DXVECTOR2(float(0), float(-4)));
+		}
+	}
+	else if (this->isSuperMode) {
+		if (this->isFireMode) {
+			Drawing::getInstance()->draw(_texture, this->superFireAniamtion->getCurrentFrame(), this->getPosition(), D3DXVECTOR2(float(0), float(-3)));
+		}
+		else {
+			Drawing::getInstance()->draw(_texture, this->superAnimation->getCurrentFrame(), this->getPosition(), D3DXVECTOR2(float(0), float(-3)));
+		}
+	}
+	else {
+		if (this->isFireMode) {
+			Drawing::getInstance()->draw(_texture, this->fireAnimation->getCurrentFrame(), this->getPosition());
+		}
+		else {
+			Drawing::getInstance()->draw(_texture, this->animation->getCurrentFrame(), this->getPosition());
+		}
+	}
 }
 
 void WMario::onKeyDown(vector<KeyType> _keyTypes)
@@ -157,6 +207,29 @@ void WMario::onKeyDown(vector<KeyType> _keyTypes)
 	}
 }
 
+void WMario::loadModeFromGlobalMarioFile()
+{
+	fstream fs;
+	fs.open(FilePath::getInstance()->mario, ios::in);
+
+	vector<string> v;
+	string line;
+
+	while (!fs.eof())
+	{
+		getline(fs, line);
+		if (line[0] == '#') continue; // Comment
+		if (line == "") continue; // Empty
+		v = Tool::splitToVectorStringFrom(line, ',');
+
+		this->setIsFireMode(stoi(v[18]) == 1);
+		this->setIsSuperMode(stoi(v[19]) == 1);
+		this->setIsFlyingMode(stoi(v[20]) == 1);
+	}
+
+	fs.close();
+}
+
 void WMario::loadInfo(string line, char seperator)
 {
 	vector<string> v = Tool::splitToVectorStringFrom(line, seperator);
@@ -178,6 +251,46 @@ void WMario::loadInfo(string line, char seperator)
 void WMario::setAnimation(Animation* _animation)
 {
 	this->animation = _animation;
+}
+
+void WMario::setFireAnimation(Animation* _animation)
+{
+	this->fireAnimation = _animation;
+}
+
+void WMario::setSuperAnimation(Animation* _animation)
+{
+	this->superAnimation = _animation;
+}
+
+void WMario::setSuperFireAnimation(Animation* _animation)
+{
+	this->superFireAniamtion = _animation;
+}
+
+void WMario::setFlyingAnimation(Animation* _animation)
+{
+	this->flyingAnimation = _animation;
+}
+
+void WMario::setFlyingFireAnimation(Animation* _animation)
+{
+	this->flyingFireAnimation = _animation;
+}
+
+void WMario::setIsFireMode(bool _value)
+{
+	this->isFireMode = _value;
+}
+
+void WMario::setIsSuperMode(bool _value)
+{
+	this->isSuperMode = _value;
+}
+
+void WMario::setIsFlyingMode(bool _value)
+{
+	this->isFlyingMode = _value;
 }
 
 void WMario::loadMovingMatrix(vector<string> data, char seperator)

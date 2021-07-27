@@ -242,12 +242,27 @@ void WorldVC::adaptData()
 	}
 
 	fs.close();
+
+	this->wMario->loadModeFromGlobalMarioFile();
 }
 
 void WorldVC::adaptAnimation()
 {
 	this->wMario->setAnimation(new Animation(AnimationBundle::getInstance()->getWMario()));
+	this->wMario->setFireAnimation(new Animation(AnimationBundle::getInstance()->getWMarioFire()));
+
+	this->wMario->setSuperAnimation(new Animation(AnimationBundle::getInstance()->getWMarioBig()));
+	this->wMario->setSuperFireAnimation(new Animation(AnimationBundle::getInstance()->getWMarioBigFire()));
+
+	this->wMario->setFlyingAnimation(new Animation(AnimationBundle::getInstance()->getWMarioFlying()));
+	this->wMario->setFlyingFireAnimation(new Animation(AnimationBundle::getInstance()->getWMaiorFlyingFire()));
+
 	this->grasses->setAnimation(new Animation(AnimationBundle::getInstance()->getGrasses()));
 	this->helpLabel->setAnimation(new Animation(AnimationBundle::getInstance()->getHelpLabel()));
 	this->wTurtle->setAnimation(new Animation(AnimationBundle::getInstance()->getWTurtle()));
+}
+
+WMario* WorldVC::getWMario()
+{
+	return this->wMario;
 }

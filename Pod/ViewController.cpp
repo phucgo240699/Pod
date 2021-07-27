@@ -7,18 +7,34 @@ void ViewController::navigateTo(SceneName _sceneName)
 	{
 	case SceneName::WorldScene:
 	{
+		if (this->appController->getSceneName() == _sceneName) {
+			return;
+		}
+
 		ScoreBoard::getInstance()->resetTimeToZero();
 		Camera::getInstance()->loadWorldMap();
 		if (this->appController->getSceneName() == SunnyScene) {
+			this->appController->getWorldVC()->getWMario()->setIsFireMode(this->appController->getSunnyVC()->getMario()->getIsFireMode());
+			this->appController->getWorldVC()->getWMario()->setIsSuperMode(this->appController->getSunnyVC()->getMario()->getIsSuperMode());
+			this->appController->getWorldVC()->getWMario()->setIsFlyingMode(this->appController->getSunnyVC()->getMario()->getIsFlyingMode());
 			this->appController->getSunnyVC()->getMario()->save();
 		}
 		else if (this->appController->getSceneName() == UndergroundScene) {
+			this->appController->getWorldVC()->getWMario()->setIsFireMode(this->appController->getUndergroundVC()->getMario()->getIsFireMode());
+			this->appController->getWorldVC()->getWMario()->setIsSuperMode(this->appController->getUndergroundVC()->getMario()->getIsSuperMode());
+			this->appController->getWorldVC()->getWMario()->setIsFlyingMode(this->appController->getUndergroundVC()->getMario()->getIsFlyingMode());
 			this->appController->getUndergroundVC()->getMario()->save();
 		}
 		else if (this->appController->getSceneName() == ThirdScene) {
+			this->appController->getWorldVC()->getWMario()->setIsFireMode(this->appController->getThirdVC()->getMario()->getIsFireMode());
+			this->appController->getWorldVC()->getWMario()->setIsSuperMode(this->appController->getThirdVC()->getMario()->getIsSuperMode());
+			this->appController->getWorldVC()->getWMario()->setIsFlyingMode(this->appController->getThirdVC()->getMario()->getIsFlyingMode());
 			this->appController->getThirdVC()->getMario()->save();
 		}
 		else if (this->appController->getSceneName() == CloudyScene) {
+			this->appController->getWorldVC()->getWMario()->setIsFireMode(this->appController->getCloudyVC()->getMario()->getIsFireMode());
+			this->appController->getWorldVC()->getWMario()->setIsSuperMode(this->appController->getCloudyVC()->getMario()->getIsSuperMode());
+			this->appController->getWorldVC()->getWMario()->setIsFlyingMode(this->appController->getCloudyVC()->getMario()->getIsFlyingMode());
 			this->appController->getCloudyVC()->getMario()->save();
 		}
 
@@ -33,6 +49,10 @@ void ViewController::navigateTo(SceneName _sceneName)
 
 	case SceneName::UndergroundScene:
 	{
+		if (this->appController->getSceneName() == _sceneName) {
+			return;
+		}
+
 		// If current scene is SunnyScene => Save Current Grid Sunny Map, and save mario
 		if (this->appController->getSceneName() == SunnyScene) {
 			Grid::getInstance()->saveCurrentSunnyMap();
@@ -53,6 +73,10 @@ void ViewController::navigateTo(SceneName _sceneName)
 
 	case SceneName::SunnyScene:
 	{
+		if (this->appController->getSceneName() == _sceneName) {
+			return;
+		}
+
 		if (this->appController->getSceneName() == SceneName::WorldScene) {
 			this->appController->setSunnyVC(new SunnyVC());
 			ScoreBoard::getInstance()->resetTimeTo300();
@@ -88,8 +112,12 @@ void ViewController::navigateTo(SceneName _sceneName)
 		break;
 	}
 
-	case ThirdScene:
+	case SceneName::ThirdScene:
 	{
+		if (this->appController->getSceneName() == _sceneName) {
+			return;
+		}
+
 		if (this->appController->getSceneName() == SceneName::WorldScene) {
 			this->appController->setThirdVC(new ThirdVC());
 			ScoreBoard::getInstance()->resetTimeTo300();
@@ -125,8 +153,12 @@ void ViewController::navigateTo(SceneName _sceneName)
 		break;
 	}
 
-	case CloudyScene:
+	case SceneName::CloudyScene:
 	{
+		if (this->appController->getSceneName() == _sceneName) {
+			return;
+		}
+
 		// If current scene is SunnyScene => Save Current Grid Sunny Map, and save mario
 		if (this->appController->getSceneName() == ThirdScene) {
 			Grid::getInstance()->saveCurrentThirdMap();

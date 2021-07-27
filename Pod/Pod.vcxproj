@@ -194,7 +194,6 @@
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="ScoreBoard.cpp" />
     <ClCompile Include="Setting.cpp" />
-    <ClCompile Include="SunnyMap.cpp" />
     <ClCompile Include="SunnyVC.cpp" />
     <ClCompile Include="SuperLeaf.cpp" />
     <ClCompile Include="SuperMushroom.cpp" />
@@ -202,7 +201,6 @@
     <ClCompile Include="UndergroundVC.cpp" />
     <ClCompile Include="ViewController.cpp" />
     <ClCompile Include="WMario.cpp" />
-    <ClCompile Include="WorldMap.cpp" />
     <ClCompile Include="WorldVC.cpp" />
     <ClCompile Include="WTurtle.cpp" />
   </ItemGroup>
@@ -272,7 +270,6 @@
     <ClInclude Include="ScoreBoard.h" />
     <ClInclude Include="SectionFile.h" />
     <ClInclude Include="Setting.h" />
-    <ClInclude Include="SunnyMap.h" />
     <ClInclude Include="SunnyVC.h" />
     <ClInclude Include="SuperLeaf.h" />
     <ClInclude Include="SuperLeafState.h" />
@@ -284,7 +281,6 @@
     <ClInclude Include="ViewController.h" />
     <ClInclude Include="WMario.h" />
     <ClInclude Include="WMarioState.h" />
-    <ClInclude Include="WorldMap.h" />
     <ClInclude Include="WorldVC.h" />
     <ClInclude Include="WTurtle.h" />
   </ItemGroup>

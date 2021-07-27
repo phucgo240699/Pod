@@ -1,6 +1,5 @@
 #pragma once
 #include "ViewController.h"
-#include "WorldMap.h"
 #include "StaticAnim.h"
 #include "WMario.h"
 #include "ScoreBoard.h"
@@ -28,5 +27,8 @@ public:
 
 	void adaptData();
 	void adaptAnimation();
+
+	// Getter
+	WMario* getWMario();
 };
 

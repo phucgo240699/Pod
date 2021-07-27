@@ -872,6 +872,7 @@ void Mario::setState(MarioState _state)
 			}
 		}
 
+		this->setIsFlip(false);
 		this->setVx(float(0));
 		this->setVy(float(3.0));
 		break;
@@ -934,6 +935,7 @@ void Mario::setState(MarioState _state)
 			}
 		}
 
+		this->setIsFlip(false);
 		this->setVx(float(3.0));
 		this->setVy(float(0.0));
 		break;

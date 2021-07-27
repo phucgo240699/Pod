@@ -178,4 +178,10 @@ public:
 	Animation getBombAttachedMario();
 
 	Animation getItems();
+
+	Animation getWMarioFire();
+	Animation getWMarioBig();
+	Animation getWMarioBigFire();
+	Animation getWMarioFlying();
+	Animation getWMaiorFlyingFire();
 };

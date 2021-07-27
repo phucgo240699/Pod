@@ -659,6 +659,31 @@ Animation AnimationBundle::getItems()
 	return this->animations->at(123);
 }
 
+Animation AnimationBundle::getWMarioFire()
+{
+	return this->animations->at(124);
+}
+
+Animation AnimationBundle::getWMarioBig()
+{
+	return this->animations->at(125);
+}
+
+Animation AnimationBundle::getWMarioBigFire()
+{
+	return this->animations->at(126);
+}
+
+Animation AnimationBundle::getWMarioFlying()
+{
+	return this->animations->at(127);
+}
+
+Animation AnimationBundle::getWMaiorFlyingFire()
+{
+	return this->animations->at(128);
+}
+
 //Animation AnimationBundle::getGoombaRedFlyingMoving()
 //{
 //	return this->animations->at(122);

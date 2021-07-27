@@ -88,23 +88,11 @@
     <Filter Include="Source Files\ViewController\SunnyVC">
       <UniqueIdentifier>{13636691-893f-4299-89b2-7404cdd041bd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\ViewController\SunnyVC\SunnyMap">
-      <UniqueIdentifier>{51874067-8ced-403f-860b-db488bebb8bf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\ViewController\SunnyVC\SunnyMap">
-      <UniqueIdentifier>{628be196-b193-49a8-bed8-cdd3b45c11fa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\ViewController\WorldVC">
       <UniqueIdentifier>{6722c219-c792-4452-aaf7-51628ed226a2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\ViewController\WorldVC">
       <UniqueIdentifier>{fd33d7e7-11fc-47f1-8590-692083eb231c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\ViewController\WorldVC\WorldMap">
-      <UniqueIdentifier>{3b44b4a7-d8e8-4a9b-af45-5f3cef9b438f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\ViewController\WorldVC\WorldMap">
-      <UniqueIdentifier>{19244128-329f-4540-a8b1-66c7869fe6e6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Components\WMario">
       <UniqueIdentifier>{5d89be50-87b7-457c-837a-7f352d1bf463}</UniqueIdentifier>
@@ -345,17 +333,11 @@
     <ClCompile Include="SunnyVC.cpp">
       <Filter>Source Files\ViewController\SunnyVC</Filter>
     </ClCompile>
-    <ClCompile Include="SunnyMap.cpp">
-      <Filter>Source Files\ViewController\SunnyVC\SunnyMap</Filter>
-    </ClCompile>
     <ClCompile Include="ScoreBoard.cpp">
       <Filter>Source Files\Components\ScoreBoard</Filter>
     </ClCompile>
     <ClCompile Include="WorldVC.cpp">
       <Filter>Source Files\ViewController\WorldVC</Filter>
-    </ClCompile>
-    <ClCompile Include="WorldMap.cpp">
-      <Filter>Source Files\ViewController\WorldVC\WorldMap</Filter>
     </ClCompile>
     <ClCompile Include="WMario.cpp">
       <Filter>Source Files\Components\WMario</Filter>
@@ -521,17 +503,11 @@
     <ClInclude Include="SunnyVC.h">
       <Filter>Header Files\ViewController\SunnyVC</Filter>
     </ClInclude>
-    <ClInclude Include="SunnyMap.h">
-      <Filter>Header Files\ViewController\SunnyVC\SunnyMap</Filter>
-    </ClInclude>
     <ClInclude Include="ScoreBoard.h">
       <Filter>Header Files\Components\ScoreBoard</Filter>
     </ClInclude>
     <ClInclude Include="WorldVC.h">
       <Filter>Header Files\ViewController\WorldVC</Filter>
-    </ClInclude>
-    <ClInclude Include="WorldMap.h">
-      <Filter>Header Files\ViewController\WorldVC\WorldMap</Filter>
     </ClInclude>
     <ClInclude Include="SceneName.h">
       <Filter>Header Files\System\Enums</Filter>

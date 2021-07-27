@@ -2,7 +2,6 @@
 #include "ViewController.h"
 #include "Mario.h"
 #include "SectionFile.h"
-#include "SunnyMap.h"
 #include "StaticAnim.h"
 #include "AnimationBundle.h"
 #include "Goomba.h"
