@@ -79,6 +79,7 @@ public:
 	void setIsGreenMode(bool _isGreenMode);
 	void setIsFlyingMode(bool _isFlyingMode);
 	void setIsShrinkageReverseMode(bool _value);
+	void setIsOutOfFirstStage(bool _value);
 
 	void convertMovingState();
 	void Update(float _dt);

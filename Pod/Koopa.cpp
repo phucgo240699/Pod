@@ -506,6 +506,11 @@ void Koopa::setIsShrinkageReverseMode(bool _value)
 	this->isShrinkageReverseMode = _value;
 }
 
+void Koopa::setIsOutOfFirstStage(bool _value)
+{
+	this->isOutOfFirstStage = _value;
+}
+
 //void Koopa::setStoredVy(float _storedVy)
 //{
 //	this->storedVy = _storedVy;
@@ -1409,7 +1414,14 @@ void Koopa::handleFireBallCollision(FireBall* _fireBall, float _dt)
 
 void Koopa::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 {
-	if (_goldenBrick->getState() == GOLDEN_BRICK_BEING_COIN || _goldenBrick->getState() == GOLDEN_BRICK_DISAPPEARING || _goldenBrick->getState() == GOLDEN_BRICK_DEAD) return;
+	if (_goldenBrick->getState() == GOLDEN_BRICK_BEING_COIN || _goldenBrick->getState() == GOLDEN_BRICK_DISAPPEARING || _goldenBrick->getState() == GOLDEN_BRICK_DEAD)
+	{
+		if (this->getY() + this->getBoundsHeight() == _goldenBrick->getY() && _goldenBrick->getX() < this->getX() && this->getX() + this->getBoundsWidth() < _goldenBrick->getX() + _goldenBrick->getWidth() ) {
+			this->setIsStandOnSurface(false);
+			this->setIsOutOfFirstStage(true);
+		}
+		return;
+	}
 	if (this->getState() == KOOPA_THROWN_LEFT_AWAY || this->getState() == KOOPA_THROWN_RIGHT_AWAY) return;
 	
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_goldenBrick, _dt);
