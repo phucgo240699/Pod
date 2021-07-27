@@ -2945,7 +2945,7 @@ void Mario::handlePButtonCollision(PButton* _pButton, float _dt)
 
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_pButton, _dt);
 
-	if (get<0>(collisionResult) == true && this->isCollidingByBounds(_pButton->getBounds())) {
+	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_pButton->getBounds()) == true || _pButton->isCollidingByBounds(this->getBounds()) == true) {
 		_pButton->setState(PButtonState::PBUTTON_OFF);
 	}
 }
