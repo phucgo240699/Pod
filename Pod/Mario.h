@@ -93,6 +93,7 @@ public:
 	Animation* getPressureAnimation();
 	FireBall* getFirstFireBall();
 	RECT getBounds();
+	RECT getFrame();
 
 	int getBoundsWidth();
 	int getBoundsHeight();

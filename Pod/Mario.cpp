@@ -55,6 +55,17 @@ RECT Mario::getBounds()
 	return r;
 }
 
+RECT Mario::getFrame()
+{
+	RECT r = RECT();
+	r.top = int(this->getY()) - this->getTopSpace();
+	r.bottom = r.top + this->getHeight();
+	r.left = int(this->getX()) - this->getLeftSpace();
+	r.right = r.left + this->getWidth();
+
+	return r;
+}
+
 bool Mario::getIsFlip()
 {
 	return this->isFlip;
