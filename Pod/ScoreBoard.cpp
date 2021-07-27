@@ -158,6 +158,12 @@ void ScoreBoard::loadInfo(string line, char seperator)
 	this->time = stoi(v[16]);
 	this->width = stoi(v[17]);
 	this->height = stoi(v[18]);
+	this->firstItemX = stoi(v[19]);
+	this->firstItemY = stoi(v[20]);
+	this->secondItemX = stoi(v[21]);
+	this->secondItemY = stoi(v[22]);
+	this->thirdItemX = stoi(v[23]);
+	this->thirdItemY = stoi(v[24]);
 }
 
 void ScoreBoard::Update(float _dt)
@@ -178,6 +184,7 @@ void ScoreBoard::Draw()
 	this->DrawCoin();
 	this->DrawPoint();
 	this->DrawTime();
+	this->DrawItems();
 }
 
 void ScoreBoard::DrawMarioLife()
@@ -229,6 +236,27 @@ void ScoreBoard::DrawMomentum()
 	drawingPosition.x = this->position.x + momentumX;
 	drawingPosition.y = this->position.y + momentumY;
 	Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame(this->getMomentumKey(this->momentumLevel)), drawingPosition);
+}
+
+void ScoreBoard::DrawItems()
+{
+	for (size_t i = 0; i < this->items.size(); ++i) {
+		if (i == size_t(0)) {
+			drawingPosition.x = this->position.x + firstItemX;
+			drawingPosition.y = this->position.y + firstItemY;
+			Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame("i1"), drawingPosition);
+		}
+		else if (i == size_t(1)) {
+			drawingPosition.x = this->position.x + secondItemX;
+			drawingPosition.y = this->position.y + secondItemY;
+			Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame("i2"), drawingPosition);
+		}
+		else if (i == size_t(2)) {
+			drawingPosition.x = this->position.x + thirdItemX;
+			drawingPosition.y = this->position.y + thirdItemY;
+			Drawing::getInstance()->drawWithoutCamera(this->texture, this->getFrame("i3"), drawingPosition);
+		}
+	}
 }
 
 RECT ScoreBoard::getFrame(string keyword)
@@ -288,4 +316,11 @@ void ScoreBoard::setMomentumLevel(int _momentumLevel)
 void ScoreBoard::plusMarioLife(int _value)
 {
 	this->marioLife += _value;
+}
+
+void ScoreBoard::addItem(ScoreBoardItemType _item)
+{
+	if (this->items.size() < size_t(3)) {
+		this->items.push_back(_item);
+	}
 }

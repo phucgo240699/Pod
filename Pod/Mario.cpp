@@ -844,6 +844,101 @@ void Mario::setState(MarioState _state)
 		break;
 	}
 
+	case DROPPING_DOWN_WIN:
+	{
+		delete currentAnimation;
+		if (this->getIsFlyingMode()) {
+			if (this->getIsFireMode()) {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingFireDropping());
+			}
+			else {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingDropping());
+			}
+		}
+		else if (this->getIsSuperMode()) {
+			if (this->getIsFireMode()) {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireDropping());
+			}
+			else {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioDropping());
+			}
+		}
+		else {
+			if (this->getIsFireMode()) {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioFireDropping());
+			}
+			else {
+				this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioDropping());
+			}
+		}
+
+		this->setVx(float(0));
+		this->setVy(float(3.0));
+		break;
+	}
+
+	case MOVING_RIGHT_WIN:
+	{
+		if (this->getIsFlyingMode()) {
+			if (this->getIsConverting()) {
+				if (this->getIsFireMode()) {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingFireConverting());
+				}
+				else {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingConverting());
+				}
+			}
+			else {
+				if (this->getIsFireMode()) {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingFireWalking());
+				}
+				else {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFlyingWalking());
+				}
+			}
+		}
+		else if (this->getIsSuperMode()) {
+			if (this->getIsConverting()) {
+				if (this->getIsFireMode()) {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireConverting());
+				}
+				else {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioConverting());
+				}
+			}
+			else {
+				if (this->getIsFireMode()) {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioFireWalking());
+				}
+				else {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getSuperMarioWalking());
+				}
+			}
+		}
+		else {
+			if (this->getIsConverting()) {
+				if (this->getIsFireMode()) {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioFireConverting());
+				}
+				else {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioConverting());
+				}
+			}
+			else {
+				if (this->getIsFireMode()) {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioFireWalking());
+				}
+				else {
+					this->currentAnimation = new Animation(AnimationBundle::getInstance()->getMarioWalking());
+				}
+			}
+		}
+
+		this->setVx(float(3.0));
+		this->setVy(float(0.0));
+		break;
+	}
+
 	default:
 		break;
 	}
@@ -1245,11 +1340,21 @@ void Mario::Update(float _dt)
 		return;
 	}
 	else if (this->getState() == POPPING_UP_PIPE) {
-		this->plusY(-1);
+		this->plusY(float(-1));
 		return;
 	}
 	else if (this->getState() == JUMPING_UP_TO_CLOUND) {
-		this->plusY(-6);
+		this->plusY(float(-6));
+		return;
+	}
+	else if (this->getState() == DROPPING_DOWN_WIN) {
+		this->plusY(this->getVy() * _dt);
+		this->currentAnimation->Update(_dt);
+		return;
+	}
+	else if (this->getState() == MOVING_RIGHT_WIN) {
+		this->plusX(this->getVx() * _dt);
+		this->currentAnimation->Update(_dt);
 		return;
 	}
 
@@ -1470,7 +1575,7 @@ void Mario::updateVelocity(float _dt)
 		if (this->getState() == JUMPING) {
 			if (this->getNumberBombsAttached() > 0) {
 				if (this->getVy() + this->getAccelerationY() >= -8) {
-					this->plusY(10 * _dt);
+					this->plusY(4 * _dt);
 					this->setState(MarioState::DROPPING);
 				}
 				else {
@@ -1930,6 +2035,10 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 
 void Mario::handleGroundCollision(Ground* _ground, float _dt)
 {
+	if (this->getState() == MOVING_RIGHT_WIN) {
+		return;
+	}
+
 	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_ground, _dt);
 	if (get<0>(collisionResult) == true) {
 		for (size_t j = 0; j < get<2>(collisionResult).size(); ++j) {
@@ -1942,10 +2051,16 @@ void Mario::handleGroundCollision(Ground* _ground, float _dt)
 			}
 			else if (edge == bottomEdge
 				&& this->getX() != _ground->getX() + _ground->getWidth() && this->getX() + this->getBoundsWidth() != _ground->getX()) {
-				this->setState(MarioState::STANDING);
-				this->setY(_ground->getY() - this->getBoundsHeight() - Setting::getInstance()->getCollisionSafeSpace());
-				this->setIsStandOnSurface(true);
-				this->setComponentIdStandingOn(_ground->getId());
+				if (this->getState() == DROPPING_DOWN_WIN) {
+					this->setState(MarioState::MOVING_RIGHT_WIN);
+					this->setY(_ground->getY() - this->getBoundsHeight() - Setting::getInstance()->getCollisionSafeSpace());
+				}
+				else {
+					this->setState(MarioState::STANDING);
+					this->setY(_ground->getY() - this->getBoundsHeight() - Setting::getInstance()->getCollisionSafeSpace());
+					this->setIsStandOnSurface(true);
+					this->setComponentIdStandingOn(_ground->getId());
+				}
 			}
 			else if (edge == leftEdge && this->getY() + this->getBoundsHeight() != _ground->getY()) {
 				this->setX(_ground->getX() + _ground->getWidth());
@@ -3128,7 +3243,6 @@ void Mario::handleBossCollision(Boss* _boss, float _dt)
 
 void Mario::handleBombCollision(Bomb* _bomb, float _dt)
 {
-
 	if (this->getState() == DIE
 		|| this->getState() == DIE_JUMPING
 		|| this->getState() == DIE_DROPPING
@@ -3151,5 +3265,60 @@ void Mario::handleBombCollision(Bomb* _bomb, float _dt)
 	if (get<0>(collisionResult) == true || this->isCollidingByBounds(_bomb->getBounds())) {
 		_bomb->setState(BombState::BOMB_STAYING);
 		this->increaseBombAttached();
+	}
+}
+
+void Mario::handleItemCollision(Item* _item, float _dt)
+{
+	if (this->getState() == DIE
+		|| this->getState() == DIE_JUMPING
+		|| this->getState() == DIE_DROPPING
+		|| this->getState() == SCALING_UP
+		|| this->getState() == SCALING_DOWN
+		|| this->getState() == TRANSFERING_TO_FLY
+		|| this->getState() == DROPPING_DOWN_PIPE
+		|| this->getState() == POPPING_UP_PIPE
+		|| this->getState() == JUMPING_UP_TO_CLOUND
+		|| this->getState() == DROPPING_DOWN_WIN
+		|| this->getState() == MOVING_RIGHT_WIN
+		|| this->getIsFlashMode()) {
+		return;
+	}
+
+	if (_item->getState() == ITEM_DISAPPEARD || _item->getState() == ITEM_POPPING_UP) return;
+
+	tuple<bool, float, vector<CollisionEdge>> collisionResult = this->sweptAABBByBounds(_item, _dt);
+
+	if (get<0>(collisionResult) == true) {
+		this->plusX(this->getVx() * get<1>(collisionResult));
+		this->plusY(this->getVy() * get<1>(collisionResult));
+		this->setState(MarioState::DROPPING_DOWN_WIN);
+		_item->setState(ItemState::ITEM_DISAPPEARD);
+
+		ScoreBoard::getInstance()->plusPoint(ScoreBoard::getInstance()->getTime() * 50);
+		if (_item->getAnimation()->getCurrentIndexFrame() == 0) {
+			ScoreBoard::getInstance()->addItem(ScoreBoardItemType::SCOREBOARD_ITEM_MUSHROOM);
+		}
+		else if (_item->getAnimation()->getCurrentIndexFrame() == 1) {
+			ScoreBoard::getInstance()->addItem(ScoreBoardItemType::SCOREBOARD_ITEM_STAR);
+		}
+		else if (_item->getAnimation()->getCurrentIndexFrame() == 2) {
+			ScoreBoard::getInstance()->addItem(ScoreBoardItemType::SCOREBOARD_ITEM_FLOWER);
+		}
+	}
+	else if (this->isCollidingByBounds(_item->getBounds())) {
+		this->setState(MarioState::DROPPING_DOWN_WIN);
+		_item->setState(ItemState::ITEM_DISAPPEARD);
+
+		ScoreBoard::getInstance()->plusPoint(ScoreBoard::getInstance()->getTime() * 50);
+		if (_item->getAnimation()->getCurrentIndexFrame() == 0) {
+			ScoreBoard::getInstance()->addItem(ScoreBoardItemType::SCOREBOARD_ITEM_MUSHROOM);
+		}
+		else if (_item->getAnimation()->getCurrentIndexFrame() == 1) {
+			ScoreBoard::getInstance()->addItem(ScoreBoardItemType::SCOREBOARD_ITEM_STAR);
+		}
+		else if (_item->getAnimation()->getCurrentIndexFrame() == 2) {
+			ScoreBoard::getInstance()->addItem(ScoreBoardItemType::SCOREBOARD_ITEM_FLOWER);
+		}
 	}
 }

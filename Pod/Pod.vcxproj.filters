@@ -286,6 +286,12 @@
     <Filter Include="Source Files\Components\Enemies\Goomba">
       <UniqueIdentifier>{2add903e-c05f-462a-9937-f4f5992e4aae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\Map\Item">
+      <UniqueIdentifier>{5e65d4cb-f3a3-4323-b212-c78f5dcc03ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Map\Item">
+      <UniqueIdentifier>{7b998b9f-f740-4393-9395-74f5d6cf8483}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setting.cpp">
@@ -446,6 +452,9 @@
     </ClCompile>
     <ClCompile Include="Bomb.cpp">
       <Filter>Source Files\Components\Map\Bomb</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Source Files\Components\Map\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -679,6 +688,15 @@
     </ClInclude>
     <ClInclude Include="BombState.h">
       <Filter>Header Files\System\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreBoardItemType.h">
+      <Filter>Header Files\System\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemState.h">
+      <Filter>Header Files\System\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Header Files\Components\Map\Item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

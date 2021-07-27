@@ -1,6 +1,6 @@
 <ScoreBoard>
-# (x, y, momentumX, momentumY, marioLifeX, marioLiftY, coinX, coinY, pointX, pointY, timeX, timeY, momentum, marioLife, coin, point, time, boardWidth, boardHeight)
-0,186,61,12,46,20,142,12,62,20,134,20,0,4,0,0,300,256,38
+# (x, y, momentumX, momentumY, marioLifeX, marioLiftY, coinX, coinY, pointX, pointY, timeX, timeY, momentum, marioLife, coin, point, time, boardWidth, boardHeight, firstItemX, firstItemY, secondItemX, secondItemY, thirdItemX, thirdItemY)
+0,186,61,12,46,20,142,12,62,20,134,20,0,4,0,0,300,256,38,176,11,200,11,224,11
 </ScoreBoard>
 
 <ScoreBoardFrames>
@@ -28,4 +28,9 @@ m4-0,64,64,7
 m5-65,64,64,7
 m6-130,64,64,7
 m7-195,64,64,7
+
+# Items
+i1-207,39,16,16
+i2-224,39,16,16
+i3-241,39,16,16
 </ScoreBoardFrames>

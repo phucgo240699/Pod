@@ -8,6 +8,7 @@
 #include "BoomerangBro.h"
 #include "Boss.h"
 #include "Bomb.h"
+#include "Item.h"
 
 class ThirdVC : public ViewController
 {
@@ -62,6 +63,9 @@ private:
 	vector<Bomb*>* bombs;
 
 	int beginFireBallId, endFireBallId;
+
+	int beginItemId, endItemId;
+	unordered_set<Item*>* items;
 
 	int leftAnchorDroppingFromCloudy, topAnchorDroppingFromCloudy;
 

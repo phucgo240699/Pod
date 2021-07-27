@@ -180,6 +180,7 @@
     <ClCompile Include="Goomba.cpp" />
     <ClCompile Include="GreenPipe.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Koopa.cpp" />
     <ClCompile Include="MusicBox.cpp" />
     <ClCompile Include="PButton.cpp" />
@@ -249,6 +250,8 @@
     <ClInclude Include="GreenPipe.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="CDType.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemState.h" />
     <ClInclude Include="Koopa.h" />
     <ClInclude Include="KoopaState.h" />
     <ClInclude Include="MusicBox.h" />
@@ -256,6 +259,7 @@
     <ClInclude Include="PButton.h" />
     <ClInclude Include="PButtonState.h" />
     <ClInclude Include="PointUpCD.h" />
+    <ClInclude Include="ScoreBoardItemType.h" />
     <ClInclude Include="StaticAnim.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="ImagePath.h" />

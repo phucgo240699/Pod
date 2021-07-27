@@ -654,6 +654,11 @@ Animation AnimationBundle::getBombAttachedMario()
 	return this->animations->at(122);
 }
 
+Animation AnimationBundle::getItems()
+{
+	return this->animations->at(123);
+}
+
 //Animation AnimationBundle::getGoombaRedFlyingMoving()
 //{
 //	return this->animations->at(122);

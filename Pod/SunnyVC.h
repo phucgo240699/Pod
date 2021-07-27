@@ -12,6 +12,7 @@
 #include "Flower.h"
 #include "FireBall.h"
 #include "Coin.h"
+#include "Item.h"
 
 class SunnyVC : public ViewController
 {
@@ -52,6 +53,10 @@ private:
 	unordered_set<Coin*>* coins;
 
 	int beginPButtonId, endPButtonId;
+
+	int beginItemId, endItemId;
+	unordered_set<Item*>* items;
+
 
 	//
 	// Enemies

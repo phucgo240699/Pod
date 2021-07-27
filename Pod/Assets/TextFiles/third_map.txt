@@ -32,8 +32,11 @@
 # 9. beginBossId, endBossId, beginBombId, endBombId
 901,950,951,1000
 
-# 7. beginFireBallId, endFireBallId
+# 10. beginFireBallId, endFireBallId
 1001,1100
+
+# 11. beginItemId, endItemId
+1101,1200
 
 </ViewController>
 
@@ -232,3 +235,7 @@
 # thirdBomb: vx, vy, id
 1936,400,-0.5,1,901,0.5,1,951,0.5,1,952,0.5,1,953
 </BossFrames>
+
+<ItemFrames>
+2429,336,1101
+</ItemFrames>

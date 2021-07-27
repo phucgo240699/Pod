@@ -1,5 +1,6 @@
 #pragma once
 #include "Drawing.h"
+#include "ScoreBoardItemType.h"
 #include <unordered_map>
 
 using namespace std;
@@ -17,7 +18,10 @@ private:
 
 	long startTime;
 	int time, point, coin, marioLife, momentum, momentumLevel;
-	int momentumX, momentumY, marioLifeX, marioLifeY, coinX, coinY, pointX, pointY, timeX, timeY;
+	int momentumX, momentumY, marioLifeX, marioLifeY, coinX, coinY, pointX, pointY, timeX, timeY, firstItemX, firstItemY, secondItemX, secondItemY, thirdItemX, thirdItemY;
+
+	vector<ScoreBoardItemType> items = vector<ScoreBoardItemType>();
+
 public:
 	ScoreBoard(const ScoreBoard&) = delete; // 3. delete copy constructor
 	static ScoreBoard* getInstance();	  // 4. public function for client code usage
@@ -43,7 +47,7 @@ public:
 	void setMomentum(int _momentum);
 	void setMomentumLevel(int _momentumLevel);
 	void plusMarioLife(int _value);
-
+	void addItem(ScoreBoardItemType _item);
 
 	RECT getFrame(string keyword);
 
@@ -58,5 +62,6 @@ public:
 	void DrawPoint();
 	void DrawTime();
 	void DrawMomentum();
+	void DrawItems();
 };
 

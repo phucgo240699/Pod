@@ -58,6 +58,7 @@ void SunnyVC::viewDidLoad()
 	fireFlowers = new unordered_set<FireFlower*>();
 	flowers = new unordered_set<Flower*>();
 	coins = new unordered_set<Coin*>();
+	items = new unordered_set<Item*>();
 
 	this->mario->load();
 
@@ -217,6 +218,12 @@ void SunnyVC::viewWillUpdate(float _dt)
 
 				// PButton
 				else if (beginPButtonId <= (*itr)->getId() && (*itr)->getId() <= endPButtonId) {
+					// Prevent update mullti time in one loop
+					(*itr)->setIsUpdatedInOneLoop(false);
+				}
+
+				// Item
+				else if (beginItemId <= (*itr)->getId() && (*itr)->getId() <= endItemId) {
 					// Prevent update mullti time in one loop
 					(*itr)->setIsUpdatedInOneLoop(false);
 				}
@@ -522,6 +529,18 @@ void SunnyVC::viewUpdate(float _dt)
 
 					(*itr)->Update(_dt);
 				}
+
+				// Item
+				else if (beginItemId <= (*itr)->getId() && (*itr)->getId() <= endItemId) {
+					// Prevent update mullti time in one loop
+					if ((*itr)->getIsUpdatedInOneLoop()) continue;
+
+					if (static_cast<Item*>(*itr)->getState() == ITEM_DISAPPEARD) {
+						Grid::getInstance()->remove(*itr, i, j);
+					}
+
+					(*itr)->Update(_dt);
+				}
 			}
 		}
 	}
@@ -540,6 +559,15 @@ void SunnyVC::viewUpdate(float _dt)
 				this->mario->setState(MarioState::STANDING);
 				return;
 			}
+		}
+		else if (this->mario->getState() == DROPPING_DOWN_WIN) {
+			return;
+		}
+		else if (this->mario->getState() == MOVING_RIGHT_WIN) {
+			if (mario->getX() >= Camera::getInstance()->getLimitX()) {
+				this->navigateTo(SceneName::WorldScene);
+			}
+			return;
 		}
 		else {
 
@@ -624,7 +652,6 @@ void SunnyVC::viewDidUpdate(float _dt)
 		|| this->mario->getState() == DROPPING_DOWN_PIPE
 		|| this->mario->getState() == POPPING_UP_PIPE
 		|| this->mario->getState() == JUMPING_UP_TO_CLOUND
-		|| this->mario->getState() == DROPPING_DOWN_WIN
 		|| this->mario->getState() == MOVING_RIGHT_WIN)
 	{
 		return;
@@ -955,6 +982,11 @@ void SunnyVC::viewDidUpdate(float _dt)
 						}
 					}
 				}
+
+				// Item
+				else if (beginItemId <= (*itr)->getId() && (*itr)->getId() <= endItemId) {
+					this->mario->handleItemCollision(static_cast<Item*>(*itr), _dt);
+				}
 			}
 		}
 	}
@@ -1031,6 +1063,11 @@ void SunnyVC::viewWillRender()
 
 					// PButton
 					else if (beginPButtonId <= (*itr)->getId() && (*itr)->getId() <= endPButtonId) {
+						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
+					}
+
+					// Item
+					else if (beginItemId <= (*itr)->getId() && (*itr)->getId() <= endItemId) {
 						(*itr)->Draw(Drawing::getInstance()->getSunnyMapTexture());
 					}
 				}
@@ -1232,6 +1269,8 @@ void SunnyVC::adaptRangeID(vector<string> data, char seperator)
 			v = Tool::splitToVectorIntegerFrom(data[i], seperator);
 			this->beginPButtonId = v[0];
 			this->endPButtonId = v[1];
+			this->beginItemId = v[2];
+			this->endItemId = v[3];
 		}
 	}
 }
@@ -1410,6 +1449,18 @@ void SunnyVC::adaptData()
 			}
 			section = SECTION_NONE;
 		}
+		else if (line == "<ItemFrames>") {
+			section = SECTION_ITEM_FRAMES;
+			continue;
+		}
+		else if (line == "</ItemFrames>") {
+			for (size_t i = 0; i < data.size(); ++i) {
+				Item* item = new Item(0, 0, 0, 0, 0, 0, 0);
+				item->loadInfo(data[i], ',');
+				this->items->insert(item);
+			}
+			section = SECTION_NONE;
+		}
 		/*else if (line == "<GridInfo>") {
 			section = SECTION_GRID_INFO;
 			continue;
@@ -1484,6 +1535,9 @@ void SunnyVC::adaptData()
 		case SECTION_COIN_FRAMES:
 			data.push_back(line);
 			break;
+		case SECTION_ITEM_FRAMES:
+			data.push_back(line);
+			break;
 		//case SECTION_GRID_INFO:
 		//	Grid::getInstance()->loadInfo(line, ',');
 		//	break;
@@ -1542,6 +1596,12 @@ void SunnyVC::adaptAnimation()
 	unordered_set<Coin*> ::iterator coinItr;
 	for (coinItr = this->coins->begin(); coinItr != this->coins->end(); ++coinItr) {
 		(*coinItr)->setAnimation(new Animation(AnimationBundle::getInstance()->getCoin()));
+	}
+
+	// Item
+	unordered_set<Item*> ::iterator itemItr;
+	for (itemItr = this->items->begin(); itemItr != this->items->end(); ++itemItr) {
+		(*itemItr)->setAnimation(new Animation(AnimationBundle::getInstance()->getItems()));
 	}
 
 
@@ -1665,6 +1725,11 @@ void SunnyVC::adaptToGrid()
 		Grid::getInstance()->add(*coinItr);
 	}
 
+	// Item
+	unordered_set<Item*> ::iterator itemItr;
+	for (itemItr = this->items->begin(); itemItr != this->items->end(); ++itemItr) {
+		Grid::getInstance()->add(*itemItr);
+	}
 
 	///
 	/// --------------------------- Enemies ---------------------------

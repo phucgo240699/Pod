@@ -24,6 +24,7 @@
 #include "BoomerangBro.h"
 #include "Boss.h"
 #include "Bomb.h"
+#include "Item.h"
 #include <unordered_map>
 
 using namespace std;
@@ -273,6 +274,7 @@ public:
 	void handleBoomerangCollision(Boomerang* _boomerang, float _dt);
 	void handleBossCollision(Boss* _boss, float _dt);
 	void handleBombCollision(Bomb* _bomb, float _dt);
+	void handleItemCollision(Item* _item, float _dt);
 };
 
 #endif // !MARIO_H

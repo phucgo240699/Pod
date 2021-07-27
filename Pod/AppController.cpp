@@ -232,8 +232,8 @@ void AppController::Handler_Keyboard(HWND hwnd)
 
 	// Number 1
 	if (KEY_DOWN(0x31) == 1) {
-		hasKeyDown = true;
 		keyDowns.push_back(KeyType::number_1);
+		hasKeyDown = true;
 	}
 	else {
 		keyUps.push_back(KeyType::number_1);
@@ -241,8 +241,8 @@ void AppController::Handler_Keyboard(HWND hwnd)
 
 	// Number 2
 	if (KEY_DOWN(0x32) == 1) {
-		hasKeyDown = true;
 		keyDowns.push_back(KeyType::number_2);
+		hasKeyDown = true;
 	}
 	else {
 		keyUps.push_back(KeyType::number_2);
@@ -250,8 +250,8 @@ void AppController::Handler_Keyboard(HWND hwnd)
 
 	// Number 3
 	if (KEY_DOWN(0x33) == 1) {
-		hasKeyDown = true;
 		keyDowns.push_back(KeyType::number_3);
+		hasKeyDown = true;
 	}
 	else {
 		keyUps.push_back(KeyType::number_3);
@@ -259,8 +259,8 @@ void AppController::Handler_Keyboard(HWND hwnd)
 
 	// Number 4
 	if (KEY_DOWN(0x34) == 1) {
-		hasKeyDown = true;
 		keyDowns.push_back(KeyType::number_4);
+		hasKeyDown = true;
 	}
 	else {
 		keyUps.push_back(KeyType::number_4);
@@ -268,8 +268,8 @@ void AppController::Handler_Keyboard(HWND hwnd)
 
 	// Number 5
 	if (KEY_DOWN(0x35) == 1) {
-		hasKeyDown = true;
 		keyDowns.push_back(KeyType::number_5);
+		hasKeyDown = true;
 	}
 	else {
 		keyUps.push_back(KeyType::number_5);
