@@ -342,7 +342,7 @@ void Koopa::setState(KoopaState _state)
 		countFlyingX = 0;
 		startFlyingY = this->getY();
 		this->setIsFlip(true);
-		this->setVx(float(-1.4) * abs(this->originVx));
+		this->setVx(float(-0.6) * abs(this->originVx));
 		this->setVy(-abs(this->originVy));
 		break;
 	}
@@ -356,7 +356,7 @@ void Koopa::setState(KoopaState _state)
 		countFlyingX = 0;
 		startFlyingY = this->getY();
 		this->setIsFlip(false);
-		this->setVx(float(1.4) * abs(this->originVx));
+		this->setVx(float(0.6) * abs(this->originVx));
 		this->setVy(-abs(this->originVy));
 		break;
 	}
@@ -406,7 +406,7 @@ void Koopa::setState(KoopaState _state)
 		this->setIsFlip(true);
 		this->countThrownToShrinkageX = 0;
 		this->startThrownToShrinkageY = this->getY();
-		this->setVx(-float(0.4));// .5 * abs(this->originVx));
+		this->setVx(-float(0.4) * abs(this->originVx));
 		this->setVy(-abs(this->originVy));
 		break;
 	}
@@ -426,7 +426,7 @@ void Koopa::setState(KoopaState _state)
 		this->setIsFlip(false);
 		this->countThrownToShrinkageX = 0;
 		this->startThrownToShrinkageY = this->getY();
-		this->setVx(float(0.4));// .5 * abs(this->originVx));
+		this->setVx(float(0.4) * abs(this->originVx));
 		this->setVy(-abs(this->originVy));
 		break;
 	}
@@ -622,8 +622,8 @@ void Koopa::Update(float _dt)
 		// vx now is < 0
 		countFlyingX += (this->getVx() * _dt);
 		float moreY = (-1 * (48 - (float(pow(countFlyingX + 24, 2)) / 12)));
-		this->plusXNoRound(this->getVx() * _dt);
-		this->setYNoRound(startFlyingY + moreY);
+		this->plusX(this->getVx() * _dt);
+		this->setY(startFlyingY + moreY);
 
 		if (countFlyingX < -24) {
 			this->setVy(abs(this->originVy));
@@ -633,8 +633,8 @@ void Koopa::Update(float _dt)
 		// vx now is > 0
 		countFlyingX += (this->getVx() * _dt);
 		float moreY = (-1 * (48 - (float(pow(countFlyingX - 24, 2)) / 12)));
-		this->plusXNoRound(this->getVx() * _dt);
-		this->setYNoRound(startFlyingY + moreY);
+		this->plusX(this->getVx() * _dt);
+		this->setY(startFlyingY + moreY);
 
 		if (countFlyingX > 24) {
 			this->setVy(abs(this->originVy));
@@ -645,7 +645,7 @@ void Koopa::Update(float _dt)
 		countThrownToShrinkageX += (this->getVx() * _dt);
 		float moreY = (-1 * (72 - (float(pow(countThrownToShrinkageX + 12, 2)) / 2)));
 		this->plusXNoRound(this->getVx() * _dt);
-		this->setYNoRound(startThrownToShrinkageY + moreY);
+		this->setY(startThrownToShrinkageY + moreY);
 
 		if (countThrownToShrinkageX < -12) {
 			this->setVy(abs(this->originVy));
@@ -656,7 +656,7 @@ void Koopa::Update(float _dt)
 		countThrownToShrinkageX += (this->getVx() * _dt);
 		float moreY = (-1 * (72 - (float(pow(countThrownToShrinkageX - 12, 2)) / 2)));
 		this->plusXNoRound(this->getVx() * _dt);
-		this->setYNoRound(startThrownToShrinkageY + moreY);
+		this->setY(startThrownToShrinkageY + moreY);
 
 		if (countThrownToShrinkageX > 12) {
 			this->setVy(abs(this->originVy));
