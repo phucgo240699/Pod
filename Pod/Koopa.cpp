@@ -25,7 +25,12 @@ void Koopa::loadInfo(string line, char seperator)
 	this->defaultPoint = stoi(v[4]);
 	this->setId(stoi(v[5]));
 
-	this->setIsGreenMode(stoi(v[6]) == 1);
+	if (stoi(v[6]) == 1 || stoi(v[6]) == 2) {
+		this->setIsGreenMode(true);
+	}
+	else {
+		this->setIsGreenMode(false);
+	}
 	this->setIsFlyingMode(stoi(v[6]) == 2);
 	if (this->getIsGreenMode() == false && this->getIsFlyingMode() == false) {
 		isOutOfFirstStage = false;
