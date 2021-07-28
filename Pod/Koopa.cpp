@@ -406,7 +406,8 @@ void Koopa::setState(KoopaState _state)
 		this->setIsFlip(true);
 		this->countThrownToShrinkageX = 0;
 		this->startThrownToShrinkageY = this->getY();
-		this->setVx(-float(0.4) * abs(this->originVx));
+		//this->setVx(-float(0.4) * abs(this->originVx));
+		this->setVx(-float(0.3));
 		this->setVy(-abs(this->originVy));
 		break;
 	}
@@ -426,7 +427,8 @@ void Koopa::setState(KoopaState _state)
 		this->setIsFlip(false);
 		this->countThrownToShrinkageX = 0;
 		this->startThrownToShrinkageY = this->getY();
-		this->setVx(float(0.4) * abs(this->originVx));
+		//this->setVx(float(0.4) * abs(this->originVx));
+		this->setVx(float(0.3));
 		this->setVy(-abs(this->originVy));
 		break;
 	}
