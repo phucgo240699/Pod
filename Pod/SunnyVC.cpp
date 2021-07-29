@@ -111,6 +111,13 @@ void SunnyVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 			this->mario->setState(MarioState::DROPPING_DOWN_PIPE);
 			return;
 		}
+		else if (_keyTypes[i] == KeyType::number_5) {
+			if (this->mario->getX() != float(leftAnchorGreenPipeToPassThrough) || this->mario->getY() != float(50)) {
+				this->mario->setX(float(leftAnchorGreenPipeToPassThrough));
+				this->mario->setY(float(50));
+				Camera::getInstance()->setPositionBy(this->mario);
+			}
+		}
 	}
 	mario->onKeyDown(_keyTypes);
 }

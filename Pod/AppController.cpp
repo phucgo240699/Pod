@@ -275,6 +275,15 @@ void AppController::Handler_Keyboard(HWND hwnd)
 		keyUps.push_back(KeyType::number_4);
 	}
 
+	// Number 5
+	if (KEY_DOWN(0x35) == 1) {
+		keyDowns.push_back(KeyType::number_5);
+		hasKeyDown = true;
+	}
+	else {
+		keyUps.push_back(KeyType::number_5);
+	}
+
 	// Key A
 	if (KEY_DOWN(0x41) == 1) {
 		keyDowns.push_back(KeyType::key_A);

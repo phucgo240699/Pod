@@ -55,6 +55,15 @@ void ThirdVC::viewReceiveKeyUp(vector<KeyType> _keyTypes)
 
 void ThirdVC::viewReceiveKeyDown(vector<KeyType> _keyTypes)
 {
+	for (size_t i = 0; i < _keyTypes.size(); ++i) {
+		if (_keyTypes[i] == KeyType::number_5) {
+			if (this->mario->getX() != float(1250) || this->mario->getY() != float(300)) {
+				this->mario->setX(float(1250));
+				this->mario->setY(float(300));
+				Camera::getInstance()->setPositionBy(this->mario);
+			}
+		}
+	}
     mario->onKeyDown(_keyTypes);
 }
 
