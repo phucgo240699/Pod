@@ -2013,7 +2013,7 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 				this->turnOnFireSkin(this->getState());
 			}
 		}
-		else if (_keyTypes[i] == KeyType::number_5) {
+		else if (_keyTypes[i] == KeyType::number_0) {
 			if (this->getIsFireMode() == true) {
 				this->turnOffFireSkin(this->getState());
 			}

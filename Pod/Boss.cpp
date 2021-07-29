@@ -303,13 +303,13 @@ void Boss::Update(float _dt)
 					this->setState(BossState::BOSS_FLYING_TOP_LEFT);
 				}
 			}
-			else {
+			/*else {
 				if (countDownFromMovingToFlyingUp = 15) {
 					if (this->getX() < this->getMarioX()) {
 						this->setState(BossState::BOSS_MOVING_RIGHT);
 					}
 				}
-			}
+			}*/
 			
 		}
 		else {
@@ -334,13 +334,13 @@ void Boss::Update(float _dt)
 					this->setState(BossState::BOSS_FLYING_TOP_LEFT);
 				}
 			}
-			else {
+			/*else {
 				if (countDownFromMovingToFlyingUp = 15) {
 					if (this->getX() > this->getMarioX()) {
 						this->setState(BossState::BOSS_MOVING_LEFT);
 					}
 				}
-			}
+			}*/
 		}
 		else {
 			this->plusX(this->getVx() * _dt);
@@ -544,12 +544,15 @@ void Boss::handleHardComponentCollision(Component* _component, float _dt)
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == bottomEdge) {
 				this->setIsStandOnSurface(true);
-				if (this->getState() == BOSS_DROPPING_LEFT) {
-					this->setState(BossState::BOSS_MOVING_LEFT);
+				if (this->getState() == BOSS_DROPPING_LEFT || this->getState() == BOSS_DROPPING_RIGHT) {
+					if (this->getX() < this->getMarioX()) {
+						this->setState(BossState::BOSS_MOVING_RIGHT);
+					}
+					else {
+						this->setState(BossState::BOSS_MOVING_LEFT);
+					}
 				}
-				else if (this->getState() == BOSS_DROPPING_RIGHT) {
-					this->setState(BossState::BOSS_MOVING_RIGHT);
-				}
+
 				this->setY(_component->getY() - this->getBoundsHeight());
 			}
 			else if (edge == leftEdge && this->getIsFlyingMode() == false && this->getY() + this->getBoundsHeight() != _component->getY() && this->getY() != _component->getY() + _component->getHeight()) {
@@ -596,12 +599,15 @@ void Boss::handleBlockComponentCollision(Component* _component, float _dt)
 			CollisionEdge edge = get<2>(collisionResult)[j];
 			if (edge == bottomEdge) {
 				this->setIsStandOnSurface(true);
-				if (this->getState() == BOSS_DROPPING_LEFT) {
-					this->setState(BossState::BOSS_MOVING_LEFT);
+				if (this->getState() == BOSS_DROPPING_LEFT || this->getState() == BOSS_DROPPING_RIGHT) {
+					if (this->getX() < this->getMarioX()) {
+						this->setState(BossState::BOSS_MOVING_RIGHT);
+					}
+					else {
+						this->setState(BossState::BOSS_MOVING_LEFT);
+					}
 				}
-				else if (this->getState() == BOSS_DROPPING_RIGHT) {
-					this->setState(BossState::BOSS_MOVING_RIGHT);
-				}
+
 				this->setY(_component->getY() - this->getBoundsHeight());
 			}
 		}
