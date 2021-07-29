@@ -362,6 +362,7 @@ void Koopa::setState(KoopaState _state)
 	}
 
 	case KOOPA_DROPPING_LEFT_FROM_AIR:
+	case KOOPA_DROPPING_LEFT_TO_SHRINKAGE:
 	{
 		this->setIsFlip(true);
 		this->setVx(-abs(this->originVx));
@@ -370,6 +371,7 @@ void Koopa::setState(KoopaState _state)
 	}
 
 	case KOOPA_DROPPING_RIGHT_FROM_AIR:
+	case KOOPA_DROPPING_RIGHT_TO_SHRINKAGE:
 	{
 		this->setIsFlip(false);
 		this->setVx(abs(this->originVx));
@@ -664,7 +666,10 @@ void Koopa::Update(float _dt)
 			this->setVy(abs(this->originVy));
 		}
 	}
-	else if (this->getState() == KOOPA_DROPPING_LEFT_FROM_AIR || this->getState() == KOOPA_DROPPING_RIGHT_FROM_AIR) {
+	else if (this->getState() == KOOPA_DROPPING_LEFT_FROM_AIR
+	|| this->getState() == KOOPA_DROPPING_RIGHT_FROM_AIR
+	|| this->getState() == KOOPA_DROPPING_LEFT_TO_SHRINKAGE
+	|| this->getState() == KOOPA_DROPPING_RIGHT_TO_SHRINKAGE) {
 		this->plusXNoRound(this->getVx()* _dt);
 		this->plusYNoRound(this->getVy()* _dt);
 	}
@@ -742,6 +747,9 @@ void Koopa::handleHardComponentCollision(Component* _component, float _dt)
 					this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
 				}
 			}
+			else if (this->getState() == KOOPA_DROPPING_LEFT_TO_SHRINKAGE || this->getState() == KOOPA_DROPPING_RIGHT_TO_SHRINKAGE) {
+				this->setState(KoopaState::KOOPA_SHRINKAGE);
+			}
 
 			this->setY(_component->getY() - this->getBoundsHeight());
 		}
@@ -753,10 +761,11 @@ void Koopa::handleHardComponentCollision(Component* _component, float _dt)
 				this->setState(KoopaState::KOOPA_DROPPING_RIGHT_FROM_AIR);
 			}
 			else if (this->getState() == KOOPA_THROWN_LEFT_TO_SHINKAGE) {
-				this->setState(KoopaState::KOOPA_DROPPING_LEFT_FROM_AIR);
+				//this->setState(KoopaState::KOOPA_DROPPING_LEFT_FROM_AIR);
+				this->setState(KoopaState::KOOPA_DROPPING_LEFT_TO_SHRINKAGE);
 			}
 			else if (this->getState() == KOOPA_THROWN_RIGHT_TO_SHINKAGE) {
-				this->setState(KoopaState::KOOPA_DROPPING_RIGHT_FROM_AIR);
+				this->setState(KoopaState::KOOPA_DROPPING_RIGHT_TO_SHRINKAGE);
 			}
 		}
 		else if (edge == leftEdge && this->getY() + this->getBoundsHeight() != _component->getY()) {
@@ -873,6 +882,9 @@ void Koopa::handleGiftBrickCollision(GiftBrick* _giftBrick, Mario* _mario, float
 					this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
 				}
 			}
+			else if (this->getState() == KOOPA_DROPPING_LEFT_TO_SHRINKAGE || this->getState() == KOOPA_DROPPING_RIGHT_TO_SHRINKAGE) {
+				this->setState(KoopaState::KOOPA_SHRINKAGE);
+			}
 
 			this->setY(_giftBrick->getY() - this->getBoundsHeight());
 		}
@@ -884,10 +896,11 @@ void Koopa::handleGiftBrickCollision(GiftBrick* _giftBrick, Mario* _mario, float
 				this->setState(KoopaState::KOOPA_DROPPING_RIGHT_FROM_AIR);
 			}
 			else if (this->getState() == KOOPA_THROWN_LEFT_TO_SHINKAGE) {
-				this->setState(KoopaState::KOOPA_DROPPING_LEFT_FROM_AIR);
+				//this->setState(KoopaState::KOOPA_DROPPING_LEFT_FROM_AIR);
+				this->setState(KoopaState::KOOPA_DROPPING_LEFT_TO_SHRINKAGE);
 			}
 			else if (this->getState() == KOOPA_THROWN_RIGHT_TO_SHINKAGE) {
-				this->setState(KoopaState::KOOPA_DROPPING_RIGHT_FROM_AIR);
+				this->setState(KoopaState::KOOPA_DROPPING_RIGHT_TO_SHRINKAGE);
 			}
 
 			if (_giftBrick->getState() == FULLGIFTBRICK) {
@@ -1481,6 +1494,10 @@ void Koopa::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 					this->setState(KoopaState::KOOPA_SHRINKAGE_MOVING_RIGHT);
 				}
 			}
+
+			else if (this->getState() == KOOPA_DROPPING_LEFT_TO_SHRINKAGE || this->getState() == KOOPA_DROPPING_RIGHT_TO_SHRINKAGE) {
+				this->setState(KoopaState::KOOPA_SHRINKAGE);
+			}
 		}
 		else if (edge == topEdge) {
 			if (this->getState() == KOOPA_FLYING_LEFT) {
@@ -1490,10 +1507,11 @@ void Koopa::handleGoldenBrickCollision(GoldenBrick* _goldenBrick, float _dt)
 				this->setState(KoopaState::KOOPA_DROPPING_RIGHT_FROM_AIR);
 			}
 			else if (this->getState() == KOOPA_THROWN_LEFT_TO_SHINKAGE) {
-				this->setState(KoopaState::KOOPA_DROPPING_LEFT_FROM_AIR);
+				//this->setState(KoopaState::KOOPA_DROPPING_LEFT_FROM_AIR);
+				this->setState(KoopaState::KOOPA_DROPPING_LEFT_TO_SHRINKAGE);
 			}
 			else if (this->getState() == KOOPA_THROWN_RIGHT_TO_SHINKAGE) {
-				this->setState(KoopaState::KOOPA_DROPPING_RIGHT_FROM_AIR);
+				this->setState(KoopaState::KOOPA_DROPPING_RIGHT_TO_SHRINKAGE);
 			}
 		}
 		else if (edge == leftEdge && this->getY() + this->getBoundsHeight() != _goldenBrick->getY() && this->getY() != _goldenBrick->getY() + _goldenBrick->getHeight()) {
