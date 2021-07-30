@@ -63,9 +63,10 @@ void ViewController::navigateTo(SceneName _sceneName)
 		Grid::getInstance()->loadOriginalUnderGroundMap();
 		this->appController->getUndergroundVC()->adaptToGrid();
 		this->appController->getUndergroundVC()->getMario()->load();
-		Camera::getInstance()->setPositionBy(this->appController->getUndergroundVC()->getMario());
-
+		this->appController->getUndergroundVC()->getMario()->setX(float(136));
+		this->appController->getUndergroundVC()->getMario()->setY(float(48));
 		this->appController->getUndergroundVC()->getMario()->setState(MarioState::DROPPING);
+		Camera::getInstance()->setPositionBy(this->appController->getUndergroundVC()->getMario());
 		this->appController->getUndergroundVC()->getMario()->setFirstFireBallState(FireBallState::FIREBALL_STAYING);
 		this->appController->getUndergroundVC()->getMario()->setFirstFireBallAnimation(new Animation(AnimationBundle::getInstance()->getFireBall()));
 		break;
@@ -169,8 +170,11 @@ void ViewController::navigateTo(SceneName _sceneName)
 		Grid::getInstance()->loadOriginalCloudyMap();
 		this->appController->getCloudyVC()->adaptToGrid();
 		this->appController->getCloudyVC()->getMario()->load();
-		Camera::getInstance()->setPositionBy(this->appController->getCloudyVC()->getMario());
+
+		this->appController->getCloudyVC()->getMario()->setX(float(134));
+		this->appController->getCloudyVC()->getMario()->setY(float(380));
 		this->appController->getCloudyVC()->getMario()->setState(MarioState::JUMPING);
+		Camera::getInstance()->setPositionBy(this->appController->getCloudyVC()->getMario());
 
 		this->appController->getCloudyVC()->getMario()->setFirstFireBallState(FireBallState::FIREBALL_STAYING);
 		this->appController->getCloudyVC()->getMario()->setFirstFireBallAnimation(new Animation(AnimationBundle::getInstance()->getFireBall()));
