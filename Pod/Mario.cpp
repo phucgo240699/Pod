@@ -1944,7 +1944,7 @@ void Mario::onKeyDown(vector<KeyType> _keyTypes)
 		
 		// Turning around
 		else if (_keyTypes[i] == KeyType::key_A) {
-			if (this->getIsFlyingMode() && this->getIsPressA() == false) {
+			if (this->getIsFlyingMode() && this->getIsPressA() == false && this->getIsTurningAround() == false) {
 				this->setIsTurningAround(true);
 				this->setIsPressA(true);
 				this->turnOnTurningAroundSkin();
