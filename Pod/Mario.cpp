@@ -1438,6 +1438,15 @@ void Mario::Update(float _dt)
 		}
 	}
 
+	if (this->getIsFlyingUpMode()) {
+		--countDownFlyingUp;
+		if (this->countDownFlyingUp <= 0) {
+			this->setIsFlyingUpMode(false);
+			this->setState(MarioState::DROPPING);
+			countDownFlyingUp = totalCountDownFlyingUp;
+		}
+	}
+
 	// Update position, velocity
 	this->updateVelocity(_dt);
 	if (this->getX() + round(this->getVx() * _dt) >= 0
