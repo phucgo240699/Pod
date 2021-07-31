@@ -45,7 +45,7 @@ public:
 		vector<string> vector;
 		istringstream stm(s);
 		
-		int fromIndex = 0;
+		size_t fromIndex = 0;
 		for (size_t i = 0; i < s.length(); ++i) {
 			if (s[i] == seperator) {
 				vector.push_back(s.substr(fromIndex, i - fromIndex));
@@ -62,7 +62,7 @@ public:
 		vector<int> vector;
 		istringstream stm(s);
 
-		int fromIndex = 0;
+		size_t fromIndex = 0;
 		for (size_t i = 0; i < s.length(); ++i) {
 			if (s[i] == seperator) {
 				vector.push_back(stoi(s.substr(fromIndex, i - fromIndex)));
@@ -81,7 +81,7 @@ public:
 		vector<float> vector;
 		istringstream stm(s);
 
-		int fromIndex = 0;
+		size_t fromIndex = 0;
 		for (size_t i = 0; i < s.length(); ++i) {
 			if (s[i] == seperator) {
 				vector.push_back(stof(s.substr(fromIndex, i - fromIndex)));
@@ -111,7 +111,7 @@ public:
 	static pair<int, int> splitToPairIntIntFrom(string s, char seperator) {
 		pair<int, int> p;
 
-		int fromIndex = 0;
+		size_t fromIndex = 0;
 		for (size_t i = 0; i < s.length(); ++i) {
 			if (s[i] == seperator) {
 				p.first = stoi(s.substr(0, i));
